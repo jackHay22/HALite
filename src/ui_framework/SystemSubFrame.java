@@ -3,6 +3,7 @@ package ui_framework;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class SystemSubFrame extends JPanel implements Resizeable, Refreshable {
 	
 	public SystemSubFrame() {
