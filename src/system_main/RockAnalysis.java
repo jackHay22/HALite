@@ -14,6 +14,7 @@ public class RockAnalysis {
 		for (int i = 0; i < 4; i++) {
 			test.add_subwindow(new SystemSubPanel());
 		}
+		int ß = 20; 
 		test.start_window();
 	}
 
