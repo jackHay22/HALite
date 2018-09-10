@@ -1,26 +1,24 @@
 package ui_framework;
 
 import java.awt.Dimension;
-import javax.swing.JPanel;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemSubPanel extends JPanel implements Resizeable, Refreshable {
-	private ArrayList<JPanel> added_panels;
-	public SystemSubPanel() {
+public class WindowSubPanel extends SystemPanel implements Resizeable {
+	private ArrayList<SystemPanel> added_panels;
+	public WindowSubPanel() {
 		super();
-		added_panels = new ArrayList<JPanel>();
+		added_panels = new ArrayList<SystemPanel>();
 	}
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		for (int i=0; i < this.added_panels.size(); i++) {
-			//this.added_panels.get(i).refresh();
+			this.added_panels.get(i).refresh();
 		}
 	}
 	
-	public void add_panel(JPanel component) {
+	public void add_panel(SystemPanel component) {
 		this.added_panels.add(component);
 	}
 
@@ -33,6 +31,4 @@ public class SystemSubPanel extends JPanel implements Resizeable, Refreshable {
 	public void set_minimum_dimension(Dimension dim) {
 		this.setMinimumSize(dim);
 	}
-
-
 }

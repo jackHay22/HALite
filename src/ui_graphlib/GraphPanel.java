@@ -1,14 +1,15 @@
 package ui_graphlib;
 
-import ui_framework.Refreshable;
+import ui_framework.SystemPanel;
 
-public class GraphPanel implements Refreshable {
+@SuppressWarnings("serial")
+public class GraphPanel extends SystemPanel{
 	//extends InteractivePanel 
 	public GraphPanel() {
-		//super();
+		super();
 	}
 	
-	private void PlotPoints() {
+	private void plot_points() {
 		
 	}
 	
