@@ -2,7 +2,6 @@ package system_main;
 
 import ui_framework.SystemWindow;
 import ui_graphlib.GraphPanel;
-import ui_framework.WindowSubPanel;
 
 public class RockAnalysis {
 
@@ -13,9 +12,7 @@ public class RockAnalysis {
 		test.set_minimum_size(window_width, window_height);
 		
 		for (int i = 0; i < 4; i++) {
-			WindowSubPanel new_subpanel = new WindowSubPanel();
-			new_subpanel.add_panel(new GraphPanel());
-			test.add_subpanel(new_subpanel);
+			test.add_subpanel(new GraphPanel());
 		}
 		test.start_window();
 	}
