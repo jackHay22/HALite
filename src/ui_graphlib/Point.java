@@ -11,8 +11,15 @@ public class Point {
 		this.graph_y = y;
 	}
 	
-	
 	private void toggle() {
 		this.enabled = ! this.enabled;
 	}
+	
+	public double get_x() {
+		return graph_x;
+	}
+	public double get_y() {
+		return graph_y;
+	}
+	
 }

@@ -15,7 +15,10 @@ public class GraphPanel extends ui_framework.SystemPanel {
 	}
 	
 	private void draw_graph() {
+		
 		set_labels();
+		
+		
 		plot_points();
 	}
 	
