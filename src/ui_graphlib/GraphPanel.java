@@ -7,6 +7,11 @@ public class GraphPanel implements Refreshable {
 	public GraphPanel() {
 		//super();
 	}
+	
+	private void PlotPoints() {
+		
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
