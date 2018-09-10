@@ -8,6 +8,8 @@ public class GraphPanel implements Refreshable {
 		//super();
 	}
 	
+	private int width;
+	
 	private void PlotPoints() {
 		
 	}
