@@ -15,7 +15,9 @@ public class SystemSubPanel extends JPanel implements Resizeable, Refreshable {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-
+		for (int i=0; i < this.added_panels.size(); i++) {
+			//this.added_panels.get(i).refresh();
+		}
 	}
 	
 	public void add_panel(JPanel component) {
