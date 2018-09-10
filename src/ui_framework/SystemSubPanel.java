@@ -2,12 +2,14 @@ package ui_framework;
 
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemSubFrame extends JPanel implements Resizeable, Refreshable {
-	
-	public SystemSubFrame() {
+public class SystemSubPanel extends JPanel implements Resizeable, Refreshable {
+	private ArrayList<JPanel> added_panels;
+	public SystemSubPanel() {
 		super();
+		added_panels = new ArrayList<JPanel>();
 	}
 	
 	@Override
@@ -15,17 +17,9 @@ public class SystemSubFrame extends JPanel implements Resizeable, Refreshable {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public int get_width() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int get_height() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	public void add_panel(JPanel component) {
+		this.added_panels.add(component);
 	}
 
 	@Override

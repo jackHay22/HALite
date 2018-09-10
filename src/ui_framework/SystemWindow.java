@@ -8,22 +8,22 @@ import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class SystemWindow extends JFrame implements Refreshable {
-	private ArrayList<SystemSubFrame> refreshable_frames;
+	private ArrayList<SystemSubPanel> refreshable_frames;
 	private int subframe_width;
 	private int subframe_height;
 	private int resize_buffer;
 
 	public SystemWindow(String title, int width, int height) {
 		super();
-		refreshable_frames = new ArrayList<SystemSubFrame>();
-		resize_buffer = 100;
+		refreshable_frames = new ArrayList<SystemSubPanel>();
+		resize_buffer = 0;
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(width, height);
         this.setVisible(true);
 	}
 	
-	public void add_subwindow(SystemSubFrame new_frame) {
+	public void add_subwindow(SystemSubPanel new_frame) {
 		new_frame.set_minimum_dimension(new Dimension(subframe_width, subframe_height));
 		refreshable_frames.add(new_frame);
 	}

@@ -1,4 +1,6 @@
-package ui_framework;
+package ui_graphlib;
+
+import ui_framework.Refreshable;
 
 public class GraphPanel implements Refreshable {
 	//extends InteractivePanel 
