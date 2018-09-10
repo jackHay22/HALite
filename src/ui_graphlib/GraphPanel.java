@@ -1,8 +1,7 @@
 package ui_graphlib;
 
-import ui_framework.Refreshable;
-
-public class GraphPanel implements Refreshable {
+@SuppressWarnings("serial")
+public class GraphPanel extends ui_framework.SystemPanel {
 	//extends InteractivePanel 
 	public GraphPanel() {
 		//super();
