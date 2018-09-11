@@ -36,7 +36,6 @@ public class SystemWindow extends JFrame implements Refreshable{
 	
 	@Override
 	public void refresh() {
-		System.out.println("Call to refresh");
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).refresh();
 		}

@@ -15,12 +15,14 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	private BufferedImage image;
 	private int height;
 	private int width;
+	private DrawableManager manager;
 	
-	public DrawablePanel(int width, int height) {
+	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
 		init();
 		this.width = width;
 		this.height = height;
+		this.manager = manager;
 	}
 	private void init() {
 		this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -28,7 +30,7 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	}
 	@Override
 	public void refresh() {
-		draw_graphical_components(g);
+		manager.draw_components(g);
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0, width, height, null);
 		g2.dispose();
@@ -37,27 +39,20 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
-
 	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
 		// TODO Auto-generated method stub
-
-	}
-	
-	public void draw_graphical_components(Graphics2D g) {
-		//called on refresh
-		//g.drawString();
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		manager.handle_mouse_event(e);
 		
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		manager.handle_mouse_event(e);
 		
 	}
 	@Override
