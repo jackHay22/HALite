@@ -1,6 +1,9 @@
 package ui_graphlib;
 
 import java.util.ArrayList;
+
+import system_utils.DataStore;
+
 import java.awt.Color;
 import ui_framework.Refreshable;
 
@@ -62,6 +65,12 @@ public class PointSet implements Refreshable {
 		// TODO Auto-generated method stub
 		
 		edge_values();
+		
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
 		
 	}
 	
