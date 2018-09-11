@@ -1,7 +1,6 @@
 package ui_framework;
 
 import java.awt.Dimension;
-
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -10,8 +9,7 @@ public abstract class SystemPanel extends JPanel implements Refreshable {
 		super();
 	}
 
-	public void set_minimum_dimension(Dimension dimension) {
-		super.setMinimumSize(dimension);
-		
+	public void set_minimum_dimension(int width, int height) {
+		super.setMinimumSize(new Dimension(width, height));
 	}
 }
