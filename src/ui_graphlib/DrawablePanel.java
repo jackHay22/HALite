@@ -17,13 +17,15 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	private int width;
 	private DrawableManager manager;
 	
-	public DrawablePanel(DrawableManager manager) {
+	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
 		init();
+		this.width = width;
+		this.height = height;
 		this.manager = manager;
 	}
 	private void init() {
-		this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.g = (Graphics2D) image.getGraphics();
 	}
 	@Override

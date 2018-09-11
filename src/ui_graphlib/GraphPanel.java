@@ -3,7 +3,7 @@ package ui_graphlib;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
+import java.math.*;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -14,13 +14,23 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	private ArrayList<PointSet> point_sets;
 	private DrawablePanel points_panel;
 	
+	private int draw_width;
+	private int draw_height;
+	private double x_ratio;
+	private double y_ratio;
+	
+	private int min_x = 0;
+	private int max_x = 0;
+	
+	private int min_y = 0;
+	private int max_y = 0;
+
+	
 	public GraphPanel() {
 		super();
 		
-		this.points_panel = new DrawablePanel(this);
+		this.points_panel = new DrawablePanel(this, draw_width, draw_height);
 		// Place Drawable Panel as a JPanel
-		
-		
 		
 	}
 	
@@ -28,9 +38,39 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		set_labels();
 		
+		set_ratio();
+		
+	}
+	
+	private void set_ratio() {
+		
+		for (int i = 0; i < point_sets.size(); i++) {
+
+			ArrayList<Point> points = point_sets.get(i).get_points();
+			
+			for (int j = 0; j < points.size(); j++) {
+				if (points.get(j).get_x() < min_x) {
+					min_x = (int)Math.floor(points.get(j).get_x());
+				}
+				if (points.get(j).get_y() < min_y) {
+					min_y = (int)Math.floor(points.get(j).get_y());
+				}
+				if (points.get(j).get_x() < max_x) {
+					max_x = (int)Math.ceil(points.get(j).get_x());
+				}
+				if (points.get(j).get_y() < max_y) {
+					max_y = (int)Math.ceil(points.get(j).get_y());
+				}
+			}
+		}
+		
+		x_ratio = draw_width/(max_x-min_x);
+		y_ratio = draw_height/(max_y-min_y);
+		
 	}
 	
 	private void place_point(Point p, Graphics2D g) {
+		set_ratio();
 		
 	}
 	
