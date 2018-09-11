@@ -62,6 +62,22 @@ public class PointSet implements Refreshable {
 		max_y = points.get(max_y_index).get_y();
 	}
 
+	public double get_min_x() {
+		return min_x;
+	}
+	
+	public double get_min_y() {
+		return min_y;
+	}
+	
+	public double get_max_x() {
+		return max_x;
+	}
+	
+	public double get_max_y() {
+		return max_y;
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
