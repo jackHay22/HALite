@@ -19,12 +19,15 @@ public class SystemWindow extends JFrame implements Refreshable{
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
+		
 		refreshable_frames = new ArrayList<Refreshable>();
 		panel_references = new ArrayList<SystemPanel>();
 		resize_buffer = 10;
+		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(width, height);
+        this.validate();
         this.setVisible(true);
 	}
 	
@@ -71,9 +74,11 @@ public class SystemWindow extends JFrame implements Refreshable{
 	
 	public void add_system_panel(SystemPanel new_panel) {
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
+		
 		//add a mouse listener that triggers window call to refresh
 		new_panel.add_parent_listener(this);
 		panel_references.add(new_panel);
+		
 		//add to list of refreshable objects
 		add_refreshable(new_panel);
 	}
