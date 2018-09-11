@@ -6,20 +6,26 @@ import ui_stdlib.SettingsPanel;
 import system_utils.DataStore;
 
 public class RockAnalysis {
-
 	public static void main(String[] args) {
-		int window_width = 1200;
+		int window_width = 1100;
 		int window_height = 700;
-		SystemWindow test = new SystemWindow("Ablation Analysis", window_width, window_height);
-		test.set_minimum_size(window_width, window_height);
+		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);
+		main_window.set_minimum_size(window_width, window_height);
+		
+		DataStore loaded_datastore = new DataStore();
 		
 		SettingsPanel test_settings = new SettingsPanel();
-		test_settings.set_datastore(new DataStore());
-		test.add_system_panel(test_settings);
-		test.add_system_panel(new GraphPanel());
-		for (int i = 0; i < 2; i++) {
-			test.add_system_panel(new GraphPanel());
-		}
-		test.start_window();
+		test_settings.set_datastore(loaded_datastore);
+		main_window.add_system_panel(test_settings);
+		
+		main_window.add_system_panel(new GraphPanel());
+		
+		SettingsPanel test_settings_two = new SettingsPanel();
+		test_settings_two.set_datastore(loaded_datastore);
+		main_window.add_system_panel(test_settings_two);
+		
+		main_window.add_system_panel(new GraphPanel());
+		
+		main_window.start_window();
 	}
 }

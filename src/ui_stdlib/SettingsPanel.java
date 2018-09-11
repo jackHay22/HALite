@@ -6,7 +6,7 @@ import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class SettingsPanel extends ui_framework.SystemPanel{
+public class SettingsPanel extends ui_framework.SystemPanel {
 	private ArrayList<Refreshable> refreshable_objects;
 	private DataStore data_store;
 	
@@ -31,7 +31,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void add_refreshable(Refreshable refreshable_window) {
 		refreshable_objects.add(refreshable_window);
-		
 	}
 
 }
