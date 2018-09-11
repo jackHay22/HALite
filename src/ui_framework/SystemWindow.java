@@ -47,7 +47,7 @@ public class SystemWindow extends JFrame implements Refreshable{
 	public void start_window() {
 		//group panes, add and set visible
 		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
-		for (int i = 0; i < this.panel_references.size(); i+=2){
+		for (int i = 0; i < this.panel_references.size(); i+=2) {
 			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
 													this.panel_references.get(i), 
 													this.panel_references.get(i + 1)));
@@ -87,6 +87,4 @@ public class SystemWindow extends JFrame implements Refreshable{
 	public void add_refreshable(Refreshable refreshable_window) {
 		refreshable_frames.add(refreshable_window);
 	}
-
-
 }
