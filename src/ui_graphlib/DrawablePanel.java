@@ -17,11 +17,9 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	private int width;
 	private DrawableManager manager;
 	
-	public DrawablePanel(DrawableManager manager, int width, int height) {
+	public DrawablePanel(DrawableManager manager) {
 		super();
 		init();
-		this.width = width;
-		this.height = height;
 		this.manager = manager;
 	}
 	private void init() {
