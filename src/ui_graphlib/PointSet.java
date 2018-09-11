@@ -22,13 +22,15 @@ public class PointSet implements Refreshable {
 	
 	private Color color;
 	
-	public PointSet(ArrayList<Point> points, Color color, String x_axis, String y_axis, String title_label) {
+	private boolean render;
+	
+	public PointSet(ArrayList<Point> points, Color color, String x_axis, String y_axis, String title_label, boolean do_render) {
 		this.points = points;
 		this.color = color;
 		this.x_axis = x_axis;
 		this.y_axis = y_axis;
 		this.title = title_label;
-		
+		this.render = do_render;
 		refresh();
 	}
 	
@@ -67,9 +69,23 @@ public class PointSet implements Refreshable {
 		edge_values();
 		
 	}
+	
+	public boolean do_render() {
+		return render;
+	}
 
+	public ArrayList<Point> get_points() {
+		return points;
+	}
+	
 	@Override
 	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void add_refreshable(Refreshable refreshable_component) {
 		// TODO Auto-generated method stub
 		
 	}
