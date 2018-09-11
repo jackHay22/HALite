@@ -15,6 +15,10 @@ public class Point {
 		this.enabled = ! this.enabled;
 	}
 	
+	public boolean in_use() {
+		return enabled;
+	}
+	
 	public double get_x() {
 		return graph_x;
 	}
