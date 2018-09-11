@@ -29,7 +29,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	public GraphPanel() {
 		super();
 		
-		this.points_panel = new DrawablePanel(this, draw_width, draw_height);
+		//this.points_panel = new DrawablePanel(this, draw_width, draw_height);
 		// Place Drawable Panel as a JPanel
 		
 	}
