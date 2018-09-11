@@ -18,7 +18,7 @@ public class SystemWindow extends JFrame implements Refreshable {
 	private DataStore datastore;
 
 	public SystemWindow(String title, int width, int height) {
-		super();
+		super(title);
 		refreshable_frames = new ArrayList<Refreshable>();
 		panel_references = new ArrayList<SystemPanel>();
 		resize_buffer = 10;
@@ -57,6 +57,7 @@ public class SystemWindow extends JFrame implements Refreshable {
 		} else if (double_panes.size() == 1)  {
 			this.add(double_panes.get(0), BorderLayout.CENTER);
 		}
+		
 		this.setVisible(true);
 	}
 

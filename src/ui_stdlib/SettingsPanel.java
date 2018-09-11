@@ -8,6 +8,8 @@ import ui_framework.Refreshable;
 @SuppressWarnings("serial")
 public class SettingsPanel extends ui_framework.SystemPanel{
 	private ArrayList<Refreshable> refreshable_objects;
+	private DataStore data_store;
+	
 	public SettingsPanel() {
 		super();
 		refreshable_objects = new ArrayList<Refreshable>();
@@ -15,14 +17,15 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
+		for (int i = 0; i < this.refreshable_objects.size(); i++) {
+			this.refreshable_objects.get(i).refresh();
+		}
+		//TODO: refresh self
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-		
+		this.data_store = datastore;
 	}
 
 	@Override
