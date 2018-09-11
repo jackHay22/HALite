@@ -9,8 +9,8 @@ import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 
+@SuppressWarnings("serial")
 public class DrawablePanel extends SystemPanel implements MouseListener {
-	private DataStore data_store;
 	private Graphics2D g;
 	private BufferedImage image;
 	private int height;
@@ -38,13 +38,11 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		this.data_store = datastore;
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-	}
+	public void add_refreshable(Refreshable refreshable_component) { }
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		manager.handle_mouse_event(e);
@@ -52,23 +50,14 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		manager.handle_mouse_event(e);
-		
+		manager.handle_mouse_event(e);	
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
+	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
+	
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void mouseExited(MouseEvent e) {}
 }
