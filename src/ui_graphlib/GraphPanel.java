@@ -2,6 +2,8 @@ package ui_graphlib;
 
 import java.util.ArrayList;
 
+import system_utils.DataStore;
+
 @SuppressWarnings("serial")
 public class GraphPanel extends ui_framework.SystemPanel {
 	//extends SystemPanel 
@@ -34,6 +36,12 @@ public class GraphPanel extends ui_framework.SystemPanel {
 	public void refresh() {
 		// TODO Auto-generated method stub
 		draw_graph();
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

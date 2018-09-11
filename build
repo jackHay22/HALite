@@ -21,4 +21,4 @@ javapackager -deploy \
     -title "Geochemical Ablation Interface" \
     -Bruntime=${JAVA_RUNTIME} \
     -Bicon=resources/app/icon.icns
-printf "${MOUNTAIN}  ${CYAN}Interface${NC} built to ${YELLOW}/out/bundles/AblationInterface${NC}. \n"
+printf "${MOUNTAIN}  ${CYAN}Interface${NC} built to ${YELLOW}/out/bundles/AblationInterface${NC} \n"
