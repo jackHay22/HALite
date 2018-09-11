@@ -48,10 +48,12 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 		manager.handle_mouse_event(e);
 		
 	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		manager.handle_mouse_event(e);	
 	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	
