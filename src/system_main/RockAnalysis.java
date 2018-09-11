@@ -7,6 +7,7 @@ import system_utils.DataStore;
 
 public class RockAnalysis {
 	public static void main(String[] args) {
+		
 		int window_width = 1100;
 		int window_height = 700;
 		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);

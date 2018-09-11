@@ -67,6 +67,7 @@ public class SystemWindow extends JFrame implements Refreshable{
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
+		this.datastore.add_update_notify(this);
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}
@@ -76,7 +77,7 @@ public class SystemWindow extends JFrame implements Refreshable{
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
 		
 		//add a mouse listener that triggers window call to refresh
-		new_panel.add_parent_listener(this);
+		//new_panel.add_parent_listener(this);
 		panel_references.add(new_panel);
 		
 		//add to list of refreshable objects
