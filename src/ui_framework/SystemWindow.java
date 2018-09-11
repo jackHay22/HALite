@@ -8,7 +8,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow extends JFrame implements Refreshable {
+public class SystemWindow extends JFrame implements Refreshable{
 	private ArrayList<Refreshable> refreshable_frames;
 	private ArrayList<SystemPanel> panel_references;
 	private int subframe_width;
@@ -36,6 +36,7 @@ public class SystemWindow extends JFrame implements Refreshable {
 	
 	@Override
 	public void refresh() {
+		System.out.println("Call to refresh");
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).refresh();
 		}
@@ -71,7 +72,10 @@ public class SystemWindow extends JFrame implements Refreshable {
 	
 	public void add_system_panel(SystemPanel new_panel) {
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
+		//add a mouse listener that triggers window call to refresh
+		new_panel.add_parent_listener(this);
 		panel_references.add(new_panel);
+		//add to list of refreshable objects
 		add_refreshable(new_panel);
 	}
 	
@@ -79,5 +83,6 @@ public class SystemWindow extends JFrame implements Refreshable {
 	public void add_refreshable(Refreshable refreshable_window) {
 		refreshable_frames.add(refreshable_window);
 	}
+
 
 }

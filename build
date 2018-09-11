@@ -16,7 +16,7 @@ javapackager -deploy \
     -outdir out \
     -outfile interface \
     -srcfiles target/Interface.jar \
-    -appclass system_main.AblationAnalysis \
+    -appclass system_main.RockAnalysis \
     -name "AblationInterface" \
     -title "Geochemical Ablation Interface" \
     -Bruntime=${JAVA_RUNTIME} \

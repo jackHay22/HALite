@@ -5,7 +5,7 @@ import ui_graphlib.GraphPanel;
 import ui_stdlib.SettingsPanel;
 import system_utils.DataStore;
 
-public class AblationAnalysis {
+public class RockAnalysis {
 
 	public static void main(String[] args) {
 		int window_width = 1200;

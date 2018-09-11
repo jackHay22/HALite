@@ -21,6 +21,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 			this.refreshable_objects.get(i).refresh();
 		}
 		//TODO: refresh self
+		System.out.println("refreshing settings panel");
 	}
 
 	@Override
