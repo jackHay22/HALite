@@ -2,6 +2,9 @@ package ui_framework;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+
+import system_utils.DataStore;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -58,6 +61,12 @@ public class SystemWindow extends JFrame implements Refreshable {
 			this.add(double_panes.get(0), BorderLayout.CENTER);
 		}
 		this.setVisible(true);
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

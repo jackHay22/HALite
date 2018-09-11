@@ -16,5 +16,4 @@ public class RockAnalysis {
 		}
 		test.start_window();
 	}
-
 }
