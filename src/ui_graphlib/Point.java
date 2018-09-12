@@ -5,6 +5,8 @@ public class Point {
 	private boolean enabled = true;
 	private double graph_x;
 	private double graph_y;
+	private int draw_x;
+	private int draw_y;
 	
 	public Point(double x, double y) {
 		this.graph_x = x;
@@ -24,6 +26,19 @@ public class Point {
 	}
 	public double get_y() {
 		return graph_y;
+	}
+	
+	public void set_draw_values(int x, int y) {
+		this.draw_x = x;
+		this.draw_y = y;
+	}
+
+	public int get_draw_x() {
+		return draw_x;
+	}
+	
+	public int get_draw_y() {
+		return draw_y;
 	}
 	
 }
