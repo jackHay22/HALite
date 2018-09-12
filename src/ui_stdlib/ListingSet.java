@@ -1,40 +1,52 @@
 package ui_stdlib;
 
 import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
-public class ListingSet implements Refreshable {
-	//private ArrayList<SetElement> all_elements;
+public class ListingSet<E extends ListingSetElement> extends JPanel implements Refreshable {
+	private ArrayList<E> all_elements;
+	private DataStore storage_ref;
+	private final Class<E> element_class;
 	//private ArrayList<SetElement> displayed_elements;
 	
-	public ListingSet() {
+	public ListingSet(Class<E> element_class) {
+		super();
 		//all_elements = ArrayList<SetElement>();
 		//displayed_elements = ArrayList<SetElement>();
+		this.element_class = element_class;
+		all_elements = new ArrayList<E>();
 	}
 	
-	public void display_new_element() {
-		//int next_index = displayed_elements.size() + 1;
-//		if (next_index <= all_elements.size();) {
-//			displayed_elements.add(all_elements.get(next_index))
-//		}
+	public void display_new_element() throws InstantiationException, IllegalAccessException {
+		E new_list_element = element_class.newInstance();
+		all_elements.add(new_list_element);
 	}
 	
 	public void remove_element_at(int index) {
-//		if (index > 0 && index < all_elements.size()) {
-//			all_elements.remove(index);
-//		}
+		if (index > 0 && index < all_elements.size()) {
+			all_elements.remove(index);
+		}
 	}
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-
+		E current_element;
+		for (int i = 0; i < all_elements.size(); i++) {
+			current_element = all_elements.get(i);
+			current_element.refresh();
+			this.add(current_element);
+		}
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
+		for (int i = 0; i < all_elements.size(); i++) {
+			all_elements.get(i).set_datastore(datastore);		
+		}
 
 	}
 

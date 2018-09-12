@@ -1,27 +1,34 @@
 package ui_stdlib;
 
-import java.util.ArrayList;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
 public class SettingsPanel extends ui_framework.SystemPanel {
-	private ArrayList<Refreshable> refreshable_objects;
+	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
-	private ListingSet main_list;
 	
 	public SettingsPanel() {
 		super();
-		refreshable_objects = new ArrayList<Refreshable>();
-		main_list = new ListingSet();
+		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
+		this.add(r_sqrd_list);
+		this.setVisible(true);
+		try {
+			r_sqrd_list.display_new_element();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r_sqrd_list.refresh();
+		r_sqrd_list.setVisible(true);
 	}
 	
 	@Override
 	public void refresh() {
-		for (int i = 0; i < this.refreshable_objects.size(); i++) {
-			this.refreshable_objects.get(i).refresh();
-		}
+		r_sqrd_list.refresh();
 		//TODO: refresh self
 	}
 
@@ -32,7 +39,6 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_window) {
-		refreshable_objects.add(refreshable_window);
 	}
 
 }
