@@ -1,5 +1,7 @@
 package ui_stdlib;
 
+import java.awt.BorderLayout;
+
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -11,9 +13,18 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 	public SettingsPanel() {
 		super();
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
-		this.add(r_sqrd_list);
+		setLayout(new BorderLayout());
+		this.add(r_sqrd_list, BorderLayout.WEST);
 		this.setVisible(true);
 		r_sqrd_list.setVisible(true);
+		//TODO: remove testing construction
+		add_new_element();
+		add_new_element();
+		add_new_element();
+		add_new_element();
+		add_new_element();
+		add_new_element();
+		add_new_element();
 	}
 	
 	@Override

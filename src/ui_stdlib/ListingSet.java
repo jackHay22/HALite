@@ -1,9 +1,8 @@
 package ui_stdlib;
 
 import java.util.ArrayList;
-
+import javax.swing.GroupLayout;
 import javax.swing.JPanel;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -11,12 +10,24 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	private ArrayList<E> all_elements;
 	private DataStore storage_ref;
 	private final Class<E> element_class;
+	private GroupLayout layout;
+    private GroupLayout.ParallelGroup parallel;
+    private GroupLayout.SequentialGroup sequential;
 	//private ArrayList<SetElement> displayed_elements;
 	
 	public ListingSet(Class<E> element_class) {
 		super();
-		//all_elements = ArrayList<SetElement>();
-		//displayed_elements = ArrayList<SetElement>();
+		
+		//create vertical listing layout
+		layout = new GroupLayout(this);
+		this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        parallel = layout.createParallelGroup();
+        layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(parallel));
+        sequential = layout.createSequentialGroup();
+        layout.setVerticalGroup(sequential);
+        
 		this.element_class = element_class;
 		all_elements = new ArrayList<E>();
 	}
@@ -24,6 +35,10 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	public void display_new_element() throws InstantiationException, IllegalAccessException {
 		E new_list_element = element_class.newInstance();
 		all_elements.add(new_list_element);
+		parallel.addGroup(layout.createSequentialGroup().
+				 addComponent(new_list_element));
+        sequential.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
+        		   addComponent(new_list_element));
 	}
 	
 	public void remove_element_at(int index) {
@@ -38,7 +53,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 		for (int i = 0; i < all_elements.size(); i++) {
 			current_element = all_elements.get(i);
 			current_element.refresh();
-			this.add(current_element);
+			//this.add(current_element);
 		}
 	}
 
