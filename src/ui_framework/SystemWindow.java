@@ -26,9 +26,9 @@ public class SystemWindow extends JFrame implements Refreshable{
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(width, height);
-        this.validate();
-        this.setVisible(true);
+		this.setSize(width, height);
+    	this.validate();
+    	this.setVisible(true);
 	}
 	
 	public void set_minimum_size(int width, int height) {
