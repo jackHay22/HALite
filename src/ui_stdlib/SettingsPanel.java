@@ -9,10 +9,12 @@ import ui_framework.Refreshable;
 public class SettingsPanel extends ui_framework.SystemPanel {
 	private ArrayList<Refreshable> refreshable_objects;
 	private DataStore data_store;
+	private ListingSet main_list;
 	
 	public SettingsPanel() {
 		super();
 		refreshable_objects = new ArrayList<Refreshable>();
+		main_list = new ListingSet();
 	}
 	
 	@Override
