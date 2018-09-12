@@ -13,16 +13,6 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
 		this.add(r_sqrd_list);
 		this.setVisible(true);
-		try {
-			r_sqrd_list.display_new_element();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		r_sqrd_list.refresh();
 		r_sqrd_list.setVisible(true);
 	}
 	
@@ -30,6 +20,17 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 	public void refresh() {
 		r_sqrd_list.refresh();
 		//TODO: refresh self
+	}
+	
+	public void add_new_element() {
+		try {
+			r_sqrd_list.display_new_element();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		r_sqrd_list.refresh();
 	}
 
 	@Override

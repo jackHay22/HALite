@@ -8,7 +8,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow extends JFrame implements Refreshable{
+public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	private ArrayList<Refreshable> refreshable_frames;
 	private ArrayList<SystemPanel> panel_references;
 	private int subframe_width;
@@ -43,26 +43,6 @@ public class SystemWindow extends JFrame implements Refreshable{
 			this.refreshable_frames.get(i).refresh();
 		}
 	}
-	
-	public void start_window() {
-		//group panes, add and set visible
-		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
-		for (int i = 0; i < this.panel_references.size(); i+=2) {
-			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-													this.panel_references.get(i), 
-													this.panel_references.get(i + 1)));
-		}
-		
-		if (double_panes.size() == 2) {
-			//group sub panes
-			this.add(new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-					double_panes.get(0), double_panes.get(1)), BorderLayout.CENTER);
-		} else if (double_panes.size() == 1)  {
-			this.add(double_panes.get(0), BorderLayout.CENTER);
-		}
-		
-		this.setVisible(true);
-	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
@@ -87,5 +67,25 @@ public class SystemWindow extends JFrame implements Refreshable{
 	@Override
 	public void add_refreshable(Refreshable refreshable_window) {
 		refreshable_frames.add(refreshable_window);
+	}
+
+	@Override
+	public void run() {
+		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
+		for (int i = 0; i < this.panel_references.size(); i+=2) {
+			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
+													this.panel_references.get(i), 
+													this.panel_references.get(i + 1)));
+		}
+		
+		if (double_panes.size() == 2) {
+			//group sub panes
+			this.add(new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
+					double_panes.get(0), double_panes.get(1)), BorderLayout.CENTER);
+		} else if (double_panes.size() == 1)  {
+			this.add(double_panes.get(0), BorderLayout.CENTER);
+		}
+		
+		this.setVisible(true);
 	}
 }
