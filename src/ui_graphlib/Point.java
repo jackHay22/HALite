@@ -13,7 +13,7 @@ public class Point {
 		this.graph_y = y;
 	}
 	
-	private void toggle() {
+	public void toggle() {
 		this.enabled = ! this.enabled;
 	}
 	

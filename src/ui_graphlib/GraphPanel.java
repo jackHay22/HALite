@@ -96,6 +96,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		double draw_y = draw_height - (point_y - bottom_buffer_y)*y_ratio;
 		
 		// Place the actual point with coords (draw_x, draw_y)
+		g.drawOval((int)draw_x, (int)draw_y, 3, 3);
 		
 	}
 	
@@ -123,7 +124,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		// If the mouse click was within 4% of the screen diagonal from the point
 		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*.04) {
 			// Here we should call back to the datastore and let it know this point
-			// will be disabled for now - then refresh everything
+			// will be toggled - then refresh everything
+			closest.toggle();
 		}
 	}
 	
