@@ -36,6 +36,7 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
+		r_sqrd_list.set_datastore(datastore);
 	}
 
 	@Override

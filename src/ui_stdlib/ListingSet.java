@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
-public class ListingSet<E extends ListingSetElement> extends JPanel implements Refreshable {
+public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework.SystemPanel {
 	private ArrayList<E> all_elements;
 	private DataStore storage_ref;
 	private final Class<E> element_class;

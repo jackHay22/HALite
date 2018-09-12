@@ -8,7 +8,7 @@ import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class RSquaredListElement extends ListingSetElement {
+public class RSquaredListElement extends ui_framework.SystemPanel {
 	private JComboBox<String> selection_dropdown;
 	//private ArrayList<RSquaredValues> r_sqrd;
 	private DataStore datastore;
@@ -32,7 +32,6 @@ public class RSquaredListElement extends ListingSetElement {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		System.out.println("refreshing list element");
 	}
 
