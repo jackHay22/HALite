@@ -1,7 +1,9 @@
 package ui_graphlib;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.math.*;
@@ -34,6 +36,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	public GraphPanel() {
 		super();
+		this.setPreferredSize(new Dimension(450, 250));
 		this.points_panel = new DrawablePanel(this, 450, 250);
 		this.add(points_panel);
 		set_fake_vals();
@@ -43,12 +46,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 
 		ArrayList<Point> lst = new ArrayList<Point>();
 		
-		for (int i = 0; i <= 10; i++) {
+		for (int i = 20; i <= 100; i++) {
 			Point temp = new Point(i,i);
 			lst.add(temp);
 		}
 		
-		PointSet set = new PointSet(lst, new Color(1, 0, 0), "x_axis", "y_axis", "x vs y", true);
+		PointSet set = new PointSet(lst, Color.red, "x_axis", "y_axis", "x vs y", true);
 		
 		point_sets = new ArrayList<PointSet>();
 		
@@ -89,8 +92,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		bottom_buffer_y = bottom_buffer(min_y, max_y);
 		top_buffer_y = top_buffer(min_y, max_y);
 		
-		x_ratio = draw_width/(top_buffer_x-bottom_buffer_x);
-		y_ratio = draw_height/(top_buffer_y-bottom_buffer_y);
+		x_ratio = draw_width/(top_buffer_x - bottom_buffer_x);
+		y_ratio = draw_height/(top_buffer_y - bottom_buffer_y);
 		
 	}
 	
@@ -103,19 +106,20 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		return max + (max - min)/20;
 	}
 	
-	private void place_point(Point p, Graphics g) {
+	private void place_point(Point p, Graphics2D g) {
 		double point_x = p.get_x();
 		double draw_x = (point_x - bottom_buffer_x)*x_ratio;
 		
 		double point_y = p.get_y();
 		double draw_y = draw_height - (point_y - bottom_buffer_y)*y_ratio;
-		
+
+		//TODO: draw x and draw y aren't numbers
 		// Place the actual point with coords (draw_x, draw_y)
 		g.drawOval((int)draw_x, (int)draw_y, 3, 3);
 		
 	}
 	
-	private void plot_points(Graphics g) {
+	private void plot_points(Graphics2D g) {
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
 				ArrayList<Point> points = point_sets.get(i).get_points();
@@ -192,7 +196,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 
 	@Override
-	public void draw_components(Graphics g) {
+	public void draw_components(Graphics2D g) {
 		plot_points(g);
 	}
 
@@ -204,6 +208,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	@Override
 	public void on_start() {
 		points_panel.on_start();
+		this.setVisible(true);
 		points_panel.setVisible(true);
 	}
 }

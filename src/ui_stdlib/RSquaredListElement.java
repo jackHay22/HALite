@@ -19,7 +19,9 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		selection_dropdown = new JComboBox<String>(test_list);
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		        refresh();
+		        if (backend_loaded) {
+		        	datastore.notify_update();
+		        }
 		    }
 		});
 	}

@@ -1,7 +1,9 @@
 package ui_graphlib;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
@@ -22,8 +24,13 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	@Override
 	public void paintComponent(Graphics g) { 
-		manager.draw_components(g);
-        super.paintComponent(g);
+		super.paintComponent(g);
+
+	    //g.setColor(Color.blue);
+	    g.drawRect(0, 0, 200, 200);
+		Graphics2D g2 =(Graphics2D)g;
+		manager.draw_components(g2);
+        
     }
 
 	@Override
