@@ -28,7 +28,6 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
 		this.validate();
-		this.setVisible(true);
 	}
 	
 	public void set_minimum_size(int width, int height) {
@@ -53,10 +52,8 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	}
 	
 	public void add_system_panel(SystemPanel new_panel) {
-		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
 		
-		//add a mouse listener that triggers window call to refresh
-		//new_panel.add_parent_listener(this);
+		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
 		panel_references.add(new_panel);
 		
 		//add to list of refreshable objects
@@ -70,7 +67,9 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 
 	@Override
 	public void run() {
+
 		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
+		
 		for (int i = 0; i < this.panel_references.size(); i+=2) {
 			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
 													this.panel_references.get(i), 
@@ -85,6 +84,14 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 			this.add(double_panes.get(0), BorderLayout.CENTER);
 		}
 		
+		on_start();
+	}
+
+	@Override
+	public void on_start() {
+		for (int i=0; i < this.refreshable_frames.size(); i++) {
+			this.refreshable_frames.get(i).on_start();
+		}
 		this.setVisible(true);
 	}
 }

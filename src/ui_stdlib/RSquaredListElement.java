@@ -2,9 +2,6 @@ package ui_stdlib;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -25,8 +22,6 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		        refresh();
 		    }
 		});
-		selection_dropdown.setVisible(true);
-	    this.add(selection_dropdown);
 	}
 	
 	public void add_rsqrd_set() {
@@ -45,8 +40,13 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void on_start() {
+		this.add(selection_dropdown);
+		this.setVisible(true);
+		selection_dropdown.setVisible(true);
 	}
 
 }

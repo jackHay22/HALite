@@ -36,8 +36,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		super();
 		this.points_panel = new DrawablePanel(this, 450, 250);
 		this.add(points_panel);
-		this.setVisible(true);
-		points_panel.setVisible(true);
 		set_fake_vals();
 	}
 	
@@ -59,12 +57,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void draw_graph() {
-		
-		set_fake_vals();
-		
 		set_labels();
 		set_ratio();
-		
 	}
 	
 	private void set_ratio() {
@@ -204,8 +198,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 
 	@Override
 	public void handle_mouse_event(MouseEvent e) {
-		// TODO Auto-generated method stub
 		point_selected(e);
 	}
 
+	@Override
+	public void on_start() {
+		points_panel.on_start();
+		points_panel.setVisible(true);
+	}
 }

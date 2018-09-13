@@ -3,7 +3,6 @@ package ui_stdlib;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -17,19 +16,14 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		super();
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
 		setLayout(new BorderLayout());
-		this.add(r_sqrd_list, BorderLayout.WEST);
-		this.setVisible(true);
-		r_sqrd_list.setVisible(true);
-		addMouseListener(new MouseAdapter() {
 
+		addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
             	add_new_element();
             }
-
             @Override
-            public void mouseReleased(MouseEvent e) {
-                
+            public void mouseReleased(MouseEvent e) {  
             }
         });
 	}
@@ -37,7 +31,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void refresh() {
 		r_sqrd_list.refresh();
-		//TODO: refresh self
 	}
 	
 	public void add_new_element() {
@@ -64,4 +57,11 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	public void add_refreshable(Refreshable refreshable_window) {
 	}
 
+	@Override
+	public void on_start() {
+		this.add(r_sqrd_list, BorderLayout.WEST);
+		r_sqrd_list.on_start();
+		r_sqrd_list.setVisible(true);
+		add_new_element();
+	}
 }

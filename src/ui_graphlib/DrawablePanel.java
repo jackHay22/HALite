@@ -2,28 +2,22 @@ package ui_graphlib;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
-import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")
 public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
-	private int height;
-	private int width;
 	private DrawableManager manager;
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-		this.width = width;
-		this.height = height;
+//		this.width = width;
+//		this.height = height;
 		this.manager = manager;
 		setPreferredSize(new Dimension(width, height));
-		setFocusable(true);
 	}
 	
 	@Override
@@ -41,8 +35,7 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		manager.handle_mouse_event(e);
-		
+		manager.handle_mouse_event(e);	
 	}
 	
 	@Override
@@ -62,5 +55,10 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	@Override
 	public void refresh() {
 		this.repaint();
+	}
+
+	@Override
+	public void on_start() {
+		
 	}
 }

@@ -15,7 +15,8 @@ public class RockAnalysis {
             @Override
             public void run() {
         		int window_width = 1100;
-        		int window_height = 700;
+        		int window_height = 700; 
+        		
         		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);
         		main_window.set_minimum_size(window_width, window_height);
         		
@@ -23,15 +24,20 @@ public class RockAnalysis {
         		
         		SettingsPanel test_settings = new SettingsPanel();
         		test_settings.set_datastore(loaded_datastore);
-        		main_window.add_system_panel(test_settings);
-        		
-        		main_window.add_system_panel(new GraphPanel());
         		
         		SettingsPanel test_settings_two = new SettingsPanel();
         		test_settings_two.set_datastore(loaded_datastore);
-        		main_window.add_system_panel(test_settings_two);
         		
-        		main_window.add_system_panel(new GraphPanel());
+        		GraphPanel test_graph = new GraphPanel();
+        		test_graph.set_datastore(loaded_datastore);
+        		
+        		GraphPanel test_graph_two = new GraphPanel();
+        		test_graph_two.set_datastore(loaded_datastore);
+        		
+        		main_window.add_system_panel(test_settings);	
+        		main_window.add_system_panel(test_graph);
+        		main_window.add_system_panel(test_settings_two);
+        		main_window.add_system_panel(test_graph_two);
         		
         		main_window.run();
             }
