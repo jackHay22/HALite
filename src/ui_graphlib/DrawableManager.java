@@ -1,6 +1,5 @@
 package ui_graphlib;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
