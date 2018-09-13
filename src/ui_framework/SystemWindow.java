@@ -47,7 +47,6 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
-		this.datastore.add_update_notify(this);
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}

@@ -13,11 +13,11 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	private GroupLayout layout;
     private GroupLayout.ParallelGroup parallel;
     private GroupLayout.SequentialGroup sequential;
+    private boolean backend_loaded;
 	//private ArrayList<SetElement> displayed_elements;
 	
 	public ListingSet(Class<E> element_class) {
 		super();
-		
 		//create vertical listing layout
 		layout = new GroupLayout(this);
 		this.setLayout(layout);
@@ -33,17 +33,22 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	}
 	
 	public void display_new_element() throws InstantiationException, IllegalAccessException {
-		E new_list_element = element_class.newInstance();
-		all_elements.add(new_list_element);
-		parallel.addGroup(layout.createSequentialGroup().
-				 addComponent(new_list_element));
-        sequential.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-        		   addComponent(new_list_element));
+		if (this.backend_loaded) {
+			E new_list_element = element_class.newInstance();
+			new_list_element.set_datastore(this.storage_ref);
+			all_elements.add(new_list_element);
+			parallel.addGroup(layout.createSequentialGroup().
+					 addComponent(new_list_element));
+	        sequential.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
+	        		   addComponent(new_list_element));
+	        this.storage_ref.notify_update();
+		}
 	}
 	
 	public void remove_element_at(int index) {
 		if (index > 0 && index < all_elements.size()) {
 			all_elements.remove(index);
+			this.storage_ref.notify_update();
 		}
 	}
 	
@@ -59,6 +64,8 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 
 	@Override
 	public void set_datastore(DataStore datastore) {
+		this.storage_ref = datastore;
+		this.backend_loaded = true;
 		for (int i = 0; i < all_elements.size(); i++) {
 			all_elements.get(i).set_datastore(datastore);		
 		}

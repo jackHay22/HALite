@@ -14,6 +14,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	private JComboBox<String> selection_dropdown;
 	//private ArrayList<RSquaredValues> r_sqrd;
 	private DataStore datastore;
+	private boolean backend_loaded = false;
 	
 	public RSquaredListElement() {
 		super();
@@ -34,12 +35,12 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 
 	@Override
 	public void refresh() {
-		System.out.println("refreshing list element");
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
+		this.backend_loaded = true;
 	}
 
 	@Override

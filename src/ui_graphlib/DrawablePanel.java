@@ -1,54 +1,36 @@
 package ui_graphlib;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")
-public class DrawablePanel extends SystemPanel implements MouseListener, Runnable {
-	private Graphics2D g;
-	private BufferedImage image;
+public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	private int height;
 	private int width;
 	private DrawableManager manager;
 	
-	private Thread thread;
-	
-	public void addNotify() {
-		super.addNotify();
-		if (thread == null) {
-			thread = new Thread(this);
-
-			thread.start();
-		}
-	}
-	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-		this.setVisible(true);
 		this.width = width;
 		this.height = height;
 		this.manager = manager;
-		
-	}
-	
-	private void init() {
-		this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.g = (Graphics2D) image.getGraphics();
+		setPreferredSize(new Dimension(width, height));
+		setFocusable(true);
 	}
 	
 	@Override
-	public void refresh() {
+	public void paintComponent(Graphics g) { 
 		manager.draw_components(g);
-		Graphics g2 = getGraphics();
-		g2.drawImage(this.image, 0, 0, width, height, null);
-		g2.dispose();
-	}
+        super.paintComponent(g);
+    }
 
 	@Override
 	public void set_datastore(DataStore datastore) {
@@ -78,8 +60,7 @@ public class DrawablePanel extends SystemPanel implements MouseListener, Runnabl
 	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		init();
+	public void refresh() {
+		this.repaint();
 	}
 }

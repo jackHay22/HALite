@@ -1,14 +1,17 @@
 package ui_stdlib;
 
 import java.awt.BorderLayout;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class SettingsPanel extends ui_framework.SystemPanel {
+public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
+	private boolean backend_loaded;
 	
 	public SettingsPanel() {
 		super();
@@ -17,14 +20,18 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 		this.add(r_sqrd_list, BorderLayout.WEST);
 		this.setVisible(true);
 		r_sqrd_list.setVisible(true);
-		//TODO: remove testing construction
-		add_new_element();
-		add_new_element();
-		add_new_element();
-		add_new_element();
-		add_new_element();
-		add_new_element();
-		add_new_element();
+		addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            	add_new_element();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+        });
 	}
 	
 	@Override
@@ -34,19 +41,22 @@ public class SettingsPanel extends ui_framework.SystemPanel {
 	}
 	
 	public void add_new_element() {
-		try {
-			r_sqrd_list.display_new_element();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+		if (this.backend_loaded) {
+			try {
+				r_sqrd_list.display_new_element();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			this.data_store.notify_update();
 		}
-		r_sqrd_list.refresh();
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
+		this.backend_loaded = true;
 		r_sqrd_list.set_datastore(datastore);
 	}
 

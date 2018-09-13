@@ -19,7 +19,7 @@ public class RockAnalysis {
         		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);
         		main_window.set_minimum_size(window_width, window_height);
         		
-        		DataStore loaded_datastore = new DataStore();
+        		DataStore loaded_datastore = new DataStore(main_window);
         		
         		SettingsPanel test_settings = new SettingsPanel();
         		test_settings.set_datastore(loaded_datastore);

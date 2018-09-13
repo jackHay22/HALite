@@ -1,7 +1,7 @@
 package ui_graphlib;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.math.*;
@@ -34,20 +34,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	public GraphPanel() {
 		super();
-		
 		this.points_panel = new DrawablePanel(this, 450, 250);
-		
-		
-		draw_graph();
-		
-		points_panel.refresh();
-
-		//refresh();
-		// Place Drawable Panel as a JPanel
-		
+		this.add(points_panel);
+		this.setVisible(true);
+		points_panel.setVisible(true);
+		set_fake_vals();
 	}
-	
-	
 	
 	private void set_fake_vals() {
 
@@ -117,7 +109,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		return max + (max - min)/20;
 	}
 	
-	private void place_point(Point p, Graphics2D g) {
+	private void place_point(Point p, Graphics g) {
 		double point_x = p.get_x();
 		double draw_x = (point_x - bottom_buffer_x)*x_ratio;
 		
@@ -129,7 +121,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 	}
 	
-	private void plot_points(Graphics2D g) {
+	private void plot_points(Graphics g) {
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
 				ArrayList<Point> points = point_sets.get(i).get_points();
@@ -189,7 +181,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		draw_graph();
 		points_panel.refresh();
 	}
@@ -207,10 +198,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 
 	@Override
-	public void draw_components(Graphics2D g) {
-		// TODO Auto-generated method stub
+	public void draw_components(Graphics g) {
 		plot_points(g);
-
 	}
 
 	@Override
