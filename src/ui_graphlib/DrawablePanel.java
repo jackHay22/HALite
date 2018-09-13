@@ -10,29 +10,43 @@ import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")
-public class DrawablePanel extends SystemPanel implements MouseListener {
+public class DrawablePanel extends SystemPanel implements MouseListener, Runnable {
 	private Graphics2D g;
 	private BufferedImage image;
 	private int height;
 	private int width;
 	private DrawableManager manager;
 	
+	private Thread thread;
+	
+	public void addNotify() {
+		super.addNotify();
+		if (thread == null) {
+			thread = new Thread(this);
+
+			thread.start();
+		}
+	}
+	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-		init();
+		this.setVisible(true);
 		this.width = width;
 		this.height = height;
 		this.manager = manager;
+		
 	}
+	
 	private void init() {
 		this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.g = (Graphics2D) image.getGraphics();
 	}
+	
 	@Override
 	public void refresh() {
 		manager.draw_components(g);
 		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, width, height, null);
+		g2.drawImage(this.image, 0, 0, width, height, null);
 		g2.dispose();
 	}
 
@@ -62,4 +76,10 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		init();
+	}
 }

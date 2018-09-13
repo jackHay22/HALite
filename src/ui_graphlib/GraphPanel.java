@@ -1,5 +1,6 @@
 package ui_graphlib;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -34,12 +35,40 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	public GraphPanel() {
 		super();
 		
-		// this.points_panel = new DrawablePanel(this, draw_width, draw_height);
+		this.points_panel = new DrawablePanel(this, 450, 250);
+		
+		
+		draw_graph();
+		
+		points_panel.refresh();
+
+		//refresh();
 		// Place Drawable Panel as a JPanel
 		
 	}
 	
+	
+	
+	private void set_fake_vals() {
+
+		ArrayList<Point> lst = new ArrayList<Point>();
+		
+		for (int i = 0; i <= 10; i++) {
+			Point temp = new Point(i,i);
+			lst.add(temp);
+		}
+		
+		PointSet set = new PointSet(lst, new Color(1, 0, 0), "x_axis", "y_axis", "x vs y", true);
+		
+		point_sets = new ArrayList<PointSet>();
+		
+		point_sets.add(set);
+		
+	}
+	
 	private void draw_graph() {
+		
+		set_fake_vals();
 		
 		set_labels();
 		set_ratio();
@@ -101,10 +130,10 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void plot_points(Graphics2D g) {
-		for (int i = 0; i <= point_sets.size(); i++) {
+		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
 				ArrayList<Point> points = point_sets.get(i).get_points();
-				for (int point_index = 0; point_index < points.size(); i++) {
+				for (int point_index = 0; point_index < points.size(); point_index++) {
 					place_point(points.get(point_index), g);
 				}
 			}
@@ -181,12 +210,13 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	public void draw_components(Graphics2D g) {
 		// TODO Auto-generated method stub
 		plot_points(g);
+
 	}
 
 	@Override
 	public void handle_mouse_event(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		point_selected(e);
 	}
 
 }
