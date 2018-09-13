@@ -16,8 +16,6 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-//		this.width = width;
-//		this.height = height;
 		this.manager = manager;
 		setPreferredSize(new Dimension(width, height));
 	}
@@ -25,12 +23,8 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	@Override
 	public void paintComponent(Graphics g) { 
 		super.paintComponent(g);
-
-	    //g.setColor(Color.blue);
-	    g.drawRect(0, 0, 200, 200);
 		Graphics2D g2 =(Graphics2D)g;
-		manager.draw_components(g2);
-        
+		manager.draw_components(g2);   
     }
 
 	@Override
