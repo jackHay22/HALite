@@ -1,7 +1,10 @@
 package ui_stdlib;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
+
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -59,6 +62,14 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
+	}
+	
+	public JButton get_rounded_button(String text, int inset_size) {
+		JButton rounded_button = new JButton(text);
+	    rounded_button.setBorder(new RoundedButtonBorder(inset_size));
+	    rounded_button.setForeground(Color.BLUE);
+	    rounded_button.setBorder(new RoundedButtonBorder(inset_size));
+	    return rounded_button;
 	}
 
 	@Override
