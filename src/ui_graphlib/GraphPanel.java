@@ -37,6 +37,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		super();
 		this.setPreferredSize(new Dimension(450, 250));
 		this.points_panel = new DrawablePanel(this, 450, 250);
+		draw_width = 450;
+		draw_height = 250;
 		this.add(points_panel);
 		set_fake_vals();
 	}
@@ -76,10 +78,10 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 				if (points.get(j).get_y() < min_y) {
 					min_y = (int)Math.floor(points.get(j).get_y());
 				}
-				if (points.get(j).get_x() < max_x) {
+				if (points.get(j).get_x() > max_x) {
 					max_x = (int)Math.ceil(points.get(j).get_x());
 				}
-				if (points.get(j).get_y() < max_y) {
+				if (points.get(j).get_y() > max_y) {
 					max_y = (int)Math.ceil(points.get(j).get_y());
 				}
 			}
@@ -92,6 +94,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		top_buffer_y = top_buffer(min_y, max_y);
 		
 		x_ratio = draw_width/(top_buffer_x - bottom_buffer_x);
+		System.out.println(draw_width);
 		y_ratio = draw_height/(top_buffer_y - bottom_buffer_y);
 		
 	}
