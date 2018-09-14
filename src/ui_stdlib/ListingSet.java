@@ -1,5 +1,6 @@
 package ui_stdlib;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.GroupLayout;
@@ -29,10 +30,14 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			E new_list_element = element_class.newInstance();
 			all_elements.add(new_list_element);
 			
+			JButton new_button = get_rounded_button("+", 10);
+			
 			parallel.addGroup(layout.createSequentialGroup().
-					 addComponent(new_list_element));
+					 addComponent(new_list_element).addGroup(
+                             layout.createSequentialGroup().addComponent(new_button)));
 	        sequential.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-	        		   addComponent(new_list_element));
+	        		   addComponent(new_list_element).addGroup(
+                               layout.createSequentialGroup().addComponent(new_button)));
 	        
 	        new_list_element.set_datastore(this.storage_ref);
 	        new_list_element.on_start();
