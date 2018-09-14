@@ -183,6 +183,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	public void refresh() {
 		draw_graph();
 		points_panel.refresh();
+		this.revalidate();
 	}
 
 	@Override
