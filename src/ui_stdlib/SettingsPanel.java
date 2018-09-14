@@ -20,7 +20,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-            	//add_new_element();
+            	add_new_element();
             }
             @Override
             public void mouseReleased(MouseEvent e) {  
