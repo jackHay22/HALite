@@ -94,7 +94,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		top_buffer_y = top_buffer(min_y, max_y);
 		
 		x_ratio = draw_width/(top_buffer_x - bottom_buffer_x);
-		System.out.println(draw_width);
 		y_ratio = draw_height/(top_buffer_y - bottom_buffer_y);
 		
 	}

@@ -35,6 +35,7 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
 		manager.handle_mouse_event(e);	
 	}
 	
