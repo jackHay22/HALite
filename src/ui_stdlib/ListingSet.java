@@ -32,13 +32,14 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			E new_list_element = element_class.newInstance();
 			all_elements.add(new_list_element);
 			
-			ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
+			ImageButtonToggle new_button = new ImageButtonToggle("/buttons/plus_button.png","/buttons/minus_button.png", 20);
 			new_button.addActionListener(new ActionListener() {
 
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
 			        try {
 						display_new_element();
+						new_button.toggle();
 					} catch (InstantiationException | IllegalAccessException e1) {
 						e1.printStackTrace();
 					}
