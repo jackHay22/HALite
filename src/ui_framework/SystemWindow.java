@@ -14,8 +14,6 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	private int subframe_width;
 	private int subframe_height;
 	private int resize_buffer;
-	
-	private DataStore datastore;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -45,7 +43,6 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		this.datastore = datastore;
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}

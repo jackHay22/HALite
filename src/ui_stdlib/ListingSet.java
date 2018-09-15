@@ -72,9 +72,9 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	
 	public JButton get_rounded_button(String text, int inset_size) {
 		JButton rounded_button = new JButton(text);
-	    rounded_button.setBorder(new RoundedButtonBorder(inset_size));
+	    //rounded_button.setBorder(new RoundedButtonBorder(inset_size));
 	    rounded_button.setForeground(Color.BLUE);
-	    rounded_button.setBorder(new RoundedButtonBorder(inset_size));
+	    //rounded_button.setBorder(new RoundedButtonBorder(inset_size));
 	    return rounded_button;
 	}
 
