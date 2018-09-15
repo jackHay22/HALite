@@ -2,6 +2,8 @@ package ui_stdlib;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -30,7 +32,18 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			E new_list_element = element_class.newInstance();
 			all_elements.add(new_list_element);
 			
-			JButton new_button = get_rounded_button("+", 10);
+			ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
+			new_button.addActionListener(new ActionListener() {
+
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        try {
+						display_new_element();
+					} catch (InstantiationException | IllegalAccessException e1) {
+						e1.printStackTrace();
+					}
+			    }
+			});
 			
 			parallel.addGroup(layout.createSequentialGroup().
 					 addComponent(new_list_element).addGroup(
@@ -68,14 +81,6 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-	}
-	
-	public JButton get_rounded_button(String text, int inset_size) {
-		JButton rounded_button = new JButton(text);
-	    //rounded_button.setBorder(new RoundedButtonBorder(inset_size));
-	    rounded_button.setForeground(Color.BLUE);
-	    //rounded_button.setBorder(new RoundedButtonBorder(inset_size));
-	    return rounded_button;
 	}
 
 	@Override
