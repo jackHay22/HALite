@@ -51,7 +51,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 
 		ArrayList<Point> lst = new ArrayList<Point>();
 		
-		for (int i = 20; i <= 31; i++) {
+		for (int i = 10; i <= 31; i++) {
 			Point temp = new Point(i,i);
 			lst.add(temp);
 		}
@@ -72,8 +72,15 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	private void set_ratio() {
 		
 		for (int i = 0; i < point_sets.size(); i++) {
-
+			
 			ArrayList<Point> points = point_sets.get(i).get_points();
+
+			if ((i == 0) && points.size() > 0) {
+				min_x = (int)Math.floor(points.get(0).get_x());
+				max_x = min_x;
+				min_y = (int)Math.floor(points.get(0).get_y());
+				max_y = min_y;
+			}
 			
 			for (int j = 0; j < points.size(); j++) {
 				if (points.get(j).get_x() < min_x) {
@@ -152,7 +159,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		double distance_to_point = distance(closest.get_draw_x(), closest.get_draw_y(), x, y);
 		// If the mouse click was within 4% of the screen diagonal from the point
 		
-		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.1) {
+		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
 		}
 
@@ -191,8 +198,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	@Override
 	public void refresh() {
-		draw_graph();
-		points_panel.refresh();
+		this.draw_graph();
+		this.points_panel.refresh();
 		this.revalidate();
 	}
 
