@@ -6,7 +6,7 @@ import ui_stdlib.SettingsPanel;
 import java.awt.EventQueue;
 import system_utils.DataStore;
 
-public class RockAnalysis {
+public class RockAnalysis  {
 	public static void main(String[] args) {
 		new RockAnalysis();
 	}

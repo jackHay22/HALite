@@ -16,6 +16,7 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
 		this.manager = manager;
+		this.addMouseListener(this);
 		setPreferredSize(new Dimension(width, height));
 	}
 	
@@ -35,13 +36,12 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 		manager.handle_mouse_event(e);	
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		manager.handle_mouse_event(e);	
+		
 	}
 	
 	@Override
