@@ -2,9 +2,16 @@ package ui_stdlib;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop.Action;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 
@@ -16,10 +23,9 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	private ArrayList<E> all_elements;
 	private DataStore storage_ref;
 	private final Class<E> element_class;
-	private GroupLayout layout;
-    private GroupLayout.ParallelGroup parallel;
-    private GroupLayout.SequentialGroup sequential;
+	private GridBagConstraints constraints;
     private boolean backend_loaded;
+    private final int button_row = 2;
 	
 	public ListingSet(Class<E> element_class) {
 		super();
@@ -32,26 +38,19 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			E new_list_element = element_class.newInstance();
 			all_elements.add(new_list_element);
 			
-			ImageButtonToggle new_button = new ImageButtonToggle("/buttons/plus_button.png","/buttons/minus_button.png", 20);
+			ImageButton new_button = new ImageButton("/buttons/minus_button.png", 20);
 			new_button.addActionListener(new ActionListener() {
-
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
-			        try {
-						display_new_element();
-						new_button.toggle();
-					} catch (InstantiationException | IllegalAccessException e1) {
-						e1.printStackTrace();
-					}
+			        remove_element(new_list_element);
+			        remove(new_button);
 			    }
 			});
 			
-			parallel.addGroup(layout.createSequentialGroup().
-					 addComponent(new_list_element).addGroup(
-                             layout.createSequentialGroup().addComponent(new_button)));
-	        sequential.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-	        		   addComponent(new_list_element).addGroup(
-                               layout.createSequentialGroup().addComponent(new_button)));
+			constraints.gridx = 0;
+		    add(new_list_element, constraints); 
+		    constraints.gridx = button_row;
+		    add(new_button, constraints); 
 	        
 	        new_list_element.set_datastore(this.storage_ref);
 	        new_list_element.on_start();
@@ -60,11 +59,9 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 		}
 	}
 	
-	public void remove_element_at(int index) {
-		if (index > 0 && index < all_elements.size()) {
-			all_elements.remove(index);
-			this.storage_ref.notify_update();
-		}
+	public void remove_element(E elem) {
+		remove(elem);
+		this.storage_ref.notify_update();
 	}
 	
 	@Override
@@ -87,13 +84,24 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	@Override
 	public void on_start() {
 		//create vertical listing layout
-		layout = new GroupLayout(this);
-		this.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        parallel = layout.createParallelGroup();
-        layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(parallel));
-        sequential = layout.createSequentialGroup();
-        layout.setVerticalGroup(sequential);
+		setLayout(new GridBagLayout());
+		constraints =  new GridBagConstraints();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.insets = new Insets(5, 5, 5, 5);
+		ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
+		constraints.gridx = button_row;
+		//constraints.gridy = 1;
+	    add(new_button, constraints); 
+		new_button.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	try {
+					display_new_element();
+				} catch (InstantiationException | IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+		    }
+		});
 	}
 }
