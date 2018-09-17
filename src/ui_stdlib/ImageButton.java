@@ -13,14 +13,12 @@ public class ImageButton extends JButton {
 		super();
 		try {
 			Image button_image = ImageIO.read(getClass().getResourceAsStream(resource_pos))
-										.getScaledInstance(size, size,  java.awt.Image.SCALE_SMOOTH);			
+										.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH);			
 			this.setIcon(new ImageIcon(button_image));
 			Border emptyBorder = BorderFactory.createEmptyBorder();
 			this.setBorder(emptyBorder);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
  }

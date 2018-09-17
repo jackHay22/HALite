@@ -1,20 +1,10 @@
 package ui_stdlib;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop.Action;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.AbstractAction;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -48,6 +38,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			});
 			
 			constraints.gridx = 0;
+			constraints.anchor = GridBagConstraints.NORTH;
 		    add(new_list_element, constraints); 
 		    constraints.gridx = button_row;
 		    add(new_button, constraints); 
@@ -85,14 +76,13 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	public void on_start() {
 		//create vertical listing layout
 		setLayout(new GridBagLayout());
-		constraints =  new GridBagConstraints();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 1.0;
-		constraints.insets = new Insets(5, 5, 5, 5);
+		constraints = SystemThemes.get_grid_constraints();
 		ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
 		constraints.gridx = button_row;
-		//constraints.gridy = 1;
+
+		constraints.anchor = GridBagConstraints.NORTH;
 	    add(new_button, constraints); 
+	    //constraints.gridy = 0;
 		new_button.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

@@ -3,6 +3,7 @@ package ui_framework;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import system_utils.DataStore;
+import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	public void add_system_panel(SystemPanel new_panel) {
 		
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
+		new_panel.setBackground(SystemThemes.MAIN);
 		panel_references.add(new_panel);
 		
 		//add to list of refreshable objects
@@ -69,8 +71,8 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 		
 		for (int i = 0; i < this.panel_references.size(); i+=2) {
 			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-													this.panel_references.get(i), 
-													this.panel_references.get(i + 1)));
+					this.panel_references.get(i), 
+					this.panel_references.get(i + 1)));
 		}
 		
 		if (double_panes.size() == 2) {
