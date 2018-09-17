@@ -31,7 +31,6 @@ public class PointSet implements Refreshable {
 		this.y_axis = y_axis;
 		this.title = title_label;
 		this.render = do_render;
-		refresh();
 	}
 	
 	private void edge_values() {
@@ -104,6 +103,11 @@ public class PointSet implements Refreshable {
 	public void add_refreshable(Refreshable refreshable_component) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void on_start() {
+		refresh();
 	}
 	
 }

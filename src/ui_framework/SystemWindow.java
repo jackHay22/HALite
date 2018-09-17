@@ -8,14 +8,12 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow extends JFrame implements Refreshable{
+public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	private ArrayList<Refreshable> refreshable_frames;
 	private ArrayList<SystemPanel> panel_references;
 	private int subframe_width;
 	private int subframe_height;
 	private int resize_buffer;
-	
-	private DataStore datastore;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -26,9 +24,8 @@ public class SystemWindow extends JFrame implements Refreshable{
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(width, height);
-        this.validate();
-        this.setVisible(true);
+		this.setSize(width, height);
+		this.validate();
 	}
 	
 	public void set_minimum_size(int width, int height) {
@@ -43,10 +40,33 @@ public class SystemWindow extends JFrame implements Refreshable{
 			this.refreshable_frames.get(i).refresh();
 		}
 	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		for (int i=0; i < this.refreshable_frames.size(); i++) {
+			this.refreshable_frames.get(i).set_datastore(datastore);
+		}
+	}
 	
-	public void start_window() {
-		//group panes, add and set visible
+	public void add_system_panel(SystemPanel new_panel) {
+		
+		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
+		panel_references.add(new_panel);
+		
+		//add to list of refreshable objects
+		add_refreshable(new_panel);
+	}
+	
+	@Override
+	public void add_refreshable(Refreshable refreshable_window) {
+		refreshable_frames.add(refreshable_window);
+	}
+
+	@Override
+	public void run() {
+
 		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
+		
 		for (int i = 0; i < this.panel_references.size(); i+=2) {
 			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
 													this.panel_references.get(i), 
@@ -61,31 +81,14 @@ public class SystemWindow extends JFrame implements Refreshable{
 			this.add(double_panes.get(0), BorderLayout.CENTER);
 		}
 		
-		this.setVisible(true);
+		on_start();
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
-		this.datastore = datastore;
-		this.datastore.add_update_notify(this);
+	public void on_start() {
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
-			this.refreshable_frames.get(i).set_datastore(datastore);
+			this.refreshable_frames.get(i).on_start();
 		}
-	}
-	
-	public void add_system_panel(SystemPanel new_panel) {
-		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
-		
-		//add a mouse listener that triggers window call to refresh
-		//new_panel.add_parent_listener(this);
-		panel_references.add(new_panel);
-		
-		//add to list of refreshable objects
-		add_refreshable(new_panel);
-	}
-	
-	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
-		refreshable_frames.add(refreshable_window);
+		this.setVisible(true);
 	}
 }

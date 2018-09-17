@@ -15,7 +15,7 @@ javapackager -deploy \
     -nosign \
     -outdir out \
     -outfile interface \
-    -srcfiles target/Interface.jar \
+    -srcfiles out/Interface.jar \
     -appclass system_main.RockAnalysis \
     -name "AblationInterface" \
     -title "Geochemical Ablation Interface" \

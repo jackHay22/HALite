@@ -1,40 +1,31 @@
 package ui_graphlib;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
-import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")
-public class DrawablePanel extends SystemPanel implements MouseListener {
-	private Graphics2D g;
-	private BufferedImage image;
-	private int height;
-	private int width;
+public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	private DrawableManager manager;
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-		init();
-		this.width = width;
-		this.height = height;
 		this.manager = manager;
+		this.addMouseListener(this);
+		setPreferredSize(new Dimension(width, height));
 	}
-	private void init() {
-		this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.g = (Graphics2D) image.getGraphics();
-	}
+	
 	@Override
-	public void refresh() {
-		manager.draw_components(g);
-		Graphics g2 = getGraphics();
-		g2.drawImage(image, 0, 0, width, height, null);
-		g2.dispose();
-	}
+	public void paintComponent(Graphics g) { 
+		super.paintComponent(g);
+		Graphics2D g2 =(Graphics2D)g;
+		manager.draw_components(g2);   
+    }
 
 	@Override
 	public void set_datastore(DataStore datastore) {
@@ -45,13 +36,12 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		manager.handle_mouse_event(e);
-		
+		manager.handle_mouse_event(e);	
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		manager.handle_mouse_event(e);	
+		
 	}
 	
 	@Override
@@ -62,4 +52,14 @@ public class DrawablePanel extends SystemPanel implements MouseListener {
 	
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void refresh() {
+		this.repaint();
+	}
+
+	@Override
+	public void on_start() {
+		
+	}
 }
