@@ -5,9 +5,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
@@ -18,6 +21,7 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 		this.manager = manager;
 		this.addMouseListener(this);
 		setPreferredSize(new Dimension(width, height));
+		this.setBorder(BorderFactory.createLineBorder(SystemThemes.DARK, 2, true));
 	}
 	
 	@Override

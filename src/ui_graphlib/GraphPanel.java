@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.math.*;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class GraphPanel extends ui_framework.SystemPanel implements DrawableManager, MouseListener {
@@ -129,15 +130,18 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		//TODO: draw x and draw y aren't numbers
 		// Place the actual point with coords (draw_x, draw_y)
-		g.setColor(Color.red);
+		g.setColor(SystemThemes.OFF_WHITE);
 		if (p.in_use()) {
-			g.setColor(Color.blue);
+			g.setColor(SystemThemes.HIGHLIGHT);
 		}
 		g.drawOval((int)draw_x, (int)draw_y, 6,6);
 		
 	}
 	
 	private void plot_points(Graphics2D g) {
+		
+		
+		
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
 				ArrayList<Point> points = point_sets.get(i).get_points();
@@ -149,7 +153,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void set_labels() {
-		
+		// TODO: Jack needs to set this up
 	}
 	
 	private void point_selected(MouseEvent e) {
