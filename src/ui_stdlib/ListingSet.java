@@ -1,47 +1,107 @@
 package ui_stdlib;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop.Action;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
-public class ListingSet implements Refreshable {
-	//private ArrayList<SetElement> all_elements;
-	//private ArrayList<SetElement> displayed_elements;
+@SuppressWarnings("serial")
+public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework.SystemPanel {
+	private ArrayList<E> all_elements;
+	private DataStore storage_ref;
+	private final Class<E> element_class;
+	private GridBagConstraints constraints;
+    private boolean backend_loaded;
+    private final int button_row = 2;
 	
-	public ListingSet() {
-		//all_elements = ArrayList<SetElement>();
-		//displayed_elements = ArrayList<SetElement>();
+	public ListingSet(Class<E> element_class) {
+		super();
+		this.element_class = element_class;
+		all_elements = new ArrayList<E>();
 	}
 	
-	public void display_new_element() {
-		//int next_index = displayed_elements.size() + 1;
-//		if (next_index <= all_elements.size();) {
-//			displayed_elements.add(all_elements.get(next_index))
-//		}
+	public void display_new_element() throws InstantiationException, IllegalAccessException {
+		if (this.backend_loaded) {
+			E new_list_element = element_class.newInstance();
+			all_elements.add(new_list_element);
+			
+			ImageButton new_button = new ImageButton("/buttons/minus_button.png", 20);
+			new_button.addActionListener(new ActionListener() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        remove_element(new_list_element);
+			        remove(new_button);
+			    }
+			});
+			
+			constraints.gridx = 0;
+		    add(new_list_element, constraints); 
+		    constraints.gridx = button_row;
+		    add(new_button, constraints); 
+	        
+	        new_list_element.set_datastore(this.storage_ref);
+	        new_list_element.on_start();
+	        this.storage_ref.notify_update();
+	        this.revalidate();
+		}
 	}
 	
-	public void remove_element_at(int index) {
-//		if (index > 0 && index < all_elements.size()) {
-//			all_elements.remove(index);
-//		}
+	public void remove_element(E elem) {
+		remove(elem);
+		this.storage_ref.notify_update();
 	}
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < all_elements.size(); i++) {
+			all_elements.get(i).refresh();
+		}
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-
+		this.storage_ref = datastore;
+		this.backend_loaded = true;
 	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-
 	}
 
+	@Override
+	public void on_start() {
+		//create vertical listing layout
+		setLayout(new GridBagLayout());
+		constraints =  new GridBagConstraints();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.insets = new Insets(5, 5, 5, 5);
+		ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
+		constraints.gridx = button_row;
+		//constraints.gridy = 1;
+	    add(new_button, constraints); 
+		new_button.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	try {
+					display_new_element();
+				} catch (InstantiationException | IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+		    }
+		});
+	}
 }
