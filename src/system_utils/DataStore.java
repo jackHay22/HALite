@@ -6,12 +6,34 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
 	private ArrayList<ArrayList<Integer>> correlation_matrix;
+	private String database_url;
 	
-	public DataStore() {
+	public DataStore(String DatabaseName) {
 		this.correlation_matrix = new ArrayList<ArrayList<Integer>>();
+		this.database_url = initialize_database(DatabaseName);
+	}
+	
+	private String initialize_database(String FileName) {
+		String url = "jdbc:sqlite:C:/sqlite/db/" + FileName;
+		
+		try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+            }
+ 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+		
+		return url;
 	}
 	
 	public void set_data_from_csv(String path_name) throws FileNotFoundException {
