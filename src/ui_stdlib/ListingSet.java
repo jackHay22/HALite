@@ -74,7 +74,6 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 
 	@Override
 	public void on_start() {
-		//create vertical listing layout
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
 		ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
@@ -82,7 +81,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 
 		constraints.anchor = GridBagConstraints.NORTH;
 	    add(new_button, constraints); 
-	    //constraints.gridy = 0;
+	    
 		new_button.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

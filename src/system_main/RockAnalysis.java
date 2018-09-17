@@ -14,8 +14,8 @@ public class RockAnalysis  {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-        		int window_width = 1100;
-        		int window_height = 700; 
+        		int window_width = 1200;
+        		int window_height = 800; 
         		
         		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);
         		main_window.set_minimum_size(window_width, window_height);

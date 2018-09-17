@@ -1,16 +1,10 @@
 package ui_stdlib;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -24,16 +18,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		super();
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
 		setLayout(new BorderLayout());
-
-		addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            	//add_new_element();
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {  
-            }
-        });
 	}
 	
 	@Override
