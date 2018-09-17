@@ -73,7 +73,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 //		constraints.gridx = 0;
 //		constraints.gridy = 0;
 		constraints.anchor = GridBagConstraints.NORTH;
-		constraints.weighty = 0.7;
+		//constraints.weighty = 0.7;
 		
 		PanelHeader header = new PanelHeader("Test");
 		this.add(header, constraints);
@@ -81,7 +81,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		header.setVisible(true);
 		
 		constraints.gridy = 1;
-		constraints.weighty = 0.3;
+		constraints.weighty = 0.7;
 		this.add(r_sqrd_list, constraints);
 		r_sqrd_list.on_start();
 		r_sqrd_list.setVisible(true);
