@@ -15,7 +15,7 @@ public class RockAnalysis  {
             @Override
             public void run() {
         		int window_width = 1200;
-        		int window_height = 800; 
+        		int window_height = 700; 
         		
         		SystemWindow main_window = new SystemWindow("Ablation Analysis", window_width, window_height);
         		main_window.set_minimum_size(window_width, window_height);
