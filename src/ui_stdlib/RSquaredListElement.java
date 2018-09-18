@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import system_utils.Element;
 
 @SuppressWarnings("serial")
 public class RSquaredListElement extends ui_framework.SystemPanel {
@@ -15,8 +16,19 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	
 	public RSquaredListElement() {
 		super();
-		String[] test_list = {"Al", "Mg", "Fe"};
-		selection_dropdown = new JComboBox<String>(test_list);
+		
+		Element[] elements_list = Element.class.getEnumConstants();
+		String[] string_elements_list = new String[elements_list.length];
+		
+		for (int i = 0; i < elements_list.length; i++) {
+			try {
+				string_elements_list[i] = elements_list[i].toString();
+			} catch (NullPointerException ex) {
+			       ex.printStackTrace();
+			}
+		}
+		
+		selection_dropdown = new JComboBox<String>(string_elements_list);
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
