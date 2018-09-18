@@ -28,10 +28,10 @@ public class RockAnalysis  {
         		SettingsPanel test_settings_two = new SettingsPanel();
         		test_settings_two.set_datastore(loaded_datastore);
         		
-        		GraphPanel test_graph = new GraphPanel();
+        		GraphPanel test_graph = new GraphPanel(450, 250);
         		test_graph.set_datastore(loaded_datastore);
         		
-        		GraphPanel test_graph_two = new GraphPanel();
+        		GraphPanel test_graph_two = new GraphPanel(500, 300);
         		test_graph_two.set_datastore(loaded_datastore);
         		
         		main_window.add_system_panel(test_settings);	

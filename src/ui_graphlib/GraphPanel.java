@@ -1,6 +1,7 @@
 package ui_graphlib;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -35,15 +36,51 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	private double bottom_buffer_y;
 	private double top_buffer_y;
 	
+	private Point left_point;
+	private Point right_point;
+	private boolean do_place_line;
 	
-	public GraphPanel() {
+	public GraphPanel(int width, int height) {
 		super();
 		this.points_panel = new DrawablePanel(this, 450, 250);
 		
-		draw_width = 450;
-		draw_height = 250;
+		this.draw_width = width;
+		this.draw_height = height;
 		this.add(points_panel);
 		set_fake_vals();
+	}
+
+	public double get_x_r() {
+		return x_ratio;
+	}
+	
+	public double get_y_r() {
+		return y_ratio;
+	}
+	
+	public int get_width() {
+		return draw_width;
+	}
+	
+	public int get_height() {
+		return draw_height;
+	}
+	
+	public Point get_left_bottom() {
+		Point p = new Point(min_x, min_y);
+		return p;
+	}
+	
+	public Point get_right_top() {
+		Point p = new Point(max_x, max_y);
+		return p;
+	}
+	
+	public void set_endpoints(Point start, Point end) {
+		left_point = start;
+		right_point = end;
+		do_place_line = true;
+		points_panel.refresh();
 	}
 	
 	private void set_fake_vals() {
@@ -117,6 +154,10 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		return max + (max - min)/20;
 	}
 	
+	private void place_line(Graphics2D g) {
+		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_x());
+	}
+	
 	private void place_point(Point p, Graphics2D g) {
 		double point_x = p.get_x();
 		double draw_x = (point_x - bottom_buffer_x)*x_ratio;
@@ -137,8 +178,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void plot_points(Graphics2D g) {
-		
-		
 		
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
@@ -220,6 +259,9 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	@Override
 	public void draw_components(Graphics2D g) {
 		plot_points(g);
+		if (do_place_line) {
+			place_line(g);
+		}
 	}
 
 	@Override

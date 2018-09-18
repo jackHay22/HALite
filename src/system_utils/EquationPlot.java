@@ -16,31 +16,29 @@ public class EquationPlot {
 	private double r2;
 
 	public EquationPlot(double r2, int degree, double... coefficients) {
-		this.coefficients = new ArrayList<Double>(degree + 1);
-		int i = 0;
+		// Enter the coefficients from x_0 ... x_n
+		this.coefficients = new ArrayList<Double>();
 		for (double coeff : coefficients) {
-			this.coefficients.set(i, coeff);
-			i++;
+			this.coefficients.add(coeff);
 		}
 		this.r2 = r2;
 	}
 	
-	public ArrayList<Point> get_line(Point bottom_left, Point top_right) {
-		// This does trust that the method user knows what they're doing with this method
-		
-		ArrayList<Point> points = new ArrayList<Point>();
-		
-		// We give out either the endpoints of a line or a group of points which will represent a curve.
+	public double get_linear_x(double y) {
 		if (degree == 1) {
-			// Generate the end points of the line
-			
+			return (y - coefficients.get(0)) / coefficients.get(1);
 		} else {
-			// Generate the large number of points which will be plotted to represent a line
-			
+			return (y - coefficients.get(0));
 		}
-		
-		return points;
-		
+	}
+	
+	public double get_y(double x) {
+		// This outputs the y value for the provided x value
+		double y = 0;
+		for (int i = degree; i>= 0; i--) {
+			y += Math.pow(x, i)*coefficients.get(i);
+		}
+		return y;
 	}
 	
 }

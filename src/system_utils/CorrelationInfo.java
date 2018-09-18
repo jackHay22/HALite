@@ -17,6 +17,8 @@ public class CorrelationInfo {
 	private boolean use_in_wm;
 	
 	public CorrelationInfo(ElementPair elements, EquationPlot equation) {
+		// Create the EquationPlot object of degree 1 with fit and r2 value to match
+		
 		this.data_to_plot = elements;
 		this.secondary_element = elements.get_second();
 		this.equation = equation;
@@ -31,6 +33,14 @@ public class CorrelationInfo {
 		return this.secondary_element;
 	}
 	
+	public Element get_primary() {
+		return data_to_plot.get_main();
+	}
+	
 	// More to come
+	
+	public EquationPlot get_equation() {
+		return equation;
+	}
 	
 }
