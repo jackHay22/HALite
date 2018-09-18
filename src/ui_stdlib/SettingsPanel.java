@@ -17,7 +17,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
-	private int display_rsqrd_assocs = 5;
+	private int display_rsqrd_assocs = 4;
 	
 	public SettingsPanel() {
 		super();
@@ -59,12 +59,14 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		for (int i = 0; i < size; i++) {
 			string_list.add(Integer.toString(i + 1));
 		}
+		
 		JComboBox<String> rsqrd_total = new JComboBox<>(string_list.toArray(new String[0]));
 		rsqrd_total.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        display_rsqrd_assocs = Integer.valueOf((String)rsqrd_total.getSelectedItem());
 		    }
 		});
+		
 		rsqrd_total.setSelectedIndex(display_rsqrd_assocs);
 		return rsqrd_total;
 	}
