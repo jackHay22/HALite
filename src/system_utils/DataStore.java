@@ -13,9 +13,9 @@ public class DataStore {
 		this.xrf_data = new HashMap<String, ArrayList<Float>>();
 	}
 	
-	public void import_xrf_data(String pathname) throws FileNotFoundException {
+	public void import_xrf_data(String path_name, String table_name) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
-		this.xrf_data = parser.xrf_data_from_csv(pathname);
+		this.xrf_data = parser.xrf_data_from_csv(path_name, table_name);
 	}
 	
 	public ArrayList<Float> get_from_corr_matrix(int row, int col) {

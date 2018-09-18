@@ -9,12 +9,11 @@ import java.util.HashMap;
 
 public class CSVParser {
 	
-	
 	public CSVParser() {
 		
 	}
 	
-	private ArrayList<String[]> get_raw_table_data(String path_name) throws FileNotFoundException {
+	private ArrayList<String[]> get_raw_table_data(String path_name, String table_name) throws FileNotFoundException {
 		String current_line = "";
 		String delimiter = ",";
 
@@ -23,15 +22,37 @@ public class CSVParser {
 		
 		// First, read in CSV file row by row
 		try {
-			// if there are two line-breaks immediately after the other, exit because the table is finished
+			Boolean found_data = false;
+			
+			// Parse CSV data from beginning of found data to ending marker
 			while ((current_line = reader.readLine()) != null) {
 				// Get data from the current row
 				String[] row_data = current_line.split(delimiter);
 				
-				// Add this array to the table
-				raw_data.add(row_data);
+				// If beginning of row contains '#', ignore as comment
+				if (row_data[0].charAt(0) == '#') {
+					continue;
+				}
 				
-				System.out.println("Current row data: " + row_data);
+				// Found beginning of desired table, skip this line (and comments) 
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1) == table_name) {
+					found_data = true;
+					continue;
+				}
+				
+				// Found end of desired table
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1) == "END") {
+					break;
+				}
+				
+				// Found desired data
+				if (found_data) {
+
+					// Add this array to the table
+					raw_data.add(row_data);
+					
+					System.out.println("Current row data: " + row_data);
+				}
 			}
 		} catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -50,12 +71,12 @@ public class CSVParser {
 		return raw_data;
 	}
 	
-	public HashMap<String, ArrayList<Float>> xrf_data_from_csv(String path_name) throws FileNotFoundException {
+	public HashMap<String, ArrayList<Float>> xrf_data_from_csv(String path_name, String table_name) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
 		HashMap<String, ArrayList<Float>> xrf_table = new HashMap<String, ArrayList<Float>>();
 		
-		ArrayList<String[]> raw_data = this.get_raw_table_data(path_name);
+		ArrayList<String[]> raw_data = this.get_raw_table_data(path_name, table_name);
 				
 		String[] column_names = raw_data.get(0);
 		
