@@ -9,7 +9,7 @@ import system_utils.Element;
 
 @SuppressWarnings("serial")
 public class RSquaredListElement extends ui_framework.SystemPanel {
-	private JComboBox<String> selection_dropdown;
+	private JComboBox<Element> selection_dropdown;
 	//private ArrayList<RSquaredValues> r_sqrd;
 	private DataStore datastore;
 	private boolean backend_loaded = false;
@@ -17,18 +17,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	public RSquaredListElement() {
 		super();
 		
-		Element[] elements_list = Element.class.getEnumConstants();
-		String[] string_elements_list = new String[elements_list.length];
-		
-		for (int i = 0; i < elements_list.length; i++) {
-			try {
-				string_elements_list[i] = elements_list[i].toString();
-			} catch (NullPointerException ex) {
-			       ex.printStackTrace();
-			}
-		}
-		
-		selection_dropdown = new JComboBox<String>(string_elements_list);
+		selection_dropdown = new JComboBox<Element>(Element.values());
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
