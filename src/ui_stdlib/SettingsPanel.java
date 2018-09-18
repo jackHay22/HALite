@@ -17,7 +17,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
-	private int display_rsqrd_assocs = 4;
+	private int display_rsqrd_assocs = 5;
 	
 	public SettingsPanel() {
 		super();
