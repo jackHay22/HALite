@@ -25,11 +25,11 @@ public class RSqrdAssocSet extends SystemPanel {
 		value = new JButton("2.0");
 		
 		element.setBorder(BorderFactory.createCompoundBorder(border, 
-	            BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+	            BorderFactory.createEmptyBorder(4, 10, 4, 10)));
 		element.setBackground(SystemThemes.HIGHLIGHT);
 
 		value.setBorder(BorderFactory.createCompoundBorder(border, 
-	            BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+	            BorderFactory.createEmptyBorder(4, 10, 4, 10))); 
 		
 		element.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {

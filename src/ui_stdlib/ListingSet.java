@@ -38,6 +38,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			});
 			
 			constraints.gridx = 0;
+			constraints.weightx = 1;
 			constraints.anchor = GridBagConstraints.NORTH;
 		    add(new_list_element, constraints); 
 		    constraints.gridx = button_row;
@@ -76,9 +77,9 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	public void on_start() {
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
+		
 		ImageButton new_button = new ImageButton("/buttons/plus_button.png", 20);
 		constraints.gridx = button_row;
-
 		constraints.anchor = GridBagConstraints.NORTH;
 	    add(new_button, constraints); 
 	    
