@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
 	private HashMap<String, ArrayList<Float>> xrf_data;
+	private HashMap<String, ArrayList<Float>> calibration_standards_data;
+	private HashMap<String, ArrayList<Float>> validation_standards_data;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
@@ -18,9 +20,8 @@ public class DataStore {
 		this.xrf_data = parser.xrf_data_from_csv(path_name, table_name);
 	}
 	
-	public ArrayList<Float> get_from_corr_matrix(int row, int col) {
-		// Select appropriate data from data
-		return this.xrf_data.get(row);
+	public ArrayList<Float> get_xrf_data(int row, int col) {
+		return new ArrayList<Float>();
 	}
 	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {
