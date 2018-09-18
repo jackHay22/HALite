@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -18,7 +17,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
-	private int display_rsqrd_assocs = 5;
+	private int display_rsqrd_assocs = 4;
 	
 	public SettingsPanel() {
 		super();
@@ -58,7 +57,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	public JComboBox<String> get_rsqrd_dropdown(int size) {
 		ArrayList<String> string_list = new ArrayList<String>();
 		for (int i = 0; i < size; i++) {
-			string_list.add(Integer.toString(i));
+			string_list.add(Integer.toString(i + 1));
 		}
 		JComboBox<String> rsqrd_total = new JComboBox<>(string_list.toArray(new String[0]));
 		rsqrd_total.addActionListener(new ActionListener () {
