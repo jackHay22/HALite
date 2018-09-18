@@ -71,10 +71,10 @@ public class CSVParser {
 		return raw_data;
 	}
 	
-	public HashMap<String, ArrayList<Float>> xrf_data_from_csv(String path_name, String table_name) throws FileNotFoundException {
+	public HashMap<TableKey, ArrayList<Float>> xrf_data_from_csv(String path_name, String table_name) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
-		HashMap<String, ArrayList<Float>> xrf_table = new HashMap<String, ArrayList<Float>>();
+		HashMap<TableKey, ArrayList<Float>> xrf_table = new HashMap<TableKey, ArrayList<Float>>();
 		
 		ArrayList<String[]> raw_data = this.get_raw_table_data(path_name, table_name);
 				
@@ -83,7 +83,7 @@ public class CSVParser {
 		// Transpose the raw data to get ArrayLists consisting of elements in the columns
 		for (int i = 0; i < raw_data.get(0).length; i++) {
 			
-			String current_column = column_names[i];
+			TableKey current_column_name = new TableKey(column_names[i]);
 			ArrayList<Float> column_data = new ArrayList<Float>();
 			
 			for (int j = 0; j < raw_data.size(); j++) {
@@ -91,7 +91,7 @@ public class CSVParser {
 				column_data.add(entry);
 			}
 			
-			xrf_table.put(current_column, column_data);
+			xrf_table.put(current_column_name, column_data);
 		}
 		
 		return xrf_table;

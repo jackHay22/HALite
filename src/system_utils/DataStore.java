@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
-	private HashMap<String, ArrayList<Float>> xrf_data;
-	private HashMap<String, ArrayList<Float>> calibration_standards_data;
-	private HashMap<String, ArrayList<Float>> validation_standards_data;
+	private HashMap<TableKey, ArrayList<Float>> xrf_data;
+	private HashMap<TableKey, ArrayList<Float>> calibration_standards_data;
+	private HashMap<TableKey, ArrayList<Float>> validation_standards_data;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
-		this.xrf_data = new HashMap<String, ArrayList<Float>>();
+		this.xrf_data = new HashMap<TableKey, ArrayList<Float>>();
 	}
 	
 	public void import_xrf_data(String path_name, String table_name) throws FileNotFoundException {
