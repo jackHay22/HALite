@@ -39,7 +39,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	public GraphPanel() {
 		super();
-		this.setPreferredSize(new Dimension(450, 250));
 		this.points_panel = new DrawablePanel(this, 450, 250);
 		
 		draw_width = 450;

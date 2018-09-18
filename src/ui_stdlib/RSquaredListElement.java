@@ -2,6 +2,8 @@ package ui_stdlib;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -16,7 +18,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	
 	public RSquaredListElement() {
 		super();
-		
+		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		selection_dropdown = new JComboBox<Element>(Element.values());
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -27,12 +29,19 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		});
 	}
 	
-	public void add_rsqrd_set() {
-		String element = String.valueOf(selection_dropdown.getSelectedItem());
+	public void add_rsqrd_set(int size) {
+		Element element = (Element) selection_dropdown.getSelectedItem();
+		RSqrdAssocSet sqrd;
+		for (int i=0; i < size; i++) {
+			sqrd = new RSqrdAssocSet(element, "test");
+			this.add(sqrd);
+			sqrd.on_start();
+		}
 	}
 
 	@Override
 	public void refresh() {
+		//TODO: refresh rsqrd set
 	}
 
 	@Override
@@ -48,6 +57,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	@Override
 	public void on_start() {
 		this.add(selection_dropdown);
+		add_rsqrd_set(10);
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
 	}
