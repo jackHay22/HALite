@@ -1,11 +1,7 @@
 package system_utils;
 
+import java.util.HashMap;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-import java.util.HashMap; 
 import java.util.ArrayList;
 
 public class DataStore {
@@ -17,42 +13,9 @@ public class DataStore {
 		this.xrf_data = new HashMap<String, ArrayList<Float>>();
 	}
 	
-	public void set_data_from_csv(String path_name) throws FileNotFoundException {
-		String current_line = "";
-		String delimiter = ",";
-		
-		BufferedReader reader = new BufferedReader(new FileReader(path_name));
-		
-		ArrayList<String[]> raw_data = new ArrayList<String[]>();
-		
-		try {
-			while ((current_line = reader.readLine()) != null) {
-				// Get data from the current row
-				String[] row_data = current_line.split(delimiter);
-				
-				// Add this array to the table
-				raw_data.add(row_data);
-				
-				System.out.println("Current row data: " + row_data);
-			}
-		} catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (reader != null) {
-	            try {
-	                reader.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-		
-		for (int i = 0; i < raw_data.get(0).length; i++) {
-			
-		}
-		
+	public void import_xrf_data(String pathname) throws FileNotFoundException {
+		CSVParser parser = new CSVParser();
+		this.xrf_data = parser.xrf_data_from_csv(pathname);
 	}
 	
 	public ArrayList<Float> get_from_corr_matrix(int row, int col) {
