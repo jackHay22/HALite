@@ -1,50 +1,47 @@
 package ui_stdlib;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-
+import java.util.ArrayList;
 import javax.swing.JLabel;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
 public class PanelHeader extends ui_framework.SystemPanel {
-	private String title;
 	private GridBagConstraints constraints;
-	private int contraint_loc;
+	private int constraint_loc;
+	private ArrayList<Refreshable> refreshable_panels;
 	
 	public PanelHeader(String title) {
 		super();
-		this.title = title;
 		this.setBackground(SystemThemes.DARK);
-		this.contraint_loc = 0;
+		this.constraint_loc = 0;
 		this.add(new JLabel(title));
+		this.constraint_loc ++;
 	}
 		
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
+		for (int i=0; i < refreshable_panels.size(); i++) {
+			refreshable_panels.get(i).refresh();
+		}
 	}
 	
-	public void add_header_component(Component c) {
-		constraints.gridx = this.contraint_loc;
+	public void add_header_component(ui_framework.SystemPanel c) {
+		constraints.gridx = this.constraint_loc;
 		this.add(c);
+		this.constraint_loc ++;
+		add_refreshable(c);
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-		
+		refreshable_panels.add(refreshable_component);
 	}
 
 	@Override

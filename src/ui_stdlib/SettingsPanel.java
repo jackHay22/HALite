@@ -1,10 +1,15 @@
 package ui_stdlib;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -23,7 +28,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void refresh() {
 		r_sqrd_list.refresh();
-		//TODO: refresh header
 	}
 	
 	public void add_new_element() {
@@ -49,25 +53,42 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void add_refreshable(Refreshable refreshable_window) {
 	}
+	
+	public JComboBox<String> get_rsqrd_dropdown(int size) {
+		ArrayList<String> string_list = new ArrayList<String>();
+		for (int i = 0; i < size; i++) {
+			string_list.add(Integer.toString(i));
+		}
+		return new JComboBox<>(string_list.toArray(new String[0]));
+	}
 
 	@Override
 	public void on_start() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = SystemThemes.get_grid_constraints();
-//		constraints.gridx = 0;
-//		constraints.gridy = 0;
 		constraints.anchor = GridBagConstraints.NORTH;
-		//constraints.weighty = 0.7;
 		
 		PanelHeader header = new PanelHeader("Test");
+		header.add(get_rsqrd_dropdown(10));
+		
 		this.add(header, constraints);
 		header.on_start();
-		header.setVisible(true);
+		
 		
 		constraints.gridy = 1;
-		constraints.weighty = 0.7;
-		this.add(r_sqrd_list, constraints);
+		constraints.weighty = 1;
+
+		JScrollPane pane = new JScrollPane(r_sqrd_list, 
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		//prevent pane from disappearing when shrunk
+		pane.setMinimumSize(new Dimension(200, 600));
+		this.add(pane, constraints);
+		
 		r_sqrd_list.on_start();
+		
+		header.setVisible(true);
 		r_sqrd_list.setVisible(true);
 	}
 }
