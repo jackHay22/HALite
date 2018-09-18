@@ -13,6 +13,13 @@ public class Point {
 		this.graph_y = y;
 	}
 	
+	public Point(double x, double y, int d_x, int d_y) {
+		this.graph_x = x;
+		this.graph_y = y;
+		this.draw_x = d_x;
+		this.draw_y = d_y;
+	}
+	
 	public void toggle() {
 		this.enabled = ! this.enabled;
 	}
