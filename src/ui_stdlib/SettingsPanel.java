@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 
@@ -18,6 +18,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
+	private int display_rsqrd_assocs = 5;
 	
 	public SettingsPanel() {
 		super();
@@ -59,7 +60,14 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		for (int i = 0; i < size; i++) {
 			string_list.add(Integer.toString(i));
 		}
-		return new JComboBox<>(string_list.toArray(new String[0]));
+		JComboBox<String> rsqrd_total = new JComboBox<>(string_list.toArray(new String[0]));
+		rsqrd_total.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        display_rsqrd_assocs = Integer.valueOf((String)rsqrd_total.getSelectedItem());
+		    }
+		});
+		rsqrd_total.setSelectedIndex(display_rsqrd_assocs);
+		return rsqrd_total;
 	}
 
 	@Override
@@ -73,7 +81,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		
 		this.add(header, constraints);
 		header.on_start();
-		
 		
 		constraints.gridy = 1;
 		constraints.weighty = 1;

@@ -2,7 +2,6 @@ package ui_stdlib;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
@@ -15,6 +14,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	//private ArrayList<RSquaredValues> r_sqrd;
 	private DataStore datastore;
 	private boolean backend_loaded = false;
+	private int rsqrd_total = 5;
 	
 	public RSquaredListElement() {
 		super();
@@ -53,11 +53,15 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
 	}
+	
+	public void set_rsqrd_total(int total) {
+		this.rsqrd_total = total;
+	}
 
 	@Override
 	public void on_start() {
 		this.add(selection_dropdown);
-		add_rsqrd_set(10);
+		add_rsqrd_set(this.rsqrd_total);
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
 	}
