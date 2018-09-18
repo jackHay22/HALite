@@ -130,7 +130,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		//TODO: draw x and draw y aren't numbers
 		// Place the actual point with coords (draw_x, draw_y)
-		g.setColor(SystemThemes.OFF_WHITE);
+		g.setColor(SystemThemes.BACKGROUND);
 		if (p.in_use()) {
 			g.setColor(SystemThemes.HIGHLIGHT);
 		}

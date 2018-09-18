@@ -21,7 +21,7 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 		this.manager = manager;
 		this.addMouseListener(this);
 		setPreferredSize(new Dimension(width, height));
-		this.setBorder(BorderFactory.createLineBorder(SystemThemes.DARK, 2, true));
+		this.setBorder(BorderFactory.createLineBorder(SystemThemes.MAIN, 2, true));
 	}
 	
 	@Override

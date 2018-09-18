@@ -1,5 +1,6 @@
 package ui_stdlib;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ public class PanelHeader extends ui_framework.SystemPanel {
 	private int constraint_loc;
 	private ArrayList<Refreshable> refreshable_panels;
 	
-	public PanelHeader(String title) {
+	public PanelHeader(String title, Color color) {
 		super();
-		this.setBackground(SystemThemes.DARK);
+		this.setBackground(color);
 		this.constraint_loc = 0;
 		this.add(new JLabel(title));
 		this.constraint_loc ++;

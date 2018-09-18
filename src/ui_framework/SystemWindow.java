@@ -52,7 +52,7 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 	public void add_system_panel(SystemPanel new_panel) {
 		
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
-		new_panel.setBackground(SystemThemes.MAIN);
+		new_panel.setBackground(SystemThemes.BACKGROUND);
 		panel_references.add(new_panel);
 		
 		//add to list of refreshable objects

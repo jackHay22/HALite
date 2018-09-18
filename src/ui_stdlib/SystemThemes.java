@@ -5,11 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class SystemThemes {
-	public static Color DARK = new Color(34, 33, 48);
-	public static Color MAIN = new Color(70, 77, 87);
-	public static Color OFF_WHITE = new Color(212, 232, 211);
+	public static Color BACKGROUND = new Color(39, 47, 50);
+	public static Color MAIN = new Color(157, 189, 198);
 	public static Color WHITE = new Color(255, 255, 255);
-	public static Color HIGHLIGHT = new Color(237, 137, 23);
+	public static Color HIGHLIGHT = new Color(255, 61, 46);
 	
 	private static final int INSET = 5;
 	
