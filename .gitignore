@@ -1,5 +1,6 @@
 /bin
 /out
 /target
+/lib
 .metadata
 .DS_Store
