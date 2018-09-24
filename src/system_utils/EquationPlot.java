@@ -41,4 +41,12 @@ public class EquationPlot {
 		return y;
 	}
 	
+	public void set_r2(double new_r2) {
+		this.r2 = new_r2;
+	}
+	
+	public double get_r2() {
+		return this.r2;
+	}
+	
 }

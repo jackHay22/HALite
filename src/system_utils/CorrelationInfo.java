@@ -25,6 +25,10 @@ public class CorrelationInfo {
 		this.use_in_wm = false;
 	}
 	
+	private void init() {
+		PointSet points_to_fit = data_to_plot.get_standards();
+	}
+	
 	public void toggle() {
 		this.use_in_wm = !this.use_in_wm;
 	}
