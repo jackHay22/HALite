@@ -17,7 +17,7 @@ public class CorrelationInfo {
 	private EquationPlot equation;
 	private boolean use_in_wm;
 	
-	public CorrelationInfo(ElementPair elements, EquationPlot equation) {
+	public CorrelationInfo(ElementPair elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
 		
 		this.data_to_plot = elements;
@@ -37,9 +37,12 @@ public class CorrelationInfo {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> points = point_set.get_points();
 		for (int i = 0; i < points.size(); i++) {
-			double x = points.get(i).get_x();
-			double y = points.get(i).get_y();
-			reg_obj.addData(x, y);
+			Point point = points.get(i);
+			if (point.in_use()) {
+				double x = point.get_x();
+				double y = point.get_y();
+				reg_obj.addData(x, y);
+			}
 		}
 		// Get relevant info from the regression object
 		double x_0 = reg_obj.getIntercept();
@@ -59,6 +62,10 @@ public class CorrelationInfo {
 	
 	public Element get_primary() {
 		return data_to_plot.get_main();
+	}
+	
+	public double get_r2() {
+		return equation.get_r2();
 	}
 	
 	// More to come

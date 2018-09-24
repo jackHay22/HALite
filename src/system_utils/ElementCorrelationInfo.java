@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import ui_graphlib.PointSet;
 import ui_graphlib.Point;
-
 import java.util.HashMap; 
 import java.util.ArrayList;
 
@@ -23,6 +22,10 @@ public class ElementCorrelationInfo {
 	
 	public Element get_element() {
 		return this.element;
+	}
+	
+	public double get_r2(Element element) {
+		return all_correlations.get(element).get_r2();
 	}
 	
 	// More to come
