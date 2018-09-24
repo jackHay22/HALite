@@ -21,4 +21,7 @@ public class ImageButton extends JButton {
 			e.printStackTrace();
 		}
 	}
+	public void set_text(String text) {
+		this.setText(text);
+	}
  }

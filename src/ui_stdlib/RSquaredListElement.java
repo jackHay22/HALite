@@ -24,16 +24,17 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
 		        	datastore.notify_update();
+		        	//System.out.println(get_current_selected());
 		        }
 		    }
 		});
 	}
 	
 	public void add_rsqrd_set(int size) {
-		Element element = (Element) selection_dropdown.getSelectedItem();
+		Element element = get_current_selected();
 		RSqrdAssocSet sqrd;
 		for (int i=0; i < size; i++) {
-			sqrd = new RSqrdAssocSet(element, "test");
+			sqrd = new RSqrdAssocSet(element, "2.3");
 			this.add(sqrd);
 			sqrd.on_start();
 		}
@@ -42,6 +43,10 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	@Override
 	public void refresh() {
 		//TODO: refresh rsqrd set
+	}
+	
+	private Element get_current_selected() {
+		return (Element) selection_dropdown.getSelectedItem();
 	}
 
 	@Override

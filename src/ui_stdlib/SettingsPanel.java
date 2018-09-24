@@ -17,7 +17,7 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
-	private int display_rsqrd_assocs = 4;
+	private int display_rsqrd_assocs = 4; //-1
 	
 	public SettingsPanel() {
 		super();
@@ -78,8 +78,8 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		constraints.anchor = GridBagConstraints.NORTH;
 		
 		PanelHeader header = new PanelHeader("Test", SystemThemes.MAIN);
+
 		header.add(get_rsqrd_dropdown(10));
-		
 		this.add(header, constraints);
 		header.on_start();
 		
