@@ -1,6 +1,5 @@
 package system_utils;
 
-import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -9,44 +8,37 @@ import ui_graphlib.Point;
 
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
-	private HashMap<TableKey, ArrayList<Float>> xrf_data;
-	private HashMap<TableKey, ArrayList<Float>> standards_data;
-	private HashMap<TableKey, ArrayList<Float>> means_data;
+	private DataTable xrf_data;
+	private DataTable standards_data;
+	private DataTable means_data;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
-		this.xrf_data = new HashMap<TableKey, ArrayList<Float>>();
-		this.standards_data = new HashMap<TableKey, ArrayList<Float>>();
-		this.means_data = new HashMap<TableKey, ArrayList<Float>>();
+		this.xrf_data = new DataTable();
+		this.standards_data = new DataTable();
+		this.means_data = new DataTable();
 	}
 	
-	public ArrayList<Float> get_xrf(TableKey elem) {
-		return this.xrf_data.get(elem);
-	}
-	
-	public ArrayList<Float> get_standards(TableKey elem) {
-		return this.standards_data.get(elem);
-	}
-	
-	public ArrayList<Float> get_means(TableKey elem) {
-		return this.means_data.get(elem);
-	}
-	
-	private ArrayList<Float> calculate_coords(Element elem) {
+	private ArrayList<Double> calculate_coords(Element elem) {
 		
 		// Get listing of standards and unknowns from means file
 		TableKey source_key = new TableKey("sourcefile");
-		ArrayList<String> source = get_means(source_key);
+		ArrayList<String> source = means_data.get_info(source_key);
 		
 		// Get listing of standards from standards file
 		TableKey value_key = new TableKey("Calibration values");
-		ArrayList<String> standards_names = get_standards(value_key);
+		ArrayList<String> standards_names = standards_data.get_info(value_key);
+		
+		// Get listing of standards from standards file
+		TableKey xrf_key = new TableKey("Name");
+		ArrayList<String> xrf_names = standards_data.get_info(xrf_key);
 		
 		// Get element CPS and calibration values for an element
-		ArrayList<Float> means = get_means(new TableKey(elem.name()));
-		ArrayList<Float> standards = get_standards(new TableKey(elem.name()));
+		ArrayList<Double> means = means_data.get_data(new TableKey(elem.name())).get_data();
+		ArrayList<Double> standards = standards_data.get_data(new TableKey(elem.name())).get_data();
+		ArrayList<Double> xrf = xrf_data.get_data(new TableKey(elem.name())).get_data();
 		
-		ArrayList<Float> coords = new ArrayList<Float>();
+		ArrayList<Double> coords = new ArrayList<Double>();
 		
 		// Define starting positions for unknowns/standards
 		int unknowns_index = 0;
@@ -58,8 +50,8 @@ public class DataStore {
 			
 			int standards_pos = standards_names.indexOf(source_id);
 			
-			float elem_cps = means.get(i);
-			float elem_standard = standards.get(standards_pos);
+			double elem_cps = means.get(i);
+			double elem_standard = standards.get(standards_pos);
 			
 			coords.add(elem_cps / elem_standard);
 			
@@ -77,8 +69,8 @@ public class DataStore {
 		
 		ArrayList<Point> points = new ArrayList<Point>();
 		
-		ArrayList<Float> x_coords = calculate_coords(x_elem);
-		ArrayList<Float> y_coords = calculate_coords(y_elem);
+		ArrayList<Double> x_coords = calculate_coords(x_elem);
+		ArrayList<Double> y_coords = calculate_coords(y_elem);
 		
 		// Combine coordinates into points ArrayList
 		for (int i = 0; i < x_coords.size(); i++) {
