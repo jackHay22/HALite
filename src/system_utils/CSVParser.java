@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CSVParser {
 	
@@ -71,27 +70,50 @@ public class CSVParser {
 		return raw_data;
 	}
 	
-	public HashMap<TableKey, ArrayList<Float>> data_from_csv(String path_name, String table_name) throws FileNotFoundException {
+	public static boolean isNumeric(String strNum) {
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException | NullPointerException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	public DataTable data_from_csv(String path_name, String table_name) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
-		HashMap<TableKey, ArrayList<Float>> table = new HashMap<TableKey, ArrayList<Float>>();
+		DataTable table = new DataTable();
 		
 		ArrayList<String[]> raw_data = this.get_raw_table_data(path_name, table_name);
 				
 		String[] column_names = raw_data.get(0);
 		
-		// Transpose the raw data to get ArrayLists consisting of elements in the columns
-		for (int i = 0; i < raw_data.get(0).length; i++) {
+		// Transpose the raw data and add to DataTable
+		for (int i = 0; i < raw_data.get(0).length; i ++) {
 			
 			TableKey current_column_name = new TableKey(column_names[i]);
-			ArrayList<Float> column_data = new ArrayList<Float>();
 			
-			for (int j = 0; j < raw_data.size(); j++) {
-				Float entry = Float.parseFloat(raw_data.get(j)[i]);
-				column_data.add(entry);
+			// Check if column contains Doubles
+			if (isNumeric(raw_data.get(1)[i])) {
+				ArrayList<Double> column_data = new ArrayList<Double>();
+				
+				for (int j = 1; j < raw_data.size(); j++) {
+					Double entry = Double.parseDouble(raw_data.get(j)[i]);
+					column_data.add(entry);
+				}
+				
+				table.put_data(current_column_name, column_data);
 			}
-			
-			table.put(current_column_name, column_data);
+			else {
+				ArrayList<String> column_data = new ArrayList<String>();
+				
+				for (int j = 1; j < raw_data.size(); j++) {
+					String entry = raw_data.get(j)[i];
+					column_data.add(entry);
+				}
+				
+				table.put_info(current_column_name, column_data);
+			}	
 		}
 		
 		return table;
