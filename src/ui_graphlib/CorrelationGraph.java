@@ -39,8 +39,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	public CorrelationGraph() {
 		super();
-
-		System.out.println("here3");
+		this.graph = new GraphPanel(450, 250);
 	}
 	
 	private void set_line_endpoints() {
@@ -125,8 +124,9 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
 		this.data_store = datastore;
+		this.graph.set_datastore(datastore);
+		
 	}
 
 	@Override
@@ -137,15 +137,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 
 	@Override
 	public void on_start() {
-		this.graph = new GraphPanel(450, 250);
-		this.graph.addComponentListener(new ComponentAdapter() {
-		    @Override
-		    public void componentResized(ComponentEvent e) {
-		        refresh();
-
-				System.out.println("here4");
-		    }
-		});
 		this.refresh();
 		this.graph.on_start();
 	}

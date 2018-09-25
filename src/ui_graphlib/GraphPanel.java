@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -312,6 +314,15 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		r_sqrd_panel.on_start();
 		y_label.on_start();
 		x_label.on_start();
+		
+		points_panel.addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		        if (data_store != null) {
+		        	data_store.notify_update();
+		        }
+		    }
+		});
 		
 		points_panel.setVisible(true);
 		header_panel.setVisible(true);
