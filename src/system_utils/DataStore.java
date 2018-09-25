@@ -63,19 +63,35 @@ public class DataStore {
 		
 		// Get table values from means and standards and calculate coordinates
 		for (int i = start_index; i < end_index; i++) {
-			String source_id = source.get(i);
 			
-			int standards_pos = names.indexOf(source_id);
-			
-			if (means.get(i) == null || standards.get(standards_pos) == null) {
+			if (means.get(i) == null) {
 				continue;
 			}
-			else {
-				double elem_cps = means.get(i);
-				double elem_standard = standards.get(standards_pos);
-				
-				coords.add(elem_cps / elem_standard);
+			double elem_cps = means.get(i);
+			
+			String source_id = source.get(i);
+			int pos = names.indexOf(source_id);
+			
+			if (stand_points) {
+				if (standards.get(pos) == null) {
+					continue;
+				}
+				else {
+					double elem_standard = standards.get(pos);
+					coords.add(elem_cps / elem_standard);
+				}
 			}
+			else {
+				if (xrf.get(pos) == null) {
+					continue;
+				}
+				else {
+					double elem_xrf = xrf.get(i);
+					coords.add(elem_cps / elem_xrf);
+				}
+			}
+			
+			
 		}
 		
 		return coords;
