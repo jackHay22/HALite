@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.math.*;
 import system_utils.DataStore;
 import system_utils.EquationPlot;
@@ -19,7 +20,7 @@ public class CorrelationGraph implements Refreshable {
 	private DataStore data_store;
 	private GraphPanel graph;
 	private CorrelationInfo data_to_plot;
-
+	private HashMap<String, PointSet> data_sets;
 	private EquationPlot eqn;
 
 	private Point line_min;
@@ -34,17 +35,16 @@ public class CorrelationGraph implements Refreshable {
 	private double bottom_buffer_x;
 	private double bottom_buffer_y;
 	
-	public CorrelationGraph(CorrelationInfo data) {
+	public CorrelationGraph() {
 		super();
-		this.data_to_plot = data;
 	}
 	
 	private void set_line_endpoints() {
 		double x = 0;
 		double y = for_y(0);
 		if (y < 0) {
-			x = 0;
-			y = for_x(0);
+			y = 0;
+			x = for_x(0);
 		}
 		line_min = new Point(x, y);
 		
@@ -71,10 +71,30 @@ public class CorrelationGraph implements Refreshable {
 	
 	@Override
 	public void refresh() {
-		
+		//data_sets = data_store.get_correlation_info();
+		this.eqn = data_to_plot.get_equation();
+		//ArrayList<PointSet> point_sets = new ArrayList<PointSet>()
+		//point_sets.add(data_sets.get("standards"));
+		//point_sets.add(data_sets.get("unknowns"));
+		//this.graph.set_point_sets(point_sets);
+		this.graph.refresh();
+		set_vals();
 		this.graph.refresh();
 	}
+	
+	private void set_vals() {
+		this.draw_width = graph.get_width();
+		this.draw_height = graph.get_height();
+		this.x_ratio = graph.get_x_r();
+		this.y_ratio = graph.get_y_r();
+		set_line_endpoints();
+	}
 
+	public void toggle_unknowns() {
+		data_sets.get("unknowns").toggle_render();
+		refresh();
+	}
+	
 	@Override
 	public void set_datastore(DataStore datastore) {
 		// TODO Auto-generated method stub
@@ -89,13 +109,8 @@ public class CorrelationGraph implements Refreshable {
 
 	@Override
 	public void on_start() {
-		this.eqn = data_to_plot.get_equation();
 		this.graph = new GraphPanel(450, 250);
-		this.draw_width = graph.get_width();
-		this.draw_height = graph.get_height();
-		this.x_ratio = graph.get_x_r();
-		this.y_ratio = graph.get_y_r();
-		set_line_endpoints();
+		this.refresh();
 	}
 
 }

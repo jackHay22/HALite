@@ -77,6 +77,10 @@ public class PointSet implements Refreshable {
 		return max_y;
 	}
 	
+	public Color get_color() {
+		return this.color;
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
@@ -87,6 +91,10 @@ public class PointSet implements Refreshable {
 	
 	public boolean do_render() {
 		return render;
+	}
+	
+	public void toggle_render() {
+		this.render = !this.render;
 	}
 
 	public ArrayList<Point> get_points() {

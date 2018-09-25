@@ -39,6 +39,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	private Point left_point;
 	private Point right_point;
 	private boolean do_place_line;
+	private Color current_color;
 	
 	public GraphPanel(int width, int height) {
 		super();
@@ -92,11 +93,23 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 			lst.add(temp);
 		}
 		
-		PointSet set = new PointSet(lst, Color.red, "x_axis", "y_axis", "x vs y", true);
+		PointSet set = new PointSet(lst, SystemThemes.HIGHLIGHT, "x_axis", "y_axis", "x vs y", true);
 		
 		point_sets = new ArrayList<PointSet>();
 		
 		point_sets.add(set);
+		
+
+		ArrayList<Point> lst2 = new ArrayList<Point>();
+		
+		for (int i = 1; i <= 8; i++) {
+			Point temp = new Point(i,i*i);
+			lst2.add(temp);
+		}
+		
+		PointSet set2 = new PointSet(lst2, SystemThemes.MAIN, "x_axis", "y_axis", "x vs y", true);
+
+		point_sets.add(set2);
 		
 	}
 	
@@ -110,7 +123,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		for (int i = 0; i < point_sets.size(); i++) {
 			
 			ArrayList<Point> points = point_sets.get(i).get_points();
-
+			
 			if ((i == 0) && points.size() > 0) {
 				min_x = (int)Math.floor(points.get(0).get_x());
 				max_x = min_x;
@@ -171,16 +184,16 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		// Place the actual point with coords (draw_x, draw_y)
 		g.setColor(SystemThemes.BACKGROUND);
 		if (p.in_use()) {
-			g.setColor(SystemThemes.HIGHLIGHT);
-		}
-		g.drawOval((int)draw_x, (int)draw_y, 6,6);
-		
+			g.setColor(this.current_color);
+ 		}
+		g.drawOval((int)draw_x, (int)draw_y, 5,5);
 	}
 	
 	private void plot_points(Graphics2D g) {
 		
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
+				this.current_color = point_sets.get(i).get_color();
 				ArrayList<Point> points = point_sets.get(i).get_points();
 				for (int point_index = 0; point_index < points.size(); point_index++) {
 					place_point(points.get(point_index), g);
