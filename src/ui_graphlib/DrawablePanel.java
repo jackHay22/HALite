@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import system_utils.DataStore;
@@ -18,9 +17,9 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
+		//this.setMinimumSize(new Dimension(width, height));
 		this.manager = manager;
 		this.addMouseListener(this);
-		setPreferredSize(new Dimension(width, height));
 		this.setBorder(BorderFactory.createLineBorder(SystemThemes.MAIN, 2, true));
 	}
 	
@@ -48,6 +47,10 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 		
 	}
 	
+	public Dimension get_drawable_size() {
+		return this.getSize();
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	
@@ -64,6 +67,5 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 
 	@Override
 	public void on_start() {
-		
 	}
 }
