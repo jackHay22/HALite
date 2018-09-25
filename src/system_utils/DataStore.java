@@ -21,34 +21,51 @@ public class DataStore {
 	
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
 		
+		// Get element CPS data
+		ArrayList<Double> means = means_data.get_data(new TableKey(elem.name())).get_data();
+		
 		// Get listing of standards and unknowns from means file
 		TableKey source_key = new TableKey("sourcefile");
 		ArrayList<String> source = means_data.get_info(source_key);
 		
-		// Get listing of standards from standards file
-		TableKey value_key = new TableKey("Calibration values");
-		ArrayList<String> standards_names = standards_data.get_info(value_key);
+		ArrayList<String> names;
 		
-		// Get listing of standards from standards file
-		TableKey xrf_key = new TableKey("Name");
-		ArrayList<String> xrf_names = standards_data.get_info(xrf_key);
-		
-		// Get element CPS and calibration values for an element
-		ArrayList<Double> means = means_data.get_data(new TableKey(elem.name())).get_data();
+		if (stand_points) {
+			// Get listing of standards from standards file
+			TableKey value_key = new TableKey("Calibration values");
+			names = standards_data.get_info(value_key);
+		}
+		else {
+			// Get listing of standards from standards file
+			TableKey xrf_key = new TableKey("Name");
+			names = xrf_data.get_info(xrf_key);
+		}
+
 		ArrayList<Double> standards = standards_data.get_data(new TableKey(elem.name())).get_data();
 		ArrayList<Double> xrf = xrf_data.get_data(new TableKey(elem.name())).get_data();
 		
 		ArrayList<Double> coords = new ArrayList<Double>();
 		
 		// Define starting positions for unknowns/standards
-		int unknowns_index = 0;
-		int standards_index = 0;
+		ArrayList<String> note_vals = this.means_data.get_info(new TableKey("note"));
+		
+		int start_index;
+		int end_index;
+		
+		if (stand_points) {
+			start_index = note_vals.indexOf("standard");
+			end_index = note_vals.lastIndexOf("standard");
+		}
+		else {
+			start_index = note_vals.indexOf("unknown");
+			end_index = note_vals.lastIndexOf("unknown");
+		}
 		
 		// Get table values from means and standards and calculate coordinates
-		for (int i = standards_index; i < standards.size(); i++) {
+		for (int i = start_index; i < end_index; i++) {
 			String source_id = source.get(i);
 			
-			int standards_pos = standards_names.indexOf(source_id);
+			int standards_pos = names.indexOf(source_id);
 			
 			if (means.get(i) == null || standards.get(standards_pos) == null) {
 				continue;
