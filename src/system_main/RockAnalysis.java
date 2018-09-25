@@ -34,13 +34,13 @@ public class RockAnalysis  {
         		CorrelationGraph test_correlation = new CorrelationGraph();
         		test_correlation.set_datastore(loaded_datastore);
         		
-        		GraphPanel test_graph_two = new GraphPanel(500, 300);
-        		test_graph_two.set_datastore(loaded_datastore);
+        		CorrelationGraph test_correlation2 = new CorrelationGraph();
+        		test_correlation.set_datastore(loaded_datastore);
         		
         		main_window.add_system_panel(test_settings);	
         		main_window.add_system_panel(test_correlation);
         		main_window.add_system_panel(test_settings_two);
-        		main_window.add_system_panel(test_graph_two);
+        		main_window.add_system_panel(test_correlation2);
         		
         		main_window.run();
             }

@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -130,7 +132,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	public void toggle_unknowns() {
 		data_sets.get("unknowns").toggle_render();
-		refresh();
+		data_store.notify_update();
 	}
 	
 	@Override
@@ -159,12 +161,19 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints.gridy = 1;
 		//constraints.anchor = GridBagConstraints.EAST;
 		this.add(toggle_unknowns, constraints);
+		
 	}
 
 	@Override
 	public void on_start() {
 		this.graph.on_start();
 		set_constraints();
+		toggle_unknowns.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        toggle_unknowns();
+		    }
+		});
 		this.refresh();
 	}
 

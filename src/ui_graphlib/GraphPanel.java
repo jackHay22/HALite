@@ -200,6 +200,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
+			data_store.notify_update();
 		}
 
 	}
@@ -268,7 +269,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	@Override
 	public void handle_mouse_event(MouseEvent e) {
 		point_selected(e);
-		data_store.notify_update();
 	}
 
 	public void set_point_sets(ArrayList<PointSet> pnts) {
