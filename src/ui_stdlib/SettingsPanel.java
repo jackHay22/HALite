@@ -76,13 +76,14 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = SystemThemes.get_grid_constraints();
 		constraints.anchor = GridBagConstraints.NORTH;
-		
+		constraints.ipady = SystemThemes.HEADER_PADDING;
 		PanelHeader header = new PanelHeader("Test", SystemThemes.MAIN);
 
 		header.add(get_rsqrd_dropdown(10));
 		this.add(header, constraints);
 		header.on_start();
 		
+		constraints.ipady = 0;
 		constraints.gridy = 1;
 		constraints.weighty = 1;
 
