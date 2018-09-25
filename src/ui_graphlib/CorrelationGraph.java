@@ -152,9 +152,12 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints.gridx = 0;
 		this.constraints.gridy = 0;
 		constraints.weighty = 1;
+		constraints.gridwidth = 2;
 		constraints.fill = GridBagConstraints.BOTH;
 		this.add(this.graph, constraints);
 		constraints.weighty = 0;
+		constraints.gridwidth = 1;
+		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
 		this.add(toggle_unknowns, constraints);
 		this.refresh();
