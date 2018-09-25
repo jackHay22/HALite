@@ -2,7 +2,6 @@ package ui_stdlib;
 
 import java.awt.Dimension;
 import java.awt.Image;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
