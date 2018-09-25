@@ -1,6 +1,5 @@
 package ui_stdlib;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,7 +21,6 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 	public SettingsPanel() {
 		super();
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
-		setLayout(new BorderLayout());
 	}
 	
 	@Override
