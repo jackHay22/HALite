@@ -17,14 +17,14 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
-		//this.setMinimumSize(new Dimension(width, height));
 		this.manager = manager;
 		this.addMouseListener(this);
 		this.setBorder(BorderFactory.createLineBorder(SystemThemes.MAIN, 2, true));
+		System.out.println("here");
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) { 
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 =(Graphics2D)g;
 		manager.draw_components(g2);   

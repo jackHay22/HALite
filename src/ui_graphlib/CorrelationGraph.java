@@ -39,6 +39,8 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	public CorrelationGraph() {
 		super();
+
+		System.out.println("here3");
 	}
 	
 	private void set_line_endpoints() {
@@ -59,7 +61,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		line_max = new Point(x, y);
 		
 		graph.set_endpoints(line_min, line_max);
-		
 	}
 	
 	private double for_y(double x) {
@@ -73,15 +74,40 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	@Override
 	public void refresh() {
-		//data_sets = data_store.get_correlation_info();
+		// Once data store has these we can proceed
+		//data_to_plot = data_store.get_correlation_info();
+		//data_sets = data_to_plot.get_data();
 		//this.eqn = data_to_plot.get_equation();
-		//ArrayList<PointSet> point_sets = new ArrayList<PointSet>()
+		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
 		//point_sets.add(data_sets.get("standards"));
 		//point_sets.add(data_sets.get("unknowns"));
-		//this.graph.set_point_sets(point_sets);
-		//this.graph.refresh();
+		point_sets = set_fake_vals();
+		this.graph.set_point_sets(point_sets);
+		this.graph.refresh();
 		//set_vals();
 		this.graph.refresh();
+		this.revalidate();
+	}
+	
+	private ArrayList<PointSet> set_fake_vals() {
+
+		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
+		
+		ArrayList<Point> lst = new ArrayList<Point>();
+		
+		for (int i = 10; i <= 31; i++) {
+			Point temp = new Point(i,i);
+			lst.add(temp);
+		}
+		
+		PointSet set = new PointSet(lst, Color.red, "x_axis", "y_axis", "x vs y", true);
+		
+		point_sets = new ArrayList<PointSet>();
+		
+		point_sets.add(set);
+		
+		return point_sets;
+		
 	}
 	
 	private void set_vals() {
@@ -91,7 +117,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.y_ratio = graph.get_y_r();
 		set_line_endpoints();
 	}
-
+	
 	public void toggle_unknowns() {
 		data_sets.get("unknowns").toggle_render();
 		refresh();
@@ -116,6 +142,8 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		    @Override
 		    public void componentResized(ComponentEvent e) {
 		        refresh();
+
+				System.out.println("here4");
 		    }
 		});
 		this.refresh();

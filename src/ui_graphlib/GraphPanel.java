@@ -52,7 +52,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	public GraphPanel(int width, int height) {
 		super();
 		this.points_panel = new DrawablePanel(this, 450, 250);
-		
+
 		setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
 		this.header_panel = new PanelHeader("GRAPH TITLE", SystemThemes.MAIN);
@@ -62,7 +62,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		this.draw_width = width;
 		this.draw_height = height;
-		set_fake_vals();
 	}
 
 	public double get_x_r() {
@@ -98,30 +97,13 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		points_panel.refresh();
 	}
 	
-	private void set_fake_vals() {
-
-		ArrayList<Point> lst = new ArrayList<Point>();
-		
-		for (int i = 10; i <= 31; i++) {
-			Point temp = new Point(i,i);
-			lst.add(temp);
-		}
-		
-		PointSet set = new PointSet(lst, Color.red, "x_axis", "y_axis", "x vs y", true);
-		
-		point_sets = new ArrayList<PointSet>();
-		
-		point_sets.add(set);
-		
-	}
-	
 	private void draw_graph() {
 		set_labels();
 		set_ratio();
 	}
 	
 	private void set_ratio() {
-		
+
 		for (int i = 0; i < point_sets.size(); i++) {
 			
 			ArrayList<Point> points = point_sets.get(i).get_points();
@@ -193,7 +175,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void plot_points(Graphics2D g) {
-		
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
 				ArrayList<Point> points = point_sets.get(i).get_points();
@@ -273,9 +254,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 
 	@Override
 	public void draw_components(Graphics2D g) {
-		plot_points(g);
-		if (do_place_line) {
-			place_line(g);
+		if (point_sets != null) {
+
+			plot_points(g);
+			if (do_place_line) {
+				place_line(g);
+			}
 		}
 	}
 
@@ -285,8 +269,11 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		data_store.notify_update();
 	}
 
-	@Override
-	public void on_start() {
+	public void set_point_sets(ArrayList<PointSet> pnts) {
+		point_sets = pnts;
+	}
+	
+	private void set_constraints() {
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.gridwidth = 2;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
@@ -313,6 +300,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		constraints.weighty = 0.0;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
 		this.add(this.x_label, constraints);
+	}
+	
+	@Override
+	public void on_start() {
+		
+		set_constraints();
 		
 		points_panel.on_start();
 		header_panel.on_start();
