@@ -11,6 +11,7 @@ public class SystemThemes {
 	public static Color HIGHLIGHT = new Color(255, 61, 46);
 	
 	private static final int INSET = 5;
+	public static final int HEADER_PADDING = 5;
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();

@@ -1,6 +1,7 @@
 package system_main;
 
 import ui_framework.SystemWindow;
+import ui_graphlib.CorrelationGraph;
 import ui_graphlib.GraphPanel;
 import ui_stdlib.SettingsPanel;
 import java.awt.EventQueue;
@@ -30,6 +31,8 @@ public class RockAnalysis  {
         		
         		GraphPanel test_graph = new GraphPanel(450, 250);
         		test_graph.set_datastore(loaded_datastore);
+        		//CorrelationGraph test_correlation = new CorrelationGraph();
+        		//test_correlation.set_datastore(loaded_datastore);
         		
         		GraphPanel test_graph_two = new GraphPanel(500, 300);
         		test_graph_two.set_datastore(loaded_datastore);
