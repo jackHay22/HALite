@@ -3,6 +3,8 @@ package ui_graphlib;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -40,10 +42,12 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	private double bottom_buffer_y;
 	
 	private ImageRadioButton toggle_unknowns;
+	private GridBagConstraints constraints;
 	
 	public CorrelationGraph() {
 		super();
-		this.setLayout(new GridLayout(1,0));
+		this.setLayout(new GridBagLayout());
+		this.constraints = SystemThemes.get_grid_constraints();
 		this.graph = new GraphPanel(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
 		toggle_unknowns = new ImageRadioButton();
@@ -145,9 +149,14 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	@Override
 	public void on_start() {
 		this.graph.on_start();
-		this.add(this.graph);
-		//TODO: add toggle button
-		//this.add(toggle_unknowns);
+		this.constraints.gridx = 0;
+		this.constraints.gridy = 0;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.BOTH;
+		this.add(this.graph, constraints);
+		constraints.weighty = 0;
+		this.constraints.gridy = 1;
+		this.add(toggle_unknowns, constraints);
 		this.refresh();
 	}
 
