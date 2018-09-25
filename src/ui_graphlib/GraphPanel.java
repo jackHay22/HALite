@@ -1,15 +1,18 @@
 package ui_graphlib;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.math.*;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.PanelHeader;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.VerticalPanel;
 
 @SuppressWarnings("serial")
 public class GraphPanel extends ui_framework.SystemPanel implements DrawableManager, MouseListener {
@@ -17,6 +20,12 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	private ArrayList<PointSet> point_sets;
 	private DrawablePanel points_panel;
+	private PanelHeader header_panel;
+	private PanelHeader r_sqrd_panel;
+	private VerticalPanel y_label;
+	private PanelHeader x_label;
+	
+	private GridBagConstraints constraints;
 	private DataStore data_store;
 	
 	
@@ -44,9 +53,15 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		super();
 		this.points_panel = new DrawablePanel(this, 450, 250);
 		
+		setLayout(new GridBagLayout());
+		this.constraints = SystemThemes.get_grid_constraints();
+		this.header_panel = new PanelHeader("TITLE", SystemThemes.MAIN);
+		this.r_sqrd_panel = new PanelHeader("EQUATION HERE", SystemThemes.MAIN);
+		this.y_label = new VerticalPanel("test", SystemThemes.MAIN);
+		this.x_label = new PanelHeader("x label", SystemThemes.MAIN);
+		
 		this.draw_width = width;
 		this.draw_height = height;
-		this.add(points_panel);
 		set_fake_vals();
 	}
 
@@ -272,9 +287,40 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 
 	@Override
 	public void on_start() {
-		points_panel.on_start();
-		this.setVisible(true);
+		this.constraints.anchor = GridBagConstraints.NORTH;
+		this.constraints.gridwidth = 2;
+		this.add(this.header_panel, constraints);
+
+		this.constraints.gridy = 1;
+		this.constraints.gridx = 1;
+		this.constraints.gridwidth = 1;
+		this.add(this.r_sqrd_panel, constraints);
+		
+		this.constraints.weighty = 1;
+		this.constraints.gridy = 2;
+		this.constraints.weightx = 0.2;
+		this.constraints.gridx = 0;
+		this.add(this.y_label, constraints);
+		this.constraints.weightx = 0.8;
+		this.constraints.gridx = 1;
+		this.add(points_panel, constraints);
+		
+		this.constraints.gridy = 3;
+		this.constraints.anchor = GridBagConstraints.SOUTH;
+		this.add(this.x_label, constraints);
+		
+		this.points_panel.on_start();
+		this.header_panel.on_start();
+		this.r_sqrd_panel.on_start();
+		this.y_label.on_start();
+		this.x_label.on_start();
+		
 		points_panel.setVisible(true);
+		this.header_panel.setVisible(true);
+		this.r_sqrd_panel.setVisible(true);
+		this.y_label.setVisible(true);
+		this.x_label.setVisible(true);
+		this.setVisible(true);
 	}
 
 	@Override
