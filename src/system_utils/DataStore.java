@@ -19,7 +19,7 @@ public class DataStore {
 		this.means_data = new DataTable();
 	}
 	
-	private ArrayList<Double> calculate_coords(Element elem) {
+	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
 		
 		// Get listing of standards and unknowns from means file
 		TableKey source_key = new TableKey("sourcefile");
@@ -50,17 +50,21 @@ public class DataStore {
 			
 			int standards_pos = standards_names.indexOf(source_id);
 			
-			double elem_cps = means.get(i);
-			double elem_standard = standards.get(standards_pos);
-			
-			coords.add(elem_cps / elem_standard);
-			
+			if (means.get(i) == null || standards.get(standards_pos) == null) {
+				continue;
+			}
+			else {
+				double elem_cps = means.get(i);
+				double elem_standard = standards.get(standards_pos);
+				
+				coords.add(elem_cps / elem_standard);
+			}
 		}
 		
 		return coords;
 	}
 	
-	private PointSet create_pointset(Element x_elem, Element y_elem) {
+	private PointSet create_pointset(Element x_elem, Element y_elem, Boolean standards) {
 		String x_axis = x_elem.name();
 		String y_axis = y_elem.name();
 		String title = x_axis + " vs. " + y_axis;
@@ -69,8 +73,8 @@ public class DataStore {
 		
 		ArrayList<Point> points = new ArrayList<Point>();
 		
-		ArrayList<Double> x_coords = calculate_coords(x_elem);
-		ArrayList<Double> y_coords = calculate_coords(y_elem);
+		ArrayList<Double> x_coords = calculate_coords(x_elem, standards);
+		ArrayList<Double> y_coords = calculate_coords(y_elem, standards);
 		
 		// Combine coordinates into points ArrayList
 		for (int i = 0; i < x_coords.size(); i++) {
@@ -96,6 +100,16 @@ public class DataStore {
 		this.means_data = parser.data_from_csv(means.get(0), means.get(1));
 		
 		
+		
+	}
+	
+	public CorrelationInfo get_correlation_info(Element x, Element y) {
+		PointSet standards = create_pointset(x, y, true);
+		PointSet unknowns = create_pointset(x, y, false);
+		
+		ElementPair pair = new ElementPair(x, y, standards, unknowns);
+		
+		return new CorrelationInfo(pair);
 	}
 	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {
