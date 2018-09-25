@@ -3,6 +3,8 @@ package ui_graphlib;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import ui_stdlib.SystemThemes;
 import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")
-public class CorrelationGraph implements Refreshable {
+public class CorrelationGraph extends ui_framework.SystemPanel {
 	//extends SystemPanel 
 	private DataStore data_store;
 	private GraphPanel graph;
@@ -72,13 +74,13 @@ public class CorrelationGraph implements Refreshable {
 	@Override
 	public void refresh() {
 		//data_sets = data_store.get_correlation_info();
-		this.eqn = data_to_plot.get_equation();
+		//this.eqn = data_to_plot.get_equation();
 		//ArrayList<PointSet> point_sets = new ArrayList<PointSet>()
 		//point_sets.add(data_sets.get("standards"));
 		//point_sets.add(data_sets.get("unknowns"));
 		//this.graph.set_point_sets(point_sets);
-		this.graph.refresh();
-		set_vals();
+		//this.graph.refresh();
+		//set_vals();
 		this.graph.refresh();
 	}
 	
@@ -110,7 +112,14 @@ public class CorrelationGraph implements Refreshable {
 	@Override
 	public void on_start() {
 		this.graph = new GraphPanel(450, 250);
+		this.graph.addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		        refresh();
+		    }
+		});
 		this.refresh();
+		this.graph.on_start();
 	}
 
 }
