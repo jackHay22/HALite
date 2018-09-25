@@ -50,7 +50,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints = SystemThemes.get_grid_constraints();
 		this.graph = new GraphPanel(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
-		toggle_unknowns = new ImageRadioButton();
+		toggle_unknowns = new ImageRadioButton("/buttons/blank_button.png");
 	}
 	
 	private void set_line_endpoints() {
