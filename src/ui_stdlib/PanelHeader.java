@@ -18,7 +18,7 @@ public class PanelHeader extends ui_framework.SystemPanel {
 		super();
 		this.setBackground(color);
 		this.constraint_loc = 0;
-		this.add(new JLabel(title));
+		this.add(new JLabel(title), constraints);
 		this.constraint_loc ++;
 	}
 		
@@ -29,9 +29,10 @@ public class PanelHeader extends ui_framework.SystemPanel {
 		}
 	}
 	
-	public void add_header_component(ui_framework.SystemPanel c) {
+	public void add_header_component(ui_framework.SystemPanel c, int weight) {
 		constraints.gridx = this.constraint_loc;
-		this.add(c);
+		constraints.weightx = weight;
+		this.add(c, constraints);
 		this.constraint_loc ++;
 		add_refreshable(c);
 	}

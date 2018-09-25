@@ -22,7 +22,7 @@ public class RSqrdAssocSet extends SystemPanel {
 		Border border = BorderFactory.createLineBorder(SystemThemes.BACKGROUND);
 
 		element = new JButton(element2.toString());
-		value = new JButton("2.0");
+		value = new JButton(val);
 		
 		element.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 10, 4, 10)));
