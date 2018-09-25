@@ -145,10 +145,8 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void on_start() {
-		this.graph.on_start();
+	
+	private void set_constraints() {
 		this.constraints.gridx = 0;
 		this.constraints.gridy = 0;
 		constraints.weighty = 1;
@@ -159,7 +157,14 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
+		//constraints.anchor = GridBagConstraints.EAST;
 		this.add(toggle_unknowns, constraints);
+	}
+
+	@Override
+	public void on_start() {
+		this.graph.on_start();
+		set_constraints();
 		this.refresh();
 	}
 
