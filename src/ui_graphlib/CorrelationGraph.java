@@ -139,7 +139,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
 		this.graph.set_datastore(datastore);
-		
 	}
 
 	@Override
