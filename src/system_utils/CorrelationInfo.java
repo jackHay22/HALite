@@ -74,8 +74,8 @@ public class CorrelationInfo {
 		PointSet standards = data_to_plot.get_standards();
 		PointSet unknowns = data_to_plot.get_unknowns();
 		
-		data.put("Standards", standards);
-		data.put("Unknowns", unknowns);
+		data.put("standard", standards);
+		data.put("unknown", unknowns);
 		
 		return data;
 	}

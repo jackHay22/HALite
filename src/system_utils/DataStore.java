@@ -200,6 +200,10 @@ public class DataStore {
 		notify_update();
 	}
 	
+	public int get_elem_num() {
+		return this.elem_num;
+	}
+	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
 		ArrayList<Pair> pairs = new ArrayList<Pair>();
 		int elem_num = this.elem_num;
