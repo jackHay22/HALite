@@ -38,6 +38,7 @@ public class DataStore {
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
 		
 		// Get element CPS data
+		System.out.println("Element: " + elem.name());
 		ArrayList<Double> means = means_data.get_data(new TableKey(elem.name())).get_data();
 		
 		// Get listing of standards and unknowns from means file

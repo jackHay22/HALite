@@ -5,6 +5,9 @@ import ui_graphlib.CorrelationGraph;
 import ui_graphlib.GraphPanel;
 import ui_stdlib.SettingsPanel;
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 import system_utils.DataStore;
 
 public class RockAnalysis  {
@@ -22,6 +25,26 @@ public class RockAnalysis  {
         		main_window.set_minimum_size(window_width, window_height);
         		
         		DataStore loaded_datastore = new DataStore(main_window);
+        		
+        		ArrayList<String> means = new ArrayList<String>();
+        		ArrayList<String> xrf = new ArrayList<String>();
+        		ArrayList<String> standards = new ArrayList<String>();
+        		
+        		means.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/means.csv");
+        		means.add("means");
+        		
+        		xrf.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/xrf.csv");
+        		xrf.add("XRF_DATA_RUN_229");
+        		
+        		standards.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/standards.csv");
+        		standards.add("standards");
+        		
+        		try {
+					loaded_datastore.import_data(xrf, standards, means);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		
         		SettingsPanel test_settings = new SettingsPanel();
         		test_settings.set_datastore(loaded_datastore);

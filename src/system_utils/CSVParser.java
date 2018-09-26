@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CSVParser {
 	
@@ -15,27 +16,26 @@ public class CSVParser {
 	private ArrayList<String[]> get_raw_table_data(String path_name, String table_name) throws FileNotFoundException {
 		String current_line = "";
 		String delimiter = ",";
-
+		
 		BufferedReader reader = new BufferedReader(new FileReader(path_name));
 		ArrayList<String[]> raw_data = new ArrayList<String[]>();
 		
 		// First, read in CSV file row by row
 		try {
 			Boolean found_data = false;
-			
 			// Parse CSV data from beginning of found data to ending marker
 			while ((current_line = reader.readLine()) != null) {
 				// Get data from the current row
 				String[] row_data = current_line.split(delimiter);
 				
 				// Found beginning of desired table, skip this line (and comments) 
-				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1) == table_name) {
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals(table_name)) {
 					found_data = true;
 					continue;
 				}
 				
 				// Found end of desired table
-				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1) == "END") {
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
 					break;
 				}
 				
@@ -49,7 +49,7 @@ public class CSVParser {
 
 					// Add this array to the table
 					raw_data.add(row_data);
-					
+	
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -98,7 +98,15 @@ public class CSVParser {
 				ArrayList<Double> column_data = new ArrayList<Double>();
 				
 				for (int j = 1; j < raw_data.size(); j++) {
-					Double entry = Double.parseDouble(raw_data.get(j)[i]);
+					
+					Double entry;
+					
+					if (raw_data.get(j)[i].equals("")) {
+						entry = null;
+					}
+					else {
+						entry = Double.parseDouble(raw_data.get(j)[i]);
+					}
 					column_data.add(entry);
 				}
 				
