@@ -3,6 +3,7 @@ package system_utils;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.awt.Color;
 import ui_graphlib.PointSet;
@@ -173,8 +174,29 @@ public class DataStore {
 		
 	}
 	
-	public ElementCorrelationInfo get_elem_correlation_info(Element x) {
-		return this.correlations.get(x);
+	public CorrelationInfo get_elem_correlation_info(Element x, Element y) {
+		ElementCorrelationInfo x_correlations = this.correlations.get(x);
+		
+		return x_correlations.get_corr(y);
+	}
+	
+	public ArrayList<ElementPair> get_rsqrd_assoc_list(Element elem, Integer num) {
+		ArrayList<ElementPair> pairs = new ArrayList<ElementPair>();
+		
+		ElementCorrelationInfo elem_corr = this.correlations.get(elem);
+		ArrayList<CorrelationInfo> all_corr = elem_corr.get_all_corr();
+		
+		Collections.sort(all_corr, new CorrelationComp());
+		
+		for (int i = all_corr.size(); i > 0; i--) {
+			//pairs.add(all_corr.get(i));
+		}
+		
+		return pairs;
+	}
+	
+	public void set_selected_rsqrd_assocs(ArrayList<ElementPair> pairs) {
+		
 	}
 	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {

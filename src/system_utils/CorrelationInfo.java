@@ -68,7 +68,17 @@ public class CorrelationInfo {
 		return equation.get_r2();
 	}
 	
-	// More to come
+	public HashMap<String, PointSet> get_data() {
+		HashMap<String, PointSet> data = new HashMap<String, PointSet>();
+		
+		PointSet standards = data_to_plot.get_standards();
+		PointSet unknowns = data_to_plot.get_unknowns();
+		
+		data.put("Standards", standards);
+		data.put("Unknowns", unknowns);
+		
+		return data;
+	}
 	
 	public EquationPlot get_equation() {
 		return equation;

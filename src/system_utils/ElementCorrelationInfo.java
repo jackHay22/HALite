@@ -28,6 +28,14 @@ public class ElementCorrelationInfo {
 		return all_correlations.get(element).get_r2();
 	}
 	
+	public CorrelationInfo get_corr(Element y) {
+		return this.all_correlations.get(y);
+	}
+	
+	public ArrayList<CorrelationInfo> get_all_corr() {
+		return this.selected_elements;
+	}
+	
 	// More to come
 	
 }
