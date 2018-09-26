@@ -32,8 +32,8 @@ public class ElementCorrelationInfo {
 		return this.all_correlations.get(y);
 	}
 	
-	public ArrayList<CorrelationInfo> get_all_corr() {
-		return this.selected_elements;
+	public HashMap<Element, CorrelationInfo> get_all_corr() {
+		return this.all_correlations;
 	}
 	
 	// More to come

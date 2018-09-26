@@ -17,6 +17,8 @@ public class DataStore {
 	private DataTable means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
+	
+	private int elem_num;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
@@ -26,6 +28,8 @@ public class DataStore {
 		this.means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
+		
+		this.elem_num = 5;
 	}
 	
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
@@ -180,17 +184,28 @@ public class DataStore {
 		return x_correlations.get_corr(y);
 	}
 	
-	public ArrayList<ElementPair> get_rsqrd_assoc_list(Element elem, Integer num) {
-		ArrayList<ElementPair> pairs = new ArrayList<ElementPair>();
+	public void set_elem_num(Integer num) {
+		this.elem_num = num;
+	}
+	
+	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
+		ArrayList<Pair> pairs = new ArrayList<Pair>();
+		int elem_num = this.elem_num;
 		
 		ElementCorrelationInfo elem_corr = this.correlations.get(elem);
-		ArrayList<CorrelationInfo> all_corr = elem_corr.get_all_corr();
+		HashMap<Element, CorrelationInfo> all_corr = elem_corr.get_all_corr();
 		
-		Collections.sort(all_corr, new CorrelationComp());
+		// Listing of all elements
+		ArrayList<Element> elements = new ArrayList<Element>(Arrays.asList(Element.values()));
 		
-		for (int i = all_corr.size(); i > 0; i--) {
-			//pairs.add(all_corr.get(i));
+		for (int i = 0; i < elements.size(); i++) {
+			CorrelationInfo corr = all_corr.get(elements.get(i));
+			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
+			
+			pairs.add(curr_pair);
 		}
+		
+		Collections.sort(pairs, new PairComparison());
 		
 		return pairs;
 	}

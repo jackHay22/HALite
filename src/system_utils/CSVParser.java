@@ -50,7 +50,6 @@ public class CSVParser {
 					// Add this array to the table
 					raw_data.add(row_data);
 					
-					System.out.println("Current row data: " + row_data);
 				}
 			}
 		} catch (FileNotFoundException e) {
