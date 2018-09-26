@@ -87,16 +87,16 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	@Override
 	public void refresh() {
 		// Once data store has these we can proceed
-		//data_to_plot = data_store.get_correlation_info();
-		//data_sets = data_to_plot.get_data();
-		//this.eqn = data_to_plot.get_equation();
+		data_to_plot = data_store.get_correlation_info();
+		data_sets = data_to_plot.get_data();
+		this.eqn = data_to_plot.get_equation();
 		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
-		//point_sets.add(data_sets.get("standards"));
-		//point_sets.add(data_sets.get("unknowns"));
+		point_sets.add(data_sets.get("standard"));
+		point_sets.add(data_sets.get("unknown"));
 		point_sets = set_fake_vals();
 		this.graph.set_point_sets(point_sets);
 		this.graph.refresh();
-		//set_vals();
+		set_vals();
 		this.graph.refresh();
 		this.revalidate();
 	}
@@ -131,7 +131,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	}
 	
 	public void toggle_unknowns() {
-		data_sets.get("unknowns").toggle_render();
+		data_sets.get("unknown").toggle_render();
 		data_store.notify_update();
 	}
 	
