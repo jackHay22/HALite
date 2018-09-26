@@ -71,7 +71,8 @@ public class CSVParser {
 	
 	public static boolean isNumeric(String strNum) {
 	    try {
-	        double d = Double.parseDouble(strNum);
+	        @SuppressWarnings("unused")
+			double d = Double.parseDouble(strNum);
 	    } catch (NumberFormatException | NullPointerException nfe) {
 	        return false;
 	    }
