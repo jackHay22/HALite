@@ -35,7 +35,7 @@ public class RockAnalysis  {
         		test_correlation.set_datastore(loaded_datastore);
         		
         		CorrelationGraph test_correlation2 = new CorrelationGraph();
-        		test_correlation.set_datastore(loaded_datastore);
+        		test_correlation2.set_datastore(loaded_datastore);
         		
         		main_window.add_system_panel(test_settings);	
         		main_window.add_system_panel(test_correlation);
