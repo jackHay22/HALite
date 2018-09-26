@@ -1,11 +1,5 @@
 package system_utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import ui_graphlib.PointSet;
-import ui_graphlib.Point;
 import java.util.HashMap; 
 import java.util.ArrayList;
 
@@ -42,7 +36,8 @@ public class ElementCorrelationInfo {
 	}
 	
 	public void remove_selected(Element secondary) {
-		this.selected_elements.remove(secondary);
+		CorrelationInfo corr = this.all_correlations.get(secondary);
+		this.selected_elements.remove(corr);
 	}
 	
 	// More to come
