@@ -207,10 +207,16 @@ public class DataStore {
 		
 		Collections.sort(pairs, new PairComparison());
 		
+		
+		
 		return pairs;
 	}
 	
-	public void set_selected_rsqrd_assocs(ArrayList<ElementPair> pairs) {
+	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
+		
+	}
+	
+	public void remove_selected_rsqrd_assocs(Element primary, Element secondary) {
 		
 	}
 	

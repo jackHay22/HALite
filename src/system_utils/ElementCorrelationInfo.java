@@ -36,6 +36,15 @@ public class ElementCorrelationInfo {
 		return this.all_correlations;
 	}
 	
+	public void add_selected(Element secondary) {
+		CorrelationInfo corr = this.all_correlations.get(secondary);
+		this.selected_elements.add(corr);
+	}
+	
+	public void remove_selected(Element secondary) {
+		
+	}
+	
 	// More to come
 	
 }
