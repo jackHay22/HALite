@@ -42,7 +42,7 @@ public class ElementCorrelationInfo {
 	}
 	
 	public void remove_selected(Element secondary) {
-		
+		this.selected_elements.remove(secondary);
 	}
 	
 	// More to come

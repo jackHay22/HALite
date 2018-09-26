@@ -12,6 +12,9 @@ import ui_graphlib.Point;
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
 	
+	private Element primary;
+	private Element secondary;
+	
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
@@ -184,8 +187,17 @@ public class DataStore {
 		return x_correlations.get_corr(y);
 	}
 	
+	public CorrelationInfo get_correlation_info() {
+		ElementCorrelationInfo elem_corr_info = this.correlations.get(this.primary);
+		CorrelationInfo corr = elem_corr_info.get_corr(this.secondary);
+		
+		return corr;
+	}
+	
 	public void set_elem_num(Integer num) {
 		this.elem_num = num;
+		
+		notify_update();
 	}
 	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
@@ -207,22 +219,34 @@ public class DataStore {
 		
 		Collections.sort(pairs, new PairComparison());
 		
-		
+		// Remove all except elements with n highest r2 value
+		for (int j = 0; j < pairs.size() - elem_num; j++) {
+			pairs.remove(j);
+		}
 		
 		return pairs;
 	}
 	
 	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
+		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		
+		elem_corr.add_selected(secondary);
+		
+		notify_update();
 	}
 	
 	public void remove_selected_rsqrd_assocs(Element primary, Element secondary) {
+		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		
+		elem_corr.remove_selected(secondary);
+		
+		notify_update();
 	}
 	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {
 		
 	}
+	
 	public void notify_update() {
 		//on changes to data
 		this.window_parent.refresh();
