@@ -2,21 +2,29 @@ package system_utils;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_graphlib.Point;
 
 public class DataStore {
 	private ui_framework.SystemWindow window_parent;
+	
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
+	
+	private HashMap<Element, ElementCorrelationInfo> correlations;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
+		
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
+		
+		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 	}
 	
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
@@ -90,8 +98,6 @@ public class DataStore {
 					coords.add(elem_cps / elem_xrf);
 				}
 			}
-			
-			
 		}
 		
 		return coords;
@@ -123,6 +129,37 @@ public class DataStore {
 		return set;
 	}
 	
+	private void create_element_correlations() {
+		
+		// Listing of all elements
+		ArrayList<Element> elements = new ArrayList<Element>(Arrays.asList(Element.values()));
+		
+		// Make element correlations for all elements
+		for (int i = 0; i < elements.size(); i++) {
+			Element x_elem = elements.get(i);
+			HashMap<Element, CorrelationInfo> elem_corr = new HashMap<Element, CorrelationInfo>();
+			
+			for (int j = 0; i < elements.size(); j++) {
+				Element y_elem = elements.get(j);
+				
+				PointSet standards = create_pointset(x_elem, y_elem, true);
+				PointSet unknowns = create_pointset(x_elem, y_elem, false);
+				
+				ElementPair pair = new ElementPair(x_elem, y_elem, standards, unknowns);
+				
+				CorrelationInfo corr_info = new CorrelationInfo(pair);
+				
+				elem_corr.put(y_elem, corr_info);
+			}
+			
+			// Create new element correlation info object
+			ElementCorrelationInfo elem_info = new ElementCorrelationInfo(x_elem, elem_corr);
+			
+			// Save correlations to object
+			this.correlations.put(x_elem, elem_info);
+		}
+	}
+	
 	public void import_data(ArrayList<String> xrf, ArrayList<String> calibration, 
 							ArrayList<String> means) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
@@ -132,17 +169,12 @@ public class DataStore {
 		this.standards_data = parser.data_from_csv(calibration.get(0), calibration.get(1));
 		this.means_data = parser.data_from_csv(means.get(0), means.get(1));
 		
-		
+		create_element_correlations();
 		
 	}
 	
-	public CorrelationInfo get_correlation_info(Element x, Element y) {
-		PointSet standards = create_pointset(x, y, true);
-		PointSet unknowns = create_pointset(x, y, false);
-		
-		ElementPair pair = new ElementPair(x, y, standards, unknowns);
-		
-		return new CorrelationInfo(pair);
+	public ElementCorrelationInfo get_elem_correlation_info(Element x) {
+		return this.correlations.get(x);
 	}
 	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {
