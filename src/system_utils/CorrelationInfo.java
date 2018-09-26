@@ -1,10 +1,6 @@
 package system_utils;
 
-import java.io.FileNotFoundException;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import ui_graphlib.PointSet;
 import ui_graphlib.Point;
 

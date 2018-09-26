@@ -1,13 +1,8 @@
 package system_utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import ui_graphlib.PointSet;
 
 import java.util.HashMap; 
-import java.util.ArrayList;
 
 public class ElementPair {
 	private Element x_element;
