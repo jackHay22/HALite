@@ -66,6 +66,22 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		this.draw_height = height;
 	}
 
+	public void set_title(String s) {
+		
+	}
+	
+	public void set_r2_eqn_label(String s) {
+		
+	}
+	
+	public void set_x_label(String s) {
+		
+	}
+	
+	public void set_y_label(String s) {
+		
+	}
+	
 	public double get_x_r() {
 		return x_ratio;
 	}
