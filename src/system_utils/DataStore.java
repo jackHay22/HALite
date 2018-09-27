@@ -39,8 +39,6 @@ public class DataStore {
 		
 		ArrayList<Double> means;
 		
-		//System.out.println("Calculating coords for " + elem.name());
-		
 		if (means_data.contains_data(new TableKey(elem.name()))) {
 			means = means_data.get_data(new TableKey(elem.name())).get_data();
 		} else {
@@ -74,15 +72,12 @@ public class DataStore {
 			standards = temp_stds.get_data();
 		}
 		
-		//System.out.println("Element: " + elem.name());
-		//System.out.println("Standards: " + Arrays.toString(standards.toArray()));
-		
 		Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
 		ArrayList<Double> xrf;
 		
 		// If we have no data to calculate coords with, return an empty arraylist
 		if (temp_xrf == null) {
-			return new ArrayList<Double>();
+			xrf = new ArrayList<Double>();
 		}
 		else {
 			xrf = temp_xrf.get_data();
@@ -128,7 +123,7 @@ public class DataStore {
 				}
 			}
 			else {
-				if (xrf.get(pos) == null) {
+				if (xrf.isEmpty() || xrf.get(pos) == null) {
 					continue;
 				}
 				else {
