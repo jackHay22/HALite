@@ -278,16 +278,11 @@ public class DataStore {
 		
 		Collections.sort(pairs, new PairComparison());
 		
-
-		System.out.println("Num elems before: " + pairs.size());
-		System.out.println("Going to remove: " + (pairs.size() - elem_num));
-		
-
 		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
 		
 		// Remove all except elements with n highest r2 value
 		for (int j = pairs.size() - elem_num; j < pairs.size(); j++) {
-			n_pairs.add(pairs.get(j));
+			n_pairs.add(0, pairs.get(j));
 		}
 		
 		return n_pairs;
