@@ -36,6 +36,7 @@ public class EquationPlot {
 		// This outputs the y value for the provided x value
 		double y = 0;
 		for (int i = degree; i>= 0; i--) {
+
 			y += Math.pow(x, i)*coefficients.get(i);
 		}
 		return y;

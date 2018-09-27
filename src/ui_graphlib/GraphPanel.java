@@ -154,7 +154,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void place_line(Graphics2D g) {
-		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_x());
+		System.out.println((int)this.left_point.get_x() + " " + (int)this.left_point.get_y()+ " " +(int)this.right_point.get_x()+ " " +(int)this.right_point.get_y());
+		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_y());
 	}
 	
 	private void place_point(Point p, Graphics2D g) {

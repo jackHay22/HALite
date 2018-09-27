@@ -45,7 +45,7 @@ public class CorrelationInfo {
 		double x_1 = reg_obj.getSlope();
 		double r_2 = reg_obj.getRSquare();
 		
-		return new EquationPlot(r_2,1, x_0, x_1);
+		return new EquationPlot(r_2, 1, x_0, x_1);
 	}
 	
 	public void toggle() {
