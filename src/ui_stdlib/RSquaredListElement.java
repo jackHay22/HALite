@@ -29,6 +29,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		        if (backend_loaded) {
 		        	//element selection updated
 		        	datastore.notify_update();
+		        	//TODO: may not be calling correctly
 		        }
 		    }
 		});
@@ -43,7 +44,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		ArrayList<Pair> pair_list = datastore.get_rsqrd_assoc_list(current_elem_self);
 		
 		Element elem_temp;
-		String r2_temp;
+		Double r2_temp;
 		Pair current_pair;
 		RSqrdAssocSet temp_r2_set;
 		
@@ -51,7 +52,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			
 			current_pair = pair_list.get(i);
 			elem_temp = current_pair.get_elem();
-			r2_temp = Double.toString(current_pair.get_r2());
+			r2_temp = current_pair.get_r2();
 			
 			if (i >= graphical_associations.size()) {
 				//list smaller, add new
@@ -60,7 +61,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 				graphical_associations.add(temp_r2_set);
 			} else {
 				//reset values
-				graphical_associations.get(i).set(elem_temp, r2_temp);
+				graphical_associations.get(i).set(current_elem_self, elem_temp, r2_temp);
 			}
 			
 			//add new/reset element to window

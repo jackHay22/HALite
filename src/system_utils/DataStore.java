@@ -238,14 +238,10 @@ public class DataStore {
 		if (this.primary != null && this.secondary != null) {
 			ElementCorrelationInfo elem_corr_info = this.correlations.get(this.primary);
 			CorrelationInfo corr = elem_corr_info.get_corr(this.secondary);
-			
 			return corr;
 		}
 		
 		ElementCorrelationInfo elem_corr_info = this.correlations.get(Element.Zr);
-//		for (Element s : Element.values()) { 
-//            System.out.println(elem_corr_info.get_corr(s));
-//        } 
 		
 		CorrelationInfo corr = elem_corr_info.get_corr(Element.As);
 		
@@ -296,8 +292,10 @@ public class DataStore {
 	}
 	
 	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
-		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
+		this.primary = primary;
+		this.secondary = secondary;
 		
+		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		elem_corr.add_selected(secondary);
 		
 		notify_update();

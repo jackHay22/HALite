@@ -30,13 +30,13 @@ public class RockAnalysis  {
         		ArrayList<String> xrf = new ArrayList<String>();
         		ArrayList<String> standards = new ArrayList<String>();
         		
-        		means.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/means.csv");
+        		means.add("/Users/Ben/Desktop/CS 410/test/means.csv");
         		means.add("means");
         		
-        		xrf.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/xrf.csv");
+        		xrf.add("/Users/Ben/Desktop/CS 410/test/xrf.csv");
         		xrf.add("XRF_DATA_RUN_229");
         		
-        		standards.add("/Users/Oliver/Documents/Hamilton College Docs/HC Fall 2018/test_data/standards.csv");
+        		standards.add("/Users/Ben/Desktop/CS 410/test/standards.csv");
         		standards.add("standards");
         		
         		try {

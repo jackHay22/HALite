@@ -58,11 +58,12 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	private void set_line_endpoints() {
 		double x = 0;
 		double y = for_y(0);
+
 		if (y < 0) {
 			y = 0;
 			x = for_x(0);
 		}
-		line_min = new Point(x, y);
+		line_min = new Point(x, draw_height - y);
 		
 		x = draw_width;
 		y = for_y(x);
@@ -70,7 +71,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 			y = draw_height;
 			x = for_x(y);
 		}
-		line_max = new Point(x, y);
+		line_max = new Point(x, draw_height - y);
 		
 		graph.set_endpoints(line_min, line_max);
 	}
@@ -88,39 +89,16 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	public void refresh() {
 		// Once data store has these we can proceed
 		data_to_plot = data_store.get_correlation_info();
-		System.out.println(data_to_plot);
 		data_sets = data_to_plot.get_data();
 		this.eqn = data_to_plot.get_equation();
 		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
 		point_sets.add(data_sets.get("standard"));
 		point_sets.add(data_sets.get("unknown"));
-		point_sets = set_fake_vals();
 		this.graph.set_point_sets(point_sets);
 		this.graph.refresh();
 		set_vals();
 		this.graph.refresh();
 		this.revalidate();
-	}
-	
-	private ArrayList<PointSet> set_fake_vals() {
-
-		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
-		
-		ArrayList<Point> lst = new ArrayList<Point>();
-		
-		for (int i = 10; i <= 31; i++) {
-			Point temp = new Point(i,i);
-			lst.add(temp);
-		}
-		
-		PointSet set = new PointSet(lst, Color.red, "x_axis", "y_axis", "x vs y", true);
-		
-		point_sets = new ArrayList<PointSet>();
-		
-		point_sets.add(set);
-		
-		return point_sets;
-		
 	}
 	
 	private void set_vals() {
