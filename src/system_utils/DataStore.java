@@ -268,6 +268,9 @@ public class DataStore {
 		// Listing of all elements
 		ArrayList<Element> elements = new ArrayList<Element>(Arrays.asList(Element.values()));
 		
+		// Remove elem we are currently comparing to
+		elements.remove(elem);
+		
 		for (int i = 0; i < elements.size(); i++) {
 			CorrelationInfo corr = all_corr.get(elements.get(i));
 			
