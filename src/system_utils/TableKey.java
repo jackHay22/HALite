@@ -36,6 +36,33 @@ public class TableKey implements Comparable<TableKey> {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (this.getClass() != o.getClass()) return false;
+		TableKey key = (TableKey) o;
+		if (key.name != null && this.name != null) {
+			return (key.name.equals(this.name));
+		}
+		else {
+			return (key.string_name.equals(this.string_name));
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		if (this.name == null) {
+			int initial = 0;
+			for (char s : this.string_name.toCharArray()) {
+				initial += (int)s;
+			}
+			int result = (int) (initial ^ (initial >>> 32));
+			return result;
+		}
+        return name.hashCode();
+    }
+	
+	
+	@Override
 	public int compareTo(TableKey o) {
 		if (o.name != null && this.name != null) {
 			return compareElement(o.name);
@@ -43,5 +70,9 @@ public class TableKey implements Comparable<TableKey> {
 		else {
 			return compareString(o.string_name);
 		}
+	}
+	
+	public Element get_val() {
+		return this.name;
 	}
 }

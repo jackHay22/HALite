@@ -38,8 +38,15 @@ public class DataStore {
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
 		
 		// Get element CPS data
-		System.out.println("Element: " + elem.name());
-		ArrayList<Double> means = means_data.get_data(new TableKey(elem.name())).get_data();
+		//System.out.println("Element: " + elem.name());
+		
+		ArrayList<Double> means;
+		
+		if (means_data.contains_data(new TableKey(elem.name()))) {
+			means = means_data.get_data(new TableKey(elem.name())).get_data();
+		} else {
+			return null;
+		}
 		
 		// Get listing of standards and unknowns from means file
 		TableKey source_key = new TableKey("sourcefile");
@@ -57,8 +64,15 @@ public class DataStore {
 			TableKey xrf_key = new TableKey("Name");
 			names = xrf_data.get_info(xrf_key);
 		}
-
-		ArrayList<Double> standards = standards_data.get_data(new TableKey(elem.name())).get_data();
+		
+		Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
+		ArrayList<Double> standards;
+		
+		if (temp_stds == null) {
+			standards = new ArrayList<Double>();
+		} else {
+			standards = temp_stds.get_data();
+		}
 		ArrayList<Double> xrf = xrf_data.get_data(new TableKey(elem.name())).get_data();
 		
 		ArrayList<Double> coords = new ArrayList<Double>();
@@ -88,8 +102,11 @@ public class DataStore {
 			
 			String source_id = source.get(i);
 			int pos = names.indexOf(source_id);
-			
+			System.out.println(names.size() + " " + standards.size());
 			if (stand_points) {
+				if (pos < 0 || standards.size() == 0) {
+					continue;
+				}
 				if (standards.get(pos) == null) {
 					continue;
 				}
@@ -124,6 +141,10 @@ public class DataStore {
 		ArrayList<Double> x_coords = calculate_coords(x_elem, standards);
 		ArrayList<Double> y_coords = calculate_coords(y_elem, standards);
 		
+		if (x_coords == null || y_coords == null) {
+			return null;
+		}
+		
 		// Combine coordinates into points ArrayList
 		for (int i = 0; i < x_coords.size(); i++) {
 			if (x_coords.get(i) != null && y_coords.get(i) != null) {
@@ -148,17 +169,26 @@ public class DataStore {
 			Element x_elem = elements.get(i);
 			HashMap<Element, CorrelationInfo> elem_corr = new HashMap<Element, CorrelationInfo>();
 			
-			for (int j = 0; i < elements.size(); j++) {
+			for (int j = 0; j < elements.size(); j++) {
 				Element y_elem = elements.get(j);
 				
 				PointSet standards = create_pointset(x_elem, y_elem, true);
 				PointSet unknowns = create_pointset(x_elem, y_elem, false);
 				
-				ElementPair pair = new ElementPair(x_elem, y_elem, standards, unknowns);
+				if (standards != null) {
+					
+					ElementPair pair = new ElementPair(x_elem, y_elem, standards, unknowns);
+					
+					CorrelationInfo corr_info = new CorrelationInfo(pair);
+					
+					elem_corr.put(y_elem, corr_info);
+					
+					
+				} else {
+					elem_corr.put(y_elem, null);
+				}
 				
-				CorrelationInfo corr_info = new CorrelationInfo(pair);
 				
-				elem_corr.put(y_elem, corr_info);
 			}
 			
 			// Create new element correlation info object
@@ -189,8 +219,20 @@ public class DataStore {
 	}
 	
 	public CorrelationInfo get_correlation_info() {
-		ElementCorrelationInfo elem_corr_info = this.correlations.get(this.primary);
-		CorrelationInfo corr = elem_corr_info.get_corr(this.secondary);
+		
+		if (this.primary != null && this.secondary != null) {
+			ElementCorrelationInfo elem_corr_info = this.correlations.get(this.primary);
+			CorrelationInfo corr = elem_corr_info.get_corr(this.secondary);
+			
+			return corr;
+		}
+		
+		ElementCorrelationInfo elem_corr_info = this.correlations.get(Element.Zr);
+//		for (Element s : Element.values()) { 
+//            System.out.println(elem_corr_info.get_corr(s));
+//        } 
+		
+		CorrelationInfo corr = elem_corr_info.get_corr(Element.As);
 		
 		return corr;
 	}

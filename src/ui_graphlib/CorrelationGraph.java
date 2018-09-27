@@ -88,6 +88,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	public void refresh() {
 		// Once data store has these we can proceed
 		data_to_plot = data_store.get_correlation_info();
+		System.out.println(data_to_plot);
 		data_sets = data_to_plot.get_data();
 		this.eqn = data_to_plot.get_equation();
 		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();

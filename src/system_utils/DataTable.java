@@ -28,4 +28,10 @@ public class DataTable {
 	public ArrayList<String> get_info(TableKey key) {
 		return this.string_data.get(key);
 	}
+
+	public boolean contains_data(TableKey key) {
+		return this.data.containsKey(key);
+	}
+
 }
+
