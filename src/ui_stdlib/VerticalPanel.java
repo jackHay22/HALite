@@ -8,20 +8,24 @@ import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
 public class VerticalPanel extends ui_framework.SystemPanel {
+	private JLabel title;
 	public VerticalPanel(String text, Color color) {
 		super();
 		this.setBackground(color);
 		
 		AffineTransform transformer = new AffineTransform();
-		JLabel test = new JLabel("test");
-		
-		this.add(new JLabel(text));
+		this.title = new JLabel(text);
+		this.add(this.title);
 	}
 	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void set_text(String text) {
+		this.title.setText(text);
 	}
 
 	@Override

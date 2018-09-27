@@ -13,12 +13,14 @@ public class PanelHeader extends ui_framework.SystemPanel {
 	private GridBagConstraints constraints;
 	private int constraint_loc;
 	private ArrayList<Refreshable> refreshable_panels;
+	private JLabel title;
 	
 	public PanelHeader(String title, Color color) {
 		super();
 		this.setBackground(color);
 		this.constraint_loc = 0;
-		this.add(new JLabel(title), constraints);
+		this.title = new JLabel(title);
+		this.add(this.title, constraints);
 		this.constraint_loc ++;
 	}
 		
@@ -39,6 +41,10 @@ public class PanelHeader extends ui_framework.SystemPanel {
 
 	@Override
 	public void set_datastore(DataStore datastore) {
+	}
+	
+	public void set_text(String text) {
+		this.title.setText(text);
 	}
 
 	@Override
