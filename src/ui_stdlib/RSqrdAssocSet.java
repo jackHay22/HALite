@@ -17,9 +17,11 @@ public class RSqrdAssocSet extends SystemPanel {
 	private JButton value;
 	private boolean element_selected = false;
 	private DataStore datastore;
+	private Element this_element;
 	
 	public RSqrdAssocSet(Element element1, Element element2, String val) {
 		super();
+		this.this_element = element1;
 		this.setLayout(new GridLayout(2,0));
 		Border border = BorderFactory.createLineBorder(SystemThemes.BACKGROUND);
 
@@ -38,11 +40,11 @@ public class RSqrdAssocSet extends SystemPanel {
 		    	if (!element_selected) {	
 					element.setOpaque(true);
 					element_selected = !element_selected;
-					datastore.set_selected_rsqrd_assocs(element1, element2);
+					datastore.set_selected_rsqrd_assocs(this_element, element2);
 		    	} else {
 		    		element.setOpaque(false);
 		    		element_selected = !element_selected;
-		    		datastore.remove_selected_rsqrd_assocs(element1, element2);
+		    		datastore.remove_selected_rsqrd_assocs(this_element, element2);
 		    	}
 		    }
 		});
@@ -55,7 +57,8 @@ public class RSqrdAssocSet extends SystemPanel {
 	public void refresh() {
 	}
 	
-	public void set(system_utils.Element element2, String val) {
+	public void set(Element element1, Element element2, String val) {
+		this.this_element = element1;
 		element.setText(element2.toString());
 		value.setText(val);
 	}

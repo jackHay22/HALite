@@ -60,7 +60,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 				graphical_associations.add(temp_r2_set);
 			} else {
 				//reset values
-				graphical_associations.get(i).set(elem_temp, r2_temp);
+				graphical_associations.get(i).set(current_elem_self, elem_temp, r2_temp);
 			}
 			
 			//add new/reset element to window
