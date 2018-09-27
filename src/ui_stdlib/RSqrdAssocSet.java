@@ -9,14 +9,16 @@ import javax.swing.border.Border;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
+import system_utils.Element;
 
 @SuppressWarnings("serial")
 public class RSqrdAssocSet extends SystemPanel {
 	private JButton element;
 	private JButton value;
 	private boolean element_selected = false;
+	private DataStore datastore;
 	
-	public RSqrdAssocSet(system_utils.Element element2, String val) {
+	public RSqrdAssocSet(Element element1, Element element2, String val) {
 		super();
 		this.setLayout(new GridLayout(2,0));
 		Border border = BorderFactory.createLineBorder(SystemThemes.BACKGROUND);
@@ -36,15 +38,16 @@ public class RSqrdAssocSet extends SystemPanel {
 		    	if (!element_selected) {	
 					element.setOpaque(true);
 					element_selected = !element_selected;
-					//TODO: notify selected
+					datastore.set_selected_rsqrd_assocs(element1, element2);
 		    	} else {
 		    		element.setOpaque(false);
 		    		element_selected = !element_selected;
-		    		//TODO notify selected
+		    		datastore.remove_selected_rsqrd_assocs(element1, element2);
 		    	}
 		    }
 		});
 	}
+	
 	public void try_toggle_value() {
 		//TODO: toggle this value, untoggle others (DataStore)
 	}
@@ -54,10 +57,15 @@ public class RSqrdAssocSet extends SystemPanel {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void set(system_utils.Element element2, String val) {
+		element.setText(element2.toString());
+		value.setText(val);
+	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
+		this.datastore = datastore;
 
 	}
 
@@ -73,5 +81,4 @@ public class RSqrdAssocSet extends SystemPanel {
 		this.add(value);
 		this.setVisible(true);
 	}
-
 }

@@ -61,14 +61,14 @@ public class SettingsPanel extends ui_framework.SystemPanel{
 		JComboBox<String> rsqrd_total = new JComboBox<>(string_list.toArray(new String[0]));
 		rsqrd_total.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		        display_rsqrd_assocs = Integer.valueOf((String)rsqrd_total.getSelectedItem());
+		    	data_store.set_elem_num(Integer.valueOf((String)rsqrd_total.getSelectedItem()));
 		    }
 		});
 		
 		rsqrd_total.setSelectedIndex(display_rsqrd_assocs);
 		return rsqrd_total;
 	}
-
+	
 	@Override
 	public void on_start() {
 		setLayout(new GridBagLayout());
