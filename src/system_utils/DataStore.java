@@ -39,6 +39,8 @@ public class DataStore {
 		
 		ArrayList<Double> means;
 		
+		//System.out.println("Calculating coords for " + elem.name());
+		
 		if (means_data.contains_data(new TableKey(elem.name()))) {
 			means = means_data.get_data(new TableKey(elem.name())).get_data();
 		} else {
@@ -53,7 +55,7 @@ public class DataStore {
 		
 		if (stand_points) {
 			// Get listing of standards from standards file
-			TableKey value_key = new TableKey("Calibration values");
+			TableKey value_key = new TableKey("Calibrationvalues");
 			names = standards_data.get_info(value_key);
 		}
 		else {
@@ -62,6 +64,7 @@ public class DataStore {
 			names = xrf_data.get_info(xrf_key);
 		}
 		
+		//System.out.println(standards_data.contains_data(new TableKey(elem.name())));
 		Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
 		ArrayList<Double> standards;
 		
@@ -70,6 +73,9 @@ public class DataStore {
 		} else {
 			standards = temp_stds.get_data();
 		}
+		
+		//System.out.println("Element: " + elem.name());
+		//System.out.println("Standards: " + Arrays.toString(standards.toArray()));
 		
 		Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
 		ArrayList<Double> xrf;
@@ -160,6 +166,7 @@ public class DataStore {
 			}
 		}
 		
+	
 		// Create point set from coordinates
 		PointSet set = new PointSet(points, color, x_axis, y_axis, title, render);
 		

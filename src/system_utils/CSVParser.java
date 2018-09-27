@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CSVParser {
 	
@@ -90,7 +91,12 @@ public class CSVParser {
 		// Transpose the raw data and add to DataTable
 		for (int i = 0; i < raw_data.get(0).length; i ++) {
 			
-			TableKey current_column_name = new TableKey(column_names[i]);
+			// Skip empty columns
+			if (column_names[i].isEmpty()) {
+				continue;
+			}
+					
+			TableKey current_column_name = new TableKey(column_names[i].replaceAll("\\s+",""));
 			
 			// Check if column contains Doubles
 			if (isNumeric(raw_data.get(1)[i])) {

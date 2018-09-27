@@ -32,6 +32,7 @@ public class CorrelationInfo {
 	private EquationPlot compute_fit(PointSet point_set) {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> points = point_set.get_points();
+		
 		for (int i = 0; i < points.size(); i++) {
 			Point point = points.get(i);
 			if (point.in_use()) {
