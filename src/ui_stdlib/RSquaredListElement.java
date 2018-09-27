@@ -29,6 +29,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		        if (backend_loaded) {
 		        	//element selection updated
 		        	datastore.notify_update();
+		        	//TODO: may not be calling correctly
 		        }
 		    }
 		});
