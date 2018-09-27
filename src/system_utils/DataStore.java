@@ -73,7 +73,17 @@ public class DataStore {
 		} else {
 			standards = temp_stds.get_data();
 		}
-		ArrayList<Double> xrf = xrf_data.get_data(new TableKey(elem.name())).get_data();
+		
+		Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
+		ArrayList<Double> xrf;
+		
+		// If we have no data to calculate coords with, return an empty arraylist
+		if (temp_xrf == null) {
+			return new ArrayList<Double>();
+		}
+		else {
+			xrf = temp_xrf.get_data();
+		}
 		
 		ArrayList<Double> coords = new ArrayList<Double>();
 		
@@ -102,7 +112,7 @@ public class DataStore {
 			
 			String source_id = source.get(i);
 			int pos = names.indexOf(source_id);
-			System.out.println(names.size() + " " + standards.size());
+			//System.out.println(names.size() + " " + standards.size());
 			if (stand_points) {
 				if (pos < 0 || standards.size() == 0) {
 					continue;
@@ -140,15 +150,16 @@ public class DataStore {
 		
 		ArrayList<Double> x_coords = calculate_coords(x_elem, standards);
 		ArrayList<Double> y_coords = calculate_coords(y_elem, standards);
-		
+
 		if (x_coords == null || y_coords == null) {
 			return null;
 		}
 		
 		// Combine coordinates into points ArrayList
 		for (int i = 0; i < x_coords.size(); i++) {
-			if (x_coords.get(i) != null && y_coords.get(i) != null) {
+			if (i < x_coords.size() && i < y_coords.size()) {
 				Point point = new Point(x_coords.get(i), y_coords.get(i));
+				
 				points.add(point);
 			}
 		}
@@ -259,6 +270,7 @@ public class DataStore {
 		
 		for (int i = 0; i < elements.size(); i++) {
 			CorrelationInfo corr = all_corr.get(elements.get(i));
+			
 			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
 			
 			pairs.add(curr_pair);
@@ -266,12 +278,19 @@ public class DataStore {
 		
 		Collections.sort(pairs, new PairComparison());
 		
+
+		System.out.println("Num elems before: " + pairs.size());
+		System.out.println("Going to remove: " + (pairs.size() - elem_num));
+		
+
+		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
+		
 		// Remove all except elements with n highest r2 value
-		for (int j = 0; j < pairs.size() - elem_num; j++) {
-			pairs.remove(j);
+		for (int j = pairs.size() - elem_num; j < pairs.size(); j++) {
+			n_pairs.add(pairs.get(j));
 		}
 		
-		return pairs;
+		return n_pairs;
 	}
 	
 	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
