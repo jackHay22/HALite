@@ -151,6 +151,10 @@ public class DataStore {
 		ArrayList<Double> x_coords = calculate_coords(x_elem, standards);
 		ArrayList<Double> y_coords = calculate_coords(y_elem, standards);
 
+		System.out.println("For elements: " + x_elem.name() + ", " + y_elem.name());
+		System.out.println(Arrays.toString(x_coords.toArray()));
+		System.out.println(Arrays.toString(y_coords.toArray()));
+		
 		if (x_coords == null || y_coords == null) {
 			return null;
 		}
