@@ -43,7 +43,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		ArrayList<Pair> pair_list = datastore.get_rsqrd_assoc_list(current_elem_self);
 		
 		Element elem_temp;
-		String r2_temp;
+		Double r2_temp;
 		Pair current_pair;
 		RSqrdAssocSet temp_r2_set;
 		
@@ -51,7 +51,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			
 			current_pair = pair_list.get(i);
 			elem_temp = current_pair.get_elem();
-			r2_temp = Double.toString(current_pair.get_r2());
+			r2_temp = current_pair.get_r2();
 			
 			if (i >= graphical_associations.size()) {
 				//list smaller, add new
