@@ -49,13 +49,10 @@ public class RSqrdAssocSet extends SystemPanel {
 	}
 	
 	public void try_toggle_value() {
-		//TODO: toggle this value, untoggle others (DataStore)
 	}
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public void set(system_utils.Element element2, String val) {
@@ -71,8 +68,6 @@ public class RSqrdAssocSet extends SystemPanel {
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

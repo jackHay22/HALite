@@ -54,10 +54,12 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			r2_temp = Double.toString(current_pair.get_r2());
 			
 			if (i >= graphical_associations.size()) {
+				//list smaller, add new
 				temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp);
 				temp_r2_set.set_datastore(datastore);
 				graphical_associations.add(temp_r2_set);
 			} else {
+				//reset values
 				graphical_associations.get(i).set(elem_temp, r2_temp);
 			}
 			
