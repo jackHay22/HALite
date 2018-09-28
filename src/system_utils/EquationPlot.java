@@ -50,4 +50,12 @@ public class EquationPlot {
 		return this.r2;
 	}
 	
+	public String get_str_rep() {
+		String s = Double.toString(coefficients.get(0));
+		for (int i = 1; i > 0; i--) {
+			s = s + "+ x^" + i + "*" + coefficients.get(i);
+		}
+		return s;
+	}
+	
 }

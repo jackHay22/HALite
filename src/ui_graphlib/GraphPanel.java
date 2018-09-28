@@ -67,19 +67,19 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 
 	public void set_title(String s) {
-		
+		header_panel.set_text(s);
 	}
 	
 	public void set_r2_eqn_label(String s) {
-		
+		r_sqrd_panel.set_text(s);
 	}
 	
 	public void set_x_label(String s) {
-		
+		x_label.set_text(s);
 	}
 	
 	public void set_y_label(String s) {
-		
+		y_label.set_text(s);
 	}
 	
 	public double get_x_r() {

@@ -15,7 +15,10 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.math.*;
+import java.text.DecimalFormat;
+
 import system_utils.DataStore;
+import system_utils.ElementCorrelationInfo;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.ImageRadioButton;
@@ -96,6 +99,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		point_sets.add(data_sets.get("unknown"));
 		this.graph.set_point_sets(point_sets);
 		this.graph.refresh();
+		set_labels();
 		set_vals();
 		this.graph.refresh();
 		this.revalidate();
@@ -142,6 +146,20 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		
 	}
 
+	private String get_display_number(Double val) {
+		DecimalFormat df = new DecimalFormat("#.00");
+		return df.format(val);
+	}
+	
+	private void set_labels() {
+		String s = data_to_plot.get_primary().name();
+		this.graph.set_x_label(s);
+		s = data_to_plot.get_secondary().name();
+		this.graph.set_y_label(s);
+		s = "r^2: " + get_display_number(data_to_plot.get_r2()) + "  ||  " + data_to_plot.get_equation().get_str_rep();
+		this.graph.set_r2_eqn_label(s);
+	}
+	
 	@Override
 	public void on_start() {
 		this.graph.on_start();
