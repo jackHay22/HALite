@@ -69,6 +69,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			temp_r2_set.on_start();
 			this.add(temp_r2_set);
 		}
+		this.revalidate();
 	}
 	
 	private void graphical_clean() {
