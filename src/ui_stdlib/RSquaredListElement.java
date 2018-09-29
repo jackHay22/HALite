@@ -40,6 +40,9 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		
 		//purge list on panel
 		graphical_clean();
+		
+		graphical_associations = new ArrayList<RSqrdAssocSet>();
+		
 		Element current_elem_self = get_current_selected();
 		ArrayList<Pair> pair_list = datastore.get_rsqrd_assoc_list(current_elem_self);
 		
@@ -54,22 +57,13 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			elem_temp = current_pair.get_elem();
 			r2_temp = current_pair.get_r2();
 			
-			if (i >= graphical_associations.size()) {
-				//list smaller, add new
-				temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp);
-				temp_r2_set.set_datastore(datastore);
-				temp_r2_set.on_start();
-				graphical_associations.add(temp_r2_set);
-			} else {
-				//reset values
-				graphical_associations.get(i).set(current_elem_self, elem_temp, r2_temp);
-			}
-			
-			//add new/reset element to window
-			temp_r2_set = graphical_associations.get(i);
-			temp_r2_set.revalidate();
+			temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp);
+			temp_r2_set.set_datastore(datastore);
+			temp_r2_set.on_start();
+			graphical_associations.add(temp_r2_set);
 			this.add(temp_r2_set);
 		}
+		
 		this.revalidate();
 	}
 	
