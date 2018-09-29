@@ -45,6 +45,7 @@ public class RSqrdAssocSet extends SystemPanel {
 					element.setOpaque(true);
 					element_selected = !element_selected;
 					datastore.set_selected_rsqrd_assocs(this_element, this_element2);
+					element.revalidate();
 		    	} else {
 		    		element.setOpaque(false);
 		    		element_selected = !element_selected;
