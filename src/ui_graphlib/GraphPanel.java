@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.math.*;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
-import ui_stdlib.PanelHeader;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.VerticalPanel;
+import ui_stdlib.components.PanelHeader;
+import ui_stdlib.components.VerticalPanel;
 
 @SuppressWarnings("serial")
 public class GraphPanel extends ui_framework.SystemPanel implements DrawableManager, MouseListener {

@@ -1,4 +1,4 @@
-package ui_stdlib;
+package ui_stdlib.components;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;

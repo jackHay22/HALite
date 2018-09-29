@@ -3,7 +3,8 @@ package system_main;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.GraphPanel;
-import ui_stdlib.SettingsPanel;
+import ui_stdlib.views.SettingsPanel;
+
 import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

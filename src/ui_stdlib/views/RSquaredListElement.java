@@ -1,4 +1,4 @@
-package ui_stdlib;
+package ui_stdlib.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,12 +24,12 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
 		selection_dropdown = new JComboBox<Element>(Element.values());
+		
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
 		        	//element selection updated
 		        	datastore.notify_update();
-		        	//TODO: may not be calling correctly
 		        }
 		    }
 		});
@@ -61,6 +61,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			temp_r2_set.set_datastore(datastore);
 			temp_r2_set.on_start();
 			graphical_associations.add(temp_r2_set);
+			
 			this.add(temp_r2_set);
 		}
 		

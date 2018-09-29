@@ -1,4 +1,4 @@
-package ui_stdlib;
+package ui_stdlib.components;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class PanelHeader extends ui_framework.SystemPanel {

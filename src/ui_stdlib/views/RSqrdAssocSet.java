@@ -1,4 +1,4 @@
-package ui_stdlib;
+package ui_stdlib.views;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
+import ui_stdlib.SystemThemes;
 import system_utils.Element;
 
 @SuppressWarnings("serial")

@@ -21,8 +21,8 @@ import system_utils.DataStore;
 import system_utils.ElementCorrelationInfo;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
-import ui_stdlib.ImageRadioButton;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.components.ImageRadioButton;
 import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")

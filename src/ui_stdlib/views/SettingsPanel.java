@@ -1,4 +1,4 @@
-package ui_stdlib;
+package ui_stdlib.views;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -10,6 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
+import ui_stdlib.components.ListingSet;
+import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
 public class SettingsPanel extends ui_framework.SystemPanel{

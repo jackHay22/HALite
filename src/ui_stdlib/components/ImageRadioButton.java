@@ -1,24 +1,20 @@
-package ui_stdlib;
+package ui_stdlib.components;
 
 import java.awt.Dimension;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
-public class ImageButton extends JButton {
-	public ImageButton(String resource_pos, int size) {
+public class ImageRadioButton extends JRadioButton {
+	public ImageRadioButton(String resource) {
 		super();
-		create_button(resource_pos, size, size);
+		//TODO
+		//create_button(resource, 50, 10);
 	}
-	public ImageButton(String resource_pos, int width, int height) {
-		super();
-		create_button(resource_pos, width, height);
-	}
-	
 	private void create_button(String resource_pos, int width, int height) {
 		try {
 			Image button_image = ImageIO.read(getClass().getResourceAsStream(resource_pos))
@@ -31,7 +27,4 @@ public class ImageButton extends JButton {
 			e.printStackTrace();
 		}
 	}
-	public void set_text(String text) {
-		this.setText(text);
-	}
- }
+}
