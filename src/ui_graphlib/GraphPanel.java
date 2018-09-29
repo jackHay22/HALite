@@ -1,6 +1,7 @@
 package ui_graphlib;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -255,6 +256,9 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	@Override
 	public void refresh() {
+		Dimension d = this.points_panel.get_drawable_size();
+		this.draw_height = d.height;
+		this.draw_width = d.width;
 		this.draw_graph();
 		this.points_panel.refresh();
 		this.revalidate();
