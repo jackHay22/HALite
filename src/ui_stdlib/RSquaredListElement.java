@@ -58,6 +58,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 				//list smaller, add new
 				temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp);
 				temp_r2_set.set_datastore(datastore);
+				temp_r2_set.on_start();
 				graphical_associations.add(temp_r2_set);
 			} else {
 				//reset values
@@ -66,7 +67,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			
 			//add new/reset element to window
 			temp_r2_set = graphical_associations.get(i);
-			temp_r2_set.on_start();
+			temp_r2_set.revalidate();
 			this.add(temp_r2_set);
 		}
 		this.revalidate();
