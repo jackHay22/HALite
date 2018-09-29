@@ -1,4 +1,4 @@
-package system_utils;
+package system_utils.io_tools;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import system_utils.DataTable;
+import system_utils.TableKey;
 
 public class CSVParser {
 	
