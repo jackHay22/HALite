@@ -22,6 +22,7 @@ public class EquationPlot {
 			this.coefficients.add(coeff);
 		}
 		this.r2 = r2;
+		this.degree = degree;
 	}
 	
 	public double get_linear_x(double y) {
@@ -50,9 +51,13 @@ public class EquationPlot {
 		return this.r2;
 	}
 	
+	public int get_degree() {
+		return degree;
+	}
+	
 	public String get_str_rep() {
 		String s = Double.toString(coefficients.get(0));
-		for (int i = 1; i > 0; i--) {
+		for (int i = degree; i > 0; i--) {
 			s = s + "+ x^" + i + "*" + coefficients.get(i);
 		}
 		return s;

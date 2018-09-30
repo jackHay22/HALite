@@ -83,6 +83,14 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		y_label.set_text(s);
 	}
 	
+	public double get_bbx() {
+		return bottom_buffer_x;
+	}
+	
+	public double get_bby() {
+		return bottom_buffer_y;
+	}
+	
 	public double get_x_r() {
 		return x_ratio;
 	}
