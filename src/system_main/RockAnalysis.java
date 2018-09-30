@@ -3,6 +3,7 @@ package system_main;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.GraphPanel;
+import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 
 import java.awt.EventQueue;
@@ -50,7 +51,7 @@ public class RockAnalysis  {
         		R2SettingsPanel test_settings = new R2SettingsPanel();
         		test_settings.set_datastore(loaded_datastore);
         		
-        		R2SettingsPanel test_settings_two = new R2SettingsPanel();
+        		CalculatedValuesPanel test_settings_two = new CalculatedValuesPanel();
         		test_settings_two.set_datastore(loaded_datastore);
         		
         		//GraphPanel test_graph = new GraphPanel(450, 250);
