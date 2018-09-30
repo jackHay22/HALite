@@ -15,13 +15,13 @@ import ui_stdlib.components.ListingSet;
 import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
-public class SettingsPanel extends ui_framework.SystemPanel{
+public class R2SettingsPanel extends ui_framework.SystemPanel{
 	ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
 	private int display_rsqrd_assocs = 4; //-1
 	
-	public SettingsPanel() {
+	public R2SettingsPanel() {
 		super();
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
 	}
