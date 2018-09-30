@@ -53,18 +53,6 @@ public class RSqrdAssocSet extends SystemPanel {
 		    }
 		});
 	}
-	
-	private void request_toggle() {
-		//datastore.set_selected_rsqrd_assocs(this_element, this_element2);
-	}
-	
-	public void untoggle() {
-		//manager attempts to untoggle previously toggled
-//		element.setOpaque(false);
-//		element.setOpaque(false);
-//		element_selected = !element_selected;
-//		datastore.remove_selected_rsqrd_assocs(this_element, this_element2);
-	}
 
 	@Override
 	public void refresh() {

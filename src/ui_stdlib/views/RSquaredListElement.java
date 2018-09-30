@@ -44,13 +44,13 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		graphical_associations = new ArrayList<RSqrdAssocSet>();
 		
 		Element current_elem_self = get_current_selected();
-		boolean secondary_selected;
 		ArrayList<Pair> pair_list = datastore.get_rsqrd_assoc_list(current_elem_self);
 		
 		Element elem_temp;
 		Double r2_temp;
 		Pair current_pair;
 		RSqrdAssocSet temp_r2_set;
+		boolean secondary_selected;
 		
 		for (int i=0;i<pair_list.size();i++) {
 			
