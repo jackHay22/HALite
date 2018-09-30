@@ -2,10 +2,8 @@ package system_main;
 
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
-import ui_graphlib.GraphPanel;
 import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
-
 import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
