@@ -63,13 +63,11 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		double y = g(for_y(f_inv(0)));
 
 		if (y < 0) {
-			System.out.println("One: " + (int)x + " " + (int)y);
 			y = 0;
 			x = f(for_x(g_inv(0)));
 
-			System.out.println("Two: " + (int)x + " " + (int)y);
 		}
-		line_min = new Point(x, y);
+		line_min = new Point(x, draw_height - y);
 		
 		x = draw_width;
 		y = g(for_y(f_inv(x)));
@@ -77,10 +75,9 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 			y = draw_height;
 			x = f(for_x(g_inv(y)));
 		}
-		line_max = new Point(x, y);
+		line_max = new Point(x, draw_height - y);
 		
 		graph.set_endpoints(line_min, line_max);
-		//System.out.println((int)x + " " + (int)y);
 
 	}
 	
@@ -97,7 +94,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	}
 	
 	private double g(double y) {
-		return (draw_height - y - bottom_buffer_y) * y_ratio;
+		return (y - bottom_buffer_y) * y_ratio;
 	}
 	
 	private double for_y(double x) {
