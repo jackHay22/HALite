@@ -18,7 +18,6 @@ import ui_stdlib.components.PanelHeader;
 public class R2SettingsPanel extends ui_framework.SystemPanel{
 	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
-	private boolean backend_loaded;
 	private int display_rsqrd_assocs = 4; //-1
 	
 	public R2SettingsPanel() {
@@ -34,7 +33,6 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
-		this.backend_loaded = true;
 		r_sqrd_list.set_datastore(datastore);
 	}
 
