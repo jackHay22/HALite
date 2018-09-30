@@ -60,33 +60,53 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	private void set_line_endpoints() {
 		double x = 0;
-		double y = for_y(0);
+		double y = g(for_y(f_inv(0)));
 
 		if (y < 0) {
+			System.out.println("One: " + (int)x + " " + (int)y);
 			y = 0;
-			x = for_x(0);
+			x = f(for_x(g_inv(0)));
+
+			System.out.println("Two: " + (int)x + " " + (int)y);
 		}
-		line_min = new Point(x, draw_height - y);
+		line_min = new Point(x, y);
 		
 		x = draw_width;
-		y = for_y(x);
+		y = g(for_y(f_inv(x)));
 		if (y > draw_height) {
 			y = draw_height;
-			x = for_x(y);
+			x = f(for_x(g_inv(y)));
 		}
-		line_max = new Point(x, draw_height - y);
+		line_max = new Point(x, y);
 		
 		graph.set_endpoints(line_min, line_max);
+		//System.out.println((int)x + " " + (int)y);
+
+	}
+	
+	private double f_inv(double x) {
+		return x/x_ratio + bottom_buffer_x;
+	}
+	
+	private double f(double x) {
+		return (x - bottom_buffer_x) * x_ratio;
+	}
+	
+	private double g_inv(double y) {
+		return y/y_ratio + bottom_buffer_y;
+	}
+	
+	private double g(double y) {
+		return (draw_height - y - bottom_buffer_y) * y_ratio;
 	}
 	
 	private double for_y(double x) {
 		// This applies the algo to place points to the entire equation of the correlation model
-		
-		return (eqn.get_y(x) - bottom_buffer_x)*(x_ratio/y_ratio) + bottom_buffer_y; 
+		return eqn.get_y(x); 
 	}
 	
 	private double for_x(double y) {
-		return eqn.get_linear_x((y - bottom_buffer_y) * (y_ratio / x_ratio) + bottom_buffer_x);
+		return eqn.get_linear_x(y);
 	}
 	
 	@Override
@@ -111,6 +131,8 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.draw_height = graph.get_height();
 		this.x_ratio = graph.get_x_r();
 		this.y_ratio = graph.get_y_r();
+		this.bottom_buffer_x = graph.get_bbx();
+		this.bottom_buffer_y = graph.get_bby();
 		set_line_endpoints();
 	}
 	
