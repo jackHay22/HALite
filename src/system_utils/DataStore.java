@@ -306,6 +306,10 @@ public class DataStore {
 		notify_update();
 	}
 	
+	public boolean check_selected_rsqrd_assocs(Element primary, Element secondary) {
+		return (this.primary == primary && this.secondary == secondary);
+	}
+	
 	public void add_update_notify(ui_framework.SystemWindow window_parent) {
 		
 	}

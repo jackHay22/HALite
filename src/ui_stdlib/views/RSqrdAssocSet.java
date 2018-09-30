@@ -23,7 +23,7 @@ public class RSqrdAssocSet extends SystemPanel {
 	private Element this_element;
 	private Element this_element2;
 	
-	public RSqrdAssocSet(Element element1, Element element2, Double val) {
+	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected) {
 		super();
 		this.this_element = element1;
 		this.this_element2 = element2;
@@ -35,28 +35,35 @@ public class RSqrdAssocSet extends SystemPanel {
 		
 		element.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 10, 4, 10)));
+		
 		element.setBackground(SystemThemes.HIGHLIGHT);
 
 		value.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 10, 4, 10))); 
 		
+		element.setOpaque(element_selected);
+
 		element.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (!element_selected) {	
-					element.setOpaque(true);
-					element_selected = !element_selected;
 					datastore.set_selected_rsqrd_assocs(this_element, this_element2);
-					element.revalidate();
 		    	} else {
-		    		element.setOpaque(false);
-		    		element_selected = !element_selected;
 		    		datastore.remove_selected_rsqrd_assocs(this_element, this_element2);
 		    	}
 		    }
 		});
 	}
 	
-	public void try_toggle_value() {
+	private void request_toggle() {
+		//datastore.set_selected_rsqrd_assocs(this_element, this_element2);
+	}
+	
+	public void untoggle() {
+		//manager attempts to untoggle previously toggled
+//		element.setOpaque(false);
+//		element.setOpaque(false);
+//		element_selected = !element_selected;
+//		datastore.remove_selected_rsqrd_assocs(this_element, this_element2);
 	}
 
 	@Override
