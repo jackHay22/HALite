@@ -1,9 +1,12 @@
 package system_utils;
 
-import java.util.HashMap; 
+import java.util.HashMap;
+
+import ui_framework.Refreshable;
+
 import java.util.ArrayList;
 
-public class ElementCorrelationInfo {
+public class ElementCorrelationInfo implements Refreshable {
 	private Element element;
 	private HashMap<Element, CorrelationInfo> all_correlations;
 	private ArrayList<CorrelationInfo> selected_elements;
@@ -45,6 +48,32 @@ public class ElementCorrelationInfo {
 	public boolean is_selected(Element secondary) {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
 		return corr.in_use();
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		for (CorrelationInfo corr: all_correlations.values()) {
+			corr.refresh();
+		}
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void add_refreshable(Refreshable refreshable_component) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void on_start() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	// More to come

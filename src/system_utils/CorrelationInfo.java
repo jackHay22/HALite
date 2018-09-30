@@ -1,17 +1,20 @@
 package system_utils;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
+
+import ui_framework.Refreshable;
 import ui_graphlib.PointSet;
 import ui_graphlib.Point;
 
 import java.util.HashMap; 
 import java.util.ArrayList;
 
-public class CorrelationInfo {
+public class CorrelationInfo implements Refreshable {
 	private ElementPair data_to_plot;
 	private Element secondary_element;
 	private EquationPlot equation;
 	private boolean use_in_wm;
+	private DataStore data_store;
 	
 	public CorrelationInfo(ElementPair elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
@@ -24,7 +27,6 @@ public class CorrelationInfo {
 	
 	private void init() {
 		PointSet points_to_fit = data_to_plot.get_standards();
-		
 		this.equation = compute_fit(points_to_fit);
 		this.use_in_wm = false;
 	}
@@ -83,6 +85,31 @@ public class CorrelationInfo {
 	
 	public EquationPlot get_equation() {
 		return equation;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		PointSet points_to_fit = data_to_plot.get_standards();
+		this.equation = compute_fit(points_to_fit);
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		// TODO Auto-generated method stub
+		this.data_store = datastore;
+	}
+
+	@Override
+	public void add_refreshable(Refreshable refreshable_component) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void on_start() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
