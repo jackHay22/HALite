@@ -53,6 +53,10 @@ public class CorrelationInfo {
 		this.use_in_wm = !this.use_in_wm;
 	}
 	
+	public boolean in_use() {
+		return use_in_wm;
+	}
+	
 	public Element get_secondary() {
 		return this.secondary_element;
 	}

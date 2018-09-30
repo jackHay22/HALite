@@ -81,7 +81,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	
 	private double for_y(double x) {
 		// This applies the algo to place points to the entire equation of the correlation model
-		System.out.println(x_ratio/y_ratio);
 		
 		return (eqn.get_y(x) - bottom_buffer_x)*(x_ratio/y_ratio) + bottom_buffer_y; 
 	}

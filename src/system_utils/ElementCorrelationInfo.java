@@ -32,12 +32,19 @@ public class ElementCorrelationInfo {
 	
 	public void add_selected(Element secondary) {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
+		corr.toggle();
 		this.selected_elements.add(corr);
 	}
 	
 	public void remove_selected(Element secondary) {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
+		corr.toggle();
 		this.selected_elements.remove(corr);
+	}
+	
+	public boolean is_selected(Element secondary) {
+		CorrelationInfo corr = this.all_correlations.get(secondary);
+		return corr.in_use();
 	}
 	
 	// More to come

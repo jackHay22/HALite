@@ -296,6 +296,13 @@ public class DataStore {
 		notify_update();
 	}
 	
+	public boolean is_pair_value_selected(Element primary, Element secondary) { 
+
+		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
+		
+		return elem_corr.is_selected(secondary); 
+	}
+	
 	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
 		
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
