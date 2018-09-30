@@ -30,19 +30,6 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 	public void refresh() {
 		r_sqrd_list.refresh();
 	}
-	
-	public void add_new_element() {
-		if (this.backend_loaded) {
-			try {
-				r_sqrd_list.display_new_element();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			this.data_store.notify_update();
-		}
-	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {

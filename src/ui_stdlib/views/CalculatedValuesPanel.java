@@ -26,19 +26,6 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		calculated_elements_list.set_datastore(datastore);
 		this.backend_loaded = true;
 	}
-	
-	public void add_new_element() {
-		if (this.backend_loaded) {
-			try {
-				calculated_elements_list.display_new_element();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			this.datastore.notify_update();
-		}
-	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
