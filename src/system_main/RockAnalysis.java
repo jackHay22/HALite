@@ -3,7 +3,7 @@ package system_main;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.GraphPanel;
-import ui_stdlib.views.SettingsPanel;
+import ui_stdlib.views.R2SettingsPanel;
 
 import java.awt.EventQueue;
 import java.io.FileNotFoundException;
@@ -47,10 +47,10 @@ public class RockAnalysis  {
 					e.printStackTrace();
 				}
         		
-        		SettingsPanel test_settings = new SettingsPanel();
+        		R2SettingsPanel test_settings = new R2SettingsPanel();
         		test_settings.set_datastore(loaded_datastore);
         		
-        		SettingsPanel test_settings_two = new SettingsPanel();
+        		R2SettingsPanel test_settings_two = new R2SettingsPanel();
         		test_settings_two.set_datastore(loaded_datastore);
         		
         		//GraphPanel test_graph = new GraphPanel(450, 250);

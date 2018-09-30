@@ -16,7 +16,7 @@ import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
 public class R2SettingsPanel extends ui_framework.SystemPanel{
-	ListingSet<RSquaredListElement> r_sqrd_list;
+	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private boolean backend_loaded;
 	private int display_rsqrd_assocs = 4; //-1

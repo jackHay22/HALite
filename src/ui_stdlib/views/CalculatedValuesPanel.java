@@ -2,9 +2,15 @@ package ui_stdlib.views;
 
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.components.ListingSet;
 
 public class CalculatedValuesPanel extends ui_framework.SystemPanel {
-
+	private ListingSet<RSquaredListElement> r_sqrd_list;
+	public CalculatedValuesPanel() {
+		super();
+		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
