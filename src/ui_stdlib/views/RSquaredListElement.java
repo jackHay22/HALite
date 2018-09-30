@@ -51,6 +51,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		Pair current_pair;
 		RSqrdAssocSet temp_r2_set;
 		boolean secondary_selected;
+		boolean secondary_value_selected;
 		
 		for (int i=0;i<pair_list.size();i++) {
 			
@@ -59,8 +60,10 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			r2_temp = current_pair.get_r2();
 			
 			secondary_selected = datastore.check_selected_rsqrd_assocs(current_elem_self, elem_temp);
+			secondary_value_selected = datastore.is_pair_value_selected(current_elem_self, elem_temp);
 			
-			temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp, secondary_selected);
+			temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp, 
+											secondary_selected, secondary_value_selected);
 			temp_r2_set.set_datastore(datastore);
 			temp_r2_set.on_start();
 			graphical_associations.add(temp_r2_set);

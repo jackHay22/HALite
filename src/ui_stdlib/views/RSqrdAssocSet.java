@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
@@ -18,12 +17,11 @@ import system_utils.Element;
 public class RSqrdAssocSet extends SystemPanel {
 	private JButton element;
 	private JButton value;
-	private boolean element_selected = false;
 	private DataStore datastore;
 	private Element this_element;
 	private Element this_element2;
 	
-	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected) {
+	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected, boolean value_selected) {
 		super();
 		this.this_element = element1;
 		this.this_element2 = element2;
@@ -41,11 +39,22 @@ public class RSqrdAssocSet extends SystemPanel {
 		value.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 10, 4, 10))); 
 		
+		value.setBackground(SystemThemes.MAIN);
+		
 		element.setOpaque(element_selected);
+		value.setOpaque(value_selected);
 
 		element.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (!element_selected) {	
+					datastore.set_correlation_graph_elements(this_element, this_element2);
+		    	}
+		    }
+		});
+		
+		value.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	if (!value_selected) {	
 					datastore.set_selected_rsqrd_assocs(this_element, this_element2);
 		    	} else {
 		    		datastore.remove_selected_rsqrd_assocs(this_element, this_element2);
