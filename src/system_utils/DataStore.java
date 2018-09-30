@@ -288,9 +288,15 @@ public class DataStore {
 		return n_pairs;
 	}
 	
-	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
+	public void set_correlation_graph_elements(Element primary, Element secondary) {
+
 		this.primary = primary;
 		this.secondary = secondary;
+		
+		notify_update();
+	}
+	
+	public void set_selected_rsqrd_assocs(Element primary, Element secondary) {
 		
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		elem_corr.add_selected(secondary);
