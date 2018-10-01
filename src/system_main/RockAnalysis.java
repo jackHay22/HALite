@@ -2,6 +2,7 @@ package system_main;
 
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
+import ui_graphlib.ModelGraph;
 import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 import java.awt.EventQueue;
@@ -57,13 +58,13 @@ public class RockAnalysis  {
         		CorrelationGraph test_correlation = new CorrelationGraph();
         		test_correlation.set_datastore(loaded_datastore);
         		
-        		CorrelationGraph test_correlation2 = new CorrelationGraph();
-        		test_correlation2.set_datastore(loaded_datastore);
+        		ModelGraph model_graph = new ModelGraph();
+        		model_graph.set_datastore(loaded_datastore);
         		
         		main_window.add_system_panel(test_settings);	
         		main_window.add_system_panel(test_correlation);
         		main_window.add_system_panel(test_settings_two);
-        		main_window.add_system_panel(test_correlation2);
+        		main_window.add_system_panel(model_graph);
         		
         		main_window.run();
             }
