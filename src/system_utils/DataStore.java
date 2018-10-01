@@ -38,6 +38,12 @@ public class DataStore {
 		this.elem_num = 5;
 	}
 	
+	private void internal_refresh() {
+		for (ElementCorrelationInfo elem_corr: correlations.values()) {
+			elem_corr.refresh();
+		}
+	}
+	
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
 		
 		ArrayList<Double> means;
@@ -329,6 +335,7 @@ public class DataStore {
 	
 	public void notify_update() {
 		//on changes to data
+		this.internal_refresh();
 		this.window_parent.refresh();
 	}
 }
