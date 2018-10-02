@@ -1,63 +1,43 @@
 package ui_stdlib.views;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.border.Border;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
-import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.components.SplitViewPanel;
 import system_utils.Element;
 
-@SuppressWarnings("serial")
-public class RSqrdAssocSet extends SystemPanel {
-	private JButton element;
-	private JButton value;
+public class RSqrdAssocSet implements Refreshable{
 	private DataStore datastore;
-	private Element this_element;
-	private Element this_element2;
+	private SplitViewPanel graphical_view;
 	
 	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected, boolean value_selected) {
-		super();
-		this.this_element = element1;
-		this.this_element2 = element2;
-		this.setLayout(new GridLayout(2,0));
-		Border border = BorderFactory.createLineBorder(SystemThemes.BACKGROUND);
+		
+		graphical_view = new SplitViewPanel(element2.toString(),
+											get_display_number(val),
+											SystemThemes.HIGHLIGHT,
+											SystemThemes.MAIN,
+											SystemThemes.BACKGROUND);
+		
+		graphical_view.toggle_color_top(element_selected);
+		graphical_view.toggle_color_bot(value_selected);
 
-		element = new JButton(this.this_element2.toString());
-		value = new JButton(get_display_number(val));
-		
-		element.setBorder(BorderFactory.createCompoundBorder(border, 
-	            BorderFactory.createEmptyBorder(4, 10, 4, 10)));
-		
-		element.setBackground(SystemThemes.HIGHLIGHT);
-
-		value.setBorder(BorderFactory.createCompoundBorder(border, 
-	            BorderFactory.createEmptyBorder(4, 10, 4, 10))); 
-		
-		value.setBackground(SystemThemes.MAIN);
-		
-		element.setOpaque(element_selected);
-		value.setOpaque(value_selected);
-
-		element.addActionListener (new ActionListener () {
+		graphical_view.get_top().addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (!element_selected) {	
-					datastore.set_correlation_graph_elements(this_element, this_element2);
+					datastore.set_correlation_graph_elements(element1, element2);
 		    	}
 		    }
 		});
 		
-		value.addActionListener (new ActionListener () {
+		graphical_view.get_bottom().addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (!value_selected) {	
-					datastore.set_selected_rsqrd_assocs(this_element, this_element2);
+					datastore.set_selected_rsqrd_assocs(element1, element2);
 		    	} else {
-		    		datastore.remove_selected_rsqrd_assocs(this_element, this_element2);
+		    		datastore.remove_selected_rsqrd_assocs(element1, element2);
 		    	}
 		    }
 		});
@@ -68,21 +48,18 @@ public class RSqrdAssocSet extends SystemPanel {
 	}
 	
 	private String get_display_number(Double val) {
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#.000");
 		return df.format(val);
-	}
-	
-	public void set(Element element1, Element element2, Double val) {
-		this.this_element = element1;
-		this.this_element2 = element2;
-		element.setText(element2.toString());
-		value.setText(get_display_number(val));
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
 
+	}
+	
+	public SplitViewPanel get_graphical_element() {
+		return graphical_view;
 	}
 
 	@Override
@@ -91,8 +68,6 @@ public class RSqrdAssocSet extends SystemPanel {
 
 	@Override
 	public void on_start() {
-		this.add(element);
-		this.add(value);
-		this.setVisible(true);
+		graphical_view.on_start();
 	}
 }

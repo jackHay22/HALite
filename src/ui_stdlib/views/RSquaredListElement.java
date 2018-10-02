@@ -68,7 +68,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 			temp_r2_set.on_start();
 			graphical_associations.add(temp_r2_set);
 			
-			this.add(temp_r2_set);
+			this.add(temp_r2_set.get_graphical_element());
 		}
 		
 		this.revalidate();
@@ -76,7 +76,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 	
 	private void graphical_clean() {
 		for (int i=0;i<graphical_associations.size();i++) {
-			this.remove(graphical_associations.get(i));
+			this.remove(graphical_associations.get(i).get_graphical_element());
 		}
 	}
 	
