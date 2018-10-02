@@ -3,10 +3,8 @@ package ui_stdlib.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
-
 import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
@@ -52,8 +50,6 @@ public class CalculationListElement extends ui_framework.SystemPanel {
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
