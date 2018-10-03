@@ -9,6 +9,8 @@ public class SystemThemes {
 	public static Color MAIN = new Color(157, 189, 198);
 	public static Color WHITE = new Color(255, 255, 255);
 	public static Color HIGHLIGHT = new Color(255, 61, 46);
+	public static Color HIGHLIGHT2 = new Color(255, 176, 59);
+	public static Color HIGHLIGHT3 = new Color(202, 41, 62);
 	
 	private static final int INSET = 5;
 	public static final int HEADER_PADDING = 5;
