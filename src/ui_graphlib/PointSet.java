@@ -81,6 +81,10 @@ public class PointSet implements Refreshable {
 		return this.color;
 	}
 	
+	public void set_color(Color c) {
+		this.color = c;
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub

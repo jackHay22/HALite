@@ -125,7 +125,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	}
 	
 	private void draw_graph() {
-		set_labels();
 		set_ratio();
 	}
 	
@@ -171,11 +170,11 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	// The buffer is meant to be 5% on either side, thus / by 20
 	private double bottom_buffer(int min, int max) {
-		return min - (max - min)/20;
+		return min - (max - min)/8;
 	}
 
 	private double top_buffer(int min, int max) {
-		return max + (max - min)/20;
+		return max + (max - min)/8;
 	}
 	
 	private void place_line(Graphics2D g) {
@@ -183,7 +182,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_y());
 	}
 	
-	private void place_point(Point p, Graphics2D g) {
+	private void place_point(Point p, Graphics2D g, Color c) {
 		double point_x = p.get_x();
 		double draw_x = (point_x - bottom_buffer_x)*x_ratio;
 		
@@ -194,27 +193,31 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		
 		//TODO: draw x and draw y aren't numbers
 		// Place the actual point with coords (draw_x, draw_y)
-		g.setColor(SystemThemes.BACKGROUND);
+		Color graph_color = g.getColor();
+		g.setColor(SystemThemes.MAIN);
 		if (p.in_use()) {
-			g.setColor(SystemThemes.HIGHLIGHT);
+			g.setColor(c);
 		}
 		g.fillOval((int)draw_x, (int)draw_y, 6,6);
-		
+		g.setColor(graph_color);
 	}
 	
 	private void plot_points(Graphics2D g) {
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
+				Color c = point_sets.get(i).get_color();
 				ArrayList<Point> points = point_sets.get(i).get_points();
 				for (int point_index = 0; point_index < points.size(); point_index++) {
-					place_point(points.get(point_index), g);
+					place_point(points.get(point_index), g, c);
 				}
 			}
 		}
 	}
 	
-	private void set_labels() {
-		// TODO: Jack needs to set this up
+	private void set_labels(Graphics2D g) {
+		
+		g.drawString(Integer.toString(min_x), draw_width/10, draw_height*39/40);
+		g.drawLine(draw_width/10, draw_height, draw_width/10, draw_height-(draw_height*1/20));
 	}
 	
 	private void point_selected(MouseEvent e) {
@@ -224,7 +227,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		double distance_to_point = distance(closest.get_draw_x(), closest.get_draw_y(), x, y);
 		// If the mouse click was within 4% of the screen diagonal from the point
 		
-		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
+		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.04) {
 			closest.toggle();
 			data_store.notify_update();
 		}
@@ -287,11 +290,11 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	@Override
 	public void draw_components(Graphics2D g) {
 		if (point_sets != null) {
-
 			plot_points(g);
 			if (do_place_line) {
 				place_line(g);
 			}
+			set_labels(g);
 		}
 	}
 

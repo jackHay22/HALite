@@ -10,6 +10,7 @@ import system_utils.io_tools.CSVParser;
 
 import java.awt.Color;
 import ui_graphlib.PointSet;
+import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
 public class DataStore {
@@ -191,7 +192,9 @@ public class DataStore {
 				Element y_elem = elements.get(j);
 				
 				PointSet standards = create_pointset(x_elem, y_elem, true);
+				standards.set_color(SystemThemes.HIGHLIGHT);
 				PointSet unknowns = create_pointset(x_elem, y_elem, false);
+				unknowns.set_color(SystemThemes.BACKGROUND);
 				
 				if (standards != null) {
 					
