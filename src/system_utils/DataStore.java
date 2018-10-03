@@ -146,7 +146,7 @@ public class DataStore {
 		return coords;
 	}
 	
-	private PointSet create_pointset(Element x_elem, Element y_elem, Boolean standards) {
+	private PointSet create_pointset(Element y_elem, Element x_elem, Boolean standards) {
 		String x_axis = x_elem.name();
 		String y_axis = y_elem.name();
 		String title = x_axis + " vs. " + y_axis;
