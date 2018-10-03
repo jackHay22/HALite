@@ -2,6 +2,7 @@ package system_utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import ui_graphlib.PointSet;
@@ -56,9 +57,12 @@ public class EquationPlot {
 	}
 	
 	public String get_str_rep() {
-		String s = Double.toString(coefficients.get(0));
+
+        DecimalFormat df = new DecimalFormat("#.####");
+		
+		String s = df.format(coefficients.get(0));
 		for (int i = degree; i > 0; i--) {
-			s = s + "+ x^" + i + "*" + coefficients.get(i);
+			s = s + "+ x^" + i + "*" + df.format(coefficients.get(i));
 		}
 		return s;
 	}

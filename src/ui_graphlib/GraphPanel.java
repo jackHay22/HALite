@@ -52,6 +52,8 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	private Point right_point;
 	private boolean do_place_line;
 	
+	private int buffer_div = 8;
+	
 	public GraphPanel(int width, int height) {
 		super();
 		this.points_panel = new DrawablePanel(this, 450, 250);
@@ -170,11 +172,11 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	// The buffer is meant to be 5% on either side, thus / by 20
 	private double bottom_buffer(int min, int max) {
-		return min - (max - min)/8;
+		return min - (max - min)/buffer_div;
 	}
 
 	private double top_buffer(int min, int max) {
-		return max + (max - min)/8;
+		return max + (max - min)/buffer_div;
 	}
 	
 	private void place_line(Graphics2D g) {
@@ -198,7 +200,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		if (p.in_use()) {
 			g.setColor(c);
 		}
-		g.fillOval((int)draw_x, (int)draw_y, 6,6);
+		g.fillOval((int)draw_x, (int)draw_y, 5,5);
 		g.setColor(graph_color);
 	}
 	
@@ -214,10 +216,21 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		}
 	}
 	
+	
+	
 	private void set_labels(Graphics2D g) {
 		
 		g.drawString(Integer.toString(min_x), draw_width/10, draw_height*39/40);
-		g.drawLine(draw_width/10, draw_height, draw_width/10, draw_height-(draw_height*1/20));
+		g.drawLine(draw_width/buffer_div, draw_height, draw_width/buffer_div, draw_height-(draw_height*1/40));
+		
+		g.drawString(Integer.toString(min_y), draw_width*1/40, draw_height*9/10);
+		g.drawLine(0, draw_height*7/buffer_div, draw_width/60, draw_height*7/buffer_div);
+		
+		g.drawString(Integer.toString(max_x), draw_width*7/8, draw_height*39/40);
+		g.drawLine(draw_width*7/buffer_div, draw_height, (int) (draw_width*7/buffer_div), draw_height-(draw_height*1/40));
+		
+		g.drawString(Integer.toString(max_y), draw_width*1/40, draw_height*1/10);
+		g.drawLine(0, draw_height*1/buffer_div, draw_width/60, draw_height*1/buffer_div);
 	}
 	
 	private void point_selected(MouseEvent e) {
@@ -227,7 +240,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		double distance_to_point = distance(closest.get_draw_x(), closest.get_draw_y(), x, y);
 		// If the mouse click was within 4% of the screen diagonal from the point
 		
-		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.04) {
+		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
 			data_store.notify_update();
 		}
