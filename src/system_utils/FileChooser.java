@@ -19,7 +19,7 @@ public class FileChooser {
 		this.standards = new ArrayList<String>();
 		this.means = new ArrayList<String>();
 		
-		this.file_dialog.setMultipleMode(true);
+		this.file_dialog.setMultipleMode(false);
 	
 	}
 	
@@ -28,26 +28,26 @@ public class FileChooser {
 	}
 	
 	public void import_files() {
+		
+		// Import in order: xrf, standards, means
+		
 		this.file_dialog.setVisible(true);
+		File[] path_xrf_file = this.file_dialog.getFiles();
+		String xrf_path = path_xrf_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
+		this.xrf.add(xrf_path);
+		this.xrf.add("XRF_DATA_RUN_229");
 		
-		File[] data_files = this.file_dialog.getFiles();
+		this.file_dialog.setVisible(true);
+		File[] path_standards_file = this.file_dialog.getFiles();
+		String standards_path = path_standards_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
+		this.standards.add(standards_path);
+		this.standards.add("standards");
 		
-		for (File file : data_files) {
-			String formatted = file.getName().toLowerCase();
-			
-			if (formatted.contains("xrf")) {
-				this.xrf.add(file.toString());
-				this.xrf.add("XRF_DATA_RUN_229");
-			}
-			else if (formatted.contains("standards")) {
-				this.standards.add(file.toString());
-				this.standards.add("standards");
-			}
-			else if (formatted.contains("means")) {
-				this.means.add(file.toString());
-				this.means.add("means");
-			}
-		}
+		this.file_dialog.setVisible(true);
+		File[] path_means_file = this.file_dialog.getFiles();
+		String means_path = path_means_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
+		this.means.add(means_path);
+		this.means.add("means");
 	}
 	
 	public void import_single_file() {
