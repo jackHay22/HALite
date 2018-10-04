@@ -20,10 +20,7 @@ public class CSVParser {
 		String current_line = "";
 		String delimiter = ",";
 		
-		//BufferedReader reader = new BufferedReader(new FileReader(path_name));
-		//Note: temporarily using resource (on build path) reader
-
-		BufferedReader reader = new TestSuiteReader().get_resources_input(path_name);
+		BufferedReader reader = new BufferedReader(new FileReader(path_name));
 		
 		ArrayList<String[]> raw_data = new ArrayList<String[]>();
 		

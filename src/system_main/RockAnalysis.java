@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import system_utils.DataStore;
+import system_utils.FileChooser;
 
 public class RockAnalysis  {
 	public static void main(String[] args) {
@@ -27,18 +28,12 @@ public class RockAnalysis  {
         		
         		DataStore loaded_datastore = new DataStore(main_window);
         		
-        		ArrayList<String> means = new ArrayList<String>();
-        		ArrayList<String> xrf = new ArrayList<String>();
-        		ArrayList<String> standards = new ArrayList<String>();
+        		FileChooser file_chooser = new FileChooser(main_window);
         		
-        		means.add("/test_data/means.csv");
-        		means.add("means");
-        		
-        		xrf.add("/test_data/xrf.csv");
-        		xrf.add("XRF_DATA_RUN_229");
-        		
-        		standards.add("/test_data/standards.csv");
-        		standards.add("standards");
+        		file_chooser.import_files();
+        		ArrayList<String> means = file_chooser.get_means();
+        		ArrayList<String> xrf = file_chooser.get_xrf();
+        		ArrayList<String> standards = file_chooser.get_standards();
         		
         		try {
 					loaded_datastore.import_data(xrf, standards, means);
