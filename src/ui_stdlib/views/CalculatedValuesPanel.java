@@ -3,9 +3,7 @@ package ui_stdlib.views;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import javax.swing.JScrollPane;
-
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
