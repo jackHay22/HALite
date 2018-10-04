@@ -2,7 +2,6 @@ package ui_stdlib.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;

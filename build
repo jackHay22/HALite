@@ -3,22 +3,45 @@
 YELLOW='\033[1;33m'
 CYAN='\033[1;96m'
 NC='\033[0m'
-MICROSCOPE='\xF0\x9F\x94\xAC'
 MOUNTAIN='\xE2\x9B\xB0'
 
 JAVA_RUNTIME=`/usr/libexec/java_home -v 1.8`
 DATE=`date +%Y-%m-%d`
 
-printf "${MOUNTAIN}  Building ${CYAN}Interface${NC} app package...\n"
-javapackager -deploy \
-    -native image \
-    -nosign \
-    -outdir out \
-    -outfile interface \
-    -srcfiles out/Interface.jar \
-    -appclass system_main.RockAnalysis \
-    -name "AblationInterface" \
-    -title "Geochemical Ablation Interface" \
-    -Bruntime=${JAVA_RUNTIME} \
-    -Bicon=resources/app/icon.icns
-printf "${MOUNTAIN}  ${CYAN}Interface${NC} built to ${YELLOW}/out/bundles/AblationInterface${NC} \n"
+build_native () {
+    printf "${MOUNTAIN}  Building ${CYAN}Interface${NC} app package...\n"
+    javapackager -deploy \
+      -native image \
+      -nosign \
+      -outdir out \
+      -outfile interface \
+      -srcfiles out/Interface.jar \
+      -appclass system_main.RockAnalysis \
+      -name "Interface" \
+      -title "Geochemical Ablation Interface" \
+      -Bruntime=${JAVA_RUNTIME} \
+      -Bicon=resources/app/icon.icns
+    printf "${MOUNTAIN}  ${CYAN}Interface${NC} built to ${YELLOW}/out/bundles/Interface${NC} \n"
+}
+
+if [ $# -eq 0 ]; then
+  build_native
+elif [ "$1" == "--release" ]; then
+  if [ "$#" -eq 2 ]; then
+    build_native
+    mkdir release/${2}
+    BUILD_NAME="OSX_Interface_${2}.zip"
+    CROSS_PLATFORM="CrossPlatform_Interface_${2}.zip"
+    pushd out/bundles
+    zip -r $BUILD_NAME ./Interface.app > /dev/null 2>&1
+    popd
+    pushd out
+    zip -r $CROSS_PLATFORM ./Interface.jar > /dev/null 2>&1
+    popd
+    mv out/bundles/$BUILD_NAME release/${2}/
+    mv out/$CROSS_PLATFORM release/${2}/
+    printf "${MOUNTAIN}  Build ${YELLOW}$BUILD_NAME${NC} release complete \n"
+  else
+    printf "${MOUNTAIN}  ${YELLOW}Error:${NC} specify a release version when using ${CYAN}--release${NC} \n"
+  fi
+fi
