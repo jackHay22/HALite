@@ -29,7 +29,7 @@ if [ $# -eq 0 ]; then
 elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
-    mkdir release/${2}
+    mkdir -p release/${2}
     BUILD_NAME="OSX_Interface_${2}.zip"
     CROSS_PLATFORM="CrossPlatform_Interface_${2}.zip"
     pushd out/bundles
