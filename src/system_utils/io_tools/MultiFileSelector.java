@@ -27,7 +27,7 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		super(title);	
 		
 		selector_list = new ArrayList<StatefulFileSelector>();
-		this.setLayout(new GridLayout(5,0));
+		this.setLayout(new GridLayout(4,0));
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +71,6 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 
 	@Override
 	public void on_scheduled(SetupCoordinator callback, ui_framework.StateResult previous) {
-		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				callback.release(file_chooser);

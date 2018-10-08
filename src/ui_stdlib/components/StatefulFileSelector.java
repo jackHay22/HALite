@@ -8,27 +8,23 @@ import ui_framework.SystemPanel;
 @SuppressWarnings("serial")
 public class StatefulFileSelector extends SystemPanel {
 	private JButton selector_button;
+	//private ImageButton selector_button_two;
 	
 	public StatefulFileSelector(String label) {
 		this.selector_button = new JButton(label);
+		//this.selector_button_two = new ImageButton("/buttons/blank_button.png", 100, 40);
 	}
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public JButton get_button() {
@@ -38,6 +34,8 @@ public class StatefulFileSelector extends SystemPanel {
 	@Override
 	public void on_start() {
 		this.add(selector_button);
+		//this.add(selector_button_two);
+		//selector_button_two.setVisible(true);
 		selector_button.setVisible(true);
 		this.setVisible(true);
 	}
