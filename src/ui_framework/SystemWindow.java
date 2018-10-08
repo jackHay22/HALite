@@ -3,13 +3,15 @@ package ui_framework;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import system_utils.DataStore;
+import system_utils.FileChooser;
 import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow extends JFrame implements Refreshable, Runnable {
+public class SystemWindow extends JFrame implements Refreshable, ScheduledState {
 	private ArrayList<Refreshable> refreshable_frames;
 	private ArrayList<SystemPanel> panel_references;
 	private int subframe_width;
@@ -64,9 +66,9 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 		refreshable_frames.add(refreshable_window);
 	}
 
-	@Override
-	public void run() {
 
+	@Override
+	public void on_start() {
 		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
 		
 		for (int i = 0; i < this.panel_references.size(); i+=2) {
@@ -82,15 +84,28 @@ public class SystemWindow extends JFrame implements Refreshable, Runnable {
 		} else if (double_panes.size() == 1)  {
 			this.add(double_panes.get(0), BorderLayout.CENTER);
 		}
-		
-		on_start();
-	}
-
-	@Override
-	public void on_start() {
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).on_start();
 		}
 		this.setVisible(true);
 	}
+
+	@Override
+	public void on_scheduled(SetupCoordinator callback, StateResult prev_state) {
+		FileChooser file_chooser = (FileChooser) prev_state;
+		ArrayList<String> means = file_chooser.get_means();
+		ArrayList<String> xrf = file_chooser.get_xrf();
+		ArrayList<String> standards = file_chooser.get_standards();
+		
+		DataStore loaded_datastore = new DataStore(this);
+		try {
+			loaded_datastore.import_data(xrf, standards, means);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		set_datastore(loaded_datastore);
+		on_start();
+	}
+
+	
 }

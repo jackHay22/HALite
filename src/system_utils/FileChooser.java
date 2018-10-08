@@ -3,11 +3,9 @@ package system_utils;
 import java.awt.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
-
 import system_utils.io_tools.MultiFileSelector;
-import ui_framework.SystemWindow;
 
-public class FileChooser {
+public class FileChooser extends ui_framework.StateResult {
 	FileDialog file_dialog;
 	
 	public ArrayList<String> xrf;

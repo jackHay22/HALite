@@ -8,12 +8,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import system_utils.FileChooser;
+import ui_framework.SetupCoordinator;
 import ui_stdlib.components.StatefulFileSelector;
 
 @SuppressWarnings("serial")
-public class MultiFileSelector extends JFrame implements Runnable {
+public class MultiFileSelector extends JFrame implements ui_framework.ScheduledState {
 	private ArrayList<StatefulFileSelector> selector_list;
 	private int width = 600;
 	private int height = 400;
@@ -22,9 +22,8 @@ public class MultiFileSelector extends JFrame implements Runnable {
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
-
 	
-	public MultiFileSelector(String title, SetupCoordinator callback) {
+	public MultiFileSelector(String title) {
 		super(title);	
 		
 		selector_list = new ArrayList<StatefulFileSelector>();
@@ -32,13 +31,7 @@ public class MultiFileSelector extends JFrame implements Runnable {
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
 		
-		continue_button.addActionListener(new ActionListener () {
-			public void actionPerformed(ActionEvent e) {
-				callback.do_system_setup(file_chooser);
-				setVisible(false);
-				dispose();
-			}
-        });
+		
 		file_chooser = new FileChooser(this);
 		add_selection_target(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -77,8 +70,16 @@ public class MultiFileSelector extends JFrame implements Runnable {
 	}
 
 	@Override
-	public void run() {
-
+	public void on_scheduled(SetupCoordinator callback, ui_framework.StateResult previous) {
+		
+		continue_button.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				callback.release(file_chooser);
+				setVisible(false);
+				dispose();
+			}
+        }); 
+		
 		this.setMinimumSize(new Dimension(width, height));
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -90,6 +91,4 @@ public class MultiFileSelector extends JFrame implements Runnable {
 		continue_button.setVisible(true);
 		this.setVisible(true);
 	}
-
-	
 }
