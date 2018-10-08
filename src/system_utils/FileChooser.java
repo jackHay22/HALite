@@ -4,16 +4,17 @@ import java.awt.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
 
+import system_utils.io_tools.MultiFileSelector;
 import ui_framework.SystemWindow;
 
 public class FileChooser {
 	FileDialog file_dialog;
 	
-	ArrayList<String> xrf;
-	ArrayList<String> standards;
-	ArrayList<String> means;
+	public ArrayList<String> xrf;
+	public ArrayList<String> standards;
+	public ArrayList<String> means;
 	
-	public FileChooser(SystemWindow main_window) {
+	public FileChooser(MultiFileSelector main_window) {
 		this.file_dialog = new FileDialog(main_window, "Choose data files.");
 		this.xrf = new ArrayList<String>();
 		this.standards = new ArrayList<String>();
@@ -27,27 +28,14 @@ public class FileChooser {
 		this.file_dialog.setMultipleMode(mult);
 	}
 	
-	public void import_files() {
-		
-		// Import in order: xrf, standards, means
+	public void import_files(ArrayList<String> target, String label) {
 		
 		this.file_dialog.setVisible(true);
-		File[] path_xrf_file = this.file_dialog.getFiles();
-		String xrf_path = path_xrf_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
-		this.xrf.add(xrf_path);
-		this.xrf.add("XRF_DATA_RUN_229");
-		
-		this.file_dialog.setVisible(true);
-		File[] path_standards_file = this.file_dialog.getFiles();
-		String standards_path = path_standards_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
-		this.standards.add(standards_path);
-		this.standards.add("standards");
-		
-		this.file_dialog.setVisible(true);
-		File[] path_means_file = this.file_dialog.getFiles();
-		String means_path = path_means_file[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
-		this.means.add(means_path);
-		this.means.add("means");
+		File[] path = this.file_dialog.getFiles();
+		String new_path = path[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
+		target.add(new_path);
+		target.add(label);
+
 	}
 	
 	public void import_single_file() {
