@@ -41,10 +41,10 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	
 	private String get_file_display(String label, String path) {
 		if (path.length() <= path_display_length) {
-			  return label + ": " + path;
-			} else {
-			  return label + ": ..." + path.substring(path.length() - path_display_length);
-			}
+			 return label + ": " + path;
+		} else {
+			 return label + ": ..." + path.substring(path.length() - path_display_length);
+		}
 	}
 
 	@Override

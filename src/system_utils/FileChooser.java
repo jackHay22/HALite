@@ -36,26 +36,6 @@ public class FileChooser extends ui_framework.StateResult {
 		return new_path;
 	}
 	
-	public void import_single_file() {
-		this.file_dialog.setVisible(true);
-		
-		String data_file = this.file_dialog.getFile();
-		String formatted = data_file.toLowerCase();
-		
-		if (formatted.contains("xrf")) {
-			this.xrf.add(data_file.toString());
-			this.xrf.add("XRF_DATA_RUN_229");
-		}
-		else if (formatted.contains("standards")) {
-			this.standards.add(data_file.toString());
-			this.standards.add("standards");
-		}
-		else if (formatted.contains("means")) {
-			this.means.add(data_file.toString());
-			this.means.add("means");
-		}
-	}
-	
 	public ArrayList<String> get_xrf() {
 		return this.xrf;
 	}
