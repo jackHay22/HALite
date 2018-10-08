@@ -26,14 +26,14 @@ public class FileChooser extends ui_framework.StateResult {
 		this.file_dialog.setMultipleMode(mult);
 	}
 	
-	public void import_files(ArrayList<String> target, String label) {
+	public String import_files(ArrayList<String> target, String label) {
 		
 		this.file_dialog.setVisible(true);
 		File[] path = this.file_dialog.getFiles();
 		String new_path = path[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
 		target.add(new_path);
 		target.add(label);
-
+		return new_path;
 	}
 	
 	public void import_single_file() {
