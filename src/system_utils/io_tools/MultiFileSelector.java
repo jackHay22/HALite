@@ -30,7 +30,7 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		this.setLayout(new GridLayout(5,0));
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
-		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		file_chooser = new FileChooser(this);
 		add_selection_target(new ActionListener () {

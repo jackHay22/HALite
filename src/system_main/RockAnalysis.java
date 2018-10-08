@@ -20,22 +20,16 @@ public class RockAnalysis  {
             @Override
             public void run() {
             	ArrayList<ScheduledState> states = new ArrayList<ScheduledState>();
+            	
             	states.add(new MultiFileSelector("Select Files"));
             	
             	SystemWindow main_window = new SystemWindow("Ablation Analysis", 1200, 750);
+            	main_window.set_minimum_size(1200, 750);
 
-    			R2SettingsPanel test_settings = new R2SettingsPanel();
-    			
-    			CalculatedValuesPanel test_settings_two = new CalculatedValuesPanel();
-
-    			CorrelationGraph test_correlation = new CorrelationGraph();
-    			
-    			ModelGraph model_graph = new ModelGraph();
-    			
-    			main_window.add_system_panel(test_settings);	
-    			main_window.add_system_panel(test_correlation);
-    			main_window.add_system_panel(test_settings_two);
-    			main_window.add_system_panel(model_graph);
+    			main_window.add_system_panel(new R2SettingsPanel());	
+    			main_window.add_system_panel(new CorrelationGraph());
+    			main_window.add_system_panel(new CalculatedValuesPanel());
+    			main_window.add_system_panel(new ModelGraph());
     			
             	states.add(main_window);
             	
