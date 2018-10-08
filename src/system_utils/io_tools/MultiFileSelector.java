@@ -13,8 +13,8 @@ import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class MultiFileSelector extends JFrame implements ui_framework.ScheduledState {
-	private int width = 600;
-	private int height = 400;
+	private int width;
+	private int height;
 	private JButton continue_button;
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
@@ -22,9 +22,10 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
 	
-	public MultiFileSelector(String title) {
+	public MultiFileSelector(String title, int width, int height) {
 		super(title);	
-		
+		this.width = width;
+		this.height = height;
 		this.setLayout(new GridLayout(4,0));
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
@@ -32,7 +33,6 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		this.setBackground(SystemThemes.BACKGROUND);
 		
 		file_chooser = new FileChooser(this);
-
 	}
 	
 	private void can_continue() {
@@ -105,8 +105,6 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		this.add(continue_button);
 		continue_button.setBackground(SystemThemes.MAIN);
 		continue_button.setOpaque(true);
-		
-		
 		
 		setVisible(true);
 		//continue_button.setVisible(true);
