@@ -85,7 +85,7 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		means_chosen = false;
 		standards_chosen = false;
 		
-		JButton xrf_chooser = new JButton("Xrf");
+		JButton xrf_chooser = new JButton("XRF");
 		xrf_chooser.setBackground(SystemThemes.BACKGROUND);
 		xrf_chooser.setOpaque(true);
 		this.add(xrf_chooser);
@@ -107,7 +107,7 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		    public void actionPerformed(ActionEvent e) {
 		    	String file = file_chooser.import_files(file_chooser.xrf, "XRF_DATA_RUN_229");
 		    	xrf_chooser.setText(
-		    			get_file_display("Xrf", file));
+		    			get_file_display("XRF", file));
 		    	if (!file.isEmpty()) {
 		    		xrf_chosen = true;
 		    	}
