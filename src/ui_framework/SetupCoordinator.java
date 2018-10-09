@@ -16,9 +16,16 @@ public class SetupCoordinator {
 	}
 	
 	public void release(StateResult res) {
-		int next_state = current_state + 1;
-		if (next_state < states.size()) {
-			states.get(next_state).on_scheduled(this, res);
+		if (current_state + 1 < states.size()) {
+			current_state++;
+			states.get(current_state).on_scheduled(this, res);
+		}
+	}
+	
+	public void state_crashed() {
+		//TODO: figure out how to make this work with system window
+		if (current_state - 1 >= 0) {
+			states.get(current_state - 1).on_rollback(this);
 		}
 	}
 }

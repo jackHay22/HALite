@@ -220,14 +220,14 @@ public class DataStore {
 		}
 	}
 	
-	public void import_data(ArrayList<String> xrf, ArrayList<String> calibration, 
-							ArrayList<String> means) throws FileNotFoundException {
+	public void import_data(String[] xrf, String[] calibration, 
+							String[] means) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
 		
 		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf.get(0), xrf.get(1));
-		this.standards_data = parser.data_from_csv(calibration.get(0), calibration.get(1));
-		this.means_data = parser.data_from_csv(means.get(0), means.get(1));
+		this.xrf_data = parser.data_from_csv(xrf[0], xrf[1]);
+		this.standards_data = parser.data_from_csv(calibration[0], calibration[1]);
+		this.means_data = parser.data_from_csv(means[0], means[1]);
 		
 		create_element_correlations();
 		

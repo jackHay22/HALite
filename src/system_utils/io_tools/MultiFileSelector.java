@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import system_utils.FileChooser;
@@ -22,17 +23,23 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
 	
+	private ArrayList<JButton> added_buttons;
+	
 	public MultiFileSelector(String title, int width, int height) {
 		super(title);	
+		
 		this.width = width;
 		this.height = height;
+		
 		this.setLayout(new GridLayout(4,0));
+		
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(SystemThemes.BACKGROUND);
 		
-		file_chooser = new FileChooser(this);
+		added_buttons = new ArrayList<JButton>();
 	}
 	
 	private void can_continue() {
@@ -49,18 +56,28 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 
 	@Override
 	public void on_scheduled(SetupCoordinator callback, ui_framework.StateResult previous) {
+		file_chooser = new FileChooser(this);
+		continue_button.setEnabled(false);
+		
+		xrf_chosen = false;
+		means_chosen = false;
+		standards_chosen = false;
+		
 		JButton xrf_chooser = new JButton("Xrf");
 		xrf_chooser.setBackground(SystemThemes.BACKGROUND);
 		xrf_chooser.setOpaque(true);
 		this.add(xrf_chooser);
+		added_buttons.add(xrf_chooser);
 		JButton means_chooser = new JButton("Means");
 		means_chooser.setBackground(SystemThemes.BACKGROUND);
 		means_chooser.setOpaque(true);
 		this.add(means_chooser);
+		added_buttons.add(means_chooser);
 		JButton stds_chooser = new JButton("Standards");
 		stds_chooser.setBackground(SystemThemes.BACKGROUND);
 		stds_chooser.setOpaque(true);
 		this.add(stds_chooser);
+		added_buttons.add(stds_chooser);
 		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -107,6 +124,17 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		continue_button.setOpaque(true);
 		
 		setVisible(true);
-		//continue_button.setVisible(true);
+	}
+	
+	private void graphical_purge() {
+		for (JButton button: added_buttons) {
+			this.remove(button);
+		}
+	}
+
+	@Override
+	public void on_rollback(SetupCoordinator callback) {
+		graphical_purge();
+		on_scheduled(callback, null);
 	}
 }

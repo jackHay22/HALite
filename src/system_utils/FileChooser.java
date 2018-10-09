@@ -8,15 +8,15 @@ import system_utils.io_tools.MultiFileSelector;
 public class FileChooser extends ui_framework.StateResult {
 	FileDialog file_dialog;
 	
-	public ArrayList<String> xrf;
-	public ArrayList<String> standards;
-	public ArrayList<String> means;
+	public String[] xrf;
+	public String[] standards;
+	public String[] means;
 	
 	public FileChooser(MultiFileSelector main_window) {
 		this.file_dialog = new FileDialog(main_window, "Choose data files.");
-		this.xrf = new ArrayList<String>();
-		this.standards = new ArrayList<String>();
-		this.means = new ArrayList<String>();
+		xrf = new String[2];
+		standards = new String[2];
+		means = new String[2];
 		
 		this.file_dialog.setMultipleMode(false);
 	
@@ -26,25 +26,25 @@ public class FileChooser extends ui_framework.StateResult {
 		this.file_dialog.setMultipleMode(mult);
 	}
 	
-	public String import_files(ArrayList<String> target, String label) {
+	public String import_files(String[] target, String label) {
 		
 		this.file_dialog.setVisible(true);
 		File[] path = this.file_dialog.getFiles();
 		String new_path = path[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
-		target.add(new_path);
-		target.add(label);
+		target[0] = new_path;
+		target[1] = label;
 		return new_path;
 	}
 	
-	public ArrayList<String> get_xrf() {
-		return this.xrf;
+	public String[] get_xrf() {
+		return xrf;
 	}
 	
-	public ArrayList<String> get_standards() {
-		return this.standards;
+	public String[] get_standards() {
+		return standards;
 	}
 	
-	public ArrayList<String> get_means() {
-		return this.means;
+	public String[] get_means() {
+		return means;
 	}
 }
