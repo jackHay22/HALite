@@ -22,11 +22,14 @@ public class RockAnalysis  {
             public void run() {
             	ArrayList<ScheduledState> states = new ArrayList<ScheduledState>();
             	
-            	SystemWindow main_window = new SystemWindow("Ablation Analysis", 1200, 750);
+            	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
+            												ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+            												ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
             	
             	states.add(new MultiFileSelector("Select Files", main_window));
             	
-            	main_window.set_minimum_size(1200, 750);
+            	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+											 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
     			main_window.add_system_panel(new R2SettingsPanel());	
     			main_window.add_system_panel(new CorrelationGraph());

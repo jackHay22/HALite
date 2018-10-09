@@ -15,6 +15,12 @@ public class SystemThemes {
 	private static final int INSET = 5;
 	public static final int HEADER_PADDING = 5;
 	
+	public static int DIALOG_WINDOW_WIDTH = 500;
+	public static int DIALOG_WINDOW_HEIGHT = 300;
+	
+	public static int MAIN_WINDOW_WIDTH = 1200;
+	public static int MAIN_WINDOW_HEIGHT = 750;
+	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
