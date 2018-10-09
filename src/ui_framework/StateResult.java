@@ -1,5 +1,2 @@
 package ui_framework;
-
-public abstract class StateResult {
-
-}
+public abstract class StateResult {}

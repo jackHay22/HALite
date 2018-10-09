@@ -58,8 +58,10 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 			try {
 				loaded_datastore.import_data(xrf, standards, means);
 				continue_button.setEnabled(true);
+				continue_button.setBackground(SystemThemes.MAIN);
 			} catch (Exception e) {
 				continue_button.setEnabled(false);
+				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
 		}
 		
@@ -87,11 +89,13 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		xrf_chooser.setOpaque(true);
 		this.add(xrf_chooser);
 		added_buttons.add(xrf_chooser);
+		
 		JButton means_chooser = new JButton("Means");
 		means_chooser.setBackground(SystemThemes.BACKGROUND);
 		means_chooser.setOpaque(true);
 		this.add(means_chooser);
 		added_buttons.add(means_chooser);
+		
 		JButton stds_chooser = new JButton("Standards");
 		stds_chooser.setBackground(SystemThemes.BACKGROUND);
 		stds_chooser.setOpaque(true);
