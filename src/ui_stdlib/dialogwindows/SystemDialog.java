@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 public abstract class SystemDialog extends javax.swing.JFrame {
 
 	protected SystemDialog(String title) {
+		super(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

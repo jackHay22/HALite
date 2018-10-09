@@ -16,7 +16,7 @@ public class SystemThemes {
 	public static final int HEADER_PADDING = 5;
 	
 	public static int DIALOG_WINDOW_WIDTH = 500;
-	public static int DIALOG_WINDOW_HEIGHT = 300;
+	public static int DIALOG_WINDOW_HEIGHT = 350;
 	
 	public static int MAIN_WINDOW_WIDTH = 1200;
 	public static int MAIN_WINDOW_HEIGHT = 750;
