@@ -97,6 +97,4 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	@Override
 	public void on_rollback(SetupCoordinator callback) {
 	}
-
-	
 }

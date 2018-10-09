@@ -64,7 +64,6 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
 		}
-		
 	}
 	
 	private String get_file_display(String label, String path) {
