@@ -67,7 +67,9 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	}
 	
 	private String get_file_display(String label, String path) {
-		if (path.length() <= path_display_length) {
+		if (path.length() == 0) {
+			return label;
+		} else if (path.length() <= path_display_length) {
 			 return label + ": " + path;
 		} else {
 			 return label + ": ..." + path.substring(path.length() - path_display_length);
@@ -103,27 +105,36 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	String file = file_chooser.import_files(file_chooser.xrf, "XRF_DATA_RUN_229");
 		    	xrf_chooser.setText(
-		    			get_file_display("Xrf", file_chooser.import_files(file_chooser.xrf, "XRF_DATA_RUN_229")));
-		    	xrf_chosen = true;
+		    			get_file_display("Xrf", file));
+		    	if (!file.isEmpty()) {
+		    		xrf_chosen = true;
+		    	}
 		    	can_continue();
 		    }
 		});
 		
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	String file = file_chooser.import_files(file_chooser.means, "means");
 		    	means_chooser.setText(
-		    			get_file_display("Means", file_chooser.import_files(file_chooser.means, "means")));
-		    	means_chosen = true;
+		    			get_file_display("Means", file));
+		    	if (!file.isEmpty()) {
+			    	means_chosen = true;
+		    	}
 		    	can_continue();
 		    }
 		});
 		
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	String file = file_chooser.import_files(file_chooser.standards, "standards");
 		    	stds_chooser.setText(
-		    			get_file_display("Standards",file_chooser.import_files(file_chooser.standards, "standards")));
-		    	standards_chosen = true;
+		    			get_file_display("Standards", file));
+		    	if (!file.isEmpty()) {
+		    		standards_chosen = true;
+		    	}
 		    	can_continue();
 		    }
 		});

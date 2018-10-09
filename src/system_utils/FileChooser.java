@@ -30,7 +30,15 @@ public class FileChooser extends ui_framework.StateResult {
 		
 		this.file_dialog.setVisible(true);
 		File[] path = this.file_dialog.getFiles();
-		String new_path = path[0].toString(); //new File(file_dialog.getFile()).getAbsolutePath();
+		
+		String new_path;
+		try {
+			new_path = path[0].toString();
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			new_path = "";
+		}
+		
 		target[0] = new_path;
 		target[1] = label;
 		return new_path;
