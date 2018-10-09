@@ -1,13 +1,10 @@
-package system_utils.io_tools;
+package ui_stdlib.dialogwindows;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import system_utils.DataStore;
 import system_utils.FileChooser;
 import ui_framework.SetupCoordinator;
@@ -15,9 +12,7 @@ import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class MultiFileSelector extends JFrame implements ui_framework.ScheduledState {
-	private int width;
-	private int height;
+public class MultiFileSelector extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
@@ -29,19 +24,16 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public MultiFileSelector(String title, int width, int height, SystemWindow main_window) {
+	public MultiFileSelector(String title, SystemWindow main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
-		this.width = width;
-		this.height = height;
 		
 		this.setLayout(new GridLayout(4,0));
 		
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
 		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(SystemThemes.BACKGROUND);
 		
 		added_buttons = new ArrayList<JButton>();
@@ -142,21 +134,15 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				callback.release(loaded_datastore);
-				setVisible(false);
-				dispose();
+				close_dialog();
 			}
         }); 
 		
-		this.setMinimumSize(new Dimension(width, height));
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-
-		this.setResizable(false);
 		this.add(continue_button);
 		continue_button.setBackground(SystemThemes.MAIN);
 		continue_button.setOpaque(true);
 		
-		setVisible(true);
+		show_dialog();
 	}
 	
 	private void graphical_purge() {

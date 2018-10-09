@@ -3,7 +3,8 @@ package system_utils;
 import java.awt.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
-import system_utils.io_tools.MultiFileSelector;
+
+import ui_stdlib.dialogwindows.MultiFileSelector;
 
 public class FileChooser extends ui_framework.StateResult {
 	FileDialog file_dialog;
