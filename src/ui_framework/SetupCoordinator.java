@@ -22,6 +22,13 @@ public class SetupCoordinator {
 		}
 	}
 	
+	public void release_to(int index, StateResult res) {
+		if (index < states.size() && index > 0) {
+			current_state = index;
+			states.get(current_state).on_scheduled(this, res);
+		}
+	}
+	
 	public void state_crashed() {
 		//TODO: figure out how to make this work with system window
 		if (current_state - 1 >= 0) {

@@ -13,7 +13,7 @@ import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
-public class DataStore {
+public class DataStore extends ui_framework.StateResult {
 	private ui_framework.SystemWindow window_parent;
 	
 	private Element primary;

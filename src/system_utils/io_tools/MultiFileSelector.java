@@ -8,8 +8,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import system_utils.DataStore;
 import system_utils.FileChooser;
 import ui_framework.SetupCoordinator;
+import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
@@ -22,12 +25,15 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
+	private SystemWindow main_window;
+	private DataStore loaded_datastore;
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public MultiFileSelector(String title, int width, int height) {
+	public MultiFileSelector(String title, int width, int height, SystemWindow main_window) {
 		super(title);	
 		
+		this.main_window = main_window;
 		this.width = width;
 		this.height = height;
 		
@@ -43,7 +49,25 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 	}
 	
 	private void can_continue() {
-		continue_button.setEnabled(xrf_chosen && standards_chosen && means_chosen);
+		if (xrf_chosen && standards_chosen && means_chosen) {
+			
+			String[] means = file_chooser.get_means();
+			String[] xrf = file_chooser.get_xrf();
+			String[] standards = file_chooser.get_standards();
+			
+			loaded_datastore = new DataStore(main_window);
+			boolean loaded = false;
+			try {
+				loaded_datastore.import_data(xrf, standards, means);
+				loaded = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (loaded) {
+				continue_button.setEnabled(true);
+			}
+		}
+		
 	}
 	
 	private String get_file_display(String label, String path) {
@@ -108,7 +132,7 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				callback.release(file_chooser);
+				callback.release(loaded_datastore);
 				setVisible(false);
 				dispose();
 			}

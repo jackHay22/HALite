@@ -92,18 +92,8 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 
 	@Override
 	public void on_scheduled(SetupCoordinator callback, StateResult prev_state) {
-		FileChooser file_chooser = (FileChooser) prev_state;
-		String[] means = file_chooser.get_means();
-		String[] xrf = file_chooser.get_xrf();
-		String[] standards = file_chooser.get_standards();
+		DataStore loaded_datastore = (DataStore) prev_state;
 		
-		DataStore loaded_datastore = new DataStore(this);
-
-		try {
-			loaded_datastore.import_data(xrf, standards, means);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		set_datastore(loaded_datastore);
 		on_start();
