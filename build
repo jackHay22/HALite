@@ -8,8 +8,11 @@ MOUNTAIN='\xE2\x9B\xB0'
 JAVA_RUNTIME=`/usr/libexec/java_home -v 1.8`
 DATE=`date +%Y-%m-%d`
 
+APP_NAME="Interface"
+JAR_NAME="Interface.jar"
+
 build_native () {
-    printf "${MOUNTAIN}  Building ${CYAN}Interface${NC} app package...\n"
+    printf "${MOUNTAIN}  Building ${CYAN}${APP_NAME}${NC} app package...\n"
     javapackager -deploy \
       -native image \
       -nosign \
@@ -17,11 +20,11 @@ build_native () {
       -outfile interface \
       -srcfiles out/Interface.jar \
       -appclass system_main.RockAnalysis \
-      -name "Interface" \
+      -name $APP_NAME \
       -title "Geochemical Ablation Interface" \
       -Bruntime=${JAVA_RUNTIME} \
       -Bicon=resources/app/icon.icns
-    printf "${MOUNTAIN}  ${CYAN}Interface${NC} built to ${YELLOW}/out/bundles/Interface${NC} \n"
+    printf "${MOUNTAIN}  ${CYAN}${APP_NAME}${NC} built to ${YELLOW}/out/bundles/${APP_NAME}${NC} \n"
 }
 
 if [ $# -eq 0 ]; then
@@ -30,14 +33,14 @@ elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
     mkdir -p release/${2}
-    BUILD_NAME="Interface_${2}"
+    BUILD_NAME="${APP_NAME}_${2}"
     OSX_NAME="OSX_${BUILD_NAME}.zip"
     CROSS_PLATFORM="CrossPlatform_${BUILD_NAME}.zip"
     pushd out/bundles
-    zip -r $OSX_NAME ./Interface.app > /dev/null 2>&1
+    zip -r $OSX_NAME ./${APP_NAME}.app > /dev/null 2>&1
     popd
     pushd out
-    zip -r $CROSS_PLATFORM ./Interface.jar > /dev/null 2>&1
+    zip -r $CROSS_PLATFORM ./$JAR_NAME > /dev/null 2>&1
     popd
     mv out/bundles/$OSX_NAME release/${2}/
     mv out/$CROSS_PLATFORM release/${2}/
