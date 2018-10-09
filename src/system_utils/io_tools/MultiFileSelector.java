@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import system_utils.DataStore;
 import system_utils.FileChooser;
 import ui_framework.SetupCoordinator;

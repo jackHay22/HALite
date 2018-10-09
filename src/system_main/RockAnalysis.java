@@ -25,7 +25,6 @@ public class RockAnalysis  {
             	
             	states.add(new MultiFileSelector("Select Files", 500, 300, main_window));
             	
-            	
             	main_window.set_minimum_size(1200, 750);
 
     			main_window.add_system_panel(new R2SettingsPanel());	

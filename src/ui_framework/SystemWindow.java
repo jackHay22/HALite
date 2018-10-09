@@ -3,11 +3,9 @@ package ui_framework;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import system_utils.DataStore;
-import system_utils.FileChooser;
 import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -92,10 +90,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 
 	@Override
 	public void on_scheduled(SetupCoordinator callback, StateResult prev_state) {
-		DataStore loaded_datastore = (DataStore) prev_state;
-		
-
-		set_datastore(loaded_datastore);
+		set_datastore((DataStore) prev_state);
 		on_start();
 	}
 
