@@ -78,20 +78,23 @@ public class MultiFileSelector extends SystemDialog implements ui_framework.Sche
 		standards_chosen = false;
 		
 		JButton xrf_chooser = new JButton("XRF");
-		xrf_chooser.setBackground(SystemThemes.BACKGROUND);
-		xrf_chooser.setOpaque(true);
+		//Causes windows graphical bug
+			//xrf_chooser.setBackground(SystemThemes.BACKGROUND);
+			//xrf_chooser.setOpaque(true);
 		this.add(xrf_chooser);
 		added_buttons.add(xrf_chooser);
 		
 		JButton means_chooser = new JButton("Means");
-		means_chooser.setBackground(SystemThemes.BACKGROUND);
-		means_chooser.setOpaque(true);
+		//Causes windows graphical bug
+			//means_chooser.setBackground(SystemThemes.BACKGROUND);
+			//means_chooser.setOpaque(true);
 		this.add(means_chooser);
 		added_buttons.add(means_chooser);
 		
 		JButton stds_chooser = new JButton("Standards");
-		stds_chooser.setBackground(SystemThemes.BACKGROUND);
-		stds_chooser.setOpaque(true);
+		//Causes windows graphical bug
+			//stds_chooser.setBackground(SystemThemes.BACKGROUND);
+			//stds_chooser.setOpaque(true);
 		this.add(stds_chooser);
 		added_buttons.add(stds_chooser);
 		

@@ -3,6 +3,9 @@ package ui_stdlib;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 public class SystemThemes {
 	public static Color BACKGROUND = new Color(39, 47, 50);
@@ -20,6 +23,7 @@ public class SystemThemes {
 	
 	public static int MAIN_WINDOW_WIDTH = 1200;
 	public static int MAIN_WINDOW_HEIGHT = 750;
+	public static KeyStroke SAVE_BINDING = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
