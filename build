@@ -30,15 +30,16 @@ elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
     mkdir -p release/${2}
-    BUILD_NAME="OSX_Interface_${2}.zip"
-    CROSS_PLATFORM="CrossPlatform_Interface_${2}.zip"
+    BUILD_NAME="Interface_${2}"
+    OSX_NAME="OSX_${BUILD_NAME}.zip"
+    CROSS_PLATFORM="CrossPlatform_${BUILD_NAME}.zip"
     pushd out/bundles
-    zip -r $BUILD_NAME ./Interface.app > /dev/null 2>&1
+    zip -r $OSX_NAME ./Interface.app > /dev/null 2>&1
     popd
     pushd out
     zip -r $CROSS_PLATFORM ./Interface.jar > /dev/null 2>&1
     popd
-    mv out/bundles/$BUILD_NAME release/${2}/
+    mv out/bundles/$OSX_NAME release/${2}/
     mv out/$CROSS_PLATFORM release/${2}/
     printf "${MOUNTAIN}  Build ${YELLOW}$BUILD_NAME${NC} release complete \n"
   else
