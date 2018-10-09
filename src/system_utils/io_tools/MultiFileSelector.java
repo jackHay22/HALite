@@ -56,15 +56,11 @@ public class MultiFileSelector extends JFrame implements ui_framework.ScheduledS
 			String[] standards = file_chooser.get_standards();
 			
 			loaded_datastore = new DataStore(main_window);
-			boolean loaded = false;
 			try {
 				loaded_datastore.import_data(xrf, standards, means);
-				loaded = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (loaded) {
 				continue_button.setEnabled(true);
+			} catch (Exception e) {
+				continue_button.setEnabled(false);
 			}
 		}
 		
