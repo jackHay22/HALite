@@ -176,8 +176,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.graph.set_y_label(s);
 		s = data_to_plot.get_secondary().name();
 		this.graph.set_x_label(s);
-		
-		s = "r^2: " + get_display_number(data_to_plot.get_r2()) + "  ||  " + data_to_plot.get_equation().get_str_rep();
+		s = "r^2: " + get_display_number(data_to_plot.get_r2()) + "    ||    " + data_to_plot.get_equation().get_str_rep();
 		this.graph.set_r2_eqn_label(s);
 		s = "Correlation Graph";
 		this.graph.set_title(s);

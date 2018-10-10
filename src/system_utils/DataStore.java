@@ -49,6 +49,9 @@ public class DataStore extends ui_framework.StateResult {
 		
 		ArrayList<Double> means;
 		
+		// If it contains the element EXACTLY
+		// FIX ME
+		// This needs to parse to see if the strings are contained
 		if (means_data.contains_data(new TableKey(elem.name()))) {
 			means = means_data.get_data(new TableKey(elem.name())).get_data();
 		} else {
@@ -247,9 +250,9 @@ public class DataStore extends ui_framework.StateResult {
 			return corr;
 		}
 		
-		ElementCorrelationInfo elem_corr_info = this.correlations.get(Element.Zr);
+		ElementCorrelationInfo elem_corr_info = this.correlations.get(Element.Hf);
 		
-		CorrelationInfo corr = elem_corr_info.get_corr(Element.As);
+		CorrelationInfo corr = elem_corr_info.get_corr(Element.Si);
 		
 		return corr;
 	}

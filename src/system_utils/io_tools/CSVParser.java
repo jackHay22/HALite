@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import system_utils.DataTable;
+import system_utils.Element;
 import system_utils.TableKey;
 
 public class CSVParser {
@@ -82,6 +83,24 @@ public class CSVParser {
 	    return true;
 	}
 	
+	// This method will help parse the weird column names
+	public String col_name(String col_title) {
+		
+		col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");;
+		String chosen = col_title;
+		
+		for (Element elem : Element.values()) {
+			// Some parsing work in here
+			if (col_title.contains(elem.toString())) {
+				if (chosen == null || chosen.length() < elem.toString().length()) {
+					chosen = elem.toString();
+				}
+			}
+		}
+		
+		return chosen;
+	}
+	
 	public DataTable data_from_csv(String path_name, String table_name) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
@@ -99,7 +118,10 @@ public class CSVParser {
 				continue;
 			}
 					
+			// THE COLUMN NAMES ARE THE ELEM NAMES!!
 			TableKey current_column_name = new TableKey(column_names[i].replaceAll("\\s+",""));
+			System.out.println(column_names[i]);
+			System.out.println(current_column_name.get_val());
 			
 			// Check if column contains Doubles
 			if (isNumeric(raw_data.get(1)[i])) {
