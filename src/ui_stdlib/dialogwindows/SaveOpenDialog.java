@@ -23,8 +23,8 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 
 	@Override
 	public void on_scheduled(SetupCoordinator callback, StateResult prev_state) {
-		JButton open_chooser = new JButton("Open New Files...");
-		JButton save_chooser = new JButton("Open Saved File...");
+		JButton open_chooser = new JButton("Open new files...");
+		JButton save_chooser = new JButton("Open saved...");
 
 		open_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -32,10 +32,11 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 		    	close_dialog();
 		    }
 		});
+		
 		save_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	System.out.println("TODO: load saved file...");
-		    	//release with filename
+		    	//release (to main) with filename 
 		    	callback.release(null);
 		    	close_dialog();
 		    }

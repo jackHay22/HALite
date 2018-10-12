@@ -3,7 +3,6 @@ package ui_framework;
 import java.util.ArrayList;
 
 public class SetupCoordinator {
-
 	private ArrayList<ScheduledState> states;
 	private int current_state = 0;
 	

@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
-public abstract class SystemDialog extends javax.swing.JFrame {
+public abstract class SystemDialog extends JFrame {
 
 	protected SystemDialog(String title) {
 		super(title);
