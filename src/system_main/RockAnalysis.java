@@ -2,13 +2,13 @@ package system_main;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-
 import ui_framework.ScheduledState;
 import ui_framework.SetupCoordinator;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
 import ui_stdlib.dialogwindows.MultiFileSelector;
+import ui_stdlib.dialogwindows.SaveOpenDialog;
 import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 
@@ -26,6 +26,7 @@ public class RockAnalysis  {
             												ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
             												ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
             	
+            	states.add(new SaveOpenDialog("Open Files"));
             	states.add(new MultiFileSelector("Select Files", main_window));
             	
             	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 

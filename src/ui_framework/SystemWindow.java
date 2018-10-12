@@ -21,7 +21,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 		
 		refreshable_frames = new ArrayList<Refreshable>();
 		panel_references = new ArrayList<SystemPanel>();
-		resize_buffer = 10;
+		resize_buffer = 20;
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
