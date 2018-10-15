@@ -71,7 +71,8 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 			//save_target.assign(path);
 			return true;
 		} else {
-			return false;
+			//target unassigned
+			return try_new_save(state);
 		}
 	}
 	
