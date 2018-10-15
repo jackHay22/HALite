@@ -66,6 +66,8 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 
 	@Override
 	public void on_start() {
+		//setJMenuBar(manager.get_menu_bar());
+		
 		ArrayList<JSplitPane> double_panes = new ArrayList<JSplitPane>();
 		
 		for (int i = 0; i < this.panel_references.size(); i+=2) {

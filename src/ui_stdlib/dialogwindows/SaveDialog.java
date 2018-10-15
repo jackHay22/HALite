@@ -1,10 +1,10 @@
 package ui_stdlib.dialogwindows;
 
-import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import ui_framework.ScheduledState;
 import ui_framework.SetupCoordinator;
@@ -12,19 +12,18 @@ import ui_framework.StateResult;
 
 @SuppressWarnings("serial")
 public class SaveDialog extends SystemDialog implements ScheduledState {
-	private FileDialog save_dialog;
-	private ScheduledState release_to_state;
+	private ScheduledState previous_state;
 	private SaveTarget save_target;
 	private JLabel save_current_instructions;
 	private String current_stub = "Save to ";
 	
-	public SaveDialog(String title, ScheduledState release_to_state) {
+	public SaveDialog(String title, ScheduledState previous_state) {
 		super(title);
-		this.release_to_state = release_to_state;
+		this.previous_state = previous_state;
 		save_target = new SaveTarget();
-		save_dialog = new FileDialog(this, "Save as...");
 		this.setLayout(new GridLayout(4,0));
 		save_current_instructions = new JLabel("Save to new file...");
+		save_current_instructions.setHorizontalAlignment(JLabel.CENTER);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		save_current_state.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (get_new_target() && try_save(prev_state)) {
-		    		callback.release_to(release_to_state);
+		    		callback.release_to(previous_state);
 		    		close_dialog();
 		    	}
 		    }
@@ -47,13 +46,15 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		save_to_current_path.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (try_save(prev_state)) {
-		    		callback.release_to(release_to_state);
+		    		callback.release_to(previous_state);
 		    		close_dialog();
 		    	}
 		    }
 		});
 		
 		JLabel save_instructions = new JLabel("Save to new file...");
+		save_instructions.setHorizontalAlignment(JLabel.CENTER);
+		
 		add(save_instructions);
 		add(save_current_state);
 		add(save_current_instructions);
@@ -67,20 +68,16 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	
 	private boolean try_save(StateResult state) {
 		if (save_target.path_assigned()) {
-			//TODO
-			//save_target.assign(path);
 			return save_target.write_to_target();
 		} else {	
-			//target unassigned
 			return false;
 		}
 	}
 	
 	private boolean get_new_target() {
-		//show dialog
-		//assign new path
-		//save_target.assign(path);
-		return true;
+		JFileChooser save_chooser = new JFileChooser();
+		boolean approved = JFileChooser.APPROVE_OPTION == save_chooser.showSaveDialog(this);
+		if (approved) save_target.assign(save_chooser.getSelectedFile());
+		return approved;
 	}
-
 }

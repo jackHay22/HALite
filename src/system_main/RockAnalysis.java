@@ -20,6 +20,7 @@ public class RockAnalysis  {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+            	
             	ArrayList<ScheduledState> states = new ArrayList<ScheduledState>();
             	
             	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
