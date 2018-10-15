@@ -3,8 +3,7 @@ package system_utils;
 import java.awt.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
-
-import ui_stdlib.dialogwindows.MultiFileSelector;
+import ui_stdlib.dialogwindows.NewDialog;
 
 public class FileChooser extends ui_framework.StateResult {
 	FileDialog file_dialog;
@@ -13,7 +12,7 @@ public class FileChooser extends ui_framework.StateResult {
 	public String[] standards;
 	public String[] means;
 	
-	public FileChooser(MultiFileSelector main_window) {
+	public FileChooser(NewDialog main_window) {
 		this.file_dialog = new FileDialog(main_window, "Choose data files.");
 		xrf = new String[2];
 		standards = new String[2];

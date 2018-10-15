@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import system_utils.DataStore;
 import system_utils.FileChooser;
-import ui_framework.SetupCoordinator;
+import ui_framework.ScheduledState;
+import ui_framework.StateManager;
 import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class MultiFileSelector extends SystemDialog implements ui_framework.ScheduledState {
+public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
@@ -24,15 +25,12 @@ public class MultiFileSelector extends SystemDialog implements ui_framework.Sche
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public MultiFileSelector(String title, SystemWindow main_window) {
+	public NewDialog(String title, SystemWindow main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
 		
 		this.setLayout(new GridLayout(4,0));
-		
-		continue_button = new JButton("Continue");
-		continue_button.setEnabled(false);
 		
 		this.setBackground(SystemThemes.BACKGROUND);
 		
@@ -69,9 +67,28 @@ public class MultiFileSelector extends SystemDialog implements ui_framework.Sche
 	}
 
 	@Override
-	public void on_scheduled(SetupCoordinator callback, ui_framework.StateResult previous) {
-		file_chooser = new FileChooser(this);
+	public void on_scheduled(StateManager callback, ScheduledState previous, ui_framework.StateResult previous_res) {
+		
+		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
+		continue_button.setBackground(SystemThemes.MAIN);
+		continue_button.setOpaque(true);
+		
+		continue_button.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				remove(continue_button);
+				callback.release_to(previous, loaded_datastore);
+				close_dialog();
+			}
+        }); 
+		add(continue_button);
+		
+		show_dialog();
+	}
+	@Override
+	public void init() {
+		
+		file_chooser = new FileChooser(this);
 		
 		xrf_chosen = false;
 		means_chosen = false;
@@ -133,30 +150,5 @@ public class MultiFileSelector extends SystemDialog implements ui_framework.Sche
 		    	can_continue();
 		    }
 		});
-		
-		continue_button.addActionListener(new ActionListener () {
-			public void actionPerformed(ActionEvent e) {
-				callback.release(loaded_datastore);
-				close_dialog();
-			}
-        }); 
-		
-		this.add(continue_button);
-		continue_button.setBackground(SystemThemes.MAIN);
-		continue_button.setOpaque(true);
-		
-		show_dialog();
-	}
-	
-	private void graphical_purge() {
-		for (JButton button: added_buttons) {
-			this.remove(button);
-		}
-	}
-
-	@Override
-	public void on_rollback(SetupCoordinator callback) {
-		graphical_purge();
-		on_scheduled(callback, null);
 	}
 }

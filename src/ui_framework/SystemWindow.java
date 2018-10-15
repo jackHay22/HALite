@@ -15,6 +15,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	private int subframe_width;
 	private int subframe_height;
 	private int resize_buffer;
+	private boolean did_load_datastore = false;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -36,13 +37,16 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	
 	@Override
 	public void refresh() {
-		for (int i=0; i < this.refreshable_frames.size(); i++) {
-			this.refreshable_frames.get(i).refresh();
+		if (did_load_datastore) {
+			for (int i=0; i < this.refreshable_frames.size(); i++) {
+				this.refreshable_frames.get(i).refresh();
+			}
 		}
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
+		System.out.println("Setting new datastore");
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}
@@ -61,6 +65,10 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	@Override
 	public void add_refreshable(Refreshable refreshable_window) {
 		refreshable_frames.add(refreshable_window);
+	}
+	
+	public boolean datastore_set() {
+		return did_load_datastore;
 	}
 
 
@@ -86,16 +94,22 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).on_start();
 		}
-		this.setVisible(true);
+		revalidate();
+		setVisible(true);
 	}
 
 	@Override
-	public void on_scheduled(SetupCoordinator callback, StateResult prev_state) {
-		set_datastore((DataStore) prev_state);
-		on_start();
+	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_state) {
+		if (prev_state != null) {
+			set_datastore((DataStore) prev_state);
+			on_start();
+			did_load_datastore = true;
+		} 
 	}
 
 	@Override
-	public void on_rollback(SetupCoordinator callback) {
+	public void init() {
+		setVisible(true);
+		add(SystemThemes.get_default_placeholder());
 	}
 }

@@ -1,9 +1,12 @@
 package ui_stdlib;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 public class SystemThemes {
@@ -32,5 +35,19 @@ public class SystemThemes {
 		constraints.weightx = 1.0;
 		constraints.insets = new Insets(INSET, INSET, INSET, INSET);
 		return constraints;
+	}
+	
+	public static JLabel get_copyright() {
+		JLabel copyright = new JLabel(SystemThemes.COPYRIGHT);
+		copyright.setHorizontalAlignment(JLabel.CENTER);
+		return copyright;
+	}
+	
+	public static JLabel get_default_placeholder() {
+		JLabel placeholder = new JLabel("Open a new or saved project");
+		placeholder.setHorizontalAlignment(JLabel.CENTER);
+		placeholder.setVerticalAlignment(JLabel.CENTER);
+		placeholder.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		return placeholder;
 	}
 }

@@ -1,6 +1,6 @@
 package ui_framework;
 
 public interface ScheduledState {
-	public void on_scheduled(SetupCoordinator callback, StateResult prev_state);
-	public void on_rollback(SetupCoordinator callback);
+	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res);
+	public void init();
 }
