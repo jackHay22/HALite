@@ -23,10 +23,6 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 		save_loader = new DataStore(main_window);
 		save_dialog = new FileDialog(this, "Choose saved file");
 		this.setLayout(new GridLayout(4,0));
-		JLabel title_desc = new JLabel("Select a saved file or open new files");
-		title_desc.setHorizontalAlignment(JLabel.CENTER);
-		title_desc.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		this.add(title_desc);
 	}
 
 	@Override
@@ -50,9 +46,14 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 		    }
 		});
 		
+		JLabel title_desc = new JLabel("Select a saved file or open new files");
+		title_desc.setHorizontalAlignment(JLabel.CENTER);
+		title_desc.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		
 		JLabel copyright = new JLabel(SystemThemes.COPYRIGHT);
 		copyright.setHorizontalAlignment(JLabel.CENTER);
 		
+		add(title_desc);
 		add(open_chooser);
 		add(save_chooser);
 		add(copyright);
