@@ -38,7 +38,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		
 		save_current_state.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	if (try_new_save(prev_state)) {
+		    	if (get_new_target() && try_save(prev_state)) {
 		    		callback.release_to(release_to_state);
 		    		close_dialog();
 		    	}
@@ -46,7 +46,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		});
 		save_to_current_path.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	if (try_save(prev_state, save_target)) {
+		    	if (try_save(prev_state)) {
 		    		callback.release_to(release_to_state);
 		    		close_dialog();
 		    	}
@@ -65,18 +65,22 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	public void on_rollback(SetupCoordinator callback) {
 	}
 	
-	private boolean try_save(StateResult state, SaveTarget target) {
-		if (target.path_assigned()) {
+	private boolean try_save(StateResult state) {
+		if (save_target.path_assigned()) {
 			//TODO
 			//save_target.assign(path);
-			return true;
-		} else {
+			return save_target.write_to_target();
+		} else {	
 			//target unassigned
-			return try_new_save(state);
+			return false;
 		}
 	}
 	
-	private boolean try_new_save(StateResult state) {
-		return false;
+	private boolean get_new_target() {
+		//show dialog
+		//assign new path
+		//save_target.assign(path);
+		return true;
 	}
+
 }

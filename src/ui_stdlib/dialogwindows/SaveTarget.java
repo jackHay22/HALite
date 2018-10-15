@@ -5,23 +5,29 @@ import ui_framework.StateResult;
 
 public class SaveTarget extends StateResult {
 	private File path;
-	private boolean loaded_from_save;
+	private boolean target_assigned = false;
 	
 	public void assign(File path) {
 		this.path = path;
 	}
 	
-	public void unassign() {
-		this.loaded_from_save = false;
-		this.path = null;
-	}
-	
 	public File get_path() {
-		loaded_from_save = true;
+		target_assigned = true;
 		return this.path;
 	}
 	
+	public boolean write_to_target() {
+		if (target_assigned) {
+			
+			
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean path_assigned() {
-		return loaded_from_save;
+		return target_assigned;
 	}
 }
