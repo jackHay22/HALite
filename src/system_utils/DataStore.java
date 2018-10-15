@@ -1,5 +1,6 @@
 package system_utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,12 @@ public class DataStore extends ui_framework.StateResult {
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
 		this.elem_num = 5;
+	}
+	
+	public boolean load_from_save(File path) {
+		//TODO
+		//try to load from save file, return true if successful
+		return false;
 	}
 	
 	private void internal_refresh() {

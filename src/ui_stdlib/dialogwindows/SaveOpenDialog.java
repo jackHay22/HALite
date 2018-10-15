@@ -1,19 +1,24 @@
 package ui_stdlib.dialogwindows;
 
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import system_utils.DataStore;
 import ui_framework.SetupCoordinator;
 import ui_framework.StateResult;
+import ui_framework.SystemWindow;
 
 @SuppressWarnings("serial")
 public class SaveOpenDialog extends SystemDialog implements ui_framework.ScheduledState {
-
-	public SaveOpenDialog(String title) {
+	DataStore save_loader;
+	
+	public SaveOpenDialog(String title, SystemWindow main_window) {
 		super(title);
+		save_loader = new DataStore(main_window);
 		this.setLayout(new GridLayout(4,0));
 		JLabel title_desc = new JLabel("Select a saved file or open new files");
 		title_desc.setHorizontalAlignment(JLabel.CENTER);
@@ -35,10 +40,10 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 		
 		save_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	System.out.println("TODO: load saved file...");
-		    	//release (to main) with filename 
-		    	callback.release(null);
-		    	close_dialog();
+		    	if (load_from_save()) {
+		    		callback.release(save_loader);
+			    	close_dialog();
+		    	}
 		    }
 		});
 		
@@ -55,5 +60,18 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 	@Override
 	public void on_rollback(SetupCoordinator callback) {
 	}
-
+	
+	private boolean load_from_save() {
+		FileDialog dialog = new FileDialog(this, "Choose data files.");
+		dialog.setMultipleMode(false);
+		dialog.setVisible(true);
+		java.io.File[] path = dialog.getFiles();
+		
+		try {
+			return path.length > 0 && save_loader.load_from_save(path[0]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

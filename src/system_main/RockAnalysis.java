@@ -26,7 +26,7 @@ public class RockAnalysis  {
             												ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
             												ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
             	
-            	states.add(new SaveOpenDialog("Open Files"));
+            	states.add(new SaveOpenDialog("Open Files", main_window));
             	states.add(new MultiFileSelector("Select Files", main_window));
             	
             	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
