@@ -92,7 +92,7 @@ public class CSVParser {
 		for (Element elem : Element.values()) {
 			// Some parsing work in here
 			if (col_title.contains(elem.toString())) {
-				if (chosen == null || chosen.length() < elem.toString().length()) {
+				if (chosen == col_title || chosen.length() < elem.toString().length()) {
 					chosen = elem.toString();
 				}
 			}
