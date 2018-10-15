@@ -66,7 +66,6 @@ public class SaveOpenDialog extends SystemDialog implements ui_framework.Schedul
 	}
 	
 	private boolean load_from_save() {
-		
 		save_dialog.setMultipleMode(false);
 		save_dialog.setVisible(true);
 		java.io.File[] path = save_dialog.getFiles();

@@ -28,6 +28,10 @@ public class SetupCoordinator {
 		}
 	}
 	
+	public void release_to(ScheduledState target) {
+		target.on_scheduled(this, null);
+	}
+	
 	public void state_crashed() {
 		//TODO: figure out how to make this work with system window
 		if (current_state - 1 >= 0) {
