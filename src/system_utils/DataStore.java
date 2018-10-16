@@ -23,6 +23,8 @@ public class DataStore extends ui_framework.StateResult {
 	private Element primary;
 	private Element secondary;
 	
+	private Element model_data_element;
+	
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
@@ -258,6 +260,14 @@ public class DataStore extends ui_framework.StateResult {
 		this.means_data = parser.data_from_csv("means", test_reader.get_resources_input(means));
 		
 		create_element_correlations();
+	}
+	
+	public void set_model_data_element(Element elem) {
+		this.model_data_element = elem;
+	}
+	
+	public ElementCorrelationInfo get_model_data_corr() {
+		return this.correlations.get(this.model_data_element);
 	}
 	
 	public CorrelationInfo get_elem_correlation_info(Element x, Element y) {
