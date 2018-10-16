@@ -5,6 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
+
+import javax.swing.JComboBox;
+import javax.swing.BorderFactory;
+
 import system_utils.DataStore;
 import system_utils.FileChooser;
 import ui_framework.ScheduledState;
@@ -30,7 +34,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		this.main_window = main_window;
 		
-		this.setLayout(new GridLayout(4,0));
+		this.setLayout(new GridLayout(4,2));
 		
 		this.setBackground(SystemThemes.BACKGROUND);
 		
@@ -101,6 +105,13 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		this.add(xrf_chooser);
 		added_buttons.add(xrf_chooser);
 		
+		JComboBox xrf_table_selection = new JComboBox();
+		xrf_table_selection.setBorder(BorderFactory.createTitledBorder("Select XRF Table"));
+		this.add(xrf_table_selection);
+		xrf_table_selection.setEnabled(false);
+		xrf_table_selection.setBackground(SystemThemes.MAIN);
+		xrf_table_selection.setOpaque(true);
+		
 		JButton means_chooser = new JButton("Means");
 		//Causes windows graphical bug
 			//means_chooser.setBackground(SystemThemes.BACKGROUND);
@@ -108,12 +119,26 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		this.add(means_chooser);
 		added_buttons.add(means_chooser);
 		
+		JComboBox means_table_selection = new JComboBox();
+		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
+		this.add(means_table_selection);
+		means_table_selection.setEnabled(false);
+		means_table_selection.setBackground(SystemThemes.MAIN);
+		means_table_selection.setOpaque(true);
+		
 		JButton stds_chooser = new JButton("Standards");
 		//Causes windows graphical bug
 			//stds_chooser.setBackground(SystemThemes.BACKGROUND);
 			//stds_chooser.setOpaque(true);
 		this.add(stds_chooser);
 		added_buttons.add(stds_chooser);
+		
+		JComboBox stds_table_selection = new JComboBox();
+		stds_table_selection.setBorder(BorderFactory.createTitledBorder("Select Standards Table"));
+		this.add(stds_table_selection);
+		stds_table_selection.setEnabled(false);
+		stds_table_selection.setBackground(SystemThemes.MAIN);
+		stds_table_selection.setOpaque(true);
 		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
