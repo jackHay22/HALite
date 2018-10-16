@@ -9,7 +9,6 @@ public abstract class SystemDialog extends JFrame {
 
 	protected SystemDialog(String title) {
 		super(title);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	protected void close_dialog() {

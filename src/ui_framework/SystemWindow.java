@@ -89,7 +89,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 			JFrame temp_frame;
 			Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 			int half_width = screen_dim.width/2;
-			int half_height = subframe_height + 50;
+			int half_height = subframe_height + 100;
 			
 			int[] x_vals = {0, half_width, 0, half_width};
 			int[] y_vals = {0, 0, half_height, half_height};
