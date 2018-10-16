@@ -58,6 +58,7 @@ public class ViewBuilder {
 		    	//save_dialog.on_scheduled(manager, main_app_view, datastore);
 		    }
 		});
+		
 		JMenuItem save_as = new JMenuItem("Save as...");
 		
 		JMenuItem open_new = new JMenuItem("Open New");
