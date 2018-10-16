@@ -120,8 +120,6 @@ public class CSVParser {
 					
 			// THE COLUMN NAMES ARE THE ELEM NAMES!!
 			TableKey current_column_name = new TableKey(column_names[i].replaceAll("\\s+",""));
-			System.out.println(column_names[i]);
-			System.out.println(current_column_name.get_val());
 			
 			// Check if column contains Doubles
 			if (isNumeric(raw_data.get(1)[i])) {

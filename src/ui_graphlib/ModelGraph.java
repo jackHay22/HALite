@@ -30,7 +30,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	//extends SystemPanel 
 	private DataStore data_store;
 	private GraphPanel graph;
-	
+	private ElementCorrelationInfo data_to_plot;
 	private HashMap<String, PointSet> data_sets;
 	private EquationPlot eqn;
 

@@ -224,6 +224,7 @@ public class DataStore extends ui_framework.StateResult {
 			
 			// Create new element correlation info object
 			ElementCorrelationInfo elem_info = new ElementCorrelationInfo(x_elem, elem_corr);
+			elem_info.set_datastore(this);
 			
 			// Save correlations to object
 			this.correlations.put(x_elem, elem_info);

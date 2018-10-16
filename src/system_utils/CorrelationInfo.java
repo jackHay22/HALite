@@ -15,6 +15,7 @@ public class CorrelationInfo implements Refreshable {
 	private EquationPlot equation;
 	private boolean use_in_wm;
 	private DataStore data_store;
+	private HashMap<String, Double> STD_corr_results;
 	
 	public CorrelationInfo(ElementPair elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
@@ -83,6 +84,24 @@ public class CorrelationInfo implements Refreshable {
 		return data;
 	}
 	
+	private void STD_corrs() {
+		for (String std : data_store.get_STDlist()) {
+			Double data = data_store.get_raw_std_elem(std, this.get_primary());
+			if (data != null) {
+				Double res = equation.get_y(data);
+				STD_corr_results.put(std, res);
+			}
+		}
+	}
+	
+	public ArrayList<Double> get_corr_results() {
+		return (ArrayList<Double>) STD_corr_results.values();
+	}
+	
+	public double get_corr_result(String std) {
+		return STD_corr_results.get(std);
+	}
+	
 	public EquationPlot get_equation() {
 		return equation;
 	}
@@ -92,6 +111,7 @@ public class CorrelationInfo implements Refreshable {
 		// TODO Auto-generated method stub
 		PointSet points_to_fit = data_to_plot.get_standards();
 		this.equation = compute_fit(points_to_fit);
+		STD_corrs();
 	}
 
 	@Override
