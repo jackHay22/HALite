@@ -19,6 +19,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	
 	public SaveDialog(String title) {
 		super(title);
+		//TODO: add save target to datastore
 		save_target = new SaveTarget();
 		this.setLayout(new GridLayout(4,0));
 		

@@ -1,6 +1,7 @@
 package ui_framework;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import system_utils.DataStore;
 import ui_stdlib.SystemThemes;
@@ -16,6 +17,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	private int subframe_height;
 	private int resize_buffer;
 	private boolean did_load_datastore = false;
+	private JLabel placeholder;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -102,6 +104,8 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_state) {
 		if (prev_state != null) {
 			set_datastore((DataStore) prev_state);
+			getContentPane().removeAll();
+			repaint();
 			on_start();
 			did_load_datastore = true;
 		} 
@@ -109,7 +113,9 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 
 	@Override
 	public void init() {
+		//Default view
 		setVisible(true);
-		add(SystemThemes.get_default_placeholder());
+		placeholder = SystemThemes.get_default_placeholder();
+		add(placeholder);
 	}
 }
