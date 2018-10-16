@@ -75,4 +75,8 @@ public class TableKey implements Comparable<TableKey> {
 	public Element get_val() {
 		return this.name;
 	}
+	
+	public String get_string() {
+		return this.string_name;
+	}
 }

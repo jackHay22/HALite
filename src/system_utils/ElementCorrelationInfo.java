@@ -26,6 +26,8 @@ public class ElementCorrelationInfo implements Refreshable {
 		this.element = element;
 		this.all_correlations = all_correlations;
 		this.selected_elements = new ArrayList<CorrelationInfo>();
+		this.SEs = new HashMap<Element, Double>();
+		this.WMs = new HashMap<String, Double>();
 	}
 	
 	public void compute_model() {

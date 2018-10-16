@@ -15,7 +15,7 @@ public class CorrelationInfo implements Refreshable {
 	private EquationPlot equation;
 	private boolean use_in_wm;
 	private DataStore data_store;
-	private HashMap<String, Double> STD_corr_results;
+	private HashMap<String, Double> STD_corr_results = new HashMap<String, Double>();
 	
 	public CorrelationInfo(ElementPair elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
