@@ -82,6 +82,8 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	public void split_panels() {
 		if (did_load_datastore && !windows_split) {
 			remove(main_split);
+			revalidate();
+			repaint();
 			getContentPane().setBackground(SystemThemes.BACKGROUND);
 			SystemPanel temp;
 			JFrame temp_frame;
