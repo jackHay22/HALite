@@ -1,13 +1,16 @@
 package system_utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
 import system_utils.io_tools.CSVParser;
+import system_utils.io_tools.TestSuiteReader;
 
 import java.awt.Color;
 import ui_graphlib.PointSet;
@@ -236,12 +239,25 @@ public class DataStore extends ui_framework.StateResult {
 		CSVParser parser = new CSVParser();
 		
 		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf[0], xrf[1]);
-		this.standards_data = parser.data_from_csv(calibration[0], calibration[1]);
-		this.means_data = parser.data_from_csv(means[0], means[1]);
+		this.xrf_data = parser.data_from_csv(xrf[1], new BufferedReader(new FileReader(xrf[0])));
+		this.standards_data = parser.data_from_csv(calibration[1], new BufferedReader(new FileReader(calibration[0])));
+		this.means_data = parser.data_from_csv(means[1], new BufferedReader(new FileReader(means[0])));
 		
 		create_element_correlations();
 		
+	}
+	
+	public void import_test_data(String xrf, String stds, String means) throws FileNotFoundException {
+		CSVParser parser = new CSVParser();
+		
+		TestSuiteReader test_reader = new TestSuiteReader();
+		
+		// Collect all imported data sets
+		this.xrf_data = parser.data_from_csv("XRF_DATA_RUN_229", test_reader.get_resources_input(xrf));
+		this.standards_data = parser.data_from_csv("standards", test_reader.get_resources_input(stds));
+		this.means_data = parser.data_from_csv("means", test_reader.get_resources_input(means));
+		
+		create_element_correlations();
 	}
 	
 	public CorrelationInfo get_elem_correlation_info(Element x, Element y) {

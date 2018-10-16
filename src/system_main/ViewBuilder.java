@@ -2,11 +2,14 @@ package system_main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import system_utils.DataStore;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
+import ui_framework.StateResult;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
@@ -16,6 +19,10 @@ import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 
 public class ViewBuilder {
+	
+	public static final String TEST_XRF = "/test_data/xrf.csv";
+	public static final String TEST_MEANS = "/test_data/means.csv";
+	public static final String TEST_STANDARDS = "/test_data/standards.csv";
 	
 	private static SystemWindow get_app_view() {
     	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
@@ -61,7 +68,7 @@ public class ViewBuilder {
 		
 		JMenuItem save_as = new JMenuItem("Save as...");
 		
-		JMenuItem open_new = new JMenuItem("Open New");
+		JMenuItem open_new = new JMenuItem("New...");
 		open_new.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
@@ -80,7 +87,7 @@ public class ViewBuilder {
 		    }
 		});
 		
-		JMenuItem open_saved = new JMenuItem("Open Saved");
+		JMenuItem open_saved = new JMenuItem("Saved...");
 		open_saved.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
@@ -90,10 +97,24 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem open_test_data = new JMenuItem("Example Data");
+		open_test_data.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	//open dialog, set return state to main
+		    	DataStore ds = new DataStore((SystemWindow) main_app_view);
+		    	try {
+					ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
+				} catch (FileNotFoundException e1) {
+				}
+		    	main_app_view.on_scheduled(manager, null, (StateResult) ds);
+		    }
+		});
+		
 		JMenu open_submenu = new JMenu("Open...");
 		
 		open_submenu.add(open_new);
 		open_submenu.add(open_saved);
+		open_submenu.add(open_test_data);
 		
 		file.add(open_submenu);
 		file.addSeparator();

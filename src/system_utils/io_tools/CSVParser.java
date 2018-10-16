@@ -16,13 +16,13 @@ public class CSVParser {
 		
 	}
 	
-	private ArrayList<String[]> get_raw_table_data(String path_name, String table_name) throws FileNotFoundException {
+	private ArrayList<String[]> get_raw_table_data(String table_name, BufferedReader reader) throws FileNotFoundException {
 		String current_line = "";
 		String delimiter = ",";
 		
-		BufferedReader reader = new BufferedReader(new FileReader(path_name));
-		
 		ArrayList<String[]> raw_data = new ArrayList<String[]>();
+		
+		//BufferedReader reader = new BufferedReader(new FileReader(path_name));
 		
 		// First, read in CSV file row by row
 		try {
@@ -101,12 +101,12 @@ public class CSVParser {
 		return chosen;
 	}
 	
-	public DataTable data_from_csv(String path_name, String table_name) throws FileNotFoundException {
+	public DataTable data_from_csv(String table_name, BufferedReader reader) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
 		DataTable table = new DataTable();
 		
-		ArrayList<String[]> raw_data = this.get_raw_table_data(path_name, table_name);
+		ArrayList<String[]> raw_data = this.get_raw_table_data(table_name, reader);
 				
 		String[] column_names = raw_data.get(0);
 		
