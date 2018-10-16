@@ -95,7 +95,11 @@ public class CorrelationInfo implements Refreshable {
 	}
 	
 	public ArrayList<Double> get_corr_results() {
-		return (ArrayList<Double>) STD_corr_results.values();
+		ArrayList<Double> values = new ArrayList<Double>();
+		for (Double val : STD_corr_results.values()) {
+			values.add(val);
+		}
+		return values;
 	}
 	
 	public double get_corr_result(String std) {
