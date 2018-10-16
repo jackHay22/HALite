@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
 import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
@@ -21,7 +20,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	
 	public CalculatedValuesPanel() {
 		super();
-		selection_dropdown = new JComboBox<Element>();
+		selection_dropdown = new JComboBox<Element>(Element.values());
 		calc_val_set = new ArrayList<CalcValSet>();
 		constraints = SystemThemes.get_grid_constraints();
 		//TODO get elements
@@ -32,6 +31,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		graphical_purge();
 		for (int i=0; i < calc_val_set.size(); i++) {
 			constraints.gridy ++;
+			constraints.anchor = GridBagConstraints.NORTH;
 			add(calc_val_set.get(i), constraints);
 		}
 	}
@@ -58,7 +58,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weighty = 1;
 		PanelHeader header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
 
 		constraints.gridy = 0;
@@ -67,21 +67,13 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		constraints.ipady = 0;
 		constraints.gridy = 1;
-		constraints.weighty = 1;
 		constraints.gridx = 0;
 		add(selection_dropdown, constraints);
 		
 		constraints.gridx = 1;
 		add(new JLabel("Placeholder"), constraints);
-		
 
-//		JScrollPane pane = new JScrollPane(this, 
-//                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-//                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		//prevent pane from disappearing when shrunk
-//		pane.setMinimumSize(new Dimension(200, 600));
-//		this.add(pane, constraints);
+		constraints.gridx = 0;
 		calc_val_set.add(new CalcValSet(Element.Ag));
 		for (int i=0; i < calc_val_set.size(); i++) {
 			calc_val_set.get(i).on_start();
