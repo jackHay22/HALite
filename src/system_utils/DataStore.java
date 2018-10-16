@@ -278,6 +278,23 @@ public class DataStore extends ui_framework.StateResult {
 		return std_elem_names;
 	}
 	
+	public Double get_raw_std_elem(String standard, Element elem) {
+		Data elem_data = this.standards_data.get_data(elem);
+		
+		// Integer object so it can be tested for null
+		Integer pos = standards_data.get_info(new TableKey("Calibration values")).indexOf(standard);
+		if (pos.equals(null)) {
+			return null;
+		}
+		
+		Double data = elem_data.get_data().get(pos);
+		if (data != null) {
+			return data;
+		} else {
+			return null;
+		}
+	}
+	
 	public void set_elem_num(Integer num) {
 		this.elem_num = num;
 		

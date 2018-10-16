@@ -25,6 +25,16 @@ public class DataTable {
 		return this.data.get(key);
 	}
 	
+	public Data get_data(Element elem) {
+		for (TableKey key : this.data.keySet()) {
+			if (key.get_val().equals(elem)) {
+				return this.data.get(key);
+			}
+		}
+		
+		return null;
+	}
+	
 	public ArrayList<String> get_info(TableKey key) {
 		return this.string_data.get(key);
 	}
