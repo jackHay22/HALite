@@ -264,6 +264,20 @@ public class DataStore extends ui_framework.StateResult {
 		return corr;
 	}
 	
+	public ArrayList<String> get_STDlist() {
+		ArrayList<String> std_elem_names = new ArrayList<String>();
+		
+		for (TableKey key : this.standards_data.get_data().keySet()) {
+			String elem_name = key.get_val().name();
+			
+			if (elem_name != null) {
+				std_elem_names.add(elem_name);
+			}
+		}
+		
+		return std_elem_names;
+	}
+	
 	public void set_elem_num(Integer num) {
 		this.elem_num = num;
 		

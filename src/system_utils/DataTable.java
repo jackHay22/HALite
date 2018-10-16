@@ -32,6 +32,10 @@ public class DataTable {
 	public boolean contains_data(TableKey key) {
 		return this.data.containsKey(key);
 	}
-
+	
+	public HashMap<TableKey, Data> get_data() {
+		return this.data;
+	}
+	
 }
 
