@@ -141,7 +141,9 @@ public class ElementCorrelationInfo implements Refreshable {
 		double dividend = 0;
 		
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
+			if (elem_info.get_corr_result(std) != null) {
+				dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
+			}
 		}
 		return dividend/this.getSEInverseSum();
 	}

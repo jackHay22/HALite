@@ -102,7 +102,7 @@ public class CorrelationInfo implements Refreshable {
 		return values;
 	}
 	
-	public double get_corr_result(String std) {
+	public Double get_corr_result(String std) {
 		return STD_corr_results.get(std);
 	}
 	
