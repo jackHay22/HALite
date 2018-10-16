@@ -101,12 +101,20 @@ public class ViewBuilder {
 		open_test_data.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
-		    	DataStore ds = new DataStore((SystemWindow) main_app_view);
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	
+		    	if (current_window.datastore_set()) {
+		    		current_state = create_new_window(manager);
+		    		current_window = (SystemWindow) current_state;
+		    	}
+		    	
+		    	DataStore ds = new DataStore(current_window);
 		    	try {
 					ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
 				} catch (FileNotFoundException e1) {
 				}
-		    	main_app_view.on_scheduled(manager, null, (StateResult) ds);
+		    	current_state.on_scheduled(manager, null, (StateResult) ds);
 		    }
 		});
 		
