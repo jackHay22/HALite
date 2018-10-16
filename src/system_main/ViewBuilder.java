@@ -2,11 +2,9 @@ package system_main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.SystemWindow;
@@ -18,7 +16,8 @@ import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 
 public class ViewBuilder {
-	public static SystemWindow get_app_view() {
+	
+	private static SystemWindow get_app_view() {
     	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
@@ -34,7 +33,17 @@ public class ViewBuilder {
     	return main_window;
 	}
 	
-	public static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
+	public static ScheduledState create_new_window(StateManager manager) {
+		SystemWindow main_window = get_app_view();
+		
+		ScheduledState main_app_view = main_window;
+		
+		main_window.setJMenuBar(get_menu_items(manager, main_app_view));
+		
+		return main_app_view;
+	}
+	
+	private static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
 		JMenuBar bar = new JMenuBar();
 		
 		//MENUS
@@ -49,6 +58,7 @@ public class ViewBuilder {
 		    	//save_dialog.on_scheduled(manager, main_app_view, datastore);
 		    }
 		});
+		JMenuItem save_as = new JMenuItem("Save as...");
 		
 		JMenuItem open_new = new JMenuItem("Open New");
 		open_new.addActionListener(new ActionListener () {
@@ -58,7 +68,7 @@ public class ViewBuilder {
 		    	SystemWindow current_window = (SystemWindow) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
-		    		current_state = manager.create_new_window();
+		    		current_state = create_new_window(manager);
 		    		current_window = (SystemWindow) current_state;
 		    	}
 		    	
@@ -86,6 +96,7 @@ public class ViewBuilder {
 		
 		file.add(open_submenu);
 		file.addSeparator();
+		file.add(save_as);
 		file.add(save);
 		
 		JMenu edit = new JMenu("Edit");
