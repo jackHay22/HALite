@@ -69,7 +69,7 @@ public class ViewBuilder {
 		    }
 		});
 		
-		JMenuItem open_saved = new JMenuItem("Open");
+		JMenuItem open_saved = new JMenuItem("Open Saved");
 		open_saved.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
@@ -79,9 +79,42 @@ public class ViewBuilder {
 		    }
 		});
 		
-		file.add(open_new);
-		file.add(open_saved);
+		JMenu open_submenu = new JMenu("Open...");
+		
+		open_submenu.add(open_new);
+		open_submenu.add(open_saved);
+		
+		file.add(open_submenu);
+		file.addSeparator();
 		file.add(save);
+		
+		JMenu edit = new JMenu("Edit");
+		bar.add(edit);
+		
+		JMenu window = new JMenu("Window");
+		bar.add(window);
+		
+		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
+		separate_subpanels.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	SystemWindow temp = (SystemWindow) main_app_view;
+		    	temp.split_panels();
+		    }
+		});
+		
+		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		regroup_subpanels.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	SystemWindow temp = (SystemWindow) main_app_view;
+		    	temp.regroup_panels();
+		    }
+		});
+		
+		window.add(separate_subpanels);
+		window.add(regroup_subpanels);
+		
+		JMenu help = new JMenu("Help");
+		bar.add(help);
 		
 		return bar;
 	}
