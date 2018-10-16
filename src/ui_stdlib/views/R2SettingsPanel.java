@@ -28,6 +28,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 	@Override
 	public void refresh() {
 		r_sqrd_list.refresh();
+		revalidate();
 	}
 
 	@Override

@@ -106,9 +106,9 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	}
 	
 	public void regroup_panels() {
-		add_panels_to_panes();
-		this.revalidate();
 		if (windows_split) {
+			add_panels_to_panes();
+			this.revalidate();
 			JFrame temp;
 			for (int i=0; i< split_panels.size(); i++) {
 				temp = split_panels.get(i);
