@@ -23,7 +23,7 @@ public class DataStore extends ui_framework.StateResult {
 	private Element primary;
 	private Element secondary;
 	
-	private Element model_data_element;
+	private Element model_data_element = Element.Hf;
 	
 	private DataTable xrf_data;
 	private DataTable standards_data;

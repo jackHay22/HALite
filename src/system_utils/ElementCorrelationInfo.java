@@ -59,6 +59,12 @@ public class ElementCorrelationInfo implements Refreshable {
 		return model_points;
 	}
 	
+	public HashMap<String, PointSet> get_pointsets() {
+		HashMap<String, PointSet> pts = new HashMap<String, PointSet>();
+		pts.put("standard", model_points);
+		return pts;
+	}
+	
 	public double get_WM(String std) {
 		return WMs.get(std);
 	}
@@ -154,10 +160,36 @@ public class ElementCorrelationInfo implements Refreshable {
 		for (CorrelationInfo corr: all_correlations.values()) {
 			corr.refresh();
 		}
-		computeSEs();
-		computeWMs();
+		if (this.selected_elements.size() != 0) {
+			computeSEs();
+			computeWMs();
+		} else {
+			model_points = std_vs_std();
+		}
 	}
 
+	private PointSet std_vs_std() {
+		SimpleRegression reg_obj = new SimpleRegression(true);
+		ArrayList<Point> point_list = new ArrayList<Point>();
+		
+		for (String std : data_store.get_STDlist()) {
+			if (data_store.get_raw_std_elem(std, element) != null) {
+				double x = data_store.get_raw_std_elem(std, element);
+				double y = data_store.get_raw_std_elem(std, element);
+				point_list.add(new Point(x, y));
+				reg_obj.addData(x, y);
+			}
+		}
+		
+		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
+		double x_0 = reg_obj.getIntercept();
+		double x_1 = reg_obj.getSlope();
+		double r_2 = reg_obj.getRSquare();
+		
+		this.Equation = new EquationPlot(r_2, 1, x_0, x_1);
+		return model_points;
+	}
+	
 	@Override
 	public void set_datastore(DataStore datastore) {
 		// TODO Auto-generated method stub

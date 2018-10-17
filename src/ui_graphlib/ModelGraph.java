@@ -53,8 +53,8 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		super();
 		this.setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
-		//this.graph = new GraphPanel(450, 250);
-		//this.graph.setBackground(SystemThemes.BACKGROUND);
+		this.graph = new GraphPanel(450, 250);
+		this.graph.setBackground(SystemThemes.BACKGROUND);
 		toggle_unknowns = new ImageRadioButton("/buttons/blank_button.png");
 	}
 	
@@ -109,8 +109,16 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	@Override
 	public void refresh() {
 		// Once data store has these we can proceed
-		
-		//this.graph.refresh();
+		this.data_to_plot = this.data_store.get_model_data_corr();
+		this.data_sets = data_to_plot.get_pointsets();
+		this.eqn = data_to_plot.get_equation();
+		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
+		point_sets.add(data_sets.get("standard"));
+		this.graph.set_point_sets(point_sets);
+		this.graph.refresh();
+		set_labels();
+		set_vals();
+		this.graph.refresh();
 		this.revalidate();
 	}
 	
@@ -131,8 +139,8 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	
 	@Override
 	public void set_datastore(DataStore datastore) {
-//		this.data_store = datastore;
-//		this.graph.set_datastore(datastore);
+		this.data_store = datastore;
+		this.graph.set_datastore(datastore);
 	}
 
 	@Override
@@ -147,7 +155,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		constraints.weighty = 1;
 		constraints.gridwidth = 2;
 		constraints.fill = GridBagConstraints.BOTH;
-		//this.add(this.graph, constraints);
+		this.add(this.graph, constraints);
 		constraints.weighty = 0;
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
