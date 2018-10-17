@@ -236,14 +236,14 @@ public class DataStore extends ui_framework.StateResult {
 		}
 	}
 	
-	public void import_data(String[] xrf, String[] calibration, 
-							String[] means) throws FileNotFoundException {
+	public void import_data(ArrayList<String>xrf, ArrayList<String> calibration, 
+			ArrayList<String> means) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
 		
 		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf[1], new BufferedReader(new FileReader(xrf[0])));
-		this.standards_data = parser.data_from_csv(calibration[1], new BufferedReader(new FileReader(calibration[0])));
-		this.means_data = parser.data_from_csv(means[1], new BufferedReader(new FileReader(means[0])));
+		this.xrf_data = parser.data_from_csv(xrf.get(1), new BufferedReader(new FileReader(xrf.get(0))));
+		this.standards_data = parser.data_from_csv(calibration.get(1), new BufferedReader(new FileReader(calibration.get(0))));
+		this.means_data = parser.data_from_csv(means.get(1), new BufferedReader(new FileReader(means.get(0))));
 		
 		create_element_correlations();
 		

@@ -101,6 +101,54 @@ public class CSVParser {
 		return chosen;
 	}
 	
+	public ArrayList<String> get_table_names(BufferedReader reader) throws FileNotFoundException {
+		ArrayList<String> table_names = new ArrayList<String>();
+		String current_line = "";
+		String delimiter = ",";
+		
+		try {
+			// Parse CSV data from beginning of found data to ending marker
+			while ((current_line = reader.readLine()) != null) {
+				// Get data from the current row
+				String[] row_data = current_line.split(delimiter);
+				
+				if (row_data.length == 0 || row_data[0].length() == 0) {
+					continue;
+				}
+				
+				// Found beginning of desired table, skip this line (and comments)
+				if (row_data[0].charAt(0) == '#' && !row_data[0].substring(1).isEmpty() && !row_data[0].substring(1).equals("END")) {
+					table_names.add(row_data[0].substring(1));
+					continue;
+				}
+				
+				// Found end of desired table
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
+					continue;
+				}
+				
+				// If beginning of row contains '#', ignore as comment
+				if (row_data[0].charAt(0) == '#') {
+					continue;
+				}
+			}
+		} catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (reader != null) {
+	            try {
+	                reader.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		
+		return table_names;
+	}
+	
 	public DataTable data_from_csv(String table_name, BufferedReader reader) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
