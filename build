@@ -32,8 +32,9 @@ if [ $# -eq 0 ]; then
 elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
-    mkdir -p release/${2}
-    BUILD_NAME="${APP_NAME}_${2}"
+    RELEASE_VERSION_LABEL=${2}_$DATE
+    mkdir -p release/${RELEASE_VERSION_LABEL}
+    BUILD_NAME="${APP_NAME}_${RELEASE_VERSION_LABEL}"
     OSX_NAME="OSX_${BUILD_NAME}.zip"
     CROSS_PLATFORM="CrossPlatform_${BUILD_NAME}.zip"
     pushd out/bundles
@@ -42,8 +43,8 @@ elif [ "$1" == "--release" ]; then
     pushd out
     zip -r $CROSS_PLATFORM ./$JAR_NAME > /dev/null 2>&1
     popd
-    mv out/bundles/$OSX_NAME release/${2}/
-    mv out/$CROSS_PLATFORM release/${2}/
+    mv out/bundles/$OSX_NAME release/${RELEASE_VERSION_LABEL}/
+    mv out/$CROSS_PLATFORM release/${RELEASE_VERSION_LABEL}/
     printf "${MOUNTAIN}  Build ${YELLOW}$BUILD_NAME${NC} release complete \n"
   else
     printf "${MOUNTAIN}  ${YELLOW}Error:${NC} specify a release version when using ${CYAN}--release${NC} \n"
