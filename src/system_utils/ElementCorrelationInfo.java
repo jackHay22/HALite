@@ -35,10 +35,14 @@ public class ElementCorrelationInfo implements Refreshable {
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
 		for (String std : data_store.get_STDlist()) {
-			double x = WMs.get(std);
-			double y = data_store.get_raw_std_elem(std, element);
-			point_list.add(new Point(x, y));
-			reg_obj.addData(x, y);
+			Double x = WMs.get(std);
+			Double y = data_store.get_raw_std_elem(std, element);
+			if (x != null && y != null) {
+				point_list.add(new Point(x, y));
+				reg_obj.addData(x, y);
+				System.out.println(x);
+				System.out.println(y);
+			}
 		}
 		
 		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Model", element.toString() + " Model", true);
@@ -163,6 +167,7 @@ public class ElementCorrelationInfo implements Refreshable {
 		if (this.selected_elements.size() != 0) {
 			computeSEs();
 			computeWMs();
+			compute_model();
 		} else {
 			model_points = std_vs_std();
 		}

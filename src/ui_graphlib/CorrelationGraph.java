@@ -161,7 +161,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
-		//constraints.anchor = GridBagConstraints.EAST;
 		this.add(toggle_unknowns, constraints);
 		
 	}

@@ -89,6 +89,14 @@ public class PointSet implements Refreshable {
 		return this.title;
 	}
 	
+	public String get_x_label() {
+		return this.x_axis;
+	}
+	
+	public String get_y_label() {
+		return this.y_axis;
+	}
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
