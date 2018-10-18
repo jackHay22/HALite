@@ -18,7 +18,7 @@ import ui_stdlib.components.PanelHeader;
 public class R2SettingsPanel extends ui_framework.SystemPanel{
 	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
-	private int display_rsqrd_assocs = 4; //-1
+	private int display_rsqrd_assocs = 9; //-1
 	
 	public R2SettingsPanel() {
 		super();

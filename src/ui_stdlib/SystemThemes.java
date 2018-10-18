@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
@@ -16,6 +17,7 @@ public class SystemThemes {
 	public static final Color HIGHLIGHT = new Color(255, 61, 46);
 	public static final Color HIGHLIGHT2 = new Color(255, 176, 59);
 	public static final Color HIGHLIGHT3 = new Color(202, 41, 62);
+	public static final Color HOVER = new Color(220, 220, 220, 20);
 	
 	private static final int INSET = 5;
 	public static final int HEADER_PADDING = 5;
@@ -35,6 +37,18 @@ public class SystemThemes {
 		constraints.weightx = 1.0;
 		constraints.insets = new Insets(INSET, INSET, INSET, INSET);
 		return constraints;
+	}
+	
+	public static void button_hover(JButton button) {
+		button.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	button.setBackground(button.getBackground().darker());
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	button.setBackground(button.getBackground().brighter());
+		    }
+		});
 	}
 	
 	public static JLabel get_copyright() {

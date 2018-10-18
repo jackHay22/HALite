@@ -7,6 +7,7 @@ import javax.swing.border.Border;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class SingleViewPanel extends SystemPanel {
@@ -18,6 +19,8 @@ public class SingleViewPanel extends SystemPanel {
 		this.field.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 		field.setBackground(color);
+		
+		SystemThemes.button_hover(field);
 	}
 	
 	public void toggle_color(boolean toggle_val) {
