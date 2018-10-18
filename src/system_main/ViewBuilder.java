@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import system_drift_correction.DriftCorrectionGraph;
 import system_utils.DataStore;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -40,14 +42,32 @@ public class ViewBuilder {
     	return main_window;
 	}
 	
-	public static ScheduledState create_new_window(StateManager manager) {
-		SystemWindow main_window = get_app_view();
+	private static SystemWindow get_drift_correction_view() {
+		SystemWindow main_window = new SystemWindow("Drift Correction", 
+				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+
+    	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+    								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+    	
+    	main_window.add_system_panel(new DriftCorrectionGraph());	
+    	main_window.add_system_panel(new DriftCorrectionGraph());
+    	
+    	return main_window;
+	}
+
+	
+	private static ScheduledState create_new_window(SystemWindow window, StateManager manager) {
 		
-		ScheduledState main_app_view = main_window;
+		ScheduledState main_app_view = window;
 		
-		main_window.setJMenuBar(get_menu_items(manager, main_app_view));
+		window.setJMenuBar(get_menu_items(manager, main_app_view));
 		
 		return main_app_view;
+	}
+	
+	public static ScheduledState create_new_default_window(StateManager manager) {
+		return create_new_window(get_app_view(), manager);
 	}
 	
 	private static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
@@ -76,7 +96,7 @@ public class ViewBuilder {
 		    	SystemWindow current_window = (SystemWindow) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
-		    		current_state = create_new_window(manager);
+		    		current_state = create_new_window(get_app_view(), manager);
 		    		current_window = (SystemWindow) current_state;
 		    	}
 		    	
@@ -97,6 +117,20 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem drift_correction = new JMenuItem("Drift Correction");
+		drift_correction.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	//open dialog, set return state to main
+		    	ScheduledState drift_state = create_new_window(get_drift_correction_view(), manager);
+		    	SystemWindow drift_window = (SystemWindow) drift_state;
+		    	
+		    	NewDialog file_selector = new NewDialog("Select Files", (SystemWindow) main_app_view);
+			    file_selector.init();
+			    file_selector.on_scheduled(manager, drift_state, null);
+		    }
+		});
+		
+		
 		JMenuItem open_test_data = new JMenuItem("Example Data");
 		open_test_data.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -105,7 +139,7 @@ public class ViewBuilder {
 		    	SystemWindow current_window = (SystemWindow) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
-		    		current_state = create_new_window(manager);
+		    		current_state = create_new_window(get_app_view(), manager);
 		    		current_window = (SystemWindow) current_state;
 		    	}
 		    	
@@ -125,6 +159,8 @@ public class ViewBuilder {
 		open_submenu.add(open_test_data);
 		
 		file.add(open_submenu);
+		file.addSeparator();
+		file.add(drift_correction);
 		file.addSeparator();
 		file.add(save_as);
 		file.add(save);

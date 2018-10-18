@@ -6,7 +6,7 @@ public class StateManager implements Runnable {
 
 	@Override
 	public void run() {
-		ScheduledState starting_window = ViewBuilder.create_new_window(this);
+		ScheduledState starting_window = ViewBuilder.create_new_default_window(this);
 		starting_window.init();
 	}
 	

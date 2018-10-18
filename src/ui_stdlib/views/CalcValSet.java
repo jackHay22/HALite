@@ -3,15 +3,12 @@ package ui_stdlib.views;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-
 import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SingleViewPanel;
-import ui_stdlib.components.SplitViewPanel;
 
 @SuppressWarnings("serial")
 public class CalcValSet extends SystemPanel {
