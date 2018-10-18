@@ -2,6 +2,8 @@ package ui_stdlib.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		super();
 		selection_dropdown = new JComboBox<Element>(Element.values());
 		calc_val_set = new ArrayList<CalcValSet>();
-		constraints = SystemThemes.get_grid_constraints();
+		
 		//TODO get elements
 	}
 	
@@ -55,26 +57,39 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	@Override
 	public void on_start() {
 		setLayout(new GridBagLayout());
+		constraints = SystemThemes.get_grid_constraints();
 		
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		constraints.weighty = 1;
+		//constraints.weighty = 1;
 		PanelHeader header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
 
 		constraints.gridy = 0;
-		header.on_start();
 		this.add(header, constraints);
+		header.on_start();
 		
 		constraints.ipady = 0;
 		constraints.gridy = 1;
 		constraints.gridx = 0;
+		constraints.weightx = 0;
+		constraints.weighty = 1;
 		add(selection_dropdown, constraints);
 		
 		constraints.gridx = 1;
+		constraints.weightx = 1;
 		add(new JLabel("Placeholder"), constraints);
 
-		constraints.gridx = 0;
-		calc_val_set.add(new CalcValSet(Element.Ag));
+		constraints.gridy = 2;
+		
+		selection_dropdown.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	datastore.set_model_data_element((Element)selection_dropdown.getSelectedItem());
+		    }
+		});
+		
+		ArrayList<Element> temp_elements = new ArrayList<Element>();
+		temp_elements.add(Element.Ag);
+		calc_val_set.add(new CalcValSet(temp_elements, 0.0, 0.0));
 		for (int i=0; i < calc_val_set.size(); i++) {
 			calc_val_set.get(i).on_start();
 		}

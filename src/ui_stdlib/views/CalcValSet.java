@@ -1,5 +1,7 @@
 package ui_stdlib.views;
 
+import java.util.ArrayList;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
@@ -7,15 +9,18 @@ import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
+import ui_stdlib.SystemThemes;
+import ui_stdlib.components.SingleViewPanel;
+import ui_stdlib.components.SplitViewPanel;
 
 @SuppressWarnings("serial")
 public class CalcValSet extends SystemPanel {
-	private Element element;
+	private ArrayList<Element> elements;
 	
-	public CalcValSet(Element element) {
+	public CalcValSet(ArrayList<Element> elements, double wm, double actual) {
 		super();
 		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		this.element = element;
+		this.elements = elements;
 	}
 
 	@Override
@@ -40,7 +45,12 @@ public class CalcValSet extends SystemPanel {
 	public void on_start() {
 		// TODO Auto-generated method stub
 		setVisible(true);
-		add(new JLabel(this.element.toString()));
+		SingleViewPanel temp;
+		for (int i=0; i<elements.size();i++) {
+			temp = new SingleViewPanel(elements.get(i).toString(), SystemThemes.MAIN, SystemThemes.BACKGROUND);
+			temp.on_start();
+			add(temp);
+		}
 	}
 
 }
