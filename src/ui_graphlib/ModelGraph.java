@@ -108,6 +108,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	
 	@Override
 	public void refresh() {
+		System.out.println("Refresh Call: Model Graph");
 		// Once data store has these we can proceed
 		this.data_to_plot = this.data_store.get_model_data_corr();
 		this.data_sets = data_to_plot.get_pointsets();
@@ -160,7 +161,6 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
-		//constraints.anchor = GridBagConstraints.EAST;
 		this.add(toggle_unknowns, constraints);
 		
 	}
@@ -171,12 +171,20 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	}
 	
 	private void set_labels() {
-		
+		PointSet models = data_to_plot.get_model_plot();
+		String s = models.get_y_label();
+		this.graph.set_y_label(s);
+		s = models.get_x_label();
+		this.graph.set_x_label(s);
+		s = "r^2: " + get_display_number(data_to_plot.get_equation().get_r2()) + "    ||    " + data_to_plot.get_equation().get_str_rep();
+		this.graph.set_r2_eqn_label(s);
+		s = models.get_title();
+		this.graph.set_title(s);
 	}
 	
 	@Override
 	public void on_start() {
-//		this.graph.on_start();
+		this.graph.on_start();
 		set_constraints();
 		toggle_unknowns.addActionListener(new ActionListener() {
 		    @Override

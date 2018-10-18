@@ -264,6 +264,7 @@ public class DataStore extends ui_framework.StateResult {
 	
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
+		this.notify_update();
 	}
 	
 	public ElementCorrelationInfo get_model_data_corr() {
