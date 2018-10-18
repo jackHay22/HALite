@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -55,6 +56,15 @@ public class SystemThemes {
 		JLabel copyright = new JLabel(SystemThemes.COPYRIGHT);
 		copyright.setHorizontalAlignment(JLabel.CENTER);
 		return copyright;
+	}
+	
+	public static String get_display_number(Double val, String mask) {
+		DecimalFormat df = new DecimalFormat(mask);
+		return df.format(val);
+	}
+	
+	public static String get_display_number(Double val) {
+		return get_display_number(val, "#.000");
 	}
 	
 	public static JLabel get_default_placeholder() {

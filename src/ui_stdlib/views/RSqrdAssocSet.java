@@ -2,7 +2,6 @@ package ui_stdlib.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
@@ -16,7 +15,7 @@ public class RSqrdAssocSet implements Refreshable{
 	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected, boolean value_selected) {
 		
 		graphical_view = new SplitViewPanel(element2.toString(),
-											get_display_number(val),
+											SystemThemes.get_display_number(val),
 											SystemThemes.HIGHLIGHT,
 											SystemThemes.MAIN,
 											SystemThemes.BACKGROUND);
@@ -45,11 +44,6 @@ public class RSqrdAssocSet implements Refreshable{
 
 	@Override
 	public void refresh() {
-	}
-	
-	private String get_display_number(Double val) {
-		DecimalFormat df = new DecimalFormat("#.000");
-		return df.format(val);
 	}
 
 	@Override

@@ -187,8 +187,28 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem close_window = new JMenuItem("Close Window");
+		close_window.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	
+		    	if (current_window.datastore_set()) {
+		    		//TODO: warn if data unsaved
+		    		//if unsaved, open save dialog
+		    		//else close
+		    	} else {
+		    		current_window.setVisible(false);
+		    		current_window.dispose();
+		    	}
+		    }
+		});
+		
 		window.add(separate_subpanels);
 		window.add(regroup_subpanels);
+		window.addSeparator();
+		window.add(close_window);
 		
 		JMenu help = new JMenu("Help");
 		bar.add(help);
