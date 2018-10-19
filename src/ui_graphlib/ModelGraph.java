@@ -108,8 +108,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	
 	@Override
 	public void refresh() {
-		System.out.println("Refresh Call: Model Graph");
-		// Once data store has these we can proceed
+		// Pulls the relevant data for the new points to display
 		this.data_to_plot = this.data_store.get_model_data_corr();
 		this.data_sets = data_to_plot.get_pointsets();
 		this.eqn = data_to_plot.get_equation();
