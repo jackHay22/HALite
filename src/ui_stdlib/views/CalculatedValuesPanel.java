@@ -89,6 +89,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		ArrayList<Element> temp_elements = new ArrayList<Element>();
 		temp_elements.add(Element.Ag);
+		temp_elements.add(Element.Ag);
+		temp_elements.add(Element.Ag);
 		calc_val_set.add(new CalcValSet(temp_elements, 0.0, 0.0));
 		for (int i=0; i < calc_val_set.size(); i++) {
 			calc_val_set.get(i).on_start();

@@ -25,6 +25,7 @@ public class ViewBuilder {
 	public static final String TEST_XRF = "/test_data/xrf.csv";
 	public static final String TEST_MEANS = "/test_data/means.csv";
 	public static final String TEST_STANDARDS = "/test_data/standards.csv";
+	public static int OPEN_VIEWS = 0;
 	
 	private static SystemWindow get_app_view() {
     	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
@@ -62,6 +63,7 @@ public class ViewBuilder {
 		ScheduledState main_app_view = window;
 		
 		window.setJMenuBar(get_menu_items(manager, main_app_view));
+		OPEN_VIEWS++;
 		
 		return main_app_view;
 	}
@@ -187,8 +189,37 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem close_window = new JMenuItem("Close Window");
+		close_window.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	if (OPEN_VIEWS > 1) {
+	    			OPEN_VIEWS--;
+		    		current_window.setVisible(false);
+		    		current_window.dispose();
+	    		}
+		    	//TODO: check if datastore set and state currently saved
+		    	
+//		    	if (current_window.datastore_set()) {
+//		    		//TODO: warn if data unsaved
+//		    		//if unsaved, open save dialog
+//		    		//else close
+//		    	} else {
+//		    		if (OPEN_VIEWS > 1) {
+//		    			OPEN_VIEWS--;
+//			    		current_window.setVisible(false);
+//			    		current_window.dispose();
+//		    		}
+//		    	}
+		    }
+		});
+		
 		window.add(separate_subpanels);
 		window.add(regroup_subpanels);
+		window.addSeparator();
+		window.add(close_window);
 		
 		JMenu help = new JMenu("Help");
 		bar.add(help);

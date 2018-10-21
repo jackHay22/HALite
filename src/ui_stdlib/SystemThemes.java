@@ -5,7 +5,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
@@ -16,6 +18,7 @@ public class SystemThemes {
 	public static final Color HIGHLIGHT = new Color(255, 61, 46);
 	public static final Color HIGHLIGHT2 = new Color(255, 176, 59);
 	public static final Color HIGHLIGHT3 = new Color(202, 41, 62);
+	public static final Color HOVER = new Color(220, 220, 220, 20);
 	
 	private static final int INSET = 5;
 	public static final int HEADER_PADDING = 5;
@@ -37,10 +40,31 @@ public class SystemThemes {
 		return constraints;
 	}
 	
+	public static void button_hover(JButton button) {
+		button.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	button.setBackground(button.getBackground().darker());
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	button.setBackground(button.getBackground().brighter());
+		    }
+		});
+	}
+	
 	public static JLabel get_copyright() {
 		JLabel copyright = new JLabel(SystemThemes.COPYRIGHT);
 		copyright.setHorizontalAlignment(JLabel.CENTER);
 		return copyright;
+	}
+	
+	public static String get_display_number(Double val, String mask) {
+		DecimalFormat df = new DecimalFormat(mask);
+		return df.format(val);
+	}
+	
+	public static String get_display_number(Double val) {
+		return get_display_number(val, "#.000");
 	}
 	
 	public static JLabel get_default_placeholder() {

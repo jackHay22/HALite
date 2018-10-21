@@ -8,11 +8,15 @@ import javax.swing.border.Border;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class SplitViewPanel extends SystemPanel {
 	private JButton field_one;
 	private JButton field_two;
+	private Color top_color;
+	private Color bot_color;
+	private Color default_color;
 	
 	public SplitViewPanel(String label_one, String label_two, Color top_color, Color bot_color, Color border_color) {
 		this.field_one = new JButton(label_one);
@@ -26,16 +30,32 @@ public class SplitViewPanel extends SystemPanel {
 		this.field_two.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 4, 4, 4))); 
 		
-		field_one.setBackground(top_color);
-		field_two.setBackground(bot_color);
+		SystemThemes.button_hover(field_one);
+		SystemThemes.button_hover(field_two);
+		
+		this.top_color = top_color;
+		this.bot_color = bot_color;
+		default_color = field_one.getBackground();
+		field_one.setOpaque(true);
+		field_two.setOpaque(true);
 	}
 	
 	public void toggle_color_top(boolean toggle_val) {
-		this.field_one.setOpaque(toggle_val);
+		if (toggle_val) {
+			field_one.setBackground(top_color);
+		}
+		else {
+			field_one.setBackground(default_color);
+		}
 	}
 	
 	public void toggle_color_bot(boolean toggle_val) {
-		this.field_two.setOpaque(toggle_val);
+		if (toggle_val) {
+			field_two.setBackground(bot_color);
+		}
+		else {
+			field_two.setBackground(default_color);
+		}
 	}
 	
 	@Override
