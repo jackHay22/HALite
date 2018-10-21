@@ -262,6 +262,11 @@ public class DataStore extends ui_framework.StateResult {
 		create_element_correlations();
 	}
 	
+	public Double get_mean_value(String sample, Element elem) {
+		int pos = means_data.get_info(new TableKey("sourcefile")).indexOf(sample);
+		return means_data.get_data(elem).get_data(pos);
+	}
+	
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
 		this.notify_update();
