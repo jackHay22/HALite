@@ -142,11 +142,14 @@ public class ElementCorrelationInfo implements Refreshable {
 	
 	private void computeWMs() {
 		for (String std : data_store.get_STDlist()) {
-			WMs.put(std, computeWM(std));
+			Double calculation = computeWM(std);
+			if (calculation != null) {
+				WMs.put(std, calculation);
+			}
 		}
 	}
 	
-	private double computeWM(String std) {
+	private Double computeWM(String std) {
 		double dividend = 0;
 		
 		for (CorrelationInfo elem_info : this.selected_elements) {
@@ -154,7 +157,11 @@ public class ElementCorrelationInfo implements Refreshable {
 				dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
 			}
 		}
-		return dividend/this.getSEInverseSum();
+		Double elementCPS = data_store.get_mean_value(std, this.element);
+		if (elementCPS != null) {
+			return (elementCPS)/(dividend/this.getSEInverseSum());	
+		}
+		return null;
 	}
 	
 	@Override

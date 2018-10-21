@@ -264,7 +264,10 @@ public class DataStore extends ui_framework.StateResult {
 	
 	public Double get_mean_value(String sample, Element elem) {
 		int pos = means_data.get_info(new TableKey("sourcefile")).indexOf(sample);
-		return means_data.get_data(elem).get_data(pos);
+		if (pos >= 0) {
+			return means_data.get_data(elem).get_data(pos);
+		}
+		return null;
 	}
 	
 	public void set_model_data_element(Element elem) {
