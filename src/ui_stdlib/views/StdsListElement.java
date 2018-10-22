@@ -1,5 +1,8 @@
 package ui_stdlib.views;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JLabel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
@@ -12,9 +15,11 @@ public class StdsListElement extends SingleViewBar {
 	private SingleViewPanel actual;
 	private DataStore datastore;
 	private String standard;
+	private GridBagConstraints constraints;
 	
 	public StdsListElement(String standard) {
 		super();
+		setLayout(new GridBagLayout());
 		
 		this.standard = standard;
 	}
@@ -36,6 +41,8 @@ public class StdsListElement extends SingleViewBar {
 
 	@Override
 	public void on_start() {
+		constraints = SystemThemes.get_grid_constraints();
+		
 		double wm_val = 0;
 		double actual_val = 0;
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
@@ -44,11 +51,16 @@ public class StdsListElement extends SingleViewBar {
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);	
 		actual.on_start();
-		add_single_view(new SingleViewPanel("Ag", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		
+		constraints.ipadx = 10;
+		add(new JLabel(standard), constraints);
+		constraints.ipadx = 0;
 		show_views();
-		add(weighted_mean);
-		add(actual);
+		add(weighted_mean, constraints);
+		add(actual, constraints);
 		
 	}
 

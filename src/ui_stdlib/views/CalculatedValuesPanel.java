@@ -1,7 +1,6 @@
 package ui_stdlib.views;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -9,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-
 import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
@@ -29,13 +27,16 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private CalculatedValsScrollingSet set_list;
 	private boolean backend_loaded = false;
 	
+	private SingleViewPanel wm_label;
+	private SingleViewPanel actual_label;
+	
 	public CalculatedValuesPanel() {
 		super();
 		selection_dropdown = new JComboBox<Element>(Element.values());
 		set_list = new CalculatedValsScrollingSet();
 
 		header_panels = new ArrayList<SingleViewPanel>();
-		header = new CalculatedHeader();
+		
 		
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -45,6 +46,9 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		        }
 		    }
 		});
+		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		header = new CalculatedHeader(wm_label, actual_label);
 	}
 	
 	@Override
@@ -61,8 +65,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
-		header_panels.add(new SingleViewPanel("wm",main,bg));
-		header_panels.add(new SingleViewPanel("actual",main,bg));
+
 		
 		header.set_panels(header_panels);
 
