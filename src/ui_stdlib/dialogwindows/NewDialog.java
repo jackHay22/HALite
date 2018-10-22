@@ -52,6 +52,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
+			
 			loaded_datastore = new DataStore(main_window);
 			try {
 				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
