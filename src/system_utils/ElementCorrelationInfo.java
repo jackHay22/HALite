@@ -70,7 +70,7 @@ public class ElementCorrelationInfo implements Refreshable {
 	
 	public double get_WM(String std) {
 		return WMs.get(std);
-	}
+	} 
 	
 	public double get_corr_result(Element elem, String std) {
 		return get_corr(elem).get_corr_result(std);
@@ -168,7 +168,9 @@ public class ElementCorrelationInfo implements Refreshable {
 	public void refresh() {
 		// TODO Auto-generated method stub
 		for (CorrelationInfo corr: all_correlations.values()) {
-			corr.refresh();
+			if (corr != null) {
+				corr.refresh();
+			}
 		}
 		if (this.selected_elements.size() != 0) {
 			computeSEs();
@@ -206,7 +208,9 @@ public class ElementCorrelationInfo implements Refreshable {
 		// TODO Auto-generated method stub
 		this.data_store = datastore;
 		for (CorrelationInfo corr: all_correlations.values()) {
-			corr.set_datastore(datastore);
+			if (corr != null) {
+				corr.set_datastore(datastore);
+			}
 		}
 	}
 
