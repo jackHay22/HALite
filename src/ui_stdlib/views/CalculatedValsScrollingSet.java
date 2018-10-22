@@ -48,6 +48,17 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 
 	@Override
 	public void on_start() {
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
+		add_view(new StdsListElement("Test"));
 		setVisible(true);
 		if (backend_loaded) {
 			//pull from datastore and add

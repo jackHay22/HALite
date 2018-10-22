@@ -10,13 +10,22 @@ import ui_stdlib.components.SingleViewPanel;
 public class CalculatedHeader extends SingleViewBar {
 	private ArrayList<SingleViewPanel> panels;
 
-	public CalculatedHeader(ArrayList<SingleViewPanel> panels) {
+	public CalculatedHeader() {
 		super();
-		this.panels = panels;
+		panels = new ArrayList<SingleViewPanel>();
 	}
 	
 	@Override
 	public void refresh() {
+	}
+	
+	public void set_panels(ArrayList<SingleViewPanel> panels) {
+		clear_views();
+		this.panels = panels;
+		for (SingleViewPanel p : panels) {
+			add_single_view(p);
+		}
+		show_views();
 	}
 
 	@Override

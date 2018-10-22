@@ -16,6 +16,13 @@ public abstract class SingleViewBar extends ui_framework.SystemPanel {
 		panels.add(panel);
 	}
 	
+	protected void clear_views() {
+		for (SingleViewPanel p : panels) {
+			remove(p);
+		}
+		panels.clear();
+	}
+	
 	protected void show_views() {
 		setVisible(true);
 		for (SingleViewPanel p : panels) {
