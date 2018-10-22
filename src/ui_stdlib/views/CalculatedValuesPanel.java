@@ -1,53 +1,81 @@
 package ui_stdlib.views;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.components.PanelHeader;
+import ui_stdlib.components.SingleViewPanel;
 
 @SuppressWarnings("serial")
 public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private DataStore datastore;
 	private JComboBox<Element> selection_dropdown;
-	private ArrayList<CalcValSet> calc_val_set;
 	private GridBagConstraints constraints;
+	private ArrayList<SingleViewPanel> header_panels;
+	private JScrollPane pane;
+
+	private CalculatedHeader header;
+	private CalculatedValsScrollingSet set_list;
+	private boolean backend_loaded = false;
+	
+	private SingleViewPanel wm_label;
+	private SingleViewPanel actual_label;
 	
 	public CalculatedValuesPanel() {
 		super();
 		selection_dropdown = new JComboBox<Element>(Element.values());
-		calc_val_set = new ArrayList<CalcValSet>();
+		set_list = new CalculatedValsScrollingSet();
+
+		header_panels = new ArrayList<SingleViewPanel>();
 		
-		//TODO get elements
+		
+		selection_dropdown.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        if (backend_loaded) {
+		        	//element selection updated
+		        	datastore.notify_update();
+		        }
+		    }
+		});
+		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		header = new CalculatedHeader(wm_label, actual_label);
 	}
 	
 	@Override
 	public void refresh() {
-		graphical_purge();
-		for (int i=0; i < calc_val_set.size(); i++) {
-			constraints.gridy ++;
-			constraints.anchor = GridBagConstraints.NORTH;
-			add(calc_val_set.get(i), constraints);
-		}
-	}
-	
-	private void graphical_purge() {
-		for (int i=0; i < calc_val_set.size(); i++) {
-			remove(calc_val_set.get(i));
-		}
+		set_list.refresh();
+		
+		Color highlight = SystemThemes.HIGHLIGHT;
+		Color main = SystemThemes.MAIN;
+		Color bg = SystemThemes.BACKGROUND;
+		
+		header_panels.clear();
+		
+		//TODO
+		header_panels.add(new SingleViewPanel("placeholder",main,bg));
+		header_panels.add(new SingleViewPanel("placeholder",main,bg));
+		header_panels.add(new SingleViewPanel("placeholder",main,bg));
+
+		
+		header.set_panels(header_panels);
+
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
-		
+		set_list.set_datastore(datastore);
+		this.backend_loaded = true;
 	}
 
 	@Override
@@ -61,40 +89,42 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		//constraints.weighty = 1;
-		PanelHeader header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
-
-		constraints.gridy = 0;
-		this.add(header, constraints);
-		header.on_start();
+		constraints.gridwidth = 2;
+		PanelHeader panel_header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
+		panel_header.on_start();
+		add(panel_header, constraints);
 		
-		constraints.ipady = 0;
+		constraints.gridwidth = 1;
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		constraints.weightx = 0;
-		constraints.weighty = 1;
 		add(selection_dropdown, constraints);
 		
+		constraints.gridy = 1;
 		constraints.gridx = 1;
 		constraints.weightx = 1;
-		add(new JLabel("Placeholder"), constraints);
+		add(header, constraints);
+		
+		header.set_panels(header_panels);
+		header.on_start();
 
+		constraints.gridwidth = 2;
+		constraints.gridx = 0;
+		constraints.ipady = 0;
 		constraints.gridy = 2;
+		constraints.weighty = 1;
+
+		pane = SystemThemes.get_scrollable_panel(set_list);
+		
+		set_list.on_start();
+		add(pane, constraints);
 		
 		selection_dropdown.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	datastore.set_model_data_element((Element)selection_dropdown.getSelectedItem());
 		    }
 		});
-		
-		ArrayList<Element> temp_elements = new ArrayList<Element>();
-		temp_elements.add(Element.Ag);
-		temp_elements.add(Element.Ag);
-		temp_elements.add(Element.Ag);
-		calc_val_set.add(new CalcValSet(temp_elements, 0.0, 0.0));
-		for (int i=0; i < calc_val_set.size(); i++) {
-			calc_val_set.get(i).on_start();
-		}
+	
 		refresh();
 		header.setVisible(true);
 	}

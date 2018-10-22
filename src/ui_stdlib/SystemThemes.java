@@ -1,6 +1,8 @@
 package ui_stdlib;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -9,6 +11,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
 public class SystemThemes {
@@ -31,6 +34,8 @@ public class SystemThemes {
 	public static final int MAIN_WINDOW_WIDTH = 1200;
 	public static final int MAIN_WINDOW_HEIGHT = 750;
 	public static KeyStroke SAVE_BINDING = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
+	
+	public static int SCROLL_PANE_SPEED = 8;
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
@@ -73,5 +78,14 @@ public class SystemThemes {
 		placeholder.setVerticalAlignment(JLabel.CENTER);
 		placeholder.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		return placeholder;
+	}
+	
+	public static JScrollPane get_scrollable_panel(Component panel) {
+		JScrollPane pane = new JScrollPane(panel, 
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		pane.getVerticalScrollBar().setUnitIncrement(SCROLL_PANE_SPEED);
+		pane.setMinimumSize(new Dimension(200, 600));
+		return pane;
 	}
 }
