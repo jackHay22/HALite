@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
-public class DataStore extends ui_framework.StateResult {
+public class DataStore extends ui_framework.StateResult implements Serializable {
 	private ui_framework.SystemWindow window_parent;
 	
 	private Element primary;
@@ -32,6 +33,8 @@ public class DataStore extends ui_framework.StateResult {
 	private HashMap<Element, ElementCorrelationInfo> correlations;
 	
 	private int elem_num;
+
+	private static final long serialVersionUID = 1L;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
@@ -407,5 +410,17 @@ public class DataStore extends ui_framework.StateResult {
 		//on changes to data
 		this.internal_refresh();
 		this.window_parent.refresh();
+	}
+	
+	@Override
+	public String toString() {
+		return new StringBuffer(" Primary : ").append(this.primary.toString())
+				.append(" Secondary : ").append(this.secondary.toString())
+				.append(" Model_element : ").append(this.model_data_element.toString())
+				.append(" xrf : ").append(this.xrf_data.get_raw_table().toString())	    // Only store raw data, parse on reload
+				.append(" stardards : ").append(this.standards_data.get_raw_table().toString())
+				.append(" means : ").append(this.means_data.get_raw_table().toString())
+				.append(" correlations : ").append(this.correlations.toString())
+				.toString();
 	}
 }

@@ -47,5 +47,9 @@ public class DataTable {
 		return this.data;
 	}
 	
+	public HashMap<TableKey, ArrayList<String>> get_raw_table() {
+		return this.string_data;
+	}
+	
 }
 

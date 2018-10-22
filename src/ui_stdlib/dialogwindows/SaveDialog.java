@@ -32,7 +32,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
 		JButton save_current_state = new JButton("Save As...");
 		JButton save_to_current_path = new JButton("Save");
-		
+	
 		save_current_state.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (get_new_target() && try_save(prev_res)) {
