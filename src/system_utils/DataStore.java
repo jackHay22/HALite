@@ -239,14 +239,14 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		}
 	}
 	
-	public void import_data(ArrayList<String>xrf, ArrayList<String> calibration, 
-			ArrayList<String> means) throws FileNotFoundException {
+	public void import_data(String xrf, ArrayList<String>xrf_table, String calibration, ArrayList<String> calibration_table, 
+			String means, ArrayList<String> means_table) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
 		
 		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf.get(1), new BufferedReader(new FileReader(xrf.get(0))));
-		this.standards_data = parser.data_from_csv(calibration.get(1), new BufferedReader(new FileReader(calibration.get(0))));
-		this.means_data = parser.data_from_csv(means.get(1), new BufferedReader(new FileReader(means.get(0))));
+		this.xrf_data = parser.data_from_csv(xrf_table.get(0), new BufferedReader(new FileReader(xrf)));
+		this.standards_data = parser.data_from_csv(calibration_table.get(0), new BufferedReader(new FileReader(calibration)));
+		this.means_data = parser.data_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
 		
 		create_element_correlations();
 		
