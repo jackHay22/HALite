@@ -17,6 +17,7 @@ import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
+import ui_stdlib.dialogwindows.SaveDialog;
 import ui_stdlib.views.CalculatedValuesPanel;
 import ui_stdlib.views.R2SettingsPanel;
 
@@ -89,6 +90,12 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem save_as = new JMenuItem("Save as...");
+		save_as.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				SaveDialog save_dialog = new SaveDialog("Save as");
+				
+			}
+		});
 		
 		JMenuItem open_new = new JMenuItem("New...");
 		open_new.addActionListener(new ActionListener () {

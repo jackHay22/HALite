@@ -52,6 +52,10 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
+
+	    	System.out.println("XRF: " + xrf);
+	    	System.out.println("MEANS: " + means);
+	    	System.out.println("stds: " + standards);
 			
 			loaded_datastore = new DataStore(main_window);
 			try {
@@ -170,6 +174,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		xrf_table_selection.setBackground(SystemThemes.MAIN);
 		    		xrf_table_selection.setOpaque(false);
 		    	}
+		    	file_chooser.xrf = file;
 		    	file_chooser.xrf_table.add(xrf_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }
@@ -195,6 +200,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		means_table_selection.setBackground(SystemThemes.MAIN);
 		    		means_table_selection.setOpaque(false);
 		    	}
+		    	file_chooser.means = file;
 		    	file_chooser.means_table.add(means_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }
@@ -220,6 +226,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setBackground(SystemThemes.MAIN);
 		    		stds_table_selection.setOpaque(false);
 		    	}
+		    	file_chooser.standards = file;
 		    	file_chooser.standards_table.add(stds_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }

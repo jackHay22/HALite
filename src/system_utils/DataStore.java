@@ -239,7 +239,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		}
 	}
 	
-	public void import_data(String xrf, ArrayList<String>xrf_table, String calibration, ArrayList<String> calibration_table, 
+	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
 			String means, ArrayList<String> means_table) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
 		
