@@ -1,6 +1,5 @@
 package ui_stdlib.views;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -19,6 +18,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private int display_rsqrd_assocs = 9; //-1 
+	private JScrollPane pane;
 	
 	public R2SettingsPanel() {
 		super();
@@ -73,13 +73,9 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 		constraints.ipady = 0;
 		constraints.gridy = 1;
 		constraints.weighty = 1;
-
-		JScrollPane pane = new JScrollPane(r_sqrd_list, 
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		//prevent pane from disappearing when shrunk
-		pane.setMinimumSize(new Dimension(200, 600));
+		pane = SystemThemes.get_scrollable_panel(r_sqrd_list);
+
 		this.add(pane, constraints);
 		
 		r_sqrd_list.on_start();

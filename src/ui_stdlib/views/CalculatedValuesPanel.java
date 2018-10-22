@@ -22,7 +22,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private DataStore datastore;
 	private JComboBox<Element> selection_dropdown;
 	private GridBagConstraints constraints;
-	ArrayList<SingleViewPanel> header_panels;
+	private ArrayList<SingleViewPanel> header_panels;
+	private JScrollPane pane;
 
 	private CalculatedHeader header;
 	private CalculatedValsScrollingSet set_list;
@@ -110,12 +111,9 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		constraints.gridy = 2;
 		constraints.weighty = 1;
 
-		JScrollPane pane = new JScrollPane(set_list, 
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		pane = SystemThemes.get_scrollable_panel(set_list);
 		
 		set_list.on_start();
-		pane.setMinimumSize(new Dimension(200, 600));
 		add(pane, constraints);
 		
 		selection_dropdown.addActionListener(new ActionListener () {

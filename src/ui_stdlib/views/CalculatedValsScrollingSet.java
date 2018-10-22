@@ -48,6 +48,8 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 
 	@Override
 	public void on_start() {
+		
+		//TODO: placeholder
 		add_view(new StdsListElement("Test"));
 		add_view(new StdsListElement("Test"));
 		add_view(new StdsListElement("Test"));
