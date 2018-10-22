@@ -92,7 +92,18 @@ public class ViewBuilder {
 		JMenuItem save_as = new JMenuItem("Save as...");
 		save_as.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+				//open dialog, set return state to main
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	
+		    	if (current_window.datastore_set()) {
+		    		current_state = create_new_window(get_app_view(), manager);
+		    		current_window = (SystemWindow) current_state;
+		    	}
+				
 				SaveDialog save_dialog = new SaveDialog("Save as");
+				save_dialog.init();
+				save_dialog.on_scheduled(manager, current_state, null);
 				
 			}
 		});
