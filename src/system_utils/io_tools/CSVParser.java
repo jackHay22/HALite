@@ -32,28 +32,30 @@ public class CSVParser {
 				// Get data from the current row
 				String[] row_data = current_line.split(delimiter);
 				
-				// Found beginning of desired table, skip this line (and comments) 
-				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals(table_name)) {
-					found_data = true;
-					continue;
-				}
-				
-				// Found end of desired table
-				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
-					break;
-				}
-				
-				// If beginning of row contains '#', ignore as comment
-				if (row_data[0].charAt(0) == '#') {
-					continue;
-				}
-				
-				// Found desired data
-				if (found_data) {
-
-					// Add this array to the table
-					raw_data.add(row_data);
+				// Found beginning of desired table, skip this line (and comments)
+				if (row_data[0].length() > 0) {
+					if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals(table_name)) {
+						found_data = true;
+						continue;
+					}
+					
+					// Found end of desired table
+					if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
+						break;
+					}
+					
+					// If beginning of row contains '#', ignore as comment
+					if (row_data[0].charAt(0) == '#') {
+						continue;
+					}
+					
+					// Found desired data
+					if (found_data) {
 	
+						// Add this array to the table
+						raw_data.add(row_data);
+		
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -85,20 +87,26 @@ public class CSVParser {
 	
 	// This method will help parse the weird column names
 	public String col_name(String col_title) {
-		
-		col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");;
 		String chosen = col_title;
+		ArrayList<String> headers = new ArrayList<String>();
+		headers.add("Name");
+		headers.add("Time/Date");
+		headers.add("Calibration values");
+		if (!headers.contains(col_title)) {
 		
-		for (Element elem : Element.values()) {
-			// Some parsing work in here
-			if (col_title.contains(elem.toString())) {
-				if (chosen == col_title || chosen.length() < elem.toString().length()) {
-					chosen = elem.toString();
+			col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");;
+			chosen = col_title;
+			
+			for (Element elem : Element.values()) {
+				// Some parsing work in here
+				if (col_title.indexOf(elem.toString()) == 0) {
+					if (chosen == col_title || chosen.length() < elem.toString().length()) {
+						chosen = elem.toString();
+					}
 				}
 			}
 		}
-		
-		return chosen;
+		return chosen.replaceAll("\\s+","");
 	}
 	
 	public ArrayList<String> get_table_names(BufferedReader reader) throws FileNotFoundException {
@@ -167,6 +175,12 @@ public class CSVParser {
 			}
 					
 			// THE COLUMN NAMES ARE THE ELEM NAMES!!
+			//col_name(String col_title)
+			//System.out.println("Pair: ");
+			//System.out.println(column_names[i]);
+			//System.out.println(col_name(column_names[i]));
+			
+			//TableKey current_column_name = new TableKey(col_name(column_names[i]));
 			TableKey current_column_name = new TableKey(column_names[i].replaceAll("\\s+",""));
 			
 			// Check if column contains Doubles

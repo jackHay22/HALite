@@ -210,18 +210,18 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 				Element y_elem = elements.get(j);
 				
 				PointSet standards = create_pointset(x_elem, y_elem, true);
-				standards.set_color(SystemThemes.HIGHLIGHT);
 				PointSet unknowns = create_pointset(x_elem, y_elem, false);
-				unknowns.set_color(SystemThemes.BACKGROUND);
-				
+
 				if (standards != null) {
+					
+					standards.set_color(SystemThemes.HIGHLIGHT);
+					unknowns.set_color(SystemThemes.BACKGROUND);
 					
 					ElementPair pair = new ElementPair(x_elem, y_elem, standards, unknowns);
 					
 					CorrelationInfo corr_info = new CorrelationInfo(pair);
 					
 					elem_corr.put(y_elem, corr_info);
-					
 					
 				} else {
 					elem_corr.put(y_elem, null);

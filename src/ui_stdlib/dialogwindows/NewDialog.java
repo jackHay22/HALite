@@ -58,6 +58,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				continue_button.setEnabled(true);
 				continue_button.setBackground(SystemThemes.MAIN);
 			} catch (Exception e) {
+				e.printStackTrace();
 				continue_button.setEnabled(false);
 				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
