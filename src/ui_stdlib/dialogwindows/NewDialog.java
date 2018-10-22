@@ -48,13 +48,15 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	private void can_continue() {
 		if (xrf_chosen && standards_chosen && means_chosen) {
 			
-			ArrayList<String> means = file_chooser.get_means();
-			ArrayList<String> xrf = file_chooser.get_xrf();
-			ArrayList<String> standards = file_chooser.get_standards();
+			String means = file_chooser.get_means();
+			String xrf = file_chooser.get_xrf();
+			String standards = file_chooser.get_standards();
 			
 			loaded_datastore = new DataStore(main_window);
 			try {
-				loaded_datastore.import_data(xrf, standards, means);
+				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
+											 standards, file_chooser.standards_table, 
+											 means, file_chooser.means_table);
 				continue_button.setEnabled(true);
 				continue_button.setBackground(SystemThemes.MAIN);
 			} catch (Exception e) {
@@ -166,7 +168,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		xrf_table_selection.setBackground(SystemThemes.MAIN);
 		    		xrf_table_selection.setOpaque(false);
 		    	}
-		    	file_chooser.xrf.add(xrf_table_selection.getSelectedItem().toString());
+		    	file_chooser.xrf_table.add(xrf_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }
 		});
@@ -191,7 +193,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		means_table_selection.setBackground(SystemThemes.MAIN);
 		    		means_table_selection.setOpaque(false);
 		    	}
-		    	file_chooser.means.add(means_table_selection.getSelectedItem().toString());
+		    	file_chooser.means_table.add(means_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }
 		});
@@ -216,7 +218,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setBackground(SystemThemes.MAIN);
 		    		stds_table_selection.setOpaque(false);
 		    	}
-		    	file_chooser.standards.add(stds_table_selection.getSelectedItem().toString());
+		    	file_chooser.standards_table.add(stds_table_selection.getSelectedItem().toString());
 		    	can_continue();
 		    }
 		});
