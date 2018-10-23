@@ -185,6 +185,8 @@ public class ElementCorrelationInfo implements Refreshable {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
+		//System.out.println("DS: " + this.data_store.get_STDlist());
+		
 		for (String std : data_store.get_STDlist()) {
 			if (data_store.get_raw_std_elem(std, element) != null) {
 				double x = data_store.get_raw_std_elem(std, element);
