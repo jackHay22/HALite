@@ -53,6 +53,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 	        new_list_element.set_datastore(this.storage_ref);
 	        new_list_element.on_start();
 	        this.storage_ref.notify_update();
+
 	        this.revalidate();
 		}
 	}

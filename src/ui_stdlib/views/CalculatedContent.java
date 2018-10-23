@@ -3,6 +3,7 @@ package ui_stdlib.views;
 import java.util.ArrayList;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SingleViewBar;
 import ui_stdlib.components.SingleViewPanel;
 
@@ -20,6 +21,7 @@ public class CalculatedContent extends SingleViewBar {
 	public void set_panels(ArrayList<SingleViewPanel> panels) {
 		clear_views();
 		for (SingleViewPanel p : panels) {
+			p.setPreferredSize(SystemThemes.get_std_cell_dim());
 			add_single_view(p);
 		}
 		show_views();

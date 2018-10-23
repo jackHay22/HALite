@@ -30,13 +30,14 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			add_view(new StdsListElement("Test", elem));
 			add_view(new StdsListElement("Test", elem));
 			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			
+			add_view(new StdsListElement("Test", elem));
+			revalidate();
 		}
 	}
 	
