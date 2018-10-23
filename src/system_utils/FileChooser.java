@@ -28,9 +28,10 @@ public class FileChooser extends ui_framework.StateResult {
 		this.file_dialog.setMultipleMode(mult);
 	}
 	
-	public String import_files(String target) {
+	/*public String import_files() {
 		
 		this.file_dialog.setVisible(true);
+		
 		File[] path = this.file_dialog.getFiles();
 		
 		String new_path;
@@ -40,9 +41,15 @@ public class FileChooser extends ui_framework.StateResult {
 		catch (ArrayIndexOutOfBoundsException e) {
 			new_path = "";
 		}
-		target = new_path;
+		
+		System.out.println("BEFORE: " + this.xrf);
+		
+		//target = new_path;
+		
+		System.out.println("AFTER: " + this.xrf);
+		
 		return new_path;
-	}
+	}*/
 	
 	
 	

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.BorderFactory;
 
 import system_utils.DataStore;
@@ -24,6 +25,7 @@ import ui_stdlib.SystemThemes;
 public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
+	private JFileChooser open_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
@@ -100,6 +102,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	public void init() {
 		
 		file_chooser = new FileChooser(this);
+		open_chooser = new JFileChooser();
 		
 		xrf_chosen = false;
 		means_chosen = false;
@@ -151,80 +154,125 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	String file = file_chooser.import_files(file_chooser.xrf);
-		    	ArrayList<String> tables = new ArrayList<String>();
-				try {
-					tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-		    	xrf_chooser.setText(
-		    			get_file_display("XRF", file));
+		    	
+		    	String file = get_new_target();
+		    	
+		    	// Open file dialog and wait for action
 		    	if (!file.isEmpty()) {
-		    		xrf_chosen = true;
-		    		for (String table_name : tables) {
-		    			xrf_table_selection.addItem(table_name);
-		    		}
-		    		xrf_table_selection.setEnabled(true);
-		    		xrf_table_selection.setBackground(SystemThemes.MAIN);
-		    		xrf_table_selection.setOpaque(false);
+		    		
+			    	ArrayList<String> tables = new ArrayList<String>();
+					try {
+						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+			    	xrf_chooser.setText(
+			    			get_file_display("XRF", file));
+			    	if (!file.isEmpty()) {
+			    		xrf_chosen = true;
+			    		
+			    		// Clear all previous elements from dropdown
+			    		file_chooser.xrf_table.clear();
+			    		xrf_table_selection.removeAllItems();
+			    		
+			    		for (String table_name : tables) {
+			    			xrf_table_selection.addItem(table_name);
+			    		}
+			    		xrf_table_selection.setEnabled(true);
+			    		xrf_table_selection.setBackground(SystemThemes.MAIN);
+			    		xrf_table_selection.setOpaque(false);
+			    	}
+			    	file_chooser.xrf = file;
+			    	file_chooser.xrf_table.add(xrf_table_selection.getSelectedItem().toString());
 		    	}
-		    	file_chooser.xrf = file;
-		    	file_chooser.xrf_table.add(xrf_table_selection.getSelectedItem().toString());
+		    	
 		    	can_continue();
 		    }
 		});
 		
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	String file = file_chooser.import_files(file_chooser.means);
-		    	ArrayList<String> tables = new ArrayList<String>();
-				try {
-					tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-		    	means_chooser.setText(
-		    			get_file_display("Means", file));
+		    	
+		    	String file = get_new_target();
+		    	
+		    	// Open file dialog and wait for action
 		    	if (!file.isEmpty()) {
-			    	means_chosen = true;
-			    	for (String table_name : tables) {
-		    			means_table_selection.addItem(table_name);
-		    		}
-		    		means_table_selection.setEnabled(true);
-		    		means_table_selection.setBackground(SystemThemes.MAIN);
-		    		means_table_selection.setOpaque(false);
+		    		
+			    	ArrayList<String> tables = new ArrayList<String>();
+					try {
+						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+			    	means_chooser.setText(
+			    			get_file_display("Means", file));
+			    	if (!file.isEmpty()) {
+				    	means_chosen = true;
+				    	
+				    	// Clear all previous elements from dropdown
+				    	file_chooser.means_table.clear();
+				    	means_table_selection.removeAllItems();
+				    	
+				    	for (String table_name : tables) {
+			    			means_table_selection.addItem(table_name);
+			    		}
+			    		means_table_selection.setEnabled(true);
+			    		means_table_selection.setBackground(SystemThemes.MAIN);
+			    		means_table_selection.setOpaque(false);
+			    	}
+			    	file_chooser.means = file;
+			    	file_chooser.means_table.add(means_table_selection.getSelectedItem().toString());
 		    	}
-		    	file_chooser.means = file;
-		    	file_chooser.means_table.add(means_table_selection.getSelectedItem().toString());
+		    	
 		    	can_continue();
 		    }
 		});
 		
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	String file = file_chooser.import_files(file_chooser.standards);
-		    	ArrayList<String> tables = new ArrayList<String>();
-				try {
-					tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-		    	stds_chooser.setText(
-		    			get_file_display("Standards", file));
+		    	
+		    	String file = get_new_target();
+		    	
+		    	// Open file dialog and wait for action
 		    	if (!file.isEmpty()) {
-		    		standards_chosen = true;
-		    		for (String table_name : tables) {
-		    			stds_table_selection.addItem(table_name);
-		    		}
-		    		stds_table_selection.setEnabled(true);
-		    		stds_table_selection.setBackground(SystemThemes.MAIN);
-		    		stds_table_selection.setOpaque(false);
+		    		
+		    		ArrayList<String> tables = new ArrayList<String>();
+					try {
+						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+			    	stds_chooser.setText(
+			    			get_file_display("Standards", file));
+			    	if (!file.isEmpty()) {
+			    		standards_chosen = true;
+			    		
+			    		// Clear all previous elements from dropdown
+			    		file_chooser.standards_table.clear();
+			    		stds_table_selection.removeAllItems();
+			    		
+			    		for (String table_name : tables) {
+			    			stds_table_selection.addItem(table_name);
+			    		}
+			    		stds_table_selection.setEnabled(true);
+			    		stds_table_selection.setBackground(SystemThemes.MAIN);
+			    		stds_table_selection.setOpaque(false);
+			    	}
+			    	file_chooser.standards = file;
+			    	file_chooser.standards_table.add(stds_table_selection.getSelectedItem().toString());	
 		    	}
-		    	file_chooser.standards = file;
-		    	file_chooser.standards_table.add(stds_table_selection.getSelectedItem().toString());
+		    	
 		    	can_continue();
 		    }
 		});
+	}
+	
+	private String get_new_target() {
+		//JFileChooser open_chooser = new JFileChooser();
+		boolean approved = JFileChooser.APPROVE_OPTION == this.open_chooser.showOpenDialog(this);
+		if (approved) {
+			return open_chooser.getSelectedFile().getPath();
+		}
+		return "";
 	}
 }

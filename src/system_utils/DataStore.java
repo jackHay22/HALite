@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,6 +22,8 @@ import ui_graphlib.Point;
 
 public class DataStore extends ui_framework.StateResult implements Serializable {
 	private ui_framework.SystemWindow window_parent;
+	
+	private String save_path;
 	
 	private Element primary;
 	private Element secondary;
@@ -39,6 +43,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
 		
+		this.save_path = "";
+		
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
@@ -46,6 +52,31 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
 		this.elem_num = 5;
+	}
+	
+	public void set_save_path(String path) {
+		this.save_path = path;
+	}
+	
+	public String get_path() {
+		return this.save_path;
+	}
+	
+	public boolean path_assigned() {
+		return this.save_path.isEmpty();
+	}
+	
+	public boolean check_valid_target() {
+		File save_file = new File(this.save_path);
+		String parent_path = save_file.getParent();
+		
+		if (parent_path == null) {
+			return false;
+		}
+		else {
+			File parent_dir = new File(parent_path);
+			return parent_dir.exists();
+		}
 	}
 	
 	public boolean load_from_save(File path) {

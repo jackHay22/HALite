@@ -2,21 +2,24 @@ package ui_stdlib.dialogwindows;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+
+import system_utils.DataStore;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
 
 @SuppressWarnings("serial")
 public class SaveDialog extends SystemDialog implements ScheduledState {
-	private SaveTarget save_target;
 	private JLabel save_current_instructions;
 	
 	public SaveDialog(String title) {
 		super(title);
 		//TODO: add save target to datastore
-		save_target = new SaveTarget();
 		this.setLayout(new GridLayout(4,0));
 		
 		save_current_instructions = new JLabel("Save");
@@ -26,16 +29,49 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 
 	@Override
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-		if (get_new_target() && try_save(prev_res)) {
-    		update_save_label(save_target.get_path().toString());
-    		callback.release_to(previous, prev_res);
+		DataStore ds = (DataStore) prev_res;
+		if (ds == null) {
+			return;
+		}
+		else if (try_save(ds)) {
+			String save_path = ds.get_path().toString();
+    		update_save_label(save_path);
+    		
+    		try {
+    			String datastore_save = ds.toString();
+    			FileOutputStream file_write = new FileOutputStream(save_path);
+    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
+    			objectOut.writeObject(datastore_save);
+    			objectOut.close();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		
+    		callback.release_to(previous, ds);
     		close_dialog();
     	}
+		else if (get_new_target(ds) && try_save(ds)) {
+			String save_path = ds.get_path().toString();
+    		update_save_label(save_path);
+    		
+    		try {
+    			String datastore_save = ds.toString();
+    			FileOutputStream file_write = new FileOutputStream(save_path);
+    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
+    			objectOut.writeObject(datastore_save);
+    			objectOut.close();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		
+    		callback.release_to(previous, ds);
+    		close_dialog();
+		}
 	}
 	
-	private boolean try_save(StateResult state) {
-		if (save_target.path_assigned()) {
-			return save_target.write_to_target();
+	private boolean try_save(DataStore ds) {
+		if (ds.path_assigned()) {
+			return ds.check_valid_target();
 		} else {	
 			return false;
 		}
@@ -45,10 +81,12 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		save_current_instructions.setText(new_label);
 	}
 	
-	private boolean get_new_target() {
+	private boolean get_new_target(DataStore ds) {
 		JFileChooser save_chooser = new JFileChooser();
 		boolean approved = JFileChooser.APPROVE_OPTION == save_chooser.showSaveDialog(this);
-		if (approved) save_target.assign(save_chooser.getSelectedFile());
+		if (approved) {
+			ds.set_save_path(save_chooser.getSelectedFile().getName());
+		}
 		return approved;
 	}
 
