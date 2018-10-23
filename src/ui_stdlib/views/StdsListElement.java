@@ -55,9 +55,11 @@ public class StdsListElement extends SingleViewBar {
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		
-		constraints.ipadx = 10;
+		constraints.weightx = 0.2;
+		constraints.ipadx = SystemThemes.HEADER_PADDING;
 		add(new JLabel(standard), constraints);
 		constraints.ipadx = 0;
+		constraints.weightx = 0.8;
 		show_views();
 		add(weighted_mean, constraints);
 		add(actual, constraints);
