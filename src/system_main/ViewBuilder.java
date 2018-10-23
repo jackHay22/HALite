@@ -100,7 +100,7 @@ public class ViewBuilder {
 		    		current_state = create_new_window(get_app_view(), manager);
 		    		current_window = (SystemWindow) current_state;
 		    	}
-				
+		    	
 				SaveDialog save_dialog = new SaveDialog("Save as");
 				save_dialog.init();
 				save_dialog.on_scheduled(manager, current_state, null);
@@ -123,7 +123,6 @@ public class ViewBuilder {
 		    	NewDialog file_selector = new NewDialog("Select Files", current_window);
 			    file_selector.init();
 			    file_selector.on_scheduled(manager, current_state, null);
-		    	
 		    }
 		});
 		
