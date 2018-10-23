@@ -70,6 +70,7 @@ public class StdsListElement extends SystemPanel {
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		
 		panels.add(weighted_mean);
 		panels.add(actual);
 		list.set_panels(panels);

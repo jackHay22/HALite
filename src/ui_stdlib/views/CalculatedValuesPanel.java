@@ -58,7 +58,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		header_panels.add(wm_label);
 		header_panels.add(actual_label);
 		header.set_panels(header_panels);
-
+		revalidate();
 	}
 
 	@Override
