@@ -23,7 +23,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private ArrayList<SingleViewPanel> header_panels;
 	private JScrollPane pane;
 
-	private CalculatedHeader header;
+	private CalculatedContent header;
 	private CalculatedValsScrollingSet set_list;
 	private boolean backend_loaded = false;
 	
@@ -39,7 +39,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
-		header = new CalculatedHeader(wm_label, actual_label);
+		header = new CalculatedContent();
 	}
 
 	@Override
@@ -54,6 +54,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		for (Element e : header_elements ) {
 			header_panels.add(new SingleViewPanel(e.name(), main, bg));
 		}
+		header_panels.add(wm_label);
+		header_panels.add(actual_label);
 		header.set_panels(header_panels);
 
 	}

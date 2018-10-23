@@ -2,9 +2,12 @@ package ui_stdlib.components;
 
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")
-public abstract class SingleViewBar extends ui_framework.SystemPanel {
+public abstract class SingleViewBar extends SystemPanel{
 	private ArrayList<SingleViewPanel> panels;
 	public SingleViewBar() {
 		super();
