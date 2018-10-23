@@ -1,5 +1,6 @@
 package ui_stdlib.views;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -55,11 +56,13 @@ public class StdsListElement extends SingleViewBar {
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		
-		constraints.weightx = 0.2;
+		constraints.weightx = 0;
 		constraints.ipadx = SystemThemes.HEADER_PADDING;
-		add(new JLabel(standard), constraints);
+		JLabel standards = new JLabel(standard);
+		standards.setPreferredSize(new Dimension(70, 10));
+		add(standards, constraints);
 		constraints.ipadx = 0;
-		constraints.weightx = 0.8;
+		constraints.weightx = 1;
 		show_views();
 		add(weighted_mean, constraints);
 		add(actual, constraints);
