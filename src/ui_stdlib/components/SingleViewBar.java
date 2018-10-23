@@ -9,7 +9,7 @@ public abstract class SingleViewBar extends ui_framework.SystemPanel {
 	public SingleViewBar() {
 		super();
 		panels = new ArrayList<SingleViewPanel>();
-		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 	}
 	
 	protected void add_single_view(SingleViewPanel panel) {
