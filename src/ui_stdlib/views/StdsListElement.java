@@ -76,7 +76,7 @@ public class StdsListElement extends SystemPanel {
 		list.set_panels(panels);
 		
 		constraints.weightx = 0;
-//		constraints.ipadx = SystemThemes.HEADER_PADDING;
+		
 		JLabel standards = new JLabel(standard);
 		standards.setPreferredSize(new Dimension(70, 10));
 		add(standards, constraints);

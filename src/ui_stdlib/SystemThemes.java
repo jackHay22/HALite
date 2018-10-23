@@ -90,6 +90,6 @@ public class SystemThemes {
 	}
 	
 	public static Dimension get_std_cell_dim() {
-		return new Dimension(40,10);
+		return new Dimension(40,30);
 	}
 }

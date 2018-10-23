@@ -26,17 +26,19 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			ElementCorrelationInfo element_corr = datastore.get_model_data_corr();
 			Element elem = element_corr.get_element();
 			//pull from datastore and add
+			//TODO: temp layout
 			add_view(new StdsListElement("Test", elem));
 			add_view(new StdsListElement("Test", elem));
 			add_view(new StdsListElement("Test", elem));
 			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
-			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			
+			revalidate();
 		}
 	}
 	
