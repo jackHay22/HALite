@@ -22,8 +22,7 @@ public class CalculatedHeader extends SingleViewBar {
 		panels = new ArrayList<SingleViewPanel>();
 		this.wm = wm;
 		this.actual = actual;
-		add(wm);
-		add(actual);
+
 	}
 	
 	@Override
@@ -59,6 +58,11 @@ public class CalculatedHeader extends SingleViewBar {
 			add_single_view(p);
 		}
 		show_views();
+		wm.on_start();
+		actual.on_start();
+		add(wm, constraints);
+		add(actual, constraints);
+		setVisible(true);
 	}
 
 }

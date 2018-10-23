@@ -37,36 +37,27 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 
 		header_panels = new ArrayList<SingleViewPanel>();
 		
-		
-		selection_dropdown.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		        if (backend_loaded) {
-		        	//element selection updated
-		        	datastore.notify_update();
-		        }
-		    }
-		});
 		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		header = new CalculatedHeader(wm_label, actual_label);
 	}
-	
+
 	@Override
 	public void refresh() {
 		set_list.refresh();
 		
-		Color highlight = SystemThemes.HIGHLIGHT;
 		Color main = SystemThemes.MAIN;
 		Color bg = SystemThemes.BACKGROUND;
 		
 		header_panels.clear();
-		
-		//TODO
+		//ArrayList<Element> header_elements = datastore.get_weighted_mean_header();
+		//for (Element e : header_elements ) {
+		//	header_panels.add(new SingleViewPanel(e.name(), main, bg);
+		//}
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
 		header_panels.add(new SingleViewPanel("placeholder",main,bg));
 
-		
 		header.set_panels(header_panels);
 
 	}
