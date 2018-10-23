@@ -48,22 +48,30 @@ public class StdsListElement extends SingleViewBar {
 		double actual_val = 0;
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
 											SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
-		weighted_mean.on_start();
+		
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);	
-		actual.on_start();
+		
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		add_single_view(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		
 		constraints.weightx = 0;
-		constraints.ipadx = SystemThemes.HEADER_PADDING;
+//		constraints.ipadx = SystemThemes.HEADER_PADDING;
 		JLabel standards = new JLabel(standard);
 		standards.setPreferredSize(new Dimension(70, 10));
 		add(standards, constraints);
+		
 		constraints.ipadx = 0;
 		constraints.weightx = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		show_views();
+		constraints.weightx = 0;
+		constraints.fill = 0;
+		
+		actual.on_start();
+		weighted_mean.on_start();
+		
 		add(weighted_mean, constraints);
 		add(actual, constraints);
 		
