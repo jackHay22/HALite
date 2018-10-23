@@ -27,7 +27,7 @@ public class DataTable {
 	
 	public Data get_data(Element elem) {
 		for (TableKey key : this.data.keySet()) {
-			if (key.get_val().equals(elem)) {
+			if (key.get_val() != null && key.get_val().equals(elem)) {
 				return this.data.get(key);
 			}
 		}
