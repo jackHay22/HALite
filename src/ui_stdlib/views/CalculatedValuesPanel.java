@@ -39,6 +39,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+
 		header = new CalculatedContent();
 	}
 
@@ -64,6 +65,9 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
 		set_list.set_datastore(datastore);
+		for (SingleViewPanel p : header_panels ) {
+			p.set_datastore(datastore);
+		}
 		this.backend_loaded = true;
 	}
 
@@ -114,8 +118,10 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		    }
 		});
 	
-		refresh();
 		header.setVisible(true);
+		
+		//wm_label.setPreferredSize(SystemThemes.get_std_cell_dim());
+		//actual_label.setPreferredSize(SystemThemes.get_std_cell_dim());
 	}
 
 }

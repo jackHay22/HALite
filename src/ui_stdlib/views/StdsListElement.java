@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import system_utils.DataStore;
+import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
@@ -22,23 +23,28 @@ public class StdsListElement extends SystemPanel {
 	private GridBagConstraints constraints;
 	
 	private CalculatedContent list;
+	private Element elem;
 	
-	public StdsListElement(String standard) {
+	public StdsListElement(String standard, Element elem) {
 		super();
 		setLayout(new GridBagLayout());
 		
 		this.standard = standard;
+		this.elem = elem;
 		list = new CalculatedContent();
 	}
 
 	@Override
 	public void refresh() {
-		
 	}
 
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
+	}
+	
+	public void set_element(Element elem) {
+		this.elem = elem;
 	}
 
 	@Override
@@ -59,9 +65,11 @@ public class StdsListElement extends SystemPanel {
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		panels.add(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
-		panels.add(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
-		panels.add(new SingleViewPanel("Placeholder", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		//Get values based on elements
+		
+		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		panels.add(weighted_mean);
 		panels.add(actual);
 		list.set_panels(panels);

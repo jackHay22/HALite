@@ -3,6 +3,8 @@ package ui_stdlib.views;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import system_utils.DataStore;
+import system_utils.Element;
+import system_utils.ElementCorrelationInfo;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
@@ -19,6 +21,23 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 
 	@Override
 	public void refresh() {
+		if (backend_loaded) {
+			clear_views();
+			ElementCorrelationInfo element_corr = datastore.get_model_data_corr();
+			Element elem = element_corr.get_element();
+			//pull from datastore and add
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", elem));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+			add_view(new StdsListElement("Test", Element.Ag));
+		}
 	}
 	
 	private void add_view(StdsListElement view) {
@@ -48,23 +67,7 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 
 	@Override
 	public void on_start() {
-		
-		//TODO: placeholder
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
-		add_view(new StdsListElement("Test"));
 		setVisible(true);
-		if (backend_loaded) {
-			//pull from datastore and add
-		}
 	}
 
 }

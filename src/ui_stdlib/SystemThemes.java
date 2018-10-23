@@ -88,4 +88,8 @@ public class SystemThemes {
 		pane.setMinimumSize(new Dimension(200, 600));
 		return pane;
 	}
+	
+	public static Dimension get_std_cell_dim() {
+		return new Dimension(40,10);
+	}
 }
