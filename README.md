@@ -19,7 +19,7 @@
 
 ## Setup
 To setup the project, configure the following:
-- Add ```commons-math3-3.6.1.jar``` to a new folder called ```lib/```. This make also need to be added as an external library in eclipse.
+- Add ```commons-math3-3.6.1.jar``` to a new folder called ```lib/```. This may also need to be added as an external library in eclipse.
 
 ## Dependencies
 - Apache Commons Math3 3.6.1
