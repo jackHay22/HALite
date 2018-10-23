@@ -112,6 +112,37 @@ public class ElementCorrelationInfo implements Refreshable {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
 		return corr.in_use();
 	}
+	
+	public ArrayList<Element> get_selected_names() {
+		ArrayList<Element> sel = new ArrayList<Element>();
+		for (CorrelationInfo corr : get_selected()) {
+			sel.add(corr.get_secondary());
+		}
+		return sel;
+	}
+	
+	private Double get_corr_eq_val(String std, Element elem) {
+		return this.all_correlations.get(elem).get_corr_result(std);
+	}
+	
+	public HashMap<String, HashMap<String, Double>> get_WM_panel_data() {
+		// Returns a hashmap, mapping each standard to the corresponding data for the row,
+		// which is also in the form of a hashmap, which maps the column to the data
+		HashMap<String, HashMap<String, Double>> outer_map = new HashMap<String, HashMap<String, Double>>();
+		for (String s : data_store.get_STDlist()) {
+			HashMap<String, Double> inner_map = new HashMap<String, Double>();
+			for (CorrelationInfo corr : this.selected_elements) {
+				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
+			}
+			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
+			inner_map.put("WM", WMs.get(s));
+			
+			outer_map.put(s, inner_map);
+			
+		}
+		
+		return outer_map;
+	}
 
 	private double computeSE(ArrayList<Double> elem_values) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
