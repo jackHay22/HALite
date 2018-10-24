@@ -268,7 +268,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	}
 	
 	private String get_new_target() {
-		//JFileChooser open_chooser = new JFileChooser();
 		boolean approved = JFileChooser.APPROVE_OPTION == this.open_chooser.showOpenDialog(this);
 		if (approved) {
 			return open_chooser.getSelectedFile().getPath();

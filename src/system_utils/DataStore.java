@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -421,6 +419,30 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return n_pairs;
 	}
 	
+	public Double get_raw_unknown_elem(String sample, Element elem) {
+		Data elem_data = this.xrf_data.get_data(elem);
+		if (elem_data == null) {
+			return null;
+		}
+
+		// Integer object so it can be tested for null
+		Integer pos = xrf_data.get_info(new TableKey("Name")).indexOf(sample);
+		if (pos.equals(-1)) {
+			return null;
+		}
+
+		Double data = elem_data.get_data().get(pos);
+		if (data != null) {
+			return data;
+		} else {
+			return null;
+		}
+	}
+	
+	public ArrayList<String> get_unknown_list() {
+		return xrf_data.get_info(new TableKey("Name"));
+	}
+	
 	public void set_correlation_graph_elements(Element primary, Element secondary) {
 
 		this.primary = primary;
@@ -466,15 +488,39 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.window_parent.refresh();
 	}
 	
+	public void set_primary(Element prim) {
+		this.primary = prim;
+	}
+	
+	public void set_secondary(Element sec) {
+		this.secondary = sec;
+	}
+	
+	public void set_xrf_table(DataTable tab) {
+		this.xrf_data = tab;
+	}
+	
+	public void set_means_table(DataTable tab) {
+		this.means_data = tab;
+	}
+	
+	public void set_standards_table(DataTable tab) {
+		this.standards_data = tab;
+	}
+	
+	public void set_correlations(HashMap<Element, ElementCorrelationInfo> corrs) {
+		this.correlations = corrs;
+	}
+	
 	@Override
 	public String toString() {
 		return new StringBuffer(" Primary : ").append(this.primary.toString())
-				.append(" Secondary : ").append(this.secondary.toString())
-				.append(" Model_element : ").append(this.model_data_element.toString())
-				.append(" xrf : ").append(this.xrf_data.get_raw_table().toString())	    // Only store raw data, parse on reload
-				.append(" stardards : ").append(this.standards_data.get_raw_table().toString())
-				.append(" means : ").append(this.means_data.get_raw_table().toString())
-				.append(" correlations : ").append(this.correlations.toString())
+				.append("\n Secondary : ").append(this.secondary.toString())
+				.append("\n Model_element : ").append(this.model_data_element.toString())
+				.append("\n xrf : ").append(this.xrf_data.get_raw_table().toString())	    // Only store raw data, parse on reload
+				.append("\n stardards : ").append(this.standards_data.get_raw_table().toString())
+				.append("\n means : ").append(this.means_data.get_raw_table().toString())
+				.append("\n correlations : ").append(this.correlations.toString())
 				.toString();
 	}
 }

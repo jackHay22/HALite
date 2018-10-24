@@ -1,23 +1,31 @@
 package ui_stdlib.dialogwindows;
 
 import java.awt.FileDialog;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.swing.JFileChooser;
 import system_utils.DataStore;
+import system_utils.DataTable;
+import system_utils.Element;
+import system_utils.ElementCorrelationInfo;
+import system_utils.TableKey;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
 import ui_framework.SystemWindow;
-import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class OpenDialog extends SystemDialog implements ui_framework.ScheduledState {
 	DataStore save_loader;
 	FileDialog save_dialog;
+	JFileChooser file_chooser;
 	
 	public OpenDialog(String title, SystemWindow main_window) {
 		super(title);
@@ -28,26 +36,14 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 
 	@Override
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-		JButton save_chooser = new JButton("Open saved...");
 		
-		save_chooser.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		    	if (load_from_save()) {
-		    		callback.release_to(previous, save_loader);
-			    	close_dialog();
-		    	}
-		    }
-		});
+		file_chooser = new JFileChooser();
+		String file = get_new_target();
 		
-		JLabel title_desc = new JLabel("Select a saved file");
-		title_desc.setHorizontalAlignment(JLabel.CENTER);
-		title_desc.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		if (!file.isEmpty() && is_datastore_file(file)) {
+			set_datastore(this.save_loader, file);
+		}
 		
-		add(title_desc);
-		add(save_chooser);
-		add(SystemThemes.get_copyright());
-		
-		show_dialog();
 	}
 
 	private boolean load_from_save() {
@@ -61,6 +57,230 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	private static boolean isNumeric(String strNum) {
+	    try {
+	        @SuppressWarnings("unused")
+			double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException | NullPointerException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private ArrayList<Double> getDoubleArray(ArrayList<String> arr) {
+		ArrayList<Double> result = new ArrayList<Double>();
+        for(String stringValue : arr) {
+        	result.add(Double.parseDouble(stringValue)); 
+        }       
+        return result;
+	}
+	
+	private void set_datastore(DataStore ds, String file) {
+		BufferedReader reader = null;
+		
+		HashMap<String, ArrayList<String>> tester = new HashMap<String, ArrayList<String>>();
+		tester.put("test1", new ArrayList<String>(Arrays.asList("Buenos Aires", "Córdoba", "La Plata")));
+		tester.put("test2", new ArrayList<String>(Arrays.asList("hello", "one", "this")));
+		System.out.println("TESTER: " + tester.toString());
+		
+		try {
+		    reader = new BufferedReader(new FileReader(file));
+		    
+		    String[] keys = {"Primary", "Secondary", "Model_element", "xrf", "standards", "means", "correlations"};
+		    String line; 
+		    try {
+				while ((line = reader.readLine()) != null) {
+					String[] parts = line.split(":", 2);
+					if (parts.length >= 2) {
+			            String key = parts[0].replaceAll("\\s+","");
+			            String value = parts[1].replaceAll("\\s+","");
+			            
+			            if (key.equals("Primary"))
+			            	ds.set_primary(Element.valueOf(value));
+			            else if (key.equals("Secondary"))
+			            	ds.set_secondary(Element.valueOf(value));
+			            else if (key.equals("Model_element"))
+			            	ds.set_model_data_element(Element.valueOf(value));
+			            else if (key.equals("xrf")) {
+			            	DataTable xrf_table = new DataTable();
+			            	
+			            	value = value.substring(1, value.length()-1);
+			            	String[] keyValuePairs = value.split(",");
+			            	
+			            	for (String pair : keyValuePairs) {
+			            		String[] entry = pair.split("=");
+			            		TableKey data_key = new TableKey(entry[0]);
+			            		
+			            		System.out.println("ENTRIES: " + pair);
+			            		
+			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		
+			            		// Set datatable string_data
+			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
+			            		xrf_table.put_info(data_key, raw_entries);
+			            		
+			            		if (isNumeric(raw_entries.get(0))) {
+			            			xrf_table.put_data(data_key, getDoubleArray(raw_entries));
+			            		}
+			            	}
+			            	
+			            	ds.set_xrf_table(xrf_table);
+			            }
+			            else if (key.equals("standards")) {
+			            	DataTable standards_table = new DataTable();
+			            	
+			            	value = value.substring(1, value.length()-1);
+			            	String[] keyValuePairs = value.split(",");
+			            	
+			            	for (String pair : keyValuePairs) {
+			            		String[] entry = pair.split("=");
+			            		TableKey data_key = new TableKey(entry[0]);
+			            		
+			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		
+			            		// Set datatable string_data
+			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
+			            		standards_table.put_info(data_key, raw_entries);
+			            		
+			            		if (isNumeric(raw_entries.get(0))) {
+			            			standards_table.put_data(data_key, getDoubleArray(raw_entries));
+			            		}
+			            	}
+			            	
+			            	ds.set_standards_table(standards_table);
+			            }
+			            else if (key.equals("means")) {
+			            	DataTable means_table = new DataTable();
+			            	
+			            	value = value.substring(1, value.length()-1);
+			            	String[] keyValuePairs = value.split(",");
+			            	
+			            	for (String pair : keyValuePairs) {
+			            		String[] entry = pair.split("=");
+			            		TableKey data_key = new TableKey(entry[0]);
+			            		
+			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		
+			            		// Set datatable string_data
+			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
+			            		means_table.put_info(data_key, raw_entries);
+			            		
+			            		if (isNumeric(raw_entries.get(0))) {
+			            			means_table.put_data(data_key, getDoubleArray(raw_entries));
+			            		}
+			            	}
+			            	
+			            	ds.set_means_table(means_table);
+			            }
+			            else if (key.equals("correlations")) {
+			            	HashMap<Element, ElementCorrelationInfo> correlations = new HashMap<Element, ElementCorrelationInfo>();
+			            
+			            	value = value.substring(1, value.length()-1);
+			            	String[] keyValuePairs = value.split(",");
+			            	
+			            	for (String pair : keyValuePairs) {
+			            		String[] entry = pair.split("=");
+			            		Element elem = Element.valueOf(entry[0]);
+			            		
+			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		
+			            		//TO DO
+			            		
+			            		correlations.put(elem, null);
+			            	}
+			            	
+			            	ds.set_correlations(correlations);;
+			            }
+			            	
+			        }
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		    
+		} catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (reader != null) {
+		            reader.close();
+		        }
+		    } catch (IOException e) {
+		    }
+		}
+	}
+	
+	private boolean is_datastore_file(String file) {
+		
+		int pos = file.indexOf('.');
+		if (pos < 0) {
+			return false;
+		}
+		
+		String extension = file.substring(pos + 1);
+		if (extension.equals("ds")) {
+
+			BufferedReader reader = null;
+			
+			// Check if .ds file conforms to standard, ie. not missing data
+			try {
+			    reader = new BufferedReader(new FileReader(file));
+			    
+			    String[] valid_keys = {"Primary", "Secondary", "Model_element", "xrf", "standards", "means", "correlations"};
+			    String line; 
+			    try {
+			    	ArrayList<String> found_keys = new ArrayList<String>();
+					while ((line = reader.readLine()) != null) {
+						String[] parts = line.split(":", 2);
+						if (parts.length >= 2) {
+				            String key = parts[0].replaceAll("\\s+","");
+				            
+				            // Unknown key in .ds file
+				            if (!Arrays.asList(valid_keys).contains(key)) {
+				            	return false;
+				            }
+		
+				            found_keys.add(key);
+				        } 
+						else {
+							return false;
+						}
+					}
+					for (String key : valid_keys) {
+						// Missing keys in selected file
+						if (!found_keys.contains(key)) {
+							return false;
+						}
+					}
+					// Selected file contains all necessary keys
+					return true;
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			    
+			} catch (FileNotFoundException e) {
+			    e.printStackTrace();
+			} finally {
+			    try {
+			        if (reader != null) {
+			            reader.close();
+			        }
+			    } catch (IOException e) {
+			    }
+			}
+		}
+		return false;
+	}
+	
+	private String get_new_target() {
+		boolean approved = JFileChooser.APPROVE_OPTION == this.file_chooser.showOpenDialog(this);
+		if (approved) {
+			return file_chooser.getSelectedFile().getPath();
+		}
+		return "";
 	}
 
 	@Override
