@@ -80,15 +80,9 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 	private void set_datastore(DataStore ds, String file) {
 		BufferedReader reader = null;
 		
-		HashMap<String, ArrayList<String>> tester = new HashMap<String, ArrayList<String>>();
-		tester.put("test1", new ArrayList<String>(Arrays.asList("Buenos Aires", "Córdoba", "La Plata")));
-		tester.put("test2", new ArrayList<String>(Arrays.asList("hello", "one", "this")));
-		System.out.println("TESTER: " + tester.toString());
-		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
 		    
-		    String[] keys = {"Primary", "Secondary", "Model_element", "xrf", "standards", "means", "correlations"};
 		    String line; 
 		    try {
 				while ((line = reader.readLine()) != null) {
@@ -107,15 +101,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 			            	DataTable xrf_table = new DataTable();
 			            	
 			            	value = value.substring(1, value.length()-1);
-			            	String[] keyValuePairs = value.split(",");
+			            	String[] keyValuePairs = value.split(",(?=[A-z]+=\\[[A-z0-9,.]+\\])");
 			            	
 			            	for (String pair : keyValuePairs) {
 			            		String[] entry = pair.split("=");
 			            		TableKey data_key = new TableKey(entry[0]);
 			            		
-			            		System.out.println("ENTRIES: " + pair);
-			            		
-			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		String[] entries = entry[1].substring(1, entry[1].length()-1).split(",");
 			            		
 			            		// Set datatable string_data
 			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
@@ -132,13 +124,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 			            	DataTable standards_table = new DataTable();
 			            	
 			            	value = value.substring(1, value.length()-1);
-			            	String[] keyValuePairs = value.split(",");
+			            	String[] keyValuePairs = value.split(",(?=[A-z]+=\\[[A-z0-9,.]+\\])");
 			            	
 			            	for (String pair : keyValuePairs) {
 			            		String[] entry = pair.split("=");
 			            		TableKey data_key = new TableKey(entry[0]);
 			            		
-			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		String[] entries = entry[1].substring(1, entry[1].length()-1).split(",");
 			            		
 			            		// Set datatable string_data
 			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
@@ -155,13 +147,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 			            	DataTable means_table = new DataTable();
 			            	
 			            	value = value.substring(1, value.length()-1);
-			            	String[] keyValuePairs = value.split(",");
+			            	String[] keyValuePairs = value.split(",(?=[A-z]+=\\[[A-z0-9,.]+\\])");
 			            	
 			            	for (String pair : keyValuePairs) {
 			            		String[] entry = pair.split("=");
 			            		TableKey data_key = new TableKey(entry[0]);
 			            		
-			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		String[] entries = entry[1].substring(1, entry[1].length()-1).split(",");
 			            		
 			            		// Set datatable string_data
 			            		ArrayList<String> raw_entries = new ArrayList<String>(Arrays.asList(entries));
@@ -182,13 +174,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 			            	
 			            	for (String pair : keyValuePairs) {
 			            		String[] entry = pair.split("=");
-			            		Element elem = Element.valueOf(entry[0]);
+			            		//Element elem = Element.valueOf(entry[0]);
 			            		
-			            		String[] entries = entry[1].substring(1, value.length()-1).split(",");
+			            		//String[] entries = entry[1].substring(1, value.length()-1).split(",");
 			            		
 			            		//TO DO
 			            		
-			            		correlations.put(elem, null);
+			            		//correlations.put(elem, null);
 			            	}
 			            	
 			            	ds.set_correlations(correlations);;
