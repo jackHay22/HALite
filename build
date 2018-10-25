@@ -49,4 +49,6 @@ elif [ "$1" == "--release" ]; then
   else
     printf "${MOUNTAIN}  ${YELLOW}Error:${NC} specify a release version when using ${CYAN}--release${NC} \n"
   fi
+else
+  printf "${MOUNTAIN}  ${YELLOW}Error:${NC} ${CYAN}$1${NC} not a valid parameter (Did you mean ${CYAN}--release${NC}?)\n"
 fi

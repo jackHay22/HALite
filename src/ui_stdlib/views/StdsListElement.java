@@ -58,7 +58,7 @@ public class StdsListElement extends SystemPanel {
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
 		//Get values based on elements
-		
+		//TODO
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
