@@ -1,7 +1,9 @@
 package ui_stdlib.dialogwindows;
 
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
@@ -84,6 +86,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	private boolean get_new_target(DataStore ds) {
 		JFileChooser save_chooser = new JFileChooser();
 		boolean approved = JFileChooser.APPROVE_OPTION == save_chooser.showSaveDialog(this);
+		
 		if (approved) {
 			ds.set_save_path(save_chooser.getSelectedFile().getName());
 		}

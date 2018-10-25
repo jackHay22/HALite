@@ -25,7 +25,6 @@ import ui_stdlib.SystemThemes;
 public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
-	private JFileChooser open_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
@@ -54,7 +53,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
-			loaded_datastore = new DataStore(main_window);
+			//loaded_datastore = new DataStore(main_window);
 			try {
 				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
 											 standards, file_chooser.standards_table, 
@@ -102,7 +101,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	public void init() {
 		
 		file_chooser = new FileChooser(this);
-		open_chooser = new JFileChooser();
+		loaded_datastore = new DataStore(main_window);
 		
 		xrf_chosen = false;
 		means_chosen = false;
@@ -155,10 +154,11 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	String file = get_new_target();
+		    	boolean file_found = file_chooser.import_file(loaded_datastore);
+		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (!file.isEmpty()) {
+				if (file_found) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -193,10 +193,11 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	String file = get_new_target();
+		    	boolean file_found = file_chooser.import_file(loaded_datastore);
+		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (!file.isEmpty()) {
+		    	if (file_found) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -231,10 +232,11 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	String file = get_new_target();
+		    	boolean file_found = file_chooser.import_file(loaded_datastore);
+		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (!file.isEmpty()) {
+		    	if (file_found) {
 		    		
 		    		ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -267,11 +269,4 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		});
 	}
 	
-	private String get_new_target() {
-		boolean approved = JFileChooser.APPROVE_OPTION == this.open_chooser.showOpenDialog(this);
-		if (approved) {
-			return open_chooser.getSelectedFile().getPath();
-		}
-		return "";
-	}
 }

@@ -15,6 +15,7 @@ import system_utils.DataStore;
 import system_utils.DataTable;
 import system_utils.Element;
 import system_utils.ElementCorrelationInfo;
+import system_utils.FileChooser;
 import system_utils.TableKey;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -25,23 +26,28 @@ import ui_framework.SystemWindow;
 public class OpenDialog extends SystemDialog implements ui_framework.ScheduledState {
 	DataStore save_loader;
 	FileDialog save_dialog;
-	JFileChooser file_chooser;
+	//JFileChooser file_chooser;
+	FileChooser file_chooser;
+	SystemWindow main_window;
 	
 	public OpenDialog(String title, SystemWindow main_window) {
 		super(title);
 		save_loader = new DataStore(main_window);
 		save_dialog = new FileDialog(this, "Choose saved file");
+		this.main_window = main_window;
 		this.setLayout(new GridLayout(4,0));
 	}
 
 	@Override
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
 		
-		file_chooser = new JFileChooser();
-		String file = get_new_target();
+		//file_chooser = new JFileChooser();
 		
-		if (!file.isEmpty() && is_datastore_file(file)) {
-			set_datastore(this.save_loader, file);
+		file_chooser = new FileChooser(this);
+		boolean file = file_chooser.import_file(this.save_loader); //get_new_target();
+		
+		if (file && is_datastore_file(this.save_loader.get_path())) {
+			set_datastore(this.save_loader, this.save_loader.get_path());
 		}
 		
 	}
@@ -274,13 +280,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 		return false;
 	}
 	
-	private String get_new_target() {
+	/*private String get_new_target() {
 		boolean approved = JFileChooser.APPROVE_OPTION == this.file_chooser.showOpenDialog(this);
 		if (approved) {
 			return file_chooser.getSelectedFile().getPath();
 		}
 		return "";
-	}
+	}*/
 
 	@Override
 	public void init() {
