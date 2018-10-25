@@ -120,7 +120,6 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			names = xrf_data.get_info(xrf_key);
 		}
 		
-		//System.out.println(standards_data.contains_data(new TableKey(elem.name())));
 		Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
 		ArrayList<Double> standards;
 		

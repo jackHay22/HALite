@@ -209,7 +209,6 @@ public class ElementCorrelationInfo implements Refreshable {
 			Double calculation = computeWM(std);
 			if (calculation != null) {
 				std_WMs.put(std, calculation);
-				System.out.println("Here: " + this.element);
 			}
 		}
 	}
@@ -267,8 +266,6 @@ public class ElementCorrelationInfo implements Refreshable {
 	private PointSet std_vs_std() {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
-		
-		//System.out.println("DS: " + this.data_store.get_STDlist());
 		
 		for (String std : data_store.get_STDlist()) {
 			if (data_store.get_raw_std_elem(std, element) != null) {
