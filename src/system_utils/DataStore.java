@@ -32,6 +32,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
+	private DataTable standards_means_data;
+	private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
 	
@@ -47,6 +49,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
+		this.standards_means_data = new DataTable();
+		this.unknown_means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
@@ -113,8 +117,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			// Get listing of standards from standards file
 			TableKey value_key = new TableKey("Calibrationvalues");
 			names = standards_data.get_info(value_key);
-		}
-		else {
+		} else {
 			// Get listing of standards from standards file
 			TableKey xrf_key = new TableKey("Name");
 			names = xrf_data.get_info(xrf_key);
@@ -375,7 +378,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	}
 	
 	public Double get_current_WM(String std) {
-		return this.get_WM_data().get(std).get("WM");
+		Double result = this.get_WM_data().get(std).get("WM");
+		if (result == null) {
+			return get_current_actual(std);
+		}
+		return result;
 	}
 	
 	public Double get_current_actual(String std) {
