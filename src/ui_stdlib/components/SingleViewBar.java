@@ -2,8 +2,6 @@ package ui_stdlib.components;
 
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
 import ui_framework.SystemPanel;
 
 @SuppressWarnings("serial")

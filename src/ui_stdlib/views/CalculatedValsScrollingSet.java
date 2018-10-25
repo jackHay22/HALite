@@ -11,39 +11,41 @@ import ui_framework.Refreshable;
 public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 	private DataStore datastore;
 	private ArrayList<StdsListElement> views;
-	private boolean backend_loaded = false;
+	private boolean backend_loaded;
 	
 	public CalculatedValsScrollingSet() {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		views = new ArrayList<StdsListElement>();
+		backend_loaded = false;
 	}
 
 	@Override
 	public void refresh() {
 		if (backend_loaded) {
 			clear_views();
+			
 			ElementCorrelationInfo element_corr = datastore.get_model_data_corr();
 			Element elem = element_corr.get_element();
-			//pull from datastore and add
-			//TODO: temp layout
-			ArrayList<String> standards = datastore.get_STDlist();
-			for (String std : standards) {
-				add_view(new StdsListElement(std, elem));
-			}	
 			
+			ArrayList<String> standards = datastore.get_STDlist();
+			
+			for (String std : standards) {
+				StdsListElement graphical_elem = new StdsListElement(std, elem);
+				views.add(graphical_elem);
+				
+				graphical_elem.set_datastore(datastore);
+				graphical_elem.on_start();
+				
+				add(graphical_elem);
+				graphical_elem.setVisible(true);
+				graphical_elem.refresh();
+			}
+
 			revalidate();
 		}
 	}
-	
-	private void add_view(StdsListElement view) {
-		views.add(view);
-		view.on_start();
-		view.set_datastore(datastore);
-		view.refresh();
-		add(view);
-	}
-	
+
 	private void clear_views() {
 		for (StdsListElement v : views) {
 			remove(v);
@@ -66,5 +68,4 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 	public void on_start() {
 		setVisible(true);
 	}
-
 }

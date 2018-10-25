@@ -19,7 +19,7 @@ public class StdsListElement extends SystemPanel {
 	private SingleViewPanel weighted_mean;
 	private SingleViewPanel actual;
 	private DataStore datastore;
-	private boolean backend_loaded = false;
+	private boolean backend_loaded;
 	private String standard;
 	private GridBagConstraints constraints;
 	
@@ -37,16 +37,18 @@ public class StdsListElement extends SystemPanel {
 		this.standard = standard;
 		this.elem = elem;
 		list = new CalculatedContent();
+		
 		wm_val = 0;
 		actual_val = 0;
+		
+		backend_loaded = false;
 	}
 
 	@Override
 	public void refresh() {
-		
 		if (backend_loaded) {
-			double wm_val = datastore.get_current_WM(standard);
-			double actual_val = datastore.get_current_actual(standard);
+			wm_val = datastore.get_current_WM(standard);
+			actual_val = datastore.get_current_actual(standard);
 		}
 
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
@@ -84,14 +86,9 @@ public class StdsListElement extends SystemPanel {
 		this.datastore = datastore;
 		backend_loaded = true;
 	}
-	
-	public void set_element(Element elem) {
-		this.elem = elem;
-	}
 
 	@Override
 	public void add_refreshable(Refreshable refreshable_component) {
-		
 	}
 
 	@Override

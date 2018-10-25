@@ -67,9 +67,6 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
 		set_list.set_datastore(datastore);
-		for (SingleViewPanel p : header_panels ) {
-			p.set_datastore(datastore);
-		}
 		this.backend_loaded = true;
 	}
 
@@ -125,7 +122,5 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		if (backend_loaded) {
 			datastore.set_model_data_element((Element)selection_dropdown.getSelectedItem());
 		}
-
 	}
-
 }
