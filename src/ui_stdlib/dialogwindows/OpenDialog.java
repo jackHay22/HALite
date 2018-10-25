@@ -83,6 +83,13 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 		try {
 		    reader = new BufferedReader(new FileReader(file));
 		    
+		    ArrayList<String> test = new ArrayList<String>();
+		    test.add("hello");
+		    test.add("boop");
+		    test.add("wup");
+		    
+		    System.out.println(test.toString());
+		    
 		    String line; 
 		    try {
 				while ((line = reader.readLine()) != null) {

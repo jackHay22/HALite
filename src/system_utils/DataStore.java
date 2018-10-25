@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.TestSuiteReader;
@@ -488,6 +489,79 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.window_parent.refresh();
 	}
 	
+	private String to_string(HashMap<Element, ElementCorrelationInfo> corr) {
+		String data_output = "";
+		
+		// Add bracket for start of hashmap
+		data_output += "{";
+		
+		Map<Element, ElementCorrelationInfo> map = corr;
+		for (Map.Entry<Element, ElementCorrelationInfo> entry : map.entrySet()) {
+			String key = entry.getKey().name();
+			ElementCorrelationInfo value_list = entry.getValue();
+			
+			String output_entry = key + "=" + value_list.get_string() + ", ";
+			data_output += output_entry;
+			
+		}
+		
+		// Remove last comma
+		data_output = data_output.substring(0, data_output.length() - 1);
+		
+		// Add bracket for end of hashmap
+		data_output = data_output + "}";
+		
+		return data_output;
+	}
+	
+	private String get_STD_computed_string() {
+		StringBuilder sb = new StringBuilder();
+		for (String std : this.get_STDlist()) {
+			sb.append(std);
+			for (Element elem : Element.values()) {
+				sb.append(",");
+				Double data = this.correlations.get(elem).get_standard_computed().get(std);
+				if (data != null) {
+					sb.append(data.toString());
+				}
+			}
+			sb.append("\n");
+			}
+		return sb.toString();
+		}
+
+	private String get_unknown_computed_string() {
+		StringBuilder sb = new StringBuilder();
+		for (String sample : this.get_unknown_list()) {
+		sb.append(sample);
+		for (Element elem : Element.values()) {
+		sb.append(",");
+		Double data = this.correlations.get(elem).get_unknown_computed().get(sample);
+		if (data != null) {
+		sb.append(data.toString());
+		}
+		}
+		sb.append("\n");
+		}
+		return sb.toString();
+	}
+
+	public String get_model_string() {
+		// This ~SHOULD~ be what needs to be written to whatever file they choose. (csv format)
+		StringBuilder sb = new StringBuilder();
+		sb.append("Sample Name");
+
+		for (Element elem : Element.values()) {
+			sb.append(",");
+			sb.append(elem.toString());
+		}
+		sb.append("\n");
+		sb.append(this.get_STD_computed_string());
+		sb.append(this.get_unknown_computed_string());
+		
+		return sb.toString();
+	}
+	
 	public void set_primary(Element prim) {
 		this.primary = prim;
 	}
@@ -517,9 +591,9 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return new StringBuffer(" Primary : ").append(this.primary.toString())
 				.append("\n Secondary : ").append(this.secondary.toString())
 				.append("\n Model_element : ").append(this.model_data_element.toString())
-				.append("\n xrf : ").append(this.xrf_data.get_raw_table().toString())	    // Only store raw data, parse on reload
-				.append("\n stardards : ").append(this.standards_data.get_raw_table().toString())
-				.append("\n means : ").append(this.means_data.get_raw_table().toString())
+				.append("\n xrf : ").append(this.xrf_data.get_raw_table())	    // Only store raw data, parse on reload
+				.append("\n stardards : ").append(this.standards_data.get_raw_table())
+				.append("\n means : ").append(this.means_data.get_raw_table())
 				.append("\n correlations : ").append(this.correlations.toString())
 				.toString();
 	}

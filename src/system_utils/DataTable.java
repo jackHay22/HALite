@@ -1,6 +1,7 @@
 package system_utils;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ArrayList;
 
 public class DataTable {
@@ -46,9 +47,30 @@ public class DataTable {
 	public HashMap<TableKey, Data> get_data() {
 		return this.data;
 	}
-	
-	public HashMap<TableKey, ArrayList<String>> get_raw_table() {
-		return this.string_data;
+
+	public String get_raw_table() {
+		String data_output = "";
+		
+		// Add bracket for start of hashmap
+		data_output += "{";
+		
+		Map<TableKey, ArrayList<String>> map = this.string_data;
+		for (Map.Entry<TableKey, ArrayList<String>> entry : map.entrySet()) {
+			String key = entry.getKey().toString();
+			ArrayList<String> value_list = entry.getValue();
+			
+			String output_entry = key + "=" + value_list.toString() + ", ";
+			data_output += output_entry;
+			
+		}
+		
+		// Remove last comma
+		data_output = data_output.substring(0, data_output.length() - 1);
+		
+		// Add bracket for end of hashmap
+		data_output = data_output + "}";
+		
+		return data_output;
 	}
 	
 }
