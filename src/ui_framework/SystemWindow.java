@@ -23,6 +23,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	private boolean windows_split = false;
 	private ArrayList<JSplitPane> double_panes;
 	private JSplitPane main_split;
+	private DataStore datastore;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -55,6 +56,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 
 	@Override
 	public void set_datastore(DataStore datastore) {
+		this.datastore = datastore;
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}
@@ -68,6 +70,10 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 		
 		//add to list of refreshable objects
 		add_refreshable(new_panel);
+	}
+	
+	public StateResult get_datastore() {
+		return (StateResult) datastore;
 	}
 	
 	@Override
