@@ -500,8 +500,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			String key = entry.getKey().name();
 			ElementCorrelationInfo value_list = entry.getValue();
 			
-			String output_entry = key + "=" + value_list.get_string() + ", ";
-			data_output += output_entry;
+			//String output_entry = key + "=" + value_list.get_string() + ", ";
+			//data_output += output_entry;
 			
 		}
 		
@@ -533,15 +533,15 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private String get_unknown_computed_string() {
 		StringBuilder sb = new StringBuilder();
 		for (String sample : this.get_unknown_list()) {
-		sb.append(sample);
-		for (Element elem : Element.values()) {
-		sb.append(",");
-		Double data = this.correlations.get(elem).get_unknown_computed().get(sample);
-		if (data != null) {
-		sb.append(data.toString());
-		}
-		}
-		sb.append("\n");
+			sb.append(sample);
+			for (Element elem : Element.values()) {
+				sb.append(",");
+				Double data = this.correlations.get(elem).get_unknown_computed().get(sample);
+				if (data != null) {
+					sb.append(data.toString());
+				}
+			}
+			sb.append("\n");
 		}
 		return sb.toString();
 	}
