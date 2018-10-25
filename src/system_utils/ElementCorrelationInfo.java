@@ -18,7 +18,8 @@ public class ElementCorrelationInfo implements Refreshable {
 	private ArrayList<CorrelationInfo> selected_elements;
 	private DataStore data_store;
 	private HashMap<Element, Double> SEs;
-	private HashMap<String, Double> WMs;
+	private HashMap<String, Double> std_WMs;
+	private HashMap<String, Double> unknown_WMs;
 	private EquationPlot Equation;
 	private PointSet model_points;
 	
@@ -27,7 +28,30 @@ public class ElementCorrelationInfo implements Refreshable {
 		this.all_correlations = all_correlations;
 		this.selected_elements = new ArrayList<CorrelationInfo>();
 		this.SEs = new HashMap<Element, Double>();
-		this.WMs = new HashMap<String, Double>();
+		this.std_WMs = new HashMap<String, Double>();
+		this.unknown_WMs = new HashMap<String, Double>();
+	}
+	
+	public HashMap<String, Double> get_standard_computed() {
+		
+		HashMap<String, Double> std_map = new HashMap<String, Double>();
+		
+		for (String s : data_store.get_STDlist()) {
+			std_map.put(s, std_WMs.get(s));
+		}
+		
+		return std_map;
+	}
+	
+	public HashMap<String, Double> get_unknown_computed() {
+		
+		HashMap<String, Double> unknown_map = new HashMap<String, Double>();
+		
+		for (String s : data_store.get_unknown_list()) {
+			unknown_map.put(s, unknown_WMs.get(s));
+		}
+		
+		return unknown_map;
 	}
 	
 	public void compute_model() {
@@ -36,7 +60,7 @@ public class ElementCorrelationInfo implements Refreshable {
 		
 		for (String std : data_store.get_STDlist()) {
 			Double x = data_store.get_raw_std_elem(std, element);
-			Double y = WMs.get(std);
+			Double y = std_WMs.get(std);
 			//y = data_store.get_mean_value(std, element)/y;
 			if (x != null && y != null) {
 				point_list.add(new Point(x, y));
@@ -69,8 +93,8 @@ public class ElementCorrelationInfo implements Refreshable {
 	}
 	
 	public double get_WM(String std) {
-		return WMs.get(std);
-	} 
+		return std_WMs.get(std);
+	}
 	
 	public double get_corr_result(Element elem, String std) {
 		return get_corr(elem).get_corr_result(std);
@@ -135,7 +159,7 @@ public class ElementCorrelationInfo implements Refreshable {
 				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
 			}
 			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
-			inner_map.put("WM", WMs.get(s));
+			inner_map.put("WM", std_WMs.get(s));
 			
 			outer_map.put(s, inner_map);
 			
@@ -171,18 +195,45 @@ public class ElementCorrelationInfo implements Refreshable {
 		return sum;
 	}
 	
-	private void computeWMs() {
-		for (String std : data_store.get_STDlist()) {
-			Double calculation = computeWM(std);
-			if (calculation != null) {
-				WMs.put(std, calculation);
+	private void compute_unknown_models() {
+		for (String sample : data_store.get_unknown_list()) {
+			Double calculated = compute_unknown(sample);
+			if (calculated != null) {
+				unknown_WMs.put(sample, calculated);
 			}
 		}
 	}
 	
-	private Double computeWM(String std) {
+	private void computeWMs() {
+		for (String std : data_store.get_STDlist()) {
+			Double calculation = computeWM(std);
+			if (calculation != null) {
+				std_WMs.put(std, calculation);
+				System.out.println("Here: " + this.element);
+			}
+		}
+	}
+	
+	private Double compute_unknown(String sample) {
 		double dividend = 0;
 		
+		for (CorrelationInfo elem_info : this.selected_elements) {
+			if (elem_info.get_unknown_corr(sample) != null) {
+				// Make sure these are corrct!! that call to getSE most likely needs to change
+				dividend += (elem_info.get_unknown_corr(sample) * this.getSE(elem_info.get_secondary()));
+			}
+		}
+		Double sample_CPS = data_store.get_raw_unknown_elem(sample, this.element);
+		if (sample_CPS != null) {
+			// Same as the previous comment
+			return (sample_CPS)/(dividend/this.getSEInverseSum());
+		}
+		return null;
+	}
+	
+	private Double computeWM(String std) {
+		double dividend = 0;
+		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			if (elem_info.get_corr_result(std) != null) {
 				dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
@@ -207,6 +258,7 @@ public class ElementCorrelationInfo implements Refreshable {
 			computeSEs();
 			computeWMs();
 			compute_model();
+			compute_unknown_models();
 		} else {
 			model_points = std_vs_std();
 		}

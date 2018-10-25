@@ -159,7 +159,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		}
 		
 		// Get table values from means and standards and calculate coordinates
-		for (int i = start_index; i < end_index; i++) {
+		for (int i = start_index; i <= end_index; i++) {
 			
 			if (means.get(i) == null) {
 				continue;
@@ -402,7 +402,9 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		
 		for (int i = 0; i < elements.size(); i++) {
 			CorrelationInfo corr = all_corr.get(elements.get(i));
-			
+			if (corr == null) {
+				continue;
+			}
 			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
 			
 			pairs.add(curr_pair);
@@ -528,7 +530,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			sb.append("\n");
 			}
 		return sb.toString();
-		}
+	}
 
 	private String get_unknown_computed_string() {
 		StringBuilder sb = new StringBuilder();

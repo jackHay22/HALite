@@ -16,6 +16,7 @@ public class CorrelationInfo implements Refreshable {
 	private boolean use_in_wm;
 	private DataStore data_store;
 	private HashMap<String, Double> STD_corr_results = new HashMap<String, Double>();
+	private HashMap<String, Double> unknown_corr_results = new HashMap<String, Double>();
 	
 	public CorrelationInfo(ElementPair elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
@@ -94,12 +95,34 @@ public class CorrelationInfo implements Refreshable {
 		}
 	}
 	
+	private void unknown_corrs() {
+		for (String sample : data_store.get_unknown_list() ) {
+			Double data = data_store.get_raw_unknown_elem(sample, this.get_primary());
+			if (data != null) {
+				Double res = equation.get_y(data);
+				unknown_corr_results.put(sample, res);
+			}
+		}
+	}
+	
+	public ArrayList<Double> get_unknown_corrs() {
+		ArrayList<Double> values = new ArrayList<Double>();
+		for (Double val : unknown_corr_results.values()) {
+			values.add(val);
+		}
+		return values;
+	}
+	
 	public ArrayList<Double> get_corr_results() {
 		ArrayList<Double> values = new ArrayList<Double>();
 		for (Double val : STD_corr_results.values()) {
 			values.add(val);
 		}
 		return values;
+	}
+	
+	public Double get_unknown_corr(String sample) {
+		return unknown_corr_results.get(sample);
 	}
 	
 	public Double get_corr_result(String std) {
@@ -116,6 +139,7 @@ public class CorrelationInfo implements Refreshable {
 		PointSet points_to_fit = data_to_plot.get_standards();
 		this.equation = compute_fit(points_to_fit);
 		STD_corrs();
+		unknown_corrs();
 	}
 
 	@Override
