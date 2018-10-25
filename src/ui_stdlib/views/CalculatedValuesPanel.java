@@ -52,9 +52,11 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		header_panels.clear();
 		ArrayList<Element> header_elements = datastore.get_WM_header();
+		
 		for (Element e : header_elements ) {
 			header_panels.add(new SingleViewPanel(e.name(), main, bg));
 		}
+		
 		header_panels.add(wm_label);
 		header_panels.add(actual_label);
 		header.set_panels(header_panels);
@@ -120,8 +122,10 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	
 		header.setVisible(true);
 		
-		//wm_label.setPreferredSize(SystemThemes.get_std_cell_dim());
-		//actual_label.setPreferredSize(SystemThemes.get_std_cell_dim());
+		if (backend_loaded) {
+			datastore.set_model_data_element((Element)selection_dropdown.getSelectedItem());
+		}
+
 	}
 
 }

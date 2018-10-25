@@ -27,25 +27,20 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			Element elem = element_corr.get_element();
 			//pull from datastore and add
 			//TODO: temp layout
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
-			add_view(new StdsListElement("Test", elem));
+			ArrayList<String> standards = datastore.get_STDlist();
+			for (String std : standards) {
+				add_view(new StdsListElement(std, elem));
+			}	
 			
 			revalidate();
 		}
 	}
 	
 	private void add_view(StdsListElement view) {
-		//TODO call this in on_start()
 		views.add(view);
 		view.on_start();
+		view.set_datastore(datastore);
+		view.refresh();
 		add(view);
 	}
 	

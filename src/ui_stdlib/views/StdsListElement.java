@@ -19,11 +19,16 @@ public class StdsListElement extends SystemPanel {
 	private SingleViewPanel weighted_mean;
 	private SingleViewPanel actual;
 	private DataStore datastore;
+	private boolean backend_loaded = false;
 	private String standard;
 	private GridBagConstraints constraints;
 	
 	private CalculatedContent list;
 	private Element elem;
+	private ArrayList<SingleViewPanel> panels;
+	
+	private double wm_val;
+	private double actual_val;
 	
 	public StdsListElement(String standard, Element elem) {
 		super();
@@ -32,33 +37,18 @@ public class StdsListElement extends SystemPanel {
 		this.standard = standard;
 		this.elem = elem;
 		list = new CalculatedContent();
+		wm_val = 0;
+		actual_val = 0;
 	}
 
 	@Override
 	public void refresh() {
-	}
-
-	@Override
-	public void set_datastore(DataStore datastore) {
-		this.datastore = datastore;
-	}
-	
-	public void set_element(Element elem) {
-		this.elem = elem;
-	}
-
-	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
 		
-	}
+		if (backend_loaded) {
+			double wm_val = datastore.get_current_WM(standard);
+			double actual_val = datastore.get_current_actual(standard);
+		}
 
-	@Override
-	public void on_start() {
-		constraints = SystemThemes.get_grid_constraints();
-		ArrayList<SingleViewPanel> panels = new ArrayList<SingleViewPanel>();
-		
-		double wm_val = 0;
-		double actual_val = 0;
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
 											SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
@@ -78,7 +68,7 @@ public class StdsListElement extends SystemPanel {
 		constraints.weightx = 0;
 		
 		JLabel standards = new JLabel(standard);
-		standards.setPreferredSize(new Dimension(70, 10));
+		standards.setPreferredSize(new Dimension(70, 12));
 		add(standards, constraints);
 		
 		constraints.ipadx = 0;
@@ -86,6 +76,28 @@ public class StdsListElement extends SystemPanel {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		add(list, constraints);
 		
+		revalidate();
+	}
+
+	@Override
+	public void set_datastore(DataStore datastore) {
+		this.datastore = datastore;
+		backend_loaded = true;
+	}
+	
+	public void set_element(Element elem) {
+		this.elem = elem;
+	}
+
+	@Override
+	public void add_refreshable(Refreshable refreshable_component) {
+		
+	}
+
+	@Override
+	public void on_start() {
+		constraints = SystemThemes.get_grid_constraints();
+		panels = new ArrayList<SingleViewPanel>();	
 	}
 
 }
