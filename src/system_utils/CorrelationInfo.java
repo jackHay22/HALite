@@ -6,10 +6,11 @@ import ui_framework.Refreshable;
 import ui_graphlib.PointSet;
 import ui_graphlib.Point;
 
-import java.util.HashMap; 
+import java.util.HashMap;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CorrelationInfo implements Refreshable {
+public class CorrelationInfo implements Refreshable, Serializable {
 	private ElementPair data_to_plot;
 	private Element secondary_element;
 	private EquationPlot equation;
@@ -133,7 +134,7 @@ public class CorrelationInfo implements Refreshable {
 		return equation;
 	}
 	
-	public String to_string() {
+	/*public String to_string() {
 		String formatted = "[";
 		
 		formatted += "data_to_plot=" + data_to_plot.to_string(); //"data_to_plot=[" + this.data_to_plot.get_main().name() + ", " + this.data_to_plot.get_second().name() + "]";
@@ -143,7 +144,7 @@ public class CorrelationInfo implements Refreshable {
 		
 		formatted += "]";
 		return formatted;
-	}
+	}*/
 
 	@Override
 	public void refresh() {

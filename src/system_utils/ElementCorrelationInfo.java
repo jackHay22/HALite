@@ -11,9 +11,10 @@ import ui_graphlib.Point;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ElementCorrelationInfo implements Refreshable {
+public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private Element element;
 	private HashMap<Element, CorrelationInfo> all_correlations;
 	private ArrayList<CorrelationInfo> selected_elements;
@@ -246,7 +247,7 @@ public class ElementCorrelationInfo implements Refreshable {
 		return null;
 	}
 	
-	public String to_string() {
+	/*public String to_string() {
 		String formatted = "{";
 		
 		formatted += "element=" + this.element.name() + ",";
@@ -281,7 +282,7 @@ public class ElementCorrelationInfo implements Refreshable {
 		
 		formatted += "}";
 		return formatted;
-	}
+	}*/
 	
 	@Override
 	public void refresh() {

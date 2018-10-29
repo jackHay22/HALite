@@ -53,13 +53,9 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     		update_save_label(save_path);
     		
     		try {
-    			String datastore_save = ds.toString();
-    			
-    			System.out.println(datastore_save);
-    			
     			FileOutputStream file_write = new FileOutputStream(save_path);
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
-    			objectOut.writeObject(datastore_save);
+    			objectOut.writeObject(ds);
     			objectOut.close();
     		} catch (Exception e) {
     			e.printStackTrace();

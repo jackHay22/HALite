@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import system_utils.DataStore;
 
 import java.awt.Color;
+import java.io.Serializable;
+
 import ui_framework.Refreshable;
 
-public class PointSet implements Refreshable {
+public class PointSet implements Refreshable, Serializable {
 	
 	private ArrayList<Point> points;
 	

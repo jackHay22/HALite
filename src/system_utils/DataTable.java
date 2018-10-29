@@ -2,9 +2,10 @@ package system_utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DataTable {
+public class DataTable implements Serializable {
 	private HashMap<TableKey, Data> data;
 	private HashMap<TableKey, ArrayList<String>> string_data;
 	
@@ -48,7 +49,7 @@ public class DataTable {
 		return this.data;
 	}
 
-	public String get_raw_table() {
+	/*public String get_raw_table() {
 		String data_output = "";
 		
 		// Add bracket for start of hashmap
@@ -81,7 +82,7 @@ public class DataTable {
 		data_output = data_output + "}";
 		
 		return data_output;
-	}
+	}*/
 	
 }
 

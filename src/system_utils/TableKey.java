@@ -1,6 +1,8 @@
 package system_utils;
 
-public class TableKey implements Comparable<TableKey> {
+import java.io.Serializable;
+
+public class TableKey implements Comparable<TableKey>, Serializable {
 	private String string_name;
 	private Element name;
 	

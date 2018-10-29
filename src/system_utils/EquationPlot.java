@@ -2,6 +2,7 @@ package system_utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +12,7 @@ import ui_graphlib.Point;
 import java.util.HashMap; 
 import java.util.ArrayList;
 
-public class EquationPlot {
+public class EquationPlot implements Serializable {
 	private int degree;
 	private ArrayList<Double> coefficients;
 	private double r2;

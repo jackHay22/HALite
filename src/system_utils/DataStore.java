@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.TestSuiteReader;
@@ -497,7 +496,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.window_parent.refresh();
 	}
 	
-	private String to_string(HashMap<Element, ElementCorrelationInfo> corr) {
+	/*private String to_string(HashMap<Element, ElementCorrelationInfo> corr) {
 		String data_output = "";
 		
 		// Add bracket for start of hashmap
@@ -520,7 +519,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		data_output = data_output + "}";
 		
 		return data_output;
-	}
+	}*/
 	
 	private String get_STD_computed_string() {
 		StringBuilder sb = new StringBuilder();
@@ -594,7 +593,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.correlations = corrs;
 	}
 	
-	@Override
+	/*@Override
 	public String toString() {
 		
 		String primary = this.primary == null ? "" : this.primary.name();
@@ -609,5 +608,5 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 				.append("\n means : ").append(this.means_data.get_raw_table())
 				.append("\n correlations : ").append(to_string(this.correlations))
 				.toString();
-	}
+	}*/
 }

@@ -2,9 +2,10 @@ package system_utils;
 
 import ui_graphlib.PointSet;
 
+import java.io.Serializable;
 import java.util.HashMap; 
 
-public class ElementPair {
+public class ElementPair implements Serializable {
 	private Element x_element;
 	private Element y_element;
 	private PointSet standards;
@@ -40,7 +41,7 @@ public class ElementPair {
 		return points;
 	}
 	
-	public String to_string() {
+	/*public String to_string() {
 		String formatted = "[";
 		
 		formatted += "x_element=" + this.x_element.name();
@@ -54,6 +55,6 @@ public class ElementPair {
 		formatted += "]";
 		
 		return formatted;
-	}
+	}*/
 	
 }
