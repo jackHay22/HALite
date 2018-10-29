@@ -66,7 +66,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	}
 	
 	public boolean path_assigned() {
-		return this.save_path.isEmpty();
+		return !this.save_path.isEmpty();
 	}
 	
 	public boolean check_valid_target() {
@@ -508,8 +508,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			String key = entry.getKey().name();
 			ElementCorrelationInfo value_list = entry.getValue();
 			
-			//String output_entry = key + "=" + value_list.get_string() + ", ";
-			//data_output += output_entry;
+			String output_entry = key + "=" + value_list.to_string() + ", ";
+			data_output += output_entry;
 			
 		}
 		
@@ -596,13 +596,18 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	@Override
 	public String toString() {
-		return new StringBuffer(" Primary : ").append(this.primary.toString())
-				.append("\n Secondary : ").append(this.secondary.toString())
-				.append("\n Model_element : ").append(this.model_data_element.toString())
+		
+		String primary = this.primary == null ? "" : this.primary.name();
+		String secondary = this.secondary == null ? "" : this.secondary.name();
+		String model_data_element = this.model_data_element == null ? "" : this.model_data_element.name();
+		
+		return new StringBuffer(" Primary : ").append(primary)
+				.append("\n Secondary : ").append(secondary)
+				.append("\n Model_element : ").append(model_data_element)
 				.append("\n xrf : ").append(this.xrf_data.get_raw_table())	    // Only store raw data, parse on reload
 				.append("\n stardards : ").append(this.standards_data.get_raw_table())
 				.append("\n means : ").append(this.means_data.get_raw_table())
-				.append("\n correlations : ").append(this.correlations.toString())
+				.append("\n correlations : ").append(to_string(this.correlations))
 				.toString();
 	}
 }

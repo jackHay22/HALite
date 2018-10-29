@@ -1,6 +1,7 @@
 package system_utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
@@ -243,6 +244,43 @@ public class ElementCorrelationInfo implements Refreshable {
 			return (elementCPS)/(dividend/this.getSEInverseSum());	
 		}
 		return null;
+	}
+	
+	public String to_string() {
+		String formatted = "{";
+		
+		formatted += "element=" + this.element.name() + ",";
+		
+		// Format all_correlations hashmap for saving
+		formatted += "all_correlations={";
+		Map<Element, CorrelationInfo> corr_info = this.all_correlations;
+		for (Map.Entry<Element, CorrelationInfo> entry : corr_info.entrySet()) {
+			String key = entry.getKey().name();
+			CorrelationInfo corr = entry.getValue();
+			
+			String form_corr = corr.to_string();
+			String output_entry = key + "=" + form_corr + ", ";
+			
+			formatted += output_entry;
+		}
+		
+		// Delete last comma
+		formatted = formatted.substring(0, formatted.length() - 1);
+		formatted += "}, ";
+		
+		// Format selected_elements hashmap for saving
+		formatted += "selected_elements={";
+		for (CorrelationInfo entry : selected_elements) {
+			String output_entry = entry.to_string() + ", ";
+			formatted += output_entry;
+		}
+		
+		// Delete last comma
+		formatted = formatted.substring(0, formatted.length() - 1);
+		formatted += "}";
+		
+		formatted += "}";
+		return formatted;
 	}
 	
 	@Override

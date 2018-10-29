@@ -40,4 +40,20 @@ public class ElementPair {
 		return points;
 	}
 	
+	public String to_string() {
+		String formatted = "[";
+		
+		formatted += "x_element=" + this.x_element.name();
+		formatted += ", ";
+		formatted += "y_element=" + this.y_element.name();
+		formatted += ", ";
+		
+		formatted += "standards=" + this.standards.to_string();
+		formatted += ", ";
+		formatted += "unknowns=" + this.unknowns.to_string();
+		formatted += "]";
+		
+		return formatted;
+	}
+	
 }

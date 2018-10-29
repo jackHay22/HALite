@@ -54,10 +54,20 @@ public class DataTable {
 		// Add bracket for start of hashmap
 		data_output += "{";
 		
-		Map<TableKey, ArrayList<String>> map = this.string_data;
-		for (Map.Entry<TableKey, ArrayList<String>> entry : map.entrySet()) {
-			String key = entry.getKey().toString();
+		Map<TableKey, ArrayList<String>> string_map = this.string_data;
+		Map<TableKey, Data> data_map = this.data;
+		// Save all 
+		for (Map.Entry<TableKey, ArrayList<String>> entry : string_map.entrySet()) {
+			String key = entry.getKey().get_string();
 			ArrayList<String> value_list = entry.getValue();
+			
+			String output_entry = key + "=" + value_list.toString() + ", ";
+			data_output += output_entry;
+			
+		}
+		for (Map.Entry<TableKey, Data> entry : data_map.entrySet()) {
+			String key = entry.getKey().get_string();
+			ArrayList<Double> value_list = entry.getValue().get_data();
 			
 			String output_entry = key + "=" + value_list.toString() + ", ";
 			data_output += output_entry;

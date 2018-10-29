@@ -15,6 +15,7 @@ import ui_framework.StateResult;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
+import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;
@@ -100,7 +101,12 @@ public class ViewBuilder {
 		    		SaveDialog save_dialog = new SaveDialog("Save as");
 		    		save_dialog.init();
 		    		save_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
-		    	}	
+		    	}
+		    	else {
+					ErrorDialog err = new ErrorDialog("Save Error", "Empty project: Cannot save an empty project. Please open an existing project or create a new project.");
+					err.init();
+					err.on_scheduled(manager, current_state, null);
+		    	}
 			}
 		});
 		

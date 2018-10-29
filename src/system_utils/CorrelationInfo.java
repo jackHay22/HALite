@@ -132,6 +132,18 @@ public class CorrelationInfo implements Refreshable {
 	public EquationPlot get_equation() {
 		return equation;
 	}
+	
+	public String to_string() {
+		String formatted = "[";
+		
+		formatted += "data_to_plot=" + data_to_plot.to_string(); //"data_to_plot=[" + this.data_to_plot.get_main().name() + ", " + this.data_to_plot.get_second().name() + "]";
+
+		
+		
+		
+		formatted += "]";
+		return formatted;
+	}
 
 	@Override
 	public void refresh() {

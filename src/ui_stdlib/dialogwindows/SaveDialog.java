@@ -1,16 +1,14 @@
 package ui_stdlib.dialogwindows;
 
-import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 import system_utils.DataStore;
+import system_utils.FileChooser;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
@@ -32,10 +30,9 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	@Override
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
 		DataStore ds = (DataStore) prev_res;
-		if (ds == null) {
-			return;
-		}
-		else if (try_save(ds)) {
+		FileChooser file_chooser = new FileChooser(this);
+
+		if (try_save(ds)) {
 			String save_path = ds.get_path().toString();
     		update_save_label(save_path);
     		
@@ -49,15 +46,17 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     			e.printStackTrace();
     		}
     		
-    		callback.release_to(previous, ds);
     		close_dialog();
     	}
-		else if (get_new_target(ds) && try_save(ds)) {
+		else if (file_chooser.save_file(ds) && try_save(ds)) {
 			String save_path = ds.get_path().toString();
     		update_save_label(save_path);
     		
     		try {
     			String datastore_save = ds.toString();
+    			
+    			System.out.println(datastore_save);
+    			
     			FileOutputStream file_write = new FileOutputStream(save_path);
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
     			objectOut.writeObject(datastore_save);
@@ -66,9 +65,9 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     			e.printStackTrace();
     		}
     		
-    		callback.release_to(previous, ds);
     		close_dialog();
 		}
+		
 	}
 	
 	private boolean try_save(DataStore ds) {
@@ -81,16 +80,6 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	
 	private void update_save_label(String new_label) {
 		save_current_instructions.setText(new_label);
-	}
-	
-	private boolean get_new_target(DataStore ds) {
-		JFileChooser save_chooser = new JFileChooser();
-		boolean approved = JFileChooser.APPROVE_OPTION == save_chooser.showSaveDialog(this);
-		
-		if (approved) {
-			ds.set_save_path(save_chooser.getSelectedFile().getName());
-		}
-		return approved;
 	}
 
 	@Override
