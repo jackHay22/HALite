@@ -15,8 +15,6 @@ import ui_stdlib.dialogwindows.ErrorDialog;
 
 @SuppressWarnings("serial")
 public class StdsListElement extends SystemPanel {
-	private SingleViewPanel weighted_mean;
-	private SingleViewPanel std_dev;
 	private SingleViewPanel model;
 	private SingleViewPanel actual;
 	private DataStore datastore;
@@ -78,8 +76,6 @@ public class StdsListElement extends SystemPanel {
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		panels.add(weighted_mean);
-		panels.add(std_dev);
 		panels.add(model);
 		panels.add(actual);
 		
