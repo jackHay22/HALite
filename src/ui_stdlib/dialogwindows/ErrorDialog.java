@@ -3,11 +3,9 @@ package ui_stdlib.dialogwindows;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
@@ -31,8 +29,6 @@ public class ErrorDialog extends SystemDialog implements ui_framework.ScheduledS
 
 		Border margin = new EmptyBorder(10,20,10,20);
 		error_message.setBorder(margin);
-	
-
 	}
 	
 	@Override
@@ -57,8 +53,6 @@ public class ErrorDialog extends SystemDialog implements ui_framework.ScheduledS
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
