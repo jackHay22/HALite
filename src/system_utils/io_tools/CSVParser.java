@@ -31,6 +31,11 @@ public class CSVParser {
 			while ((current_line = reader.readLine()) != null) {
 				// Get data from the current row
 				String[] row_data = current_line.split(delimiter);
+				//
+				// Fill out "row_data" if there are empty spots
+				// Or handle empty spots elsewhere
+				//
+				//
 				
 				// Found beginning of desired table, skip this line (and comments)
 				if (row_data[0].length() > 0) {
@@ -40,7 +45,7 @@ public class CSVParser {
 					}
 					
 					// Found end of desired table
-					if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
+					if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).toUpperCase().equals("END")) {
 						break;
 					}
 					
@@ -94,7 +99,7 @@ public class CSVParser {
 		headers.add("Calibration values");
 		if (!headers.contains(col_title)) {
 		
-			col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");;
+			col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");
 			chosen = col_title;
 			
 			for (Element elem : Element.values()) {

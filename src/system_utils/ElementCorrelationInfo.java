@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
+import system_formulas.Formulas;
 import ui_framework.Refreshable;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
@@ -168,21 +169,24 @@ public class ElementCorrelationInfo implements Refreshable {
 		return outer_map;
 	}
 
-	private double computeSE(ArrayList<Double> elem_values) {
-		DescriptiveStatistics stats = new DescriptiveStatistics();
-		for (double d : elem_values) {
-			stats.addValue(d);
+	private double computeSE(ArrayList<DoublePair> elem_values) {
+		ArrayList<Double> x_list = new ArrayList<Double>();
+		ArrayList<Double> y_list = new ArrayList<Double>();
+		
+		for (DoublePair d : elem_values) {
+			x_list.add(d.get_x());
+			y_list.add(d.get_y());
 		}
-		double divisor = Math.sqrt(elem_values.size());
-		return stats.getStandardDeviation()/divisor;
+		double SE = Formulas.standard_error(x_list, y_list);
+		return SE;
 	}
 	
 	private void computeSEs() {
 		for (CorrelationInfo info : selected_elements) {
-			SEs.put(info.get_secondary(), computeSE(info.get_corr_results()));
+			SEs.put(info.get_secondary(), computeSE(info.get_corr_results_for_SE()));
 		}
 	}
-	
+
 	private double getSE(Element elem) {
 		return SEs.get(elem);
 	}

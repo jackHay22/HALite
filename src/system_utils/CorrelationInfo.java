@@ -113,10 +113,17 @@ public class CorrelationInfo implements Refreshable {
 		return values;
 	}
 	
-	public ArrayList<Double> get_corr_results() {
-		ArrayList<Double> values = new ArrayList<Double>();
-		for (Double val : STD_corr_results.values()) {
-			values.add(val);
+	public ArrayList<DoublePair> get_corr_results_for_SE() {
+		ArrayList<DoublePair> values = new ArrayList<DoublePair>();
+		
+		for (String std : this.data_store.get_STDlist()) {
+			Double x_val = this.data_store.get_std_response_value(std, this.get_secondary());
+			if ( x_val != null) {
+				Double y_val = this.equation.get_y(x_val);
+				DoublePair pair = new DoublePair(x_val, y_val);
+				
+				values.add(pair);
+			}
 		}
 		return values;
 	}

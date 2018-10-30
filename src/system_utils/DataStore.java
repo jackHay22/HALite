@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import system_utils.io_tools.CSVParser;
+import system_utils.io_tools.MeansCSVParser;
 import system_utils.io_tools.TestSuiteReader;
 
 import java.awt.Color;
@@ -95,101 +96,93 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	}
 	
 	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
-		
+				
 		ArrayList<Double> means;
+
+		ArrayList<String> names;
 		
+		ArrayList<String> source;
+		
+		ArrayList<Double> data_in_use;
 		// If it contains the element EXACTLY
 		// FIX ME
 		// This needs to parse to see if the strings are contained
-		if (means_data.contains_data(new TableKey(elem.name()))) {
-			means = means_data.get_data(new TableKey(elem.name())).get_data();
-		} else {
-			return null;
-		}
-		
-		// Get listing of standards and unknowns from means file
-		TableKey source_key = new TableKey("sourcefile");
-		ArrayList<String> source = means_data.get_info(source_key);
-		
-		ArrayList<String> names;
-		
 		if (stand_points) {
-			// Get listing of standards from standards file
-			TableKey value_key = new TableKey("Calibrationvalues");
-			names = standards_data.get_info(value_key);
+
+			if (standards_means_data.contains_data(new TableKey(elem.name()))) {
+				
+				means = standards_means_data.get_data(new TableKey(elem.name())).get_data();
+				names = standards_data.get_info(new TableKey("Calibrationvalues"));
+				Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
+				
+				if (temp_stds == null) {
+					data_in_use = new ArrayList<Double>();
+				} else {
+					data_in_use = temp_stds.get_data();
+
+				}
+			} else {
+				return null;
+			}
+			// Get listing of standards and unknowns from means file
+			
+			TableKey source_key = new TableKey("sourcefile");
+			source = standards_means_data.get_info(source_key);
+			
 		} else {
-			// Get listing of standards from standards file
-			TableKey xrf_key = new TableKey("Name");
-			names = xrf_data.get_info(xrf_key);
+
+			if (unknown_means_data.contains_data(new TableKey(elem.name()))) {
+				means = unknown_means_data.get_data(new TableKey(elem.name())).get_data();
+				names = xrf_data.get_info(new TableKey("Name"));
+				Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
+				
+				// If we have no data to calculate coords with, return an empty arraylist
+				if (temp_xrf == null) {
+					data_in_use = new ArrayList<Double>();
+				}
+				else {
+					data_in_use = temp_xrf.get_data();
+				}
+			} else {
+				return null;
+			}
+			
+			// Get listing of standards and unknowns from means file
+			
+			TableKey source_key = new TableKey("sourcefile");
+			source = unknown_means_data.get_info(source_key);
+			
 		}
 		
-		Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
-		ArrayList<Double> standards;
 		
-		if (temp_stds == null) {
-			standards = new ArrayList<Double>();
-		} else {
-			standards = temp_stds.get_data();
-		}
-		
-		Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
-		ArrayList<Double> xrf;
-		
-		// If we have no data to calculate coords with, return an empty arraylist
-		if (temp_xrf == null) {
-			xrf = new ArrayList<Double>();
-		}
-		else {
-			xrf = temp_xrf.get_data();
-		}
 		
 		ArrayList<Double> coords = new ArrayList<Double>();
 		
-		// Define starting positions for unknowns/standards
-		ArrayList<String> note_vals = this.means_data.get_info(new TableKey("note"));
-		
-		int start_index;
-		int end_index;
-		
 		if (stand_points) {
-			start_index = note_vals.indexOf("standard");
-			end_index = note_vals.lastIndexOf("standard");
-		}
-		else {
-			start_index = note_vals.indexOf("unknown");
-			end_index = note_vals.lastIndexOf("unknown");
+			System.out.println(source);
 		}
 		
 		// Get table values from means and standards and calculate coordinates
-		for (int i = start_index; i <= end_index; i++) {
+		for (int i = 0; i < means.size(); i++) {
+
+			Double elem_cps = means.get(i);
 			
-			if (means.get(i) == null) {
+			if (elem_cps == null) {
 				continue;
 			}
-			double elem_cps = means.get(i);
 			
 			String source_id = source.get(i);
 			int pos = names.indexOf(source_id);
-			if (stand_points) {
-				if (pos < 0 || standards.size() == 0) {
-					continue;
-				}
-				if (standards.get(pos) == null) {
-					continue;
-				}
-				else {
-					double elem_standard = standards.get(pos);
-					coords.add(elem_cps / elem_standard);
-				}
+			
+			if (pos < 0 || data_in_use.size() == 0) {
+				continue;
+			}
+			if (data_in_use.get(pos) == null) {
+				continue;
 			}
 			else {
-				if (xrf.isEmpty() || xrf.get(pos) == null) {
-					continue;
-				}
-				else {
-					double elem_xrf = xrf.get(i);
-					coords.add(elem_cps / elem_xrf);
-				}
+				double elem_standard = data_in_use.get(pos);
+				coords.add(elem_cps / elem_standard);
 			}
 		}
 		
@@ -245,7 +238,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 				PointSet unknowns = create_pointset(x_elem, y_elem, false);
 
 				if (standards != null) {
-					
+
 					standards.set_color(SystemThemes.HIGHLIGHT);
 					unknowns.set_color(SystemThemes.BACKGROUND);
 					
@@ -274,10 +267,17 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
 			String means, ArrayList<String> means_table) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();
-		
+				
 		// Collect all imported data sets
 		this.xrf_data = parser.data_from_csv(xrf_table.get(0), new BufferedReader(new FileReader(xrf)));
 		this.standards_data = parser.data_from_csv(calibration_table.get(0), new BufferedReader(new FileReader(calibration)));
+		
+		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
+		
+		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
+		tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
+		this.standards_means_data = tables.get("standards");
+		this.unknown_means_data = tables.get("unknowns");
 		this.means_data = parser.data_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
 		
 		create_element_correlations();
@@ -292,9 +292,43 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		// Collect all imported data sets
 		this.xrf_data = parser.data_from_csv("XRF_DATA_RUN_229", test_reader.get_resources_input(xrf));
 		this.standards_data = parser.data_from_csv("standards", test_reader.get_resources_input(stds));
-		this.means_data = parser.data_from_csv("means", test_reader.get_resources_input(means));
+
+		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 		
+		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
+		tables = means_parser.tables_from_csv("means", test_reader.get_resources_input(means));
+		this.standards_means_data = tables.get("standards");
+		this.unknown_means_data = tables.get("unknowns");
+		this.means_data = parser.data_from_csv("means", test_reader.get_resources_input(means));
+
 		create_element_correlations();
+	}
+	
+	public Double get_std_response_value(String sample, Element elem) {
+		
+		Double top = get_mean_value(sample, elem);
+		System.out.println("Top: " + top);
+		
+		Double bottom = this.get_raw_std_elem(sample, elem);
+		System.out.println("Bottom: " + bottom + "\n");
+		
+		if (top == null || bottom == null) {
+			return null;
+		}
+		
+		return top/bottom;
+	}
+	
+	public Double get_unknown_response_value(String sample, Element elem) {
+		
+		Double top = get_mean_value(sample, elem);
+		Double bottom = this.get_raw_unknown_elem(sample, elem);
+		
+		if (top == null || bottom == null) {
+			return null;
+		}
+		
+		return top/bottom;
 	}
 	
 	public Double get_mean_value(String sample, Element elem) {
@@ -327,6 +361,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			CorrelationInfo corr = elem_corr_info.get_corr(this.secondary);
 			return corr;
 		}
+		
 		
 		ElementCorrelationInfo elem_corr_info = this.correlations.get(Element.Hf);
 		
