@@ -435,7 +435,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	}
 	
 	public Double get_current_model(String std) {
-		return this.get_WM_data().get(std).get("Model_Value");
+		Double result = this.get_WM_data().get(std).get("Model_Value");
+		if (result == null) {
+			return this.get_WM_data().get(std).get("Actual");
+		}
+		return result;
 	}
 	
 	public Double get_current_stdev(String std) {
