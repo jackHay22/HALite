@@ -405,8 +405,10 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public ArrayList<String> get_WM_header() {
 		
 		ArrayList<String> headers = this.correlations.get(this.model_data_element).get_selected_names();
-		headers.add("Std Dev");
-		headers.add("WM");
+		if (headers.size() > 0) {
+			headers.add("Std Dev");
+			headers.add("WM");
+		}
 		return headers;
 	}
 	

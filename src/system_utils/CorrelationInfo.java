@@ -126,7 +126,6 @@ public class CorrelationInfo implements Refreshable, Serializable {
 			if ( x_val != null && sec_x_val != null) {
 				Double y_val = this.equation.get_y(sec_x_val);
 				DoublePair pair = new DoublePair(x_val, y_val);
-				System.out.println("Here: " + pair);
 				values.add(pair);
 			}
 		}

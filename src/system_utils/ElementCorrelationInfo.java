@@ -165,9 +165,11 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			for (CorrelationInfo corr : this.selected_elements) {
 				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
 			}
-			inner_map.put("Model_Value", this.std_models.get(s));
-			inner_map.put("Std Dev", this.standards_std_devs.get(s));
+			
 			inner_map.put("WM", std_WMs.get(s));
+			inner_map.put("Std Dev", this.standards_std_devs.get(s));
+			
+			inner_map.put("Model_Value", this.std_models.get(s));
 			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
 			
 			outer_map.put(s, inner_map);
@@ -272,6 +274,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	private void compute_std_models() {
+		this.std_models.clear();
 		for (String std: data_store.get_STDlist()) {
 			Double d = compute_std_model(std);
 			this.std_models.put(std, d);
