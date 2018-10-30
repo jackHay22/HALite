@@ -42,7 +42,8 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 				DataStore ds = (DataStore) objectInputStream.readObject();
 				objectInputStream.close();
 				
-				this.save_loader = ds;
+				ds.set_window(main_window);
+				callback.release_to(previous, (StateResult) ds);
 				
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
