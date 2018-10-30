@@ -28,8 +28,6 @@ public class StdsListElement extends SystemPanel {
 	private ArrayList<SingleViewPanel> panels;
 	private Element elem;
 	
-	private double wm_val;
-	private double std_dev_val;
 	private double model_val;
 	private double actual_val;
 	
@@ -42,9 +40,7 @@ public class StdsListElement extends SystemPanel {
 		this.standard = standard;
 		this.elem = elem;
 		list = new CalculatedContent();
-		
-		wm_val = 0;
-		std_dev_val = 0;
+
 		model_val = 0;
 		actual_val = 0;
 		this.header_elements = header_elements;
@@ -67,9 +63,6 @@ public class StdsListElement extends SystemPanel {
 			}
 			
 		}
-		
-		wm_val = datastore.get_current_WM(standard);
-		std_dev_val = datastore.get_current_stdev(standard);
 		
 		for (String e_string : header_elements) {
 			Double d = datastore.get_header_std_pair(standard, e_string);
