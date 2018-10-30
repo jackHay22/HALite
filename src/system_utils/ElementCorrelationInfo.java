@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
+import system_formulas.Formulas;
 import ui_framework.Refreshable;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
@@ -170,21 +171,25 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return outer_map;
 	}
 
-	private double computeSE(ArrayList<Double> elem_values) {
-		DescriptiveStatistics stats = new DescriptiveStatistics();
-		for (double d : elem_values) {
-			stats.addValue(d);
+	private Double computeSE(ArrayList<DoublePair> elem_values) {
+		ArrayList<Double> x_list = new ArrayList<Double>();
+		ArrayList<Double> y_list = new ArrayList<Double>();
+		
+		for (DoublePair d : elem_values) {
+			x_list.add(d.get_x());
+			y_list.add(d.get_y());
 		}
-		double divisor = Math.sqrt(elem_values.size());
-		return stats.getStandardDeviation()/divisor;
+		Double SE = Formulas.standard_error(x_list, y_list);
+		return SE;
 	}
 	
 	private void computeSEs() {
+		SEs.clear();
 		for (CorrelationInfo info : selected_elements) {
-			SEs.put(info.get_secondary(), computeSE(info.get_corr_results()));
+			SEs.put(info.get_secondary(), computeSE(info.get_corr_results_for_SE()));
 		}
 	}
-	
+
 	private double getSE(Element elem) {
 		return SEs.get(elem);
 	}
@@ -207,6 +212,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	private void computeWMs() {
+		std_WMs.clear();
 		for (String std : data_store.get_STDlist()) {
 			Double calculation = computeWM(std);
 			if (calculation != null) {
@@ -236,8 +242,9 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		double dividend = 0;
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			if (elem_info.get_corr_result(std) != null) {
-				dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
+			Double response = elem_info.get_corr_result(std);
+			if (response != null) {
+				dividend += (elem_info.get_corr_result(std) * 1/this.getSE(elem_info.get_secondary()));
 			}
 		}
 		Double elementCPS = data_store.get_mean_value(std, this.element);
