@@ -13,6 +13,7 @@ import java.util.HashMap;
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
 import system_utils.io_tools.TestSuiteReader;
+import ui_framework.SystemWindow;
 
 import java.awt.Color;
 import ui_graphlib.PointSet;
@@ -23,7 +24,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 
 	private static final long serialVersionUID = 1;
 
-	transient private ui_framework.SystemWindow window_parent;
+	transient private SystemWindow window_parent;
 	
 	private String save_path;
 	
@@ -42,7 +43,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	private int elem_num;
 
-	public DataStore(ui_framework.SystemWindow window_parent) {
+	public DataStore(SystemWindow window_parent) {
 		this.window_parent = window_parent;
 		
 		this.save_path = "";
@@ -56,6 +57,10 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
 		this.elem_num = 5;
+	}
+	
+	public void set_window(SystemWindow win) {
+		this.window_parent = win;
 	}
 	
 	public void set_save_path(String path) {
