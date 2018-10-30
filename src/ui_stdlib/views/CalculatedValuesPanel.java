@@ -28,6 +28,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private boolean backend_loaded = false;
 	
 	private SingleViewPanel wm_label;
+	private SingleViewPanel std_dev_label;
+	private SingleViewPanel model_label;
 	private SingleViewPanel actual_label;
 	
 	public CalculatedValuesPanel() {
@@ -38,6 +40,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		header_panels = new ArrayList<SingleViewPanel>();
 		
 		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		std_dev_label =  new SingleViewPanel("Std. Dev",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		model_label =  new SingleViewPanel("Model",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 
 		header = new CalculatedContent();
@@ -58,6 +62,8 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		}
 		
 		header_panels.add(wm_label);
+		header_panels.add(std_dev_label);
+		header_panels.add(model_label);
 		header_panels.add(actual_label);
 		header.set_panels(header_panels);
 		revalidate();

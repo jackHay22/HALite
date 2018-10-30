@@ -16,6 +16,8 @@ import ui_stdlib.dialogwindows.ErrorDialog;
 @SuppressWarnings("serial")
 public class StdsListElement extends SystemPanel {
 	private SingleViewPanel weighted_mean;
+	private SingleViewPanel std_dev;
+	private SingleViewPanel model;
 	private SingleViewPanel actual;
 	private DataStore datastore;
 	private boolean backend_loaded;
@@ -27,6 +29,8 @@ public class StdsListElement extends SystemPanel {
 	private Element elem;
 	
 	private double wm_val;
+	private double std_dev_val;
+	private double model_val;
 	private double actual_val;
 	
 	private ArrayList<Element> header_elements;
@@ -40,6 +44,8 @@ public class StdsListElement extends SystemPanel {
 		list = new CalculatedContent();
 		
 		wm_val = 0;
+		std_dev_val = 0;
+		model_val = 0;
 		actual_val = 0;
 		this.header_elements = header_elements;
 		
@@ -51,17 +57,27 @@ public class StdsListElement extends SystemPanel {
 		if (backend_loaded) {
 			try {
 				wm_val = datastore.get_current_WM(standard);
+				std_dev_val = datastore.get_current_stdev(standard);
+				model_val = datastore.get_current_model(standard);
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
 				//open an error dialog
+				System.out.println("WOULD LOAD ERROR DIALOG");
+				e.printStackTrace();
 				ErrorDialog error = new ErrorDialog("Error", "Failed on standard: " + standard + ", element: " + elem);
-				error.show_dialog();
+				//error.show_dialog();
 			}
 			
 		}
 
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
 											SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
+		
+		std_dev = new SingleViewPanel(SystemThemes.get_display_number(std_dev_val), 
+				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
+		
+		model = new SingleViewPanel(SystemThemes.get_display_number(model_val), 
+				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
@@ -75,6 +91,8 @@ public class StdsListElement extends SystemPanel {
 		}
 		
 		panels.add(weighted_mean);
+		panels.add(std_dev);
+		panels.add(model);
 		panels.add(actual);
 		list.set_panels(panels);
 		
