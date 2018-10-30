@@ -35,6 +35,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
+	private DataTable standards_means_data;
+	private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
 	
@@ -48,6 +50,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
+		this.standards_means_data = new DataTable();
+		this.unknown_means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		

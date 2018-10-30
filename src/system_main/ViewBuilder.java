@@ -144,6 +144,7 @@ public class ViewBuilder {
 		    	open_dialog.init();
 		    	open_dialog.on_scheduled(manager, main_app_view, null);
 		    	
+		    	// Display newly loaded datastore object
 		    	current_state.on_scheduled(manager, null, null);
 		    }
 		});
