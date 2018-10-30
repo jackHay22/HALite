@@ -67,7 +67,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		
 		for (String std : data_store.get_STDlist()) {
 			Double x = data_store.get_raw_std_elem(std, element);
-			Double y = std_WMs.get(std);
+			Double y = this.std_models.get(std);
 			//y = data_store.get_mean_value(std, element)/y;
 			if (x != null && y != null) {
 				point_list.add(new Point(x, y));
@@ -144,10 +144,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return corr.in_use();
 	}
 	
-	public ArrayList<Element> get_selected_names() {
-		ArrayList<Element> sel = new ArrayList<Element>();
+	public ArrayList<String> get_selected_names() {
+		ArrayList<String> sel = new ArrayList<String>();
 		for (CorrelationInfo corr : get_selected()) {
-			sel.add(corr.get_secondary());
+			sel.add(corr.get_secondary().toString());
 		}
 		return sel;
 	}
@@ -167,8 +167,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			}
 			inner_map.put("Model_Value", this.std_models.get(s));
 			inner_map.put("Std Dev", this.standards_std_devs.get(s));
-			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
 			inner_map.put("WM", std_WMs.get(s));
+			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
 			
 			outer_map.put(s, inner_map);
 			
@@ -289,9 +289,9 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		if (this.selected_elements.size() != 0) {
 			computeSEs();
 			computeWMs();
+			compute_std_models();
 			compute_graph_model();
 			compute_unknown_models();
-			compute_std_models();
 		} else {
 			model_points = std_vs_std();
 		}

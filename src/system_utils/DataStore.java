@@ -402,8 +402,12 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.elem_num;
 	}
 	
-	public ArrayList<Element> get_WM_header() {
-		return this.correlations.get(this.model_data_element).get_selected_names();
+	public ArrayList<String> get_WM_header() {
+		
+		ArrayList<String> headers = this.correlations.get(this.model_data_element).get_selected_names();
+		headers.add("Std Dev");
+		headers.add("WM");
+		return headers;
 	}
 	
 	public HashMap<String, HashMap<String, Double>> get_WM_data() {
@@ -422,8 +426,12 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.get_WM_data().get(std).get("Actual");
 	}
 	
-	public Double get_element_std_pair(String std, Element elem) {
-		return this.get_WM_data().get(std).get(elem.toString());
+	public Double get_header_std_pair(String std, String item) {
+		Double result = this.get_WM_data().get(std).get(item);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 	
 	public Double get_current_model(String std) {
