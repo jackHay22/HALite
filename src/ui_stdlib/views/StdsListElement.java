@@ -13,6 +13,7 @@ import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SingleViewBar;
 import ui_stdlib.components.SingleViewPanel;
+import ui_stdlib.dialogwindows.ErrorDialog;
 
 @SuppressWarnings("serial")
 public class StdsListElement extends SystemPanel {
@@ -50,8 +51,15 @@ public class StdsListElement extends SystemPanel {
 	@Override
 	public void refresh() {
 		if (backend_loaded) {
-			wm_val = datastore.get_current_WM(standard);
-			actual_val = datastore.get_current_actual(standard);
+			try {
+				wm_val = datastore.get_current_WM(standard);
+				actual_val = datastore.get_current_actual(standard);
+			} catch (Exception e) {
+				//open an error dialog
+				ErrorDialog error = new ErrorDialog("Error", "Failed on standard: " + standard + ", element: " + elem);
+				error.show_dialog();
+			}
+			
 		}
 
 		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
