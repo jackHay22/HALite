@@ -140,9 +140,9 @@ public class ViewBuilder {
 		    		current_window = (SystemWindow) current_state;
 		    	}
 		    	
-		    	OpenDialog open_dialog = new OpenDialog("Open Files", (SystemWindow) main_app_view);
+		    	OpenDialog open_dialog = new OpenDialog("Open Files", current_window);
 		    	open_dialog.init();
-		    	open_dialog.on_scheduled(manager, main_app_view, null);
+		    	open_dialog.on_scheduled(manager, current_window, null);
 		    	
 		    }
 		});
