@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
