@@ -169,7 +169,7 @@ public class ElementCorrelationInfo implements Refreshable {
 		return outer_map;
 	}
 
-	private double computeSE(ArrayList<DoublePair> elem_values) {
+	private Double computeSE(ArrayList<DoublePair> elem_values) {
 		ArrayList<Double> x_list = new ArrayList<Double>();
 		ArrayList<Double> y_list = new ArrayList<Double>();
 		
@@ -177,11 +177,12 @@ public class ElementCorrelationInfo implements Refreshable {
 			x_list.add(d.get_x());
 			y_list.add(d.get_y());
 		}
-		double SE = Formulas.standard_error(x_list, y_list);
+		Double SE = Formulas.standard_error(x_list, y_list);
 		return SE;
 	}
 	
 	private void computeSEs() {
+		SEs.clear();
 		for (CorrelationInfo info : selected_elements) {
 			SEs.put(info.get_secondary(), computeSE(info.get_corr_results_for_SE()));
 		}
@@ -209,6 +210,7 @@ public class ElementCorrelationInfo implements Refreshable {
 	}
 	
 	private void computeWMs() {
+		std_WMs.clear();
 		for (String std : data_store.get_STDlist()) {
 			Double calculation = computeWM(std);
 			if (calculation != null) {
@@ -238,8 +240,9 @@ public class ElementCorrelationInfo implements Refreshable {
 		double dividend = 0;
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			if (elem_info.get_corr_result(std) != null) {
-				dividend += (elem_info.get_corr_result(std) * this.getSE(elem_info.get_secondary()));
+			Double response = elem_info.get_corr_result(std);
+			if (response != null) {
+				dividend += (elem_info.get_corr_result(std) * 1/this.getSE(elem_info.get_secondary()));
 			}
 		}
 		Double elementCPS = data_store.get_mean_value(std, this.element);

@@ -17,4 +17,8 @@ public class DoublePair {
 		return y;
 	}
 	
+	public String toString() {
+		return "(" + x.toString() + ", " + y.toString() + ")";
+	}
+	
 }

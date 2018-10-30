@@ -86,8 +86,9 @@ public class CorrelationInfo implements Refreshable {
 	}
 	
 	private void STD_corrs() {
+		STD_corr_results.clear();
 		for (String std : data_store.get_STDlist()) {
-			Double data = data_store.get_raw_std_elem(std, this.get_primary());
+			Double data = data_store.get_std_response_value(std, this.get_secondary());
 			if (data != null) {
 				Double res = equation.get_y(data);
 				STD_corr_results.put(std, res);
@@ -96,6 +97,7 @@ public class CorrelationInfo implements Refreshable {
 	}
 	
 	private void unknown_corrs() {
+		unknown_corr_results.clear();
 		for (String sample : data_store.get_unknown_list() ) {
 			Double data = data_store.get_raw_unknown_elem(sample, this.get_primary());
 			if (data != null) {
@@ -117,9 +119,10 @@ public class CorrelationInfo implements Refreshable {
 		ArrayList<DoublePair> values = new ArrayList<DoublePair>();
 		
 		for (String std : this.data_store.get_STDlist()) {
-			Double x_val = this.data_store.get_std_response_value(std, this.get_secondary());
+			Double x_val = this.data_store.get_std_response_value(std, this.get_primary());
+			Double sec_x_val = this.data_store.get_std_response_value(std, this.get_secondary());
 			if ( x_val != null) {
-				Double y_val = this.equation.get_y(x_val);
+				Double y_val = this.equation.get_y(sec_x_val);
 				DoublePair pair = new DoublePair(x_val, y_val);
 				
 				values.add(pair);

@@ -158,10 +158,6 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		
 		ArrayList<Double> coords = new ArrayList<Double>();
 		
-		if (stand_points) {
-			System.out.println(source);
-		}
-		
 		// Get table values from means and standards and calculate coordinates
 		for (int i = 0; i < means.size(); i++) {
 
@@ -306,11 +302,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	public Double get_std_response_value(String sample, Element elem) {
 		
-		Double top = get_mean_value(sample, elem);
-		System.out.println("Top: " + top);
-		
+		Double top = get_mean_value(sample, elem);		
 		Double bottom = this.get_raw_std_elem(sample, elem);
-		System.out.println("Bottom: " + bottom + "\n");
 		
 		if (top == null || bottom == null) {
 			return null;

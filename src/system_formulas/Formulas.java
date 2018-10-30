@@ -21,7 +21,6 @@ public class Formulas {
 	private static Double sum_mean_diff_squared(ArrayList<Double> points) {
 		
 		Double mean = mean_of_array(points);
-		
 		Double squares_sum = 0.0;
 		for (Double pt : points) {
 			squares_sum += Math.pow((pt - mean), 2);
@@ -58,7 +57,7 @@ public class Formulas {
 		
 		Double coeff = 1/((double) x_list.size()-2);
 		Double pre_root = y_sum_squares - (Math.pow(prod_sum, 2))/x_sum_squares;
-		
+				
 		return Math.pow(coeff*pre_root, 0.5);
 		
 	}
