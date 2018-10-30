@@ -40,8 +40,8 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 				graphical_elem.on_start();
 				
 				add(graphical_elem);
-				graphical_elem.setVisible(true);
 				graphical_elem.refresh();
+				graphical_elem.setVisible(true);
 			}
 
 			revalidate();

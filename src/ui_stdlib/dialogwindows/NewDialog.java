@@ -8,11 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import javax.swing.JButton;
-
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.BorderFactory;
-
 import system_utils.DataStore;
 import system_utils.FileChooser;
 import system_utils.io_tools.CSVParser;
