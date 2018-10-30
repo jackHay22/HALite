@@ -22,6 +22,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private DataStore data_store;
 	private HashMap<Element, Double> SEs;
 	private HashMap<String, Double> std_WMs;
+	private HashMap<String, Double> std_models;
+	private HashMap<String, Double> standards_std_devs;
 	private HashMap<String, Double> unknown_WMs;
 	private EquationPlot Equation;
 	private PointSet model_points;
@@ -33,6 +35,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		this.SEs = new HashMap<Element, Double>();
 		this.std_WMs = new HashMap<String, Double>();
 		this.unknown_WMs = new HashMap<String, Double>();
+		this.std_models = new HashMap<String, Double>();
+		this.standards_std_devs = new HashMap<String, Double>();
 	}
 	
 	public HashMap<String, Double> get_standard_computed() {
@@ -57,7 +61,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return unknown_map;
 	}
 	
-	public void compute_model() {
+	public void compute_graph_model() {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
@@ -161,6 +165,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			for (CorrelationInfo corr : this.selected_elements) {
 				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
 			}
+			inner_map.put("Model_Value", this.std_models.get(s));
+			inner_map.put("Std Dev", this.standards_std_devs.get(s));
 			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
 			inner_map.put("WM", std_WMs.get(s));
 			
@@ -221,6 +227,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		}
 	}
 	
+	
+	// Might neeed ot fix this (apparent by spelign)
 	private Double compute_unknown(String sample) {
 		double dividend = 0;
 		
@@ -240,18 +248,34 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	
 	private Double computeWM(String std) {
 		double dividend = 0;
+		DescriptiveStatistics std_dev = new DescriptiveStatistics();
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			Double response = elem_info.get_corr_result(std);
 			if (response != null) {
-				dividend += (elem_info.get_corr_result(std) * 1/this.getSE(elem_info.get_secondary()));
+				std_dev.addValue(response);
+				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
 			}
 		}
+		Double stdev = std_dev.getStandardDeviation();
+		this.standards_std_devs.put(std, stdev);
+		return (dividend/this.getSEInverseSum());	
+		
+	}
+	
+	private Double compute_std_model(String std) {
 		Double elementCPS = data_store.get_mean_value(std, this.element);
 		if (elementCPS != null) {
-			return (elementCPS)/(dividend/this.getSEInverseSum());	
+			return (elementCPS)/(std_WMs.get(std));	
 		}
 		return null;
+	}
+	
+	private void compute_std_models() {
+		for (String std: data_store.get_STDlist()) {
+			Double d = compute_std_model(std);
+			this.std_models.put(std, d);
+		}
 	}
 	
 	@Override
@@ -265,8 +289,9 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		if (this.selected_elements.size() != 0) {
 			computeSEs();
 			computeWMs();
-			compute_model();
+			compute_graph_model();
 			compute_unknown_models();
+			compute_std_models();
 		} else {
 			model_points = std_vs_std();
 		}

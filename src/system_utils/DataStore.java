@@ -421,6 +421,14 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.get_WM_data().get(std).get(elem.toString());
 	}
 	
+	public Double get_current_model(String std) {
+		return this.get_WM_data().get(std).get("Model_Value");
+	}
+	
+	public Double get_current_stdev(String std) {
+		return this.get_WM_data().get(std).get("Std Dev");
+	}
+	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
 		ArrayList<Pair> pairs = new ArrayList<Pair>();
 		int elem_num = this.elem_num;
