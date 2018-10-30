@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DataTable implements Serializable {
-	private static final long serialVersionUID = -100338116451216833L;
+	private static final long serialVersionUID = 2;
 	private HashMap<TableKey, Data> data;
 	private HashMap<TableKey, ArrayList<String>> string_data;
 	

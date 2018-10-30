@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CorrelationInfo implements Refreshable, Serializable {
-	private static final long serialVersionUID = -3065764865836889563L;
+	private static final long serialVersionUID = 5;
 	private ElementPair data_to_plot;
 	private Element secondary_element;
 	private EquationPlot equation;

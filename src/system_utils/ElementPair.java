@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap; 
 
 public class ElementPair implements Serializable {
-	private static final long serialVersionUID = 1783392919953208124L;
+	private static final long serialVersionUID = 6;
 	private Element x_element;
 	private Element y_element;
 	private PointSet standards;

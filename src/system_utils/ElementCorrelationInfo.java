@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ElementCorrelationInfo implements Refreshable, Serializable {
-	private static final long serialVersionUID = 243496730121897641L;
+	private static final long serialVersionUID = 4;
 	private Element element;
 	private HashMap<Element, CorrelationInfo> all_correlations;
 	private ArrayList<CorrelationInfo> selected_elements;

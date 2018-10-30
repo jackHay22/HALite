@@ -35,18 +35,14 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 		boolean file = file_chooser.import_file(this.save_loader);
 		String file_path = this.save_loader.get_path();
 		
-		if (file && is_datastore_file(this.save_loader.get_path())) {
+		if (file && is_datastore_file(file_path)) {
 			try {
-				System.out.println("HI");
 				FileInputStream fileInputStream = new FileInputStream(file_path);
-				System.out.println("HI");
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-				System.out.println("HI");
 				DataStore ds = (DataStore) objectInputStream.readObject();
-				System.out.println("HI");
 				objectInputStream.close();
 				
-				System.out.println("HELLO: " + ds.toString());
+				this.save_loader = ds;
 				
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();

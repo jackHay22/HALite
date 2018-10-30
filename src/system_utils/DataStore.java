@@ -20,7 +20,7 @@ import ui_graphlib.Point;
 
 public class DataStore extends ui_framework.StateResult implements Serializable {
 
-	private static final long serialVersionUID = 7105081365359519267L;
+	private static final long serialVersionUID = 1;
 
 	transient private ui_framework.SystemWindow window_parent;
 	
@@ -34,8 +34,6 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
-	//private DataTable standards_means_data;
-	//private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
 	
@@ -49,8 +47,6 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
-		//this.standards_means_data = new DataTable();
-		//this.unknown_means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		

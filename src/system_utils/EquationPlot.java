@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class EquationPlot implements Serializable {
-	private static final long serialVersionUID = 3886573771778428173L;
+	private static final long serialVersionUID = 7;
 	private int degree;
 	private ArrayList<Double> coefficients;
 	private double r2;

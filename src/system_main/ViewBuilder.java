@@ -132,9 +132,19 @@ public class ViewBuilder {
 		open_saved.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	
+		    	if (current_window.datastore_set()) {
+		    		current_state = create_new_window(get_app_view(), manager);
+		    		current_window = (SystemWindow) current_state;
+		    	}
+		    	
 		    	OpenDialog open_dialog = new OpenDialog("Open Files", (SystemWindow) main_app_view);
 		    	open_dialog.init();
 		    	open_dialog.on_scheduled(manager, main_app_view, null);
+		    	
+		    	current_state.on_scheduled(manager, null, null);
 		    }
 		});
 		
