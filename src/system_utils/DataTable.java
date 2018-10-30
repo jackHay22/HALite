@@ -1,11 +1,11 @@
 package system_utils;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DataTable implements Serializable {
+	private static final long serialVersionUID = -100338116451216833L;
 	private HashMap<TableKey, Data> data;
 	private HashMap<TableKey, ArrayList<String>> string_data;
 	
@@ -48,41 +48,6 @@ public class DataTable implements Serializable {
 	public HashMap<TableKey, Data> get_data() {
 		return this.data;
 	}
-
-	/*public String get_raw_table() {
-		String data_output = "";
-		
-		// Add bracket for start of hashmap
-		data_output += "{";
-		
-		Map<TableKey, ArrayList<String>> string_map = this.string_data;
-		Map<TableKey, Data> data_map = this.data;
-		// Save all 
-		for (Map.Entry<TableKey, ArrayList<String>> entry : string_map.entrySet()) {
-			String key = entry.getKey().get_string();
-			ArrayList<String> value_list = entry.getValue();
-			
-			String output_entry = key + "=" + value_list.toString() + ", ";
-			data_output += output_entry;
-			
-		}
-		for (Map.Entry<TableKey, Data> entry : data_map.entrySet()) {
-			String key = entry.getKey().get_string();
-			ArrayList<Double> value_list = entry.getValue().get_data();
-			
-			String output_entry = key + "=" + value_list.toString() + ", ";
-			data_output += output_entry;
-			
-		}
-		
-		// Remove last comma
-		data_output = data_output.substring(0, data_output.length() - 1);
-		
-		// Add bracket for end of hashmap
-		data_output = data_output + "}";
-		
-		return data_output;
-	}*/
 	
 }
 

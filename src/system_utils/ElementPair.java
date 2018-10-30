@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap; 
 
 public class ElementPair implements Serializable {
+	private static final long serialVersionUID = 1783392919953208124L;
 	private Element x_element;
 	private Element y_element;
 	private PointSet standards;
@@ -40,21 +41,5 @@ public class ElementPair implements Serializable {
 		points.put("Unknowns", this.unknowns);
 		return points;
 	}
-	
-	/*public String to_string() {
-		String formatted = "[";
-		
-		formatted += "x_element=" + this.x_element.name();
-		formatted += ", ";
-		formatted += "y_element=" + this.y_element.name();
-		formatted += ", ";
-		
-		formatted += "standards=" + this.standards.to_string();
-		formatted += ", ";
-		formatted += "unknowns=" + this.unknowns.to_string();
-		formatted += "]";
-		
-		return formatted;
-	}*/
 	
 }

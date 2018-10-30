@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CorrelationInfo implements Refreshable, Serializable {
+	private static final long serialVersionUID = -3065764865836889563L;
 	private ElementPair data_to_plot;
 	private Element secondary_element;
 	private EquationPlot equation;
@@ -133,18 +134,6 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	public EquationPlot get_equation() {
 		return equation;
 	}
-	
-	/*public String to_string() {
-		String formatted = "[";
-		
-		formatted += "data_to_plot=" + data_to_plot.to_string(); //"data_to_plot=[" + this.data_to_plot.get_main().name() + ", " + this.data_to_plot.get_second().name() + "]";
-
-		
-		
-		
-		formatted += "]";
-		return formatted;
-	}*/
 
 	@Override
 	public void refresh() {

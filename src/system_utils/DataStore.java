@@ -19,7 +19,10 @@ import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
 public class DataStore extends ui_framework.StateResult implements Serializable {
-	private ui_framework.SystemWindow window_parent;
+
+	private static final long serialVersionUID = 7105081365359519267L;
+
+	transient private ui_framework.SystemWindow window_parent;
 	
 	private String save_path;
 	
@@ -31,14 +34,12 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private DataTable xrf_data;
 	private DataTable standards_data;
 	private DataTable means_data;
-	private DataTable standards_means_data;
-	private DataTable unknown_means_data;
+	//private DataTable standards_means_data;
+	//private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
 	
 	private int elem_num;
-
-	private static final long serialVersionUID = 1L;
 
 	public DataStore(ui_framework.SystemWindow window_parent) {
 		this.window_parent = window_parent;
@@ -48,8 +49,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.xrf_data = new DataTable();
 		this.standards_data = new DataTable();
 		this.means_data = new DataTable();
-		this.standards_means_data = new DataTable();
-		this.unknown_means_data = new DataTable();
+		//this.standards_means_data = new DataTable();
+		//this.unknown_means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
@@ -496,31 +497,6 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.window_parent.refresh();
 	}
 	
-	/*private String to_string(HashMap<Element, ElementCorrelationInfo> corr) {
-		String data_output = "";
-		
-		// Add bracket for start of hashmap
-		data_output += "{";
-		
-		Map<Element, ElementCorrelationInfo> map = corr;
-		for (Map.Entry<Element, ElementCorrelationInfo> entry : map.entrySet()) {
-			String key = entry.getKey().name();
-			ElementCorrelationInfo value_list = entry.getValue();
-			
-			String output_entry = key + "=" + value_list.to_string() + ", ";
-			data_output += output_entry;
-			
-		}
-		
-		// Remove last comma
-		data_output = data_output.substring(0, data_output.length() - 1);
-		
-		// Add bracket for end of hashmap
-		data_output = data_output + "}";
-		
-		return data_output;
-	}*/
-	
 	private String get_STD_computed_string() {
 		StringBuilder sb = new StringBuilder();
 		for (String std : this.get_STDlist()) {
@@ -592,21 +568,4 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public void set_correlations(HashMap<Element, ElementCorrelationInfo> corrs) {
 		this.correlations = corrs;
 	}
-	
-	/*@Override
-	public String toString() {
-		
-		String primary = this.primary == null ? "" : this.primary.name();
-		String secondary = this.secondary == null ? "" : this.secondary.name();
-		String model_data_element = this.model_data_element == null ? "" : this.model_data_element.name();
-		
-		return new StringBuffer(" Primary : ").append(primary)
-				.append("\n Secondary : ").append(secondary)
-				.append("\n Model_element : ").append(model_data_element)
-				.append("\n xrf : ").append(this.xrf_data.get_raw_table())	    // Only store raw data, parse on reload
-				.append("\n stardards : ").append(this.standards_data.get_raw_table())
-				.append("\n means : ").append(this.means_data.get_raw_table())
-				.append("\n correlations : ").append(to_string(this.correlations))
-				.toString();
-	}*/
 }

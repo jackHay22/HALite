@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Data implements Serializable {
+
+	private static final long serialVersionUID = 976796036134277108L;
 	private ArrayList<Double> data;
 	
 	public Data(ArrayList<Double> entry) {

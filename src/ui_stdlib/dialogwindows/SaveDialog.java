@@ -38,8 +38,11 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     		
     		try {
     			String datastore_save = ds.toString();
-    			FileOutputStream file_write = new FileOutputStream(save_path);
+    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
+    			
+    			System.out.println("OBJECT: " + objectOut);
+    			
     			objectOut.writeObject(datastore_save);
     			objectOut.close();
     		} catch (Exception e) {
@@ -53,7 +56,7 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     		update_save_label(save_path);
     		
     		try {
-    			FileOutputStream file_write = new FileOutputStream(save_path);
+    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
     			objectOut.writeObject(ds);
     			objectOut.close();

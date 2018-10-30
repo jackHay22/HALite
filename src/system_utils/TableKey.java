@@ -3,6 +3,7 @@ package system_utils;
 import java.io.Serializable;
 
 public class TableKey implements Comparable<TableKey>, Serializable {
+	private static final long serialVersionUID = -2268437920844760848L;
 	private String string_name;
 	private Element name;
 	

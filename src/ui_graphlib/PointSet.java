@@ -10,7 +10,8 @@ import java.io.Serializable;
 import ui_framework.Refreshable;
 
 public class PointSet implements Refreshable, Serializable {
-	
+	private static final long serialVersionUID = -101473707052020354L;
+
 	private ArrayList<Point> points;
 	
 	private double min_x;

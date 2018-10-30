@@ -1,18 +1,12 @@
 package system_utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import ui_graphlib.PointSet;
-import ui_graphlib.Point;
 
-import java.util.HashMap; 
 import java.util.ArrayList;
 
 public class EquationPlot implements Serializable {
+	private static final long serialVersionUID = 3886573771778428173L;
 	private int degree;
 	private ArrayList<Double> coefficients;
 	private double r2;
