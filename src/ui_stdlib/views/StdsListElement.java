@@ -24,13 +24,15 @@ public class StdsListElement extends SystemPanel {
 	private GridBagConstraints constraints;
 	
 	private CalculatedContent list;
-	private Element elem;
 	private ArrayList<SingleViewPanel> panels;
+	private Element elem;
 	
 	private double wm_val;
 	private double actual_val;
 	
-	public StdsListElement(String standard, Element elem) {
+	private ArrayList<Element> header_elements;
+	
+	public StdsListElement(String standard, Element elem, ArrayList<Element> header_elements) {
 		super();
 		setLayout(new GridBagLayout());
 		
@@ -40,6 +42,7 @@ public class StdsListElement extends SystemPanel {
 		
 		wm_val = 0;
 		actual_val = 0;
+		this.header_elements = header_elements;
 		
 		backend_loaded = false;
 	}
@@ -57,11 +60,13 @@ public class StdsListElement extends SystemPanel {
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		//Get values based on elements
-		//TODO
-		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
-		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
-		panels.add(new SingleViewPanel(".000", SystemThemes.MAIN, SystemThemes.BACKGROUND));
+		for (Element e : header_elements) {
+			Double d = datastore.get_element_std_pair(standard, e);
+			
+			if (d != null) {
+				panels.add(new SingleViewPanel(SystemThemes.get_display_number(d), SystemThemes.MAIN, SystemThemes.BACKGROUND));
+			}
+		}
 		
 		panels.add(weighted_mean);
 		panels.add(actual);
