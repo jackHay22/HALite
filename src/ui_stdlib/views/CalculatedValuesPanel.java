@@ -27,8 +27,6 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	private CalculatedValsScrollingSet set_list;
 	private boolean backend_loaded = false;
 	
-	private SingleViewPanel wm_label;
-	private SingleViewPanel std_dev_label;
 	private SingleViewPanel model_label;
 	private SingleViewPanel actual_label;
 	
@@ -39,8 +37,6 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 
 		header_panels = new ArrayList<SingleViewPanel>();
 		
-		wm_label =  new SingleViewPanel("WM",SystemThemes.MAIN,SystemThemes.BACKGROUND);
-		std_dev_label =  new SingleViewPanel("Std. Dev",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		model_label =  new SingleViewPanel("Model",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 
@@ -55,14 +51,12 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		Color bg = SystemThemes.BACKGROUND;
 		
 		header_panels.clear();
-		ArrayList<Element> header_elements = datastore.get_WM_header();
+		ArrayList<String> header_elements = datastore.get_WM_header();
 		
-		for (Element e : header_elements ) {
-			header_panels.add(new SingleViewPanel(e.name(), main, bg));
+		for (String e_string : header_elements ) {
+			header_panels.add(new SingleViewPanel(e_string, main, bg));
 		}
 		
-		header_panels.add(wm_label);
-		header_panels.add(std_dev_label);
 		header_panels.add(model_label);
 		header_panels.add(actual_label);
 		header.set_panels(header_panels);

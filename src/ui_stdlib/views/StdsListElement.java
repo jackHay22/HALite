@@ -33,9 +33,9 @@ public class StdsListElement extends SystemPanel {
 	private double model_val;
 	private double actual_val;
 	
-	private ArrayList<Element> header_elements;
+	private ArrayList<String> header_elements;
 	
-	public StdsListElement(String standard, Element elem, ArrayList<Element> header_elements) {
+	public StdsListElement(String standard, Element elem, ArrayList<String> header_elements) {
 		super();
 		setLayout(new GridBagLayout());
 		
@@ -56,8 +56,6 @@ public class StdsListElement extends SystemPanel {
 	public void refresh() {
 		if (backend_loaded) {
 			try {
-				wm_val = datastore.get_current_WM(standard);
-				std_dev_val = datastore.get_current_stdev(standard);
 				model_val = datastore.get_current_model(standard);
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
@@ -69,12 +67,17 @@ public class StdsListElement extends SystemPanel {
 			}
 			
 		}
-
-		weighted_mean = new SingleViewPanel(SystemThemes.get_display_number(wm_val), 
-											SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		std_dev = new SingleViewPanel(SystemThemes.get_display_number(std_dev_val), 
-				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
+		wm_val = datastore.get_current_WM(standard);
+		std_dev_val = datastore.get_current_stdev(standard);
+		
+		for (String e_string : header_elements) {
+			Double d = datastore.get_header_std_pair(standard, e_string);
+			
+			if (d != null) {
+				panels.add(new SingleViewPanel(SystemThemes.get_display_number(d), SystemThemes.MAIN, SystemThemes.BACKGROUND));
+			}
+		}
 		
 		model = new SingleViewPanel(SystemThemes.get_display_number(model_val), 
 				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
@@ -82,18 +85,11 @@ public class StdsListElement extends SystemPanel {
 		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		for (Element e : header_elements) {
-			Double d = datastore.get_element_std_pair(standard, e);
-			
-			if (d != null) {
-				panels.add(new SingleViewPanel(SystemThemes.get_display_number(d), SystemThemes.MAIN, SystemThemes.BACKGROUND));
-			}
-		}
-		
 		panels.add(weighted_mean);
 		panels.add(std_dev);
 		panels.add(model);
 		panels.add(actual);
+		
 		list.set_panels(panels);
 		
 		constraints.weightx = 0;
