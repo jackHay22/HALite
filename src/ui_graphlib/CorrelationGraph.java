@@ -1,24 +1,13 @@
 package ui_graphlib;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.math.*;
 import java.text.DecimalFormat;
-
 import system_utils.DataStore;
-import system_utils.ElementCorrelationInfo;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;

@@ -30,7 +30,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 		r_sqrd_list.refresh();
 		revalidate();
 	}
-
+	
 	@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
