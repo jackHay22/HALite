@@ -280,6 +280,10 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.displayed_elems;
 	}
 	
+	public ElementCorrelationInfo get_correlations(Element elem) {
+		return this.correlations.get(elem);
+	}
+	
 	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
 			String means, ArrayList<String> means_table) throws FileNotFoundException {
 		CSVParser parser = new CSVParser();

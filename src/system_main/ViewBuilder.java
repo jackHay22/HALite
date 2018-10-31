@@ -177,6 +177,8 @@ public class ViewBuilder {
 		    	try {
 					ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
 				} catch (FileNotFoundException e1) {
+					ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
+					err.show_dialog();
 				}
 		    	current_state.on_scheduled(manager, null, (StateResult) ds);
 		    }
@@ -190,7 +192,7 @@ public class ViewBuilder {
 		    	SystemWindow current_window = (SystemWindow) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
-		    		ExportDialog export_dialog = new ExportDialog("Export as");
+		    		ExportDialog export_dialog = new ExportDialog("Export as", "response");
 		    		export_dialog.init();
 		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}
@@ -202,9 +204,26 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem export_calibration_graphs = new JMenuItem("Calibration Models & Graphs (PDF)");
-		export_response_graphs.addActionListener(new ActionListener() {
+		export_calibration_graphs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+			}
+		});
+		
+		JMenuItem export_model_data = new JMenuItem("Model Data (CSV)");
+		export_model_data.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//open dialog, set return state to main
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	if (current_window.datastore_set()) {
+		    		ExportDialog export_dialog = new ExportDialog("Export as", "model");
+		    		export_dialog.init();
+		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    	}
+		    	else {
+					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
+					err.show_dialog();
+		    	}
 			}
 		});
 		
@@ -218,6 +237,7 @@ public class ViewBuilder {
 		
 		export_submenu.add(export_response_graphs);
 		export_submenu.add(export_calibration_graphs);
+		export_submenu.add(export_model_data);
 		
 		file.add(open_submenu);
 		file.addSeparator();
