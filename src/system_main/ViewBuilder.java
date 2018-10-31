@@ -16,6 +16,7 @@ import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
 import ui_stdlib.dialogwindows.ErrorDialog;
+import ui_stdlib.dialogwindows.ExportDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;
@@ -104,8 +105,7 @@ public class ViewBuilder {
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Save Error", "Empty project: Cannot save an empty project. Please open an existing project or create a new project.");
-					err.init();
-					err.on_scheduled(manager, current_state, null);
+					err.show_dialog();
 		    	}
 			}
 		});
@@ -182,15 +182,48 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem export_response_graphs = new JMenuItem("Response Graphs (PDF)");
+		export_response_graphs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//open dialog, set return state to main
+		    	ScheduledState current_state = main_app_view;
+		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	
+		    	if (current_window.datastore_set()) {
+		    		ExportDialog export_dialog = new ExportDialog("Export as");
+		    		export_dialog.init();
+		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    	}
+		    	else {
+					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
+					err.show_dialog();
+		    	}
+			}
+		});
+		
+		JMenuItem export_calibration_graphs = new JMenuItem("Calibration Models & Graphs (PDF)");
+		export_response_graphs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		JMenu open_submenu = new JMenu("Open...");
 		
 		open_submenu.add(open_new);
 		open_submenu.add(open_saved);
 		open_submenu.add(open_test_data);
+
+		JMenu export_submenu = new JMenu("Export...");
+		
+		export_submenu.add(export_response_graphs);
+		export_submenu.add(export_calibration_graphs);
 		
 		file.add(open_submenu);
 		file.addSeparator();
 		file.add(drift_correction);
+		file.addSeparator();
+		file.add(export_submenu);
 		file.addSeparator();
 		file.add(save_as);
 		file.add(save);
