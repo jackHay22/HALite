@@ -29,7 +29,6 @@ public class RSquaredListElement extends ui_framework.ListingPanel {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
 		        	//element selection updated
-		        	datastore.displayed_elems(get_current_selected());
 		        	datastore.notify_update();
 		        }
 		    }
@@ -104,6 +103,6 @@ public class RSquaredListElement extends ui_framework.ListingPanel {
 
 	@Override
 	public void on_remove() {
-		datastore.displayed_elems(get_current_selected());
+
 	}
 }
