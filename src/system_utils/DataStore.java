@@ -310,16 +310,16 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		TestSuiteReader test_reader = new TestSuiteReader();
 		
 		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv("XRF_DATA_RUN_229", test_reader.get_resources_input(xrf));
+		this.xrf_data = parser.data_from_csv("XRF", test_reader.get_resources_input(xrf));
 		this.standards_data = parser.data_from_csv("standards", test_reader.get_resources_input(stds));
 
 		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 		
 		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
-		tables = means_parser.tables_from_csv("means", test_reader.get_resources_input(means));
+		tables = means_parser.tables_from_csv("MEANS", test_reader.get_resources_input(means));
 		this.standards_means_data = tables.get("standards");
 		this.unknown_means_data = tables.get("unknowns");
-		this.means_data = parser.data_from_csv("means", test_reader.get_resources_input(means));
+		this.means_data = parser.data_from_csv("MEANS", test_reader.get_resources_input(means));
 
 		create_element_correlations();
 	}

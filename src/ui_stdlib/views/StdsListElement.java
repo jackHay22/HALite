@@ -62,10 +62,11 @@ public class StdsListElement extends SystemPanel {
 		
 		for (String e_string : header_elements) {
 			Double d = datastore.get_header_std_pair(standard, e_string);
-			
+			String display = "-";
 			if (d != null) {
-				panels.add(new SingleViewPanel(SystemThemes.get_display_number(d), SystemThemes.MAIN, SystemThemes.BACKGROUND));
+				display = SystemThemes.get_display_number(d);
 			}
+			panels.add(new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		}
 		
 		model = new SingleViewPanel(SystemThemes.get_display_number(model_val), 

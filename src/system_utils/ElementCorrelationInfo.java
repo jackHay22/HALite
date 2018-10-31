@@ -25,6 +25,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private HashMap<String, Double> std_models;
 	private HashMap<String, Double> standards_std_devs;
 	private HashMap<String, Double> unknown_WMs;
+	private HashMap<String, Double> unknown_models;
 	private EquationPlot Equation;
 	private PointSet model_points;
 	
@@ -36,6 +37,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		this.std_WMs = new HashMap<String, Double>();
 		this.unknown_WMs = new HashMap<String, Double>();
 		this.std_models = new HashMap<String, Double>();
+		this.unknown_models = new HashMap<String, Double>();
 		this.standards_std_devs = new HashMap<String, Double>();
 	}
 	
@@ -44,7 +46,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		HashMap<String, Double> std_map = new HashMap<String, Double>();
 		
 		for (String s : data_store.get_STDlist()) {
-			std_map.put(s, std_WMs.get(s));
+			std_map.put(s, this.std_models.get(s));
 		}
 		
 		return std_map;
@@ -55,7 +57,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		HashMap<String, Double> unknown_map = new HashMap<String, Double>();
 		
 		for (String s : data_store.get_unknown_list()) {
-			unknown_map.put(s, unknown_WMs.get(s));
+			unknown_map.put(s, this.unknown_models.get(s));
 		}
 		
 		return unknown_map;
@@ -210,9 +212,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return sum;
 	}
 	
-	private void compute_unknown_models() {
+	private void compute_unknown_WMs() {
+		unknown_WMs.clear();
 		for (String sample : data_store.get_unknown_list()) {
-			Double calculated = compute_unknown(sample);
+			Double calculated = compute_unknown_WM(sample);
 			if (calculated != null) {
 				unknown_WMs.put(sample, calculated);
 			}
@@ -231,7 +234,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	
 	
 	// Might neeed ot fix this (apparent by spelign)
-	private Double compute_unknown(String sample) {
+	private Double compute_unknown_WM(String sample) {
 		double dividend = 0;
 		
 		for (CorrelationInfo elem_info : this.selected_elements) {
@@ -240,12 +243,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 				dividend += (elem_info.get_unknown_corr(sample) * this.getSE(elem_info.get_secondary()));
 			}
 		}
-		Double sample_CPS = data_store.get_raw_unknown_elem(sample, this.element);
-		if (sample_CPS != null) {
-			// Same as the previous comment
-			return (sample_CPS)/(dividend/this.getSEInverseSum());
-		}
-		return null;
+		return (dividend)/this.getSEInverseSum();
 	}
 	
 	private Double computeWM(String std) {
@@ -262,6 +260,26 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		Double stdev = std_dev.getStandardDeviation();
 		this.standards_std_devs.put(std, stdev);
 		return (dividend/this.getSEInverseSum());	
+		
+	}
+	
+	private Double compute_unknown_model(String sample) {
+		
+		Double sample_CPS = data_store.get_raw_unknown_elem(sample, this.element);
+		if (sample_CPS != null) {
+			// Same as the previous comment
+			return (sample_CPS)/(this.unknown_WMs.get(sample)/this.getSEInverseSum());
+		}
+		return null;
+	}
+	
+	private void compute_unknown_models() {
+		this.unknown_models.clear();
+		for (String s : data_store.get_unknown_list()) {
+			Double d = compute_unknown_model(s);
+			this.unknown_models.put(s, d);
+		}
+		
 		
 	}
 	
@@ -294,6 +312,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			computeWMs();
 			compute_std_models();
 			compute_graph_model();
+			compute_unknown_WMs();
 			compute_unknown_models();
 		} else {
 			model_points = std_vs_std();
