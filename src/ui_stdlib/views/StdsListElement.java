@@ -54,10 +54,8 @@ public class StdsListElement extends SystemPanel {
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
 				//open an error dialog
-				System.out.println("WOULD LOAD ERROR DIALOG");
-				e.printStackTrace();
 				ErrorDialog error = new ErrorDialog("Error", "Failed on standard: " + standard + ", element: " + elem);
-				//error.show_dialog();
+				error.show_dialog();
 			}
 			
 		}

@@ -10,7 +10,7 @@ import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework.SystemPanel {
+public class ListingSet<E extends ui_framework.ListingPanel> extends ui_framework.SystemPanel {
 	private ArrayList<E> all_elements;
 	private DataStore storage_ref;
 	private final Class<E> element_class;
@@ -34,6 +34,7 @@ public class ListingSet<E extends ui_framework.SystemPanel> extends ui_framework
 			new_minus_button.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
+			    	new_list_element.on_remove();
 			        remove_element(new_list_element);
 			        remove(new_minus_button);
 			    }
