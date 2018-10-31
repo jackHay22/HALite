@@ -43,7 +43,8 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
     			objectOut.writeObject(datastore_save);
     			objectOut.close();
     		} catch (Exception e) {
-    			e.printStackTrace();
+    			ErrorDialog err = new ErrorDialog("Save Error", "Unable to save project.");
+    			err.show_dialog();
     		}
     		
     		close_dialog();

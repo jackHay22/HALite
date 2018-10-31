@@ -11,7 +11,7 @@ import system_utils.Element;
 import system_utils.Pair;
 
 @SuppressWarnings("serial")
-public class RSquaredListElement extends ui_framework.SystemPanel {
+public class RSquaredListElement extends ui_framework.ListingPanel {
 	private JComboBox<Element> selection_dropdown;
 	private DataStore datastore;
 	private boolean backend_loaded = false;
@@ -29,6 +29,7 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
 		        	//element selection updated
+		        	datastore.displayed_elems(get_current_selected());
 		        	datastore.notify_update();
 		        }
 		    }
@@ -101,4 +102,8 @@ public class RSquaredListElement extends ui_framework.SystemPanel {
 		selection_dropdown.setVisible(true);
 	}
 
+	@Override
+	public void on_remove() {
+		datastore.displayed_elems(get_current_selected());
+	}
 }

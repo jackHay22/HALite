@@ -54,20 +54,19 @@ public class StdsListElement extends SystemPanel {
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
 				//open an error dialog
-				System.out.println("WOULD LOAD ERROR DIALOG");
-				e.printStackTrace();
 				ErrorDialog error = new ErrorDialog("Error", "Failed on standard: " + standard + ", element: " + elem);
-				//error.show_dialog();
+				error.show_dialog();
 			}
 			
 		}
 		
 		for (String e_string : header_elements) {
 			Double d = datastore.get_header_std_pair(standard, e_string);
-			
+			String display = "-";
 			if (d != null) {
-				panels.add(new SingleViewPanel(SystemThemes.get_display_number(d), SystemThemes.MAIN, SystemThemes.BACKGROUND));
+				display = SystemThemes.get_display_number(d);
 			}
+			panels.add(new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		}
 		
 		model = new SingleViewPanel(SystemThemes.get_display_number(model_val), 

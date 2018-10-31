@@ -40,6 +40,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
+	private ArrayList<Element> displayed_elems;
 	
 	private int elem_num;
 
@@ -55,6 +56,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.unknown_means_data = new DataTable();
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
+		this.displayed_elems = new ArrayList<Element>();
 		
 		this.elem_num = 5;
 	}
@@ -263,6 +265,19 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			// Save correlations to object
 			this.correlations.put(x_elem, elem_info);
 		}
+	}
+	
+	public void displayed_elems(Element elem) {
+		if (this.displayed_elems.contains(elem)) {
+			this.displayed_elems.remove(elem);
+		}
+		else {
+			this.displayed_elems.add(elem);
+		}
+	}
+	
+	public ArrayList<Element> get_displayed_elems() {
+		return this.displayed_elems;
 	}
 	
 	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
@@ -598,29 +613,5 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		sb.append(this.get_unknown_computed_string());
 		
 		return sb.toString();
-	}
-	
-	public void set_primary(Element prim) {
-		this.primary = prim;
-	}
-	
-	public void set_secondary(Element sec) {
-		this.secondary = sec;
-	}
-	
-	public void set_xrf_table(DataTable tab) {
-		this.xrf_data = tab;
-	}
-	
-	public void set_means_table(DataTable tab) {
-		this.means_data = tab;
-	}
-	
-	public void set_standards_table(DataTable tab) {
-		this.standards_data = tab;
-	}
-	
-	public void set_correlations(HashMap<Element, ElementCorrelationInfo> corrs) {
-		this.correlations = corrs;
 	}
 }
