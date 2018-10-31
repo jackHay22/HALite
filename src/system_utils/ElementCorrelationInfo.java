@@ -46,7 +46,15 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		HashMap<String, Double> std_map = new HashMap<String, Double>();
 		
 		for (String s : data_store.get_STDlist()) {
-			std_map.put(s, this.std_models.get(s));
+			Double d = this.std_models.get(s);
+			if (d != null) {
+				std_map.put(s, d);
+			} else {
+				d = this.data_store.get_raw_std_elem(s, this.element);
+				if (d != null) {
+					std_map.put(s, d);
+				}
+			}
 		}
 		
 		return std_map;
@@ -57,7 +65,16 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		HashMap<String, Double> unknown_map = new HashMap<String, Double>();
 		
 		for (String s : data_store.get_unknown_list()) {
-			unknown_map.put(s, this.unknown_models.get(s));
+			Double d = this.unknown_models.get(s);
+			if (d != null) {
+				unknown_map.put(s, d);
+			} else {
+				// Change to the default value
+				Double xrf = this.data_store.get_raw_unknown_elem(s, this.element);
+				if (xrf != null) {
+					unknown_map.put(s, xrf);
+				}
+			}
 		}
 		
 		return unknown_map;
@@ -233,14 +250,15 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	
-	// Might neeed ot fix this (apparent by spelign)
+	// neeed ot fix this (apparent by spelign)
 	private Double compute_unknown_WM(String sample) {
 		double dividend = 0;
 		
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			if (elem_info.get_unknown_corr(sample) != null) {
+			Double response = elem_info.get_unknown_corr(sample);
+			if (response != null) {
 				// Make sure these are corrct!! that call to getSE most likely needs to change
-				dividend += (elem_info.get_unknown_corr(sample) * this.getSE(elem_info.get_secondary()));
+				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
 			}
 		}
 		return (dividend)/this.getSEInverseSum();
@@ -265,10 +283,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	
 	private Double compute_unknown_model(String sample) {
 		
-		Double sample_CPS = data_store.get_raw_unknown_elem(sample, this.element);
+		Double sample_CPS = data_store.get_mean_value(sample, this.element);
 		if (sample_CPS != null) {
-			// Same as the previous comment
-			return (sample_CPS)/(this.unknown_WMs.get(sample)/this.getSEInverseSum());
+			// Same as the previous comment			
+			return (sample_CPS)/(this.unknown_WMs.get(sample));
 		}
 		return null;
 	}

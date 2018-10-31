@@ -101,7 +101,7 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	private void unknown_corrs() {
 		unknown_corr_results.clear();
 		for (String sample : data_store.get_unknown_list() ) {
-			Double data = data_store.get_raw_unknown_elem(sample, this.get_primary());
+			Double data = data_store.get_unknown_response_value(sample, this.get_secondary());
 			if (data != null) {
 				Double res = equation.get_y(data);
 				unknown_corr_results.put(sample, res);
