@@ -4,10 +4,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
 import system_utils.DataStore;
+import system_utils.Element;
+import system_utils.ElementCorrelationInfo;
 import system_utils.FileChooser;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -37,7 +41,8 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 			update_save_label(save_path);
 			
 			try {
-    			
+				ArrayList<Element> displayed = ds.get_displayed_elems();
+    			//for (int i = 0; i < )
     		} catch (Exception e) {
     			ErrorDialog err = new ErrorDialog("Export Error", "Unable to export project to PDF.");
     			err.show_dialog();
