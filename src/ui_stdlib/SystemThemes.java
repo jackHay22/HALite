@@ -46,6 +46,8 @@ public class SystemThemes {
 	}
 	
 	public static void button_hover(JButton button) {
+		//this fixes windows button background bug and removes default button look and feel on windows.
+		button.setBackground(button.getBackground().darker().brighter());
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
 		    	button.setBackground(button.getBackground().darker());
