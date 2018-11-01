@@ -38,8 +38,6 @@ public class SplitViewPanel extends SystemPanel {
 		default_color = field_one.getBackground();
 		field_one.setOpaque(true);
 		field_two.setOpaque(true);
-		field_one.setFocusPainted(false);
-		field_two.setFocusPainted(false);
 	}
 	
 	public void toggle_color_top(boolean toggle_val) {
