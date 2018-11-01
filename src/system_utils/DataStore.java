@@ -495,7 +495,13 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
 		
 		// Remove all except elements with n highest r2 value
-		for (int j = pairs.size() - elem_num; j < pairs.size(); j++) {
+		int j;
+		if (pairs.size() - elem_num > 0) {
+			j = pairs.size() - elem_num;
+		} else {
+			j = 0;
+		}
+		for (; j < pairs.size(); j++) {
 			n_pairs.add(0, pairs.get(j));
 		}
 		
