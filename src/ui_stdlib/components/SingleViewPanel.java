@@ -2,7 +2,6 @@ package ui_stdlib.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
@@ -16,7 +15,6 @@ public class SingleViewPanel extends SystemPanel {
 	private JButton field;
 	private Color color;
 	private Color default_color;
-	private boolean selected;
 	
 	public SingleViewPanel(String label, Color color, Color border_color) {
 		super();
@@ -32,17 +30,13 @@ public class SingleViewPanel extends SystemPanel {
 		
 		SystemThemes.button_hover(field);
 		field.setOpaque(true);
-		selected = false;
 	}
 	
-	public void toggle_color() {
-		//System.out.println(selected);
-		if (!selected) {
-			selected = true;
+	public void toggle_color(boolean toggle) {
+		if (toggle) {
 			field.setBackground(color);
 		}
 		else {
-			selected = false;
 			field.setBackground(default_color);
 		}
 	}

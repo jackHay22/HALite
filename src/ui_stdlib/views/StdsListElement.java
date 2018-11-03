@@ -74,13 +74,12 @@ public class StdsListElement extends SystemPanel {
 				display = SystemThemes.get_display_number(d);
 			}
 			
-			SingleViewPanel element_panel = new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND);
+			SingleViewPanel element_panel = new SingleViewPanel(display, SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
+			
+			element_panel.toggle_color(datastore.not_used_in_model(standard, disp_e));
+			
 			element_panel.get_button().addActionListener(new ActionListener () {
 			    public void actionPerformed(ActionEvent e) {
-			    	
-			    	//BUG: refresh blows toggle away when recreating objects
-			    	//also, object recreation on refresh is already a bad design
-			    	element_panel.toggle_color();
 					datastore.toggle_sample_elem_pair(standard, disp_e);
 			    }
 			});
