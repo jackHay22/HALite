@@ -295,12 +295,18 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
 		Double std_error_sum = 0.0;
+		ArrayList<Element> elems_to_avoid = this.pairs_to_avoid.get(sample);
+		if (elems_to_avoid == null) {
+			elems_to_avoid = new ArrayList<Element>();
+		}
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			Double response = elem_info.get_unknown_corr(sample);
-			if (response != null) {
-				std_dev.addValue(response);
-				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
-				std_error_sum += 1/this.getSE(elem_info.get_secondary());
+			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
+				Double response = elem_info.get_unknown_corr(sample);
+				if (response != null) {
+					std_dev.addValue(response);
+					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+					std_error_sum += 1/this.getSE(elem_info.get_secondary());
+				}
 			}
 		}
 		Double stdev = std_dev.getStandardDeviation();
@@ -313,13 +319,19 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
 		Double std_error_sum = 0.0;
+		ArrayList<Element> elems_to_avoid = this.pairs_to_avoid.get(std);
+		if (elems_to_avoid == null) {
+			elems_to_avoid = new ArrayList<Element>();
+		}
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			Double response = elem_info.get_corr_result(std);
-			if (response != null) {
-				std_dev.addValue(response);
-				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
-				std_error_sum += 1/this.getSE(elem_info.get_secondary());
+			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
+				Double response = elem_info.get_corr_result(std);
+				if (response != null) {
+					std_dev.addValue(response);
+					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+					std_error_sum += 1/this.getSE(elem_info.get_secondary());
+				}
 			}
 		}
 		Double stdev = std_dev.getStandardDeviation();
