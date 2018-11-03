@@ -201,6 +201,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return this.all_correlations.get(elem).get_corr_result(std);
 	}
 	
+	private Double get_unknown_eq_val(String sample, Element elem) {
+		return this.all_correlations.get(elem).get_unknown_corr(sample);
+	}
+	
 	public HashMap<String, HashMap<String, Double>> get_WM_panel_data() {
 		// Returns a hashmap, mapping each standard to the corresponding data for the row,
 		// which is also in the form of a hashmap, which maps the column to the data
@@ -228,7 +232,11 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		for (String s : data_store.get_unknown_list()) {
 			HashMap<String, Double> inner_map = new HashMap<String, Double>();
 			for (CorrelationInfo corr : this.selected_elements) {
-				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
+				Double d = get_unknown_eq_val(s, corr.get_secondary());
+				if (d == null) {
+					d = -1.0;
+				}
+				inner_map.put(corr.get_secondary().toString(), d);
 			}
 			
 			inner_map.put("WM", unknown_WMs.get(s));
