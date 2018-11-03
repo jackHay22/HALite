@@ -13,7 +13,6 @@ import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SingleViewPanel;
-import ui_stdlib.dialogwindows.ErrorDialog;
 
 @SuppressWarnings("serial")
 public class StdsListElement extends SystemPanel {

@@ -45,27 +45,32 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 
 	@Override
 	public void refresh() {
-		set_list.refresh();
+		//prevent complete rebuild of calculated values listing panel if no changes
+		//occurred in backend
+		if (datastore.calculated_vals_updated) {
+			datastore.calculated_vals_updated = false;
+			set_list.refresh();
 		
-		Color main = SystemThemes.MAIN;
-		Color bg = SystemThemes.BACKGROUND;
-		
-		header_panels.clear();
-		ArrayList<Element> header_elems = datastore.get_WM_elems();
-		ArrayList<String> header_labels = datastore.get_WM_headers();
-		
-		for (Element elem : header_elems ) {
-			header_panels.add(new SingleViewPanel(elem.toString(), main, bg));
+			Color main = SystemThemes.MAIN;
+			Color bg = SystemThemes.BACKGROUND;
+			
+			header_panels.clear();
+			ArrayList<Element> header_elems = datastore.get_WM_elems();
+			ArrayList<String> header_labels = datastore.get_WM_headers();
+			
+			for (Element elem : header_elems ) {
+				header_panels.add(new SingleViewPanel(elem.toString(), main, bg));
+			}
+			
+			for (String l_string : header_labels) {
+				header_panels.add(new SingleViewPanel(l_string, main, bg));
+			}
+			
+			header_panels.add(model_label);
+			header_panels.add(actual_label);
+			header.set_panels(header_panels);
+			revalidate();
 		}
-		
-		for (String l_string : header_labels) {
-			header_panels.add(new SingleViewPanel(l_string, main, bg));
-		}
-		
-		header_panels.add(model_label);
-		header_panels.add(actual_label);
-		header.set_panels(header_panels);
-		revalidate();
 	}
 
 	@Override
