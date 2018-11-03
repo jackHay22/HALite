@@ -30,10 +30,24 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			
 			ArrayList<String> standards = datastore.get_STDlist();
 			
+			ArrayList<String> unknowns = datastore.get_unknown_list();
+			
 			ArrayList<String> header_elements = datastore.get_WM_header();
 			
 			for (String std : standards) {
 				StdsListElement graphical_elem = new StdsListElement(std, elem, header_elements);
+				views.add(graphical_elem);
+				
+				graphical_elem.set_datastore(datastore);
+				graphical_elem.on_start();
+				
+				add(graphical_elem);
+				graphical_elem.refresh();
+				graphical_elem.setVisible(true);
+			}
+			
+			for (String un : unknowns) {
+				StdsListElement graphical_elem = new StdsListElement(un, elem, header_elements);
 				views.add(graphical_elem);
 				
 				graphical_elem.set_datastore(datastore);
