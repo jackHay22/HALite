@@ -35,7 +35,7 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			ArrayList<Element> elems = datastore.get_WM_elems();
 			
 			for (String std : standards) {
-				StdsListElement graphical_elem = new StdsListElement(std, elem, elems, header_labels);
+				StdsListElement graphical_elem = new StdsListElement(std, elems, header_labels);
 				views.add(graphical_elem);
 				
 				graphical_elem.set_datastore(datastore);
@@ -49,7 +49,7 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 			ArrayList<String> unknowns = datastore.get_unknown_list();
 			
 			for (String un : unknowns) {
-				StdsListElement graphical_elem = new StdsListElement(un, elem, elems, header_labels);
+				StdsListElement graphical_elem = new StdsListElement(un, elems, header_labels);
 				views.add(graphical_elem);
 				
 				graphical_elem.set_datastore(datastore);

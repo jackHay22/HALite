@@ -25,7 +25,6 @@ public class StdsListElement extends SystemPanel {
 	
 	private CalculatedContent list;
 	private ArrayList<SingleViewPanel> panels;
-	private Element elem;
 	
 	private Double model_val;
 	private Double actual_val;
@@ -33,12 +32,11 @@ public class StdsListElement extends SystemPanel {
 	private ArrayList<String> header_labels;
 	private ArrayList<Element> header_elems;
 	
-	public StdsListElement(String standard, Element elem, ArrayList<Element> header_elems, ArrayList<String> header_labels) {
+	public StdsListElement(String standard, ArrayList<Element> header_elems, ArrayList<String> header_labels) {
 		super();
 		setLayout(new GridBagLayout());
 		
 		this.standard = standard;
-		this.elem = elem;
 		list = new CalculatedContent();
 
 		model_val = 0.0;
@@ -112,6 +110,8 @@ public class StdsListElement extends SystemPanel {
 		constraints.weightx = 0;
 		
 		JLabel standards = new JLabel(standard);
+		
+		//lines up standards label width with dropdown width
 		standards.setPreferredSize(new Dimension(70, 12));
 		add(standards, constraints);
 		
