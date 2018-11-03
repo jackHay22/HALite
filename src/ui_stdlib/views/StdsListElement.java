@@ -26,8 +26,8 @@ public class StdsListElement extends SystemPanel {
 	private ArrayList<SingleViewPanel> panels;
 	private Element elem;
 	
-	private double model_val;
-	private double actual_val;
+	private Double model_val;
+	private Double actual_val;
 	
 	private ArrayList<String> header_elements;
 	
@@ -39,8 +39,8 @@ public class StdsListElement extends SystemPanel {
 		this.elem = elem;
 		list = new CalculatedContent();
 
-		model_val = 0;
-		actual_val = 0;
+		model_val = 0.0;
+		actual_val = 0.0;
 		this.header_elements = header_elements;
 		
 		backend_loaded = false;
@@ -50,12 +50,15 @@ public class StdsListElement extends SystemPanel {
 	public void refresh() {
 		if (backend_loaded) {
 			try {
-				model_val = datastore.get_current_model(standard);
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
-				//open an error dialog
-				ErrorDialog error = new ErrorDialog("Error", "Failed on standard: " + standard + ", element: " + elem);
-				error.show_dialog();
+				actual_val = null;
+			}
+			
+			try {
+				model_val = datastore.get_current_model(standard);
+			} catch (Exception e) {
+				model_val = null;
 			}
 			
 		}

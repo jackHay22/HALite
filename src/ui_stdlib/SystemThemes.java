@@ -66,6 +66,9 @@ public class SystemThemes {
 	}
 	
 	public static String get_display_number(Double val, String mask) {
+		if (val == null) {
+			return "N/A";
+		}
 		DecimalFormat df = new DecimalFormat(mask);
 		return df.format(val);
 	}
