@@ -421,10 +421,14 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.elem_num;
 	}
 	
-	public ArrayList<String> get_WM_header() {
-		
-		ArrayList<String> headers = this.correlations.get(this.model_data_element).get_selected_names();
-		if (headers.size() > 0) {
+	public ArrayList<Element> get_WM_elems() {
+		ArrayList<Element> headers = this.correlations.get(this.model_data_element).get_selected_names();
+		return headers;
+	}
+	
+	public ArrayList<String> get_WM_headers() {
+		ArrayList<String> headers = new ArrayList<String>();
+		if (get_WM_elems().size() > 0) {
 			headers.add("Std Dev");
 			headers.add("WM");
 		}
@@ -555,11 +559,14 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		notify_update();
 	}
 	
+	// Used by CalcValPanel to remove elements from certain calculations
 	public void toggle_sample_elem_pair(String s, Element e) {
 		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
 		elem_info.toggle_pair_for_model(s, e);
+		notify_update();
 	}
 	
+	// Removes an element from the list of elements used to calculate the model 
 	public void remove_selected_rsqrd_assocs(Element primary, Element secondary) {
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		

@@ -183,10 +183,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return corr.in_use();
 	}
 	
-	public ArrayList<String> get_selected_names() {
-		ArrayList<String> sel = new ArrayList<String>();
+	public ArrayList<Element> get_selected_names() {
+		ArrayList<Element> sel = new ArrayList<Element>();
 		for (CorrelationInfo corr : get_selected()) {
-			sel.add(corr.get_secondary().toString());
+			sel.add(corr.get_secondary());
 		}
 		return sel;
 	}
@@ -319,7 +319,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			if (response != null) {
 				std_dev.addValue(response);
 				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
-				std_error_sum += this.getSE(elem_info.get_secondary());
+				std_error_sum += 1/this.getSE(elem_info.get_secondary());
 			}
 		}
 		Double stdev = std_dev.getStandardDeviation();
