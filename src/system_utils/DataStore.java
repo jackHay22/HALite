@@ -44,6 +44,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	private int elem_num;
 
+	public boolean calculated_vals_updated = true;
+	
 	public DataStore(SystemWindow window_parent) {
 		this.window_parent = window_parent;
 		
@@ -358,6 +360,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
+		calculated_vals_updated = true;
 		this.notify_update();
 	}
 	
@@ -560,7 +563,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		elem_corr.add_selected(secondary);
-		
+		calculated_vals_updated = true;
 		notify_update();
 	}
 	
@@ -568,6 +571,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public void toggle_sample_elem_pair(String s, Element e) {
 		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
 		elem_info.toggle_pair_for_model(s, e);
+		calculated_vals_updated = true;
 		notify_update();
 	}
 	
@@ -576,7 +580,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		
 		elem_corr.remove_selected(secondary);
-		
+		calculated_vals_updated = true;
 		notify_update();
 	}
 	
