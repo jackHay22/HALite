@@ -51,10 +51,15 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		Color bg = SystemThemes.BACKGROUND;
 		
 		header_panels.clear();
-		ArrayList<String> header_elements = datastore.get_WM_header();
+		ArrayList<Element> header_elems = datastore.get_WM_elems();
+		ArrayList<String> header_labels = datastore.get_WM_headers();
 		
-		for (String e_string : header_elements ) {
-			header_panels.add(new SingleViewPanel(e_string, main, bg));
+		for (Element elem : header_elems ) {
+			header_panels.add(new SingleViewPanel(elem.toString(), main, bg));
+		}
+		
+		for (String l_string : header_labels) {
+			header_panels.add(new SingleViewPanel(l_string, main, bg));
 		}
 		
 		header_panels.add(model_label);

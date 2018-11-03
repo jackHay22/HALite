@@ -3,6 +3,8 @@ package ui_stdlib.views;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import system_utils.DataStore;
@@ -29,9 +31,10 @@ public class StdsListElement extends SystemPanel {
 	private Double model_val;
 	private Double actual_val;
 	
-	private ArrayList<String> header_elements;
+	private ArrayList<String> header_labels;
+	private ArrayList<Element> header_elems;
 	
-	public StdsListElement(String standard, Element elem, ArrayList<String> header_elements) {
+	public StdsListElement(String standard, Element elem, ArrayList<Element> header_elems, ArrayList<String> header_labels) {
 		super();
 		setLayout(new GridBagLayout());
 		
@@ -41,7 +44,8 @@ public class StdsListElement extends SystemPanel {
 
 		model_val = 0.0;
 		actual_val = 0.0;
-		this.header_elements = header_elements;
+		this.header_labels = header_labels;
+		this.header_elems = header_elems;
 		
 		backend_loaded = false;
 	}
@@ -63,12 +67,33 @@ public class StdsListElement extends SystemPanel {
 			
 		}
 		
-		for (String e_string : header_elements) {
-			Double d = datastore.get_header_std_pair(standard, e_string);
+		for (Element disp_e : header_elems) {
+			Double d = datastore.get_header_std_pair(standard, disp_e.toString());
 			String display = "-";
+			
 			if (d != null) {
 				display = SystemThemes.get_display_number(d);
 			}
+			SingleViewPanel element_panel = new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND);
+			element_panel.get_button().addActionListener(new ActionListener () {
+			    public void actionPerformed(ActionEvent e) {
+			    	element_panel.toggle_color();
+					datastore.toggle_sample_elem_pair(standard, disp_e);
+			    }
+			});
+			
+			
+			panels.add(element_panel);	
+		}
+		
+		for (String l_string : header_labels) {
+			Double d = datastore.get_header_std_pair(standard, l_string);
+			String display = "-";
+
+			if (d != null) {
+				display = SystemThemes.get_display_number(d);
+			}
+
 			panels.add(new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		}
 		

@@ -16,6 +16,7 @@ public class SingleViewPanel extends SystemPanel {
 	private JButton field;
 	private Color color;
 	private Color default_color;
+	private boolean selected;
 	
 	public SingleViewPanel(String label, Color color, Color border_color) {
 		super();
@@ -31,15 +32,20 @@ public class SingleViewPanel extends SystemPanel {
 		
 		SystemThemes.button_hover(field);
 		field.setOpaque(true);
+		selected = false;
 	}
 	
-	public void toggle_color(boolean toggle_val) {
-		if (toggle_val) {
+	public void toggle_color() {
+		if (!selected) {
 			field.setBackground(color);
 		}
 		else {
 			field.setBackground(default_color);
 		}
+	}
+	
+	public boolean get_selected() {
+		return selected;
 	}
 
 	@Override
