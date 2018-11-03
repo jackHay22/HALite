@@ -160,7 +160,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
-		this.add(toggle_unknowns, constraints);
+		//this.add(toggle_unknowns, constraints);
 		
 	}
 
