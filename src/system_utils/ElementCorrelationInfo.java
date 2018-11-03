@@ -63,6 +63,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		} else {
 			elems = new ArrayList<Element>();
 			elems.add(0, e);
+			this.pairs_to_avoid.put(s, elems);
 		}
 	}
 	
