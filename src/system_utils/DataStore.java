@@ -447,6 +447,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return result;
 	}
 	
+	public boolean not_used_in_model(String s, Element e) {
+		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
+		return elem_info.not_in_model(s, e);
+	}
+	
 	public Double get_current_actual(String std) {
 		return this.get_WM_data().get(std).get("Actual");
 	}

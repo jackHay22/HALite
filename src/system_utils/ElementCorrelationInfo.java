@@ -45,6 +45,11 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
 	}
 	
+	public boolean not_in_model(String s, Element e) {
+		ArrayList<Element> elems = this.pairs_to_avoid.get(s);
+		return ((elems != null) && elems.indexOf(e) != -1);
+	}
+	
 	public void toggle_pair_for_model(String s, Element e) {
 		ArrayList<Element> elems = pairs_to_avoid.get(s);
 		if (elems != null) {
