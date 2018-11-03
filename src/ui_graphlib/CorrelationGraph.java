@@ -6,15 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.JLabel;
-
+import javax.swing.JButton;
 import java.text.DecimalFormat;
 import system_utils.DataStore;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.components.ImageRadioButton;
 import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")
@@ -38,7 +35,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	private double bottom_buffer_x;
 	private double bottom_buffer_y;
 	
-	private ImageRadioButton toggle_unknowns;
+	private JButton toggle_unknowns;
 	private GridBagConstraints constraints;
 	
 	public CorrelationGraph() {
@@ -47,7 +44,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints = SystemThemes.get_grid_constraints();
 		this.graph = new GraphPanel(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
-		toggle_unknowns = new ImageRadioButton("/buttons/blank_button.png");
+		toggle_unknowns = new JButton("Toggle Unknowns");
 	}
 	
 	private void set_line_endpoints() {
@@ -157,10 +154,6 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints.gridy = 1;
 		constraints.weightx = 0;
 		this.add(toggle_unknowns, constraints);
-		this.constraints.gridx = 2;
-		JLabel toggle_label = new JLabel("Toggle Unknowns");
-		toggle_label.setForeground(SystemThemes.MAIN);
-		this.add(toggle_label, constraints);
 		
 	}
 
