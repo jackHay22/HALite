@@ -555,6 +555,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		notify_update();
 	}
 	
+	public void toggle_sample_elem_pair(String s, Element e) {
+		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
+		elem_info.toggle_pair_for_model(s, e);
+	}
+	
 	public void remove_selected_rsqrd_assocs(Element primary, Element secondary) {
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		

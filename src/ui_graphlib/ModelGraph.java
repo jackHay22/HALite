@@ -165,7 +165,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	}
 
 	private String get_display_number(Double val) {
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#.00000");
 		return df.format(val);
 	}
 	

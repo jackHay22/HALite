@@ -26,6 +26,8 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private HashMap<String, Double> standards_std_devs;
 	private HashMap<String, Double> unknown_WMs;
 	private HashMap<String, Double> unknown_models;
+	private HashMap<String, Double> unknown_std_dev;
+	private HashMap<String, ArrayList<Element>> pairs_to_avoid;
 	private EquationPlot Equation;
 	private PointSet model_points;
 	
@@ -39,6 +41,24 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		this.std_models = new HashMap<String, Double>();
 		this.unknown_models = new HashMap<String, Double>();
 		this.standards_std_devs = new HashMap<String, Double>();
+		this.unknown_std_dev = new HashMap<String, Double>();
+		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
+	}
+	
+	public void toggle_pair_for_model(String s, Element e) {
+		ArrayList<Element> elems = pairs_to_avoid.get(s);
+		if (elems != null) {
+			int i = elems.indexOf(e);
+			if (i == -1) {
+				elems.add(e);
+				this.pairs_to_avoid.put(s, elems);
+			} else {
+				elems.remove(i);
+			}
+		} else {
+			elems = new ArrayList<Element>();
+			elems.add(0, e);
+		}
 	}
 	
 	public HashMap<String, Double> get_standard_computed() {
@@ -182,7 +202,11 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		for (String s : data_store.get_STDlist()) {
 			HashMap<String, Double> inner_map = new HashMap<String, Double>();
 			for (CorrelationInfo corr : this.selected_elements) {
-				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
+				Double d = get_corr_eq_val(s, corr.get_secondary());
+				if (d == null) {
+					d = -1.0;
+				}
+				inner_map.put(corr.get_secondary().toString(), d);
 			}
 			
 			inner_map.put("WM", std_WMs.get(s));
@@ -190,6 +214,22 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			
 			inner_map.put("Model_Value", this.std_models.get(s));
 			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
+			
+			outer_map.put(s, inner_map);
+			
+		}
+		
+		for (String s : data_store.get_unknown_list()) {
+			HashMap<String, Double> inner_map = new HashMap<String, Double>();
+			for (CorrelationInfo corr : this.selected_elements) {
+				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
+			}
+			
+			inner_map.put("WM", unknown_WMs.get(s));
+			inner_map.put("Std Dev", this.unknown_std_dev.get(s));
+			
+			inner_map.put("Model_Value", this.unknown_models.get(s));
+			inner_map.put("Actual", data_store.get_raw_unknown_elem(s, element));
 			
 			outer_map.put(s, inner_map);
 			
@@ -250,34 +290,41 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	
-	// neeed ot fix this (apparent by spelign)
+	// This applies the model created using the standards to the unknown data
 	private Double compute_unknown_WM(String sample) {
 		double dividend = 0;
-		
+		DescriptiveStatistics std_dev = new DescriptiveStatistics();
+		Double std_error_sum = 0.0;
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			Double response = elem_info.get_unknown_corr(sample);
 			if (response != null) {
-				// Make sure these are corrct!! that call to getSE most likely needs to change
+				std_dev.addValue(response);
 				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+				std_error_sum += 1/this.getSE(elem_info.get_secondary());
 			}
 		}
-		return (dividend)/this.getSEInverseSum();
+		Double stdev = std_dev.getStandardDeviation();
+		this.unknown_std_dev.put(sample, stdev);
+		return (dividend)/std_error_sum;
 	}
 	
+	// This applies the model to the standards to be displayed in the bottom left panel 
 	private Double computeWM(String std) {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
+		Double std_error_sum = 0.0;
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			Double response = elem_info.get_corr_result(std);
 			if (response != null) {
 				std_dev.addValue(response);
 				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+				std_error_sum += this.getSE(elem_info.get_secondary());
 			}
 		}
 		Double stdev = std_dev.getStandardDeviation();
 		this.standards_std_devs.put(std, stdev);
-		return (dividend/this.getSEInverseSum());	
+		return (dividend/std_error_sum);	
 		
 	}
 	
