@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JLabel;
+
 import java.text.DecimalFormat;
 import system_utils.DataStore;
 import system_utils.EquationPlot;
@@ -145,14 +148,19 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints.gridx = 0;
 		this.constraints.gridy = 0;
 		constraints.weighty = 1;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		this.add(this.graph, constraints);
 		constraints.weighty = 0;
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
+		constraints.weightx = 0;
 		this.add(toggle_unknowns, constraints);
+		this.constraints.gridx = 2;
+		JLabel toggle_label = new JLabel("Toggle Unknowns");
+		toggle_label.setForeground(SystemThemes.MAIN);
+		this.add(toggle_label, constraints);
 		
 	}
 

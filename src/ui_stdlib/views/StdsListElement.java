@@ -64,7 +64,6 @@ public class StdsListElement extends SystemPanel {
 			} catch (Exception e) {
 				model_val = null;
 			}
-			
 		}
 		
 		for (Element disp_e : header_elems) {
@@ -74,9 +73,13 @@ public class StdsListElement extends SystemPanel {
 			if (d != null) {
 				display = SystemThemes.get_display_number(d);
 			}
+			
 			SingleViewPanel element_panel = new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND);
 			element_panel.get_button().addActionListener(new ActionListener () {
 			    public void actionPerformed(ActionEvent e) {
+			    	
+			    	//BUG: refresh blows toggle away when recreating objects
+			    	//also, object recreation on refresh is already a bad design
 			    	element_panel.toggle_color();
 					datastore.toggle_sample_elem_pair(standard, disp_e);
 			    }

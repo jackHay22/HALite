@@ -36,16 +36,15 @@ public class SingleViewPanel extends SystemPanel {
 	}
 	
 	public void toggle_color() {
+		System.out.println(selected);
 		if (!selected) {
+			selected = true;
 			field.setBackground(color);
 		}
 		else {
+			selected = false;
 			field.setBackground(default_color);
 		}
-	}
-	
-	public boolean get_selected() {
-		return selected;
 	}
 
 	@Override
