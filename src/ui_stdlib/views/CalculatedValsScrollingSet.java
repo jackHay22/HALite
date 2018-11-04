@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import system_utils.DataStore;
 import system_utils.Element;
-import system_utils.ElementCorrelationInfo;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
@@ -24,9 +23,6 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 	public void refresh() {
 		if (backend_loaded) {
 			clear_views();
-			
-			ElementCorrelationInfo element_corr = datastore.get_model_data_corr();
-			Element elem = element_corr.get_element();
 			
 			ArrayList<String> standards = datastore.get_STDlist();
 			

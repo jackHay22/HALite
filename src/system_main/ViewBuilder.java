@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import system_drift_correction.DriftCorrectionGraph;
+import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -54,7 +55,7 @@ public class ViewBuilder {
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
     	
-    	main_window.add_system_panel(new DriftCorrectionGraph());	
+    	main_window.add_system_panel(new DriftCorrectionSettings());	
     	main_window.add_system_panel(new DriftCorrectionGraph());
     	
     	return main_window;

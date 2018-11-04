@@ -86,7 +86,8 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	}
 	
 	public void split_panels() {
-		if (did_load_datastore && !windows_split) {
+		//prevent panels from being split if ds not loaded, windows already split, or drift correction loaded
+		if (did_load_datastore && !windows_split && this.panel_references.size() > 2) {
 			remove(main_split);
 			revalidate();
 			repaint();
