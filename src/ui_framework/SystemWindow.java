@@ -8,6 +8,8 @@ import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -36,6 +38,12 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowFocusListener(new WindowAdapter() {
+		    public void windowGainedFocus(WindowEvent e) {
+		    	//System.out.println("Gained focus");
+		        //setVisible(true);
+		    }
+		});
 		this.validate();
 	}
 	
