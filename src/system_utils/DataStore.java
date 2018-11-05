@@ -438,6 +438,39 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return headers;
 	}
 	
+	public String get_detailed_report() {
+		HashMap<Element, ElementReport> reports = new HashMap<Element, ElementReport>(); 
+		for (Element elem : Element.values()) {
+			ElementCorrelationInfo elem_info = this.get_correlations(elem);
+			if (elem_info != null) {
+				reports.put(elem, elem_info.create_report());
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.report_header(reports));
+		for (String s : this.get_STDlist()) {
+			for (Element report_elem : Element.values()) {
+				sb.append(reports.get(report_elem).get_row(s));
+			}
+		}
+		sb.append('\n');
+		sb.append('\n');
+		for (String s : this.get_unknown_list()) {
+			for (Element report_elem : Element.values()) {
+				sb.append(reports.get(report_elem).get_row(s));
+			}
+		}
+		return sb.toString();
+	}
+	
+	private String report_header(HashMap<Element, ElementReport> reports) {
+		StringBuilder sb = new StringBuilder();
+		for (Element elem : Element.values()) {
+			sb.append(reports.get(elem).get_header_row());
+		}
+		return sb.toString();
+	}
+	
 	public HashMap<String, HashMap<String, Double>> get_WM_data() {
 		return this.correlations.get(this.model_data_element).get_WM_panel_data();
 	}

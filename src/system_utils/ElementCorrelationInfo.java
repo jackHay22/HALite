@@ -50,6 +50,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return ((elems != null) && elems.indexOf(e) != -1);
 	}
 	
+	public ElementReport create_report() {
+		return new ElementReport(element, selected_elements, pairs_to_avoid, this.get_WM_panel_data());
+	}
+	
 	public void toggle_pair_for_model(String s, Element e) {
 		ArrayList<Element> elems = pairs_to_avoid.get(s);
 		if (elems != null) {
