@@ -117,7 +117,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		//add label to far right to align header with scrollable section
 		JLabel format_placeholder = new JLabel("");
-		format_placeholder.setMinimumSize(new Dimension(10, 10));
+		format_placeholder.setMinimumSize(new Dimension(8, 10));
 		add(format_placeholder, constraints);
 
 		constraints.gridwidth = 3;
