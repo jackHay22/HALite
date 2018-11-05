@@ -1,12 +1,14 @@
 package ui_stdlib.views;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import system_utils.Element;
@@ -91,7 +93,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		PanelHeader panel_header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
 		panel_header.on_start();
 		add(panel_header, constraints);
@@ -109,8 +111,16 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		
 		header.set_panels(header_panels);
 		header.on_start();
+		
+		constraints.gridx = 2;
+		constraints.weightx = 0;
+		
+		//add label to far right to align header with scrollable section
+		JLabel format_placeholder = new JLabel("");
+		format_placeholder.setMinimumSize(new Dimension(10, 10));
+		add(format_placeholder, constraints);
 
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		constraints.gridx = 0;
 		constraints.ipady = 0;
 		constraints.gridy = 2;
