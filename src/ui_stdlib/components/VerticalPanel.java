@@ -35,9 +35,9 @@ public class VerticalPanel extends ui_framework.SystemPanel {
 	@Override
 	public void on_start() {
 		title.setVisible(true);
-		
-		add(title);
 		revalidate();
+		add(title);
+		
 	}
 
 }

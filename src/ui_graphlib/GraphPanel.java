@@ -335,6 +335,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		constraints.gridx = 0;
 		constraints.weightx = 0.0;
 		constraints.weighty = 1.0;
+		constraints.fill = GridBagConstraints.VERTICAL;
 		this.add(this.y_label, constraints);
 		
 		constraints.gridx = 1;

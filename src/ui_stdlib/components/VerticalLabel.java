@@ -4,14 +4,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class VerticalLabel extends javax.swing.JLabel {
 	private boolean doing_transform;
 	
 	public VerticalLabel(String text) {
-		super(text, SwingConstants.LEFT);
+		super(text);
 		doing_transform = false;
 	}
 	
