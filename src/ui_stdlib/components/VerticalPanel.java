@@ -1,7 +1,6 @@
 package ui_stdlib.components;
 
 import java.awt.Color;
-//import java.awt.geom.AffineTransform;
 import javax.swing.JLabel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -13,37 +12,32 @@ public class VerticalPanel extends ui_framework.SystemPanel {
 		super();
 		this.setBackground(color);
 		
-		//AffineTransform transformer = new AffineTransform();
-		this.title = new JLabel(text);
-		this.add(this.title);
+		this.title = new VerticalLabel(text); //text
+		this.setToolTipText(text);
 	}
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void set_text(String text) {
 		this.title.setText(text);
+		this.setToolTipText(text);
+		revalidate();
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void set_datastore(DataStore datastore) {}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void add_refreshable(Refreshable refreshable_component) {}
 
 	@Override
 	public void on_start() {
-		// TODO Auto-generated method stub
+		title.setVisible(true);
 		
+		add(title);
+		revalidate();
 	}
 
 }
