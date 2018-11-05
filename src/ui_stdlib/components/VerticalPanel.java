@@ -1,8 +1,6 @@
 package ui_stdlib.components;
 
 import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.JLabel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -14,7 +12,7 @@ public class VerticalPanel extends ui_framework.SystemPanel {
 		super();
 		this.setBackground(color);
 		
-		this.title = new VerticalLabel(text); //text
+		this.title = new VerticalLabel(text);
 		this.setToolTipText(text);
 	}
 	
