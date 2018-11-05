@@ -110,6 +110,7 @@ public class StdsListElement extends SystemPanel {
 		constraints.weightx = 0;
 		
 		JLabel standards = new JLabel(standard);
+		standards.setToolTipText(standard);
 		
 		//lines up standards label width with dropdown width
 		standards.setPreferredSize(new Dimension(70, 12));
