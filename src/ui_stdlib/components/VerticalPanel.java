@@ -1,6 +1,8 @@
 package ui_stdlib.components;
 
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import system_utils.DataStore;
 import ui_framework.Refreshable;

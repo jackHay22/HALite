@@ -8,9 +8,11 @@ import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class VerticalLabel extends javax.swing.JLabel {
+	private boolean doing_transform;
 	
 	public VerticalLabel(String text) {
 		super(text, SwingConstants.LEFT);
+		doing_transform = false;
 	}
 	
 	@Override
@@ -19,8 +21,11 @@ public class VerticalLabel extends javax.swing.JLabel {
         
         g2d.rotate(Math.toRadians(-90));
         g2d.translate(-this.getHeight(), 0);
+        doing_transform = true;
+        
         super.paintComponent(g2d);
         
+        doing_transform = false;
         //inverse
         g2d.rotate(-Math.toRadians(-90));
         g2d.translate(-this.getWidth(), 0);
@@ -56,23 +61,31 @@ public class VerticalLabel extends javax.swing.JLabel {
 	@Override
 	public Insets getInsets() {
         Insets insets = super.getInsets();
-        int temp = insets.bottom;
-        insets.bottom = insets.left;
-        insets.left = insets.top;
-        insets.top = insets.right;
-        insets.right = temp;
-
+        if (doing_transform) {
+        	int temp = insets.bottom;
+            insets.bottom = insets.left;
+            insets.left = insets.top;
+            insets.top = insets.right;
+            insets.right = temp;
+        }
+        
         return insets;
     }
 
 	
 	@Override
 	public int getWidth() {
-		return super.getHeight();
+		if (doing_transform) {
+			return super.getHeight();
+		}
+		return super.getWidth();
     }
 
 	@Override
     public int getHeight() {
-		return super.getWidth();
+		if (doing_transform) {
+			return super.getWidth();
+		}
+		return super.getHeight();
     }
 }
