@@ -9,22 +9,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
 import system_utils.io_tools.TestSuiteReader;
+import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
-
 import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
-public class DataStore extends ui_framework.StateResult implements Serializable {
+public class DataStore extends DataBackend implements Serializable {
 
 	private static final long serialVersionUID = 1;
-
-	transient private SystemWindow window_parent;
 	
 	private String save_path;
 	
@@ -47,7 +44,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	public boolean calculated_vals_updated = true;
 	
 	public DataStore(SystemWindow window_parent) {
-		this.window_parent = window_parent;
+		super(window_parent);
 		
 		this.save_path = "";
 		
@@ -63,8 +60,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.elem_num = 5;
 	}
 	
-	public void set_window(SystemWindow win) {
-		this.window_parent = win;
+	public void set_window(SystemWindow window_parent) {
+		super.set_window_parent(window_parent);
 	}
 	
 	public void set_save_path(String path) {
@@ -621,14 +618,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return (this.primary == primary && this.secondary == secondary);
 	}
 	
-	public void add_update_notify(ui_framework.SystemWindow window_parent) {
-		
-	}
 	
 	public void notify_update() {
 		//on changes to data
 		this.internal_refresh();
-		this.window_parent.refresh();
+		super.notify_update();
 	}
 	
 	private String get_STD_computed_string() {
