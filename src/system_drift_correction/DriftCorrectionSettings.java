@@ -54,7 +54,9 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		degree_label = new PanelHeader<DriftCorrectionDS>("Degree: ", SystemThemes.MAIN, SystemThemes.INSET);
 	
 		label_one = new PanelHeader<DriftCorrectionDS>(SystemThemes.superscript("Placeholder1"), SystemThemes.MAIN);
+		label_one.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
 		label_two = new PanelHeader<DriftCorrectionDS>("Placeholder", SystemThemes.MAIN);
+		label_two.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
 		
 		static_button_width = next_element.getPreferredSize().width;
 		

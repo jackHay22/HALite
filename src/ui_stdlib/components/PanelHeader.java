@@ -39,6 +39,11 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 		}
 	}
 	
+	public void set_font_size(float size) {
+		title.setFont(title.getFont().deriveFont(size));
+		revalidate();
+	}
+	
 	public void add_header_component(ui_framework.SystemPanel<Backend> c, int weight) {
 		constraints.gridx = this.constraint_loc;
 		constraints.weightx = weight;

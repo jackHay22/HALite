@@ -2,6 +2,8 @@ package system_main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,6 +33,29 @@ public class ViewBuilder {
 	public static final String TEST_MEANS = "/test_data/means.csv";
 	public static final String TEST_STANDARDS = "/test_data/standards.csv";
 	public static int OPEN_VIEWS = 0;
+	
+	
+	@SuppressWarnings("unchecked")
+	private static void open_example_data(StateManager manager, ScheduledState main_app_view) {
+    	//open dialog, set return state to main
+    	ScheduledState current_state = main_app_view;
+
+		SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
+    	
+    	if (current_window.datastore_set()) {
+    		current_state = create_new_window(get_app_view(), manager);
+    		current_window = (SystemWindow<DataStore>) current_state;
+    	}
+    	
+    	DataStore ds = new DataStore(current_window);
+    	try {
+			ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
+		} catch (FileNotFoundException e1) {
+			ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
+			err.show_dialog();
+		}
+    	current_state.on_scheduled(manager, null, (StateResult) ds);
+	}
 	
 	private static SystemWindow<DataStore> get_app_view() {
     	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("Ablation Analysis", 
@@ -87,6 +112,7 @@ public class ViewBuilder {
 		return create_new_window(get_app_view(), manager);
 	}
 	
+
 	
 	private static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
 		JMenuBar bar = new JMenuBar();
@@ -97,6 +123,7 @@ public class ViewBuilder {
 		
 		//FUNCTION ITEMS
 		JMenuItem save = new JMenuItem("Save");
+		save.setAccelerator(SystemKeybindings.SAVE);
 		save.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
@@ -126,6 +153,7 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem open_new = new JMenuItem("New...");
+		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
 		    @SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
@@ -184,26 +212,10 @@ public class ViewBuilder {
 		
 		
 		JMenuItem open_test_data = new JMenuItem("Example Data");
+		open_test_data.setAccelerator(SystemKeybindings.EX_DATA);
 		open_test_data.addActionListener(new ActionListener () {
-		    @SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-		    	//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
-		    	
-		    	if (current_window.datastore_set()) {
-		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow<DataStore>) current_state;
-		    	}
-		    	
-		    	DataStore ds = new DataStore(current_window);
-		    	try {
-					ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
-				} catch (FileNotFoundException e1) {
-					ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
-					err.show_dialog();
-				}
-		    	current_state.on_scheduled(manager, null, (StateResult) ds);
+		    	open_example_data(manager, main_app_view);
 		    }
 		});
 		

@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
-
 import system_utils.Element;
 
 public class SystemThemes {
@@ -39,6 +38,8 @@ public class SystemThemes {
 	public static final int SCROLL_PANE_SPEED = 8;
 	
 	public static final int TOTAL_ELEMENTS = Element.values().length;
+	
+	public static final float LARGE_TEXT_FONT_SIZE = 20.0f;
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
