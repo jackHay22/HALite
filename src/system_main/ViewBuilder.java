@@ -330,6 +330,7 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem close_window = new JMenuItem("Close Window");
+		close_window.setAccelerator(SystemKeybindings.CLOSE_WINDOW);
 		close_window.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
