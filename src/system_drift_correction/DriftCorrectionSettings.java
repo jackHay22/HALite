@@ -175,10 +175,11 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		constraints.gridx = 0;
 		constraints.gridwidth = 4;
 		constraints.gridy++;
-		constraints.weighty = 0.5;
+		constraints.weighty = 0;
 		
 		//add spanning label
 		add(label_one, constraints);
+		constraints.weighty = 1;
 		
 		//add second spanning label
 		constraints.gridy++;

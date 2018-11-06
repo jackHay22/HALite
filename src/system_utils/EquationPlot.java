@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
+import ui_stdlib.SystemThemes;
+
 public class EquationPlot implements Serializable {
 	private static final long serialVersionUID = 7;
 	private int degree;
@@ -57,7 +59,7 @@ public class EquationPlot implements Serializable {
 		
 		String s = df.format(coefficients.get(0));
 		for (int i = degree; i > 0; i--) {
-			s = s + "+ x^" + i + "*" + df.format(coefficients.get(i));
+			s = s + "+ x" + SystemThemes.superscript(Integer.toString(i)) + "*" + df.format(coefficients.get(i));
 		}
 		return s;
 	}

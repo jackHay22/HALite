@@ -166,7 +166,7 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 		this.graph.set_y_label(s);
 		s = models.get_x_label();
 		this.graph.set_x_label(s);
-		s = "r^2: " + get_display_number(data_to_plot.get_equation().get_r2()) + "    ||    " + data_to_plot.get_equation().get_str_rep();
+		s = "r²: " + get_display_number(data_to_plot.get_equation().get_r2()) + "    ||    " + data_to_plot.get_equation().get_str_rep();
 		this.graph.set_r2_eqn_label(s);
 		s = models.get_title();
 		this.graph.set_title(s);

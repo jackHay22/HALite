@@ -193,6 +193,7 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem drift_correction = new JMenuItem("Drift Correction");
+		drift_correction.setAccelerator(SystemKeybindings.DRIFT_CORRECTION);
 		drift_correction.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
