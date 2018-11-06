@@ -440,6 +440,7 @@ public class DataStore extends DataBackend implements Serializable {
 			for (Element report_elem : Element.values()) {
 				sb.append(reports.get(report_elem).get_row(s));
 			}
+			sb.append('\n');
 		}
 		sb.append('\n');
 		sb.append('\n');
@@ -447,6 +448,7 @@ public class DataStore extends DataBackend implements Serializable {
 			for (Element report_elem : Element.values()) {
 				sb.append(reports.get(report_elem).get_row(s));
 			}
+			sb.append('\n');
 		}
 		return sb.toString();
 	}
