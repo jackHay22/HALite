@@ -4,14 +4,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Map;
-
 import javax.swing.JLabel;
-
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
 import system_utils.Element;
@@ -20,7 +15,6 @@ import system_utils.FileChooser;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
-import ui_framework.SystemWindow;
 
 @SuppressWarnings("serial")
 public class ExportDialog extends SystemDialog implements ScheduledState {

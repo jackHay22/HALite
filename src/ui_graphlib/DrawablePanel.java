@@ -7,12 +7,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
+public class DrawablePanel<Backend extends DataBackend> extends JPanel implements MouseListener, Refreshable<Backend>{
 	private DrawableManager manager;
 	
 	public DrawablePanel(DrawableManager manager, int width, int height) {
@@ -30,11 +30,11 @@ public class DrawablePanel extends JPanel implements MouseListener, Refreshable{
     }
 
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) { }
+	public void add_refreshable(Refreshable<Backend> refreshable_component) { }
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {

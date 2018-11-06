@@ -5,13 +5,13 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class SingleViewPanel extends SystemPanel {
+public class SingleViewPanel<Backend extends DataBackend> extends SystemPanel<Backend> {
 	private JButton field;
 	private Color color;
 	private Color default_color;
@@ -46,11 +46,11 @@ public class SingleViewPanel extends SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {	
+	public void set_datastore(Backend datastore) {	
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 	}
 
 	@Override

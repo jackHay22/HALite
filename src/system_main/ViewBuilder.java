@@ -7,9 +7,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
@@ -31,8 +33,8 @@ public class ViewBuilder {
 	public static final String TEST_STANDARDS = "/test_data/standards.csv";
 	public static int OPEN_VIEWS = 0;
 	
-	private static SystemWindow get_app_view() {
-    	SystemWindow main_window = new SystemWindow("Ablation Analysis", 
+	private static SystemWindow<DataStore> get_app_view() {
+    	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("Ablation Analysis", 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
@@ -47,22 +49,32 @@ public class ViewBuilder {
     	return main_window;
 	}
 	
-	private static SystemWindow get_drift_correction_view() {
-		SystemWindow main_window = new SystemWindow("Drift Correction", 
+	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
+		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("Drift Correction", 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
 				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
     	
-    	main_window.add_system_panel(new DriftCorrectionSettings());	
-    	main_window.add_system_panel(new DriftCorrectionGraph());
+    	main_window.add_system_panel(new DriftCorrectionSettings<DriftCorrectionDS>());	
+    	main_window.add_system_panel(new DriftCorrectionGraph<DriftCorrectionDS>());
     	
     	return main_window;
 	}
+	
+	private static ScheduledState create_new_drift_window(SystemWindow<DriftCorrectionDS> window, StateManager manager) {
+		
+		ScheduledState main_app_view = window;
+		
+		window.setJMenuBar(get_menu_items(manager, main_app_view));
+		OPEN_VIEWS++;
+		
+		return main_app_view;
+	}
 
 	
-	private static ScheduledState create_new_window(SystemWindow window, StateManager manager) {
+	private static ScheduledState create_new_window(SystemWindow<DataStore> window, StateManager manager) {
 		
 		ScheduledState main_app_view = window;
 		
@@ -75,6 +87,7 @@ public class ViewBuilder {
 	public static ScheduledState create_new_default_window(StateManager manager) {
 		return create_new_window(get_app_view(), manager);
 	}
+	
 	
 	private static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
 		JMenuBar bar = new JMenuBar();
@@ -97,7 +110,8 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		SaveDialog save_dialog = new SaveDialog("Save as");
@@ -113,17 +127,18 @@ public class ViewBuilder {
 		
 		JMenuItem open_new = new JMenuItem("New...");
 		open_new.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
+		    @SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow) current_state;
+		    		current_window = (SystemWindow<DataStore>) current_state;
 		    	}
 		    	
-		    	NewDialog file_selector = new NewDialog("Select Files", current_window);
+		    	NewDialog<DataStore> file_selector = new NewDialog<DataStore>("Select Files", current_window);
 			    file_selector.init();
 			    file_selector.on_scheduled(manager, current_state, null);
 		    }
@@ -131,14 +146,15 @@ public class ViewBuilder {
 		
 		JMenuItem open_saved = new JMenuItem("Saved...");
 		open_saved.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
+		    @SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow) current_state;
+		    		current_window = (SystemWindow<DataStore>) current_state;
 		    	}
 		    	
 		    	OpenDialog open_dialog = new OpenDialog("Open Files", current_window);
@@ -152,10 +168,11 @@ public class ViewBuilder {
 		drift_correction.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
-		    	ScheduledState drift_state = create_new_window(get_drift_correction_view(), manager);
-		    	SystemWindow drift_window = (SystemWindow) drift_state;
+		    	ScheduledState drift_state = create_new_drift_window(get_drift_correction_view(), manager);
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DriftCorrectionDS> drift_window = (SystemWindow<DriftCorrectionDS>) drift_state;
 		    	
-		    	NewDialog file_selector = new NewDialog("Select Files", (SystemWindow) main_app_view);
+				NewDialog<DriftCorrectionDS> file_selector = new NewDialog<DriftCorrectionDS>("Select Files", (SystemWindow<DriftCorrectionDS>) drift_window);
 			    file_selector.init();
 			    file_selector.on_scheduled(manager, drift_state, null);
 		    }
@@ -164,14 +181,15 @@ public class ViewBuilder {
 		
 		JMenuItem open_test_data = new JMenuItem("Example Data");
 		open_test_data.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
+		    @SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow) current_state;
+		    		current_window = (SystemWindow<DataStore>) current_state;
 		    	}
 		    	
 		    	DataStore ds = new DataStore(current_window);
@@ -190,7 +208,8 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Export as", "response");
@@ -215,7 +234,8 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	if (current_window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Export as", "model");
 		    		export_dialog.init();
@@ -258,7 +278,8 @@ public class ViewBuilder {
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	SystemWindow temp = (SystemWindow) main_app_view;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataBackend> temp = (SystemWindow<DataBackend>) main_app_view;
 		    	temp.split_panels();
 		    }
 		});
@@ -266,7 +287,8 @@ public class ViewBuilder {
 		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
 		regroup_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	SystemWindow temp = (SystemWindow) main_app_view;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataBackend> temp = (SystemWindow<DataBackend>) main_app_view;
 		    	temp.regroup_panels();
 		    }
 		});
@@ -276,7 +298,8 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	
 		    	ScheduledState current_state = main_app_view;
-		    	SystemWindow current_window = (SystemWindow) current_state;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
 		    	if (OPEN_VIEWS > 1) {
 	    			OPEN_VIEWS--;
 		    		current_window.setVisible(false);

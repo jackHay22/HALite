@@ -2,11 +2,11 @@ package ui_stdlib.components;
 
 import java.awt.Color;
 import javax.swing.JLabel;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class VerticalPanel extends ui_framework.SystemPanel {
+public class VerticalPanel<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> {
 	private JLabel title;
 	public VerticalPanel(String text, Color color) {
 		super();
@@ -27,10 +27,10 @@ public class VerticalPanel extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {}
+	public void set_datastore(Backend datastore) {}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {}
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {}
 
 	@Override
 	public void on_start() {

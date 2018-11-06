@@ -5,15 +5,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class PanelHeader extends ui_framework.SystemPanel {
+public class PanelHeader<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> {
 	private GridBagConstraints constraints;
 	private int constraint_loc;
-	private ArrayList<Refreshable> refreshable_panels;
+	private ArrayList<Refreshable<Backend>> refreshable_panels;
 	private JLabel title;
 	
 	public PanelHeader(String title, Color color) {
@@ -32,7 +32,7 @@ public class PanelHeader extends ui_framework.SystemPanel {
 		}
 	}
 	
-	public void add_header_component(ui_framework.SystemPanel c, int weight) {
+	public void add_header_component(ui_framework.SystemPanel<Backend> c, int weight) {
 		constraints.gridx = this.constraint_loc;
 		constraints.weightx = weight;
 		this.add(c, constraints);
@@ -41,7 +41,7 @@ public class PanelHeader extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 	}
 	
 	public void set_text(String text) {
@@ -49,7 +49,7 @@ public class PanelHeader extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 		refreshable_panels.add(refreshable_component);
 	}
 

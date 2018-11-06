@@ -15,12 +15,12 @@ import ui_stdlib.SystemThemes;
 import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")
-public class CorrelationGraph extends ui_framework.SystemPanel {
+public class CorrelationGraph extends ui_framework.SystemPanel<DataStore> {
 	//extends SystemPanel 
 	private DataStore data_store;
-	private GraphPanel graph;
+	private GraphPanel<DataStore> graph;
 	private CorrelationInfo data_to_plot;
-	private HashMap<String, PointSet> data_sets;
+	private HashMap<String, PointSet<DataStore>> data_sets;
 	private EquationPlot eqn;
 
 	private Point line_min;
@@ -42,7 +42,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		super();
 		this.setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
-		this.graph = new GraphPanel(450, 250);
+		this.graph = new GraphPanel<DataStore>(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
 		toggle_unknowns = new JButton("Toggle Unknowns");
 	}
@@ -102,7 +102,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		if (data_to_plot != null) {
 			data_sets = data_to_plot.get_data();
 			this.eqn = data_to_plot.get_equation();
-			ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
+			ArrayList<PointSet<DataStore>> point_sets = new ArrayList<PointSet<DataStore>>();
 			point_sets.add(data_sets.get("standard"));
 			point_sets.add(data_sets.get("unknown"));
 			this.graph.set_point_sets(point_sets);
@@ -136,7 +136,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 		// TODO Auto-generated method stub
 		
 	}

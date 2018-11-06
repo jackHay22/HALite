@@ -2,21 +2,20 @@ package system_drift_correction;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_graphlib.GraphPanel;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class DriftCorrectionGraph extends ui_framework.SystemPanel {
-	private GraphPanel graph;
+public class DriftCorrectionGraph<Backend extends DriftCorrectionDS> extends ui_framework.SystemPanel<Backend> {
+	private GraphPanel<Backend> graph;
 	private GridBagConstraints constraints;
 	
 	public DriftCorrectionGraph() {
 		super();
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
-		graph = new GraphPanel(450, 250);
+		graph = new GraphPanel<Backend>(450, 250);
 		graph.setBackground(SystemThemes.BACKGROUND);
 		graph.set_title("Drift Correction Graph");
 	}
@@ -27,12 +26,12 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {	
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {	
 	}
 
 	@Override

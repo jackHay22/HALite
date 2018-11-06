@@ -3,27 +3,29 @@ package system_utils;
 import ui_graphlib.PointSet;
 
 import java.io.Serializable;
-import java.util.HashMap; 
+import java.util.HashMap;
 
-public class ElementPair implements Serializable {
+import ui_framework.DataBackend; 
+
+public class ElementPair<Backend extends DataBackend> implements Serializable {
 	private static final long serialVersionUID = 6;
 	private Element x_element;
 	private Element y_element;
-	private PointSet standards;
-	private PointSet unknowns;
+	private PointSet<Backend> standards;
+	private PointSet<Backend> unknowns;
 
-	public ElementPair(Element x_element, Element y_element, PointSet standards, PointSet unknowns) {
+	public ElementPair(Element x_element, Element y_element, PointSet<Backend> standards, PointSet<Backend> unknowns) {
 		this.x_element = x_element;
 		this.y_element = y_element;
 		this.standards = standards;
 		this.unknowns = unknowns;
 	}
 	
-	public PointSet get_standards() {
+	public PointSet<Backend> get_standards() {
 		return this.standards;
 	}
 	
-	public PointSet get_unknowns() {
+	public PointSet<Backend> get_unknowns() {
 		return this.unknowns;
 	}
 	
@@ -35,8 +37,8 @@ public class ElementPair implements Serializable {
 		return this.y_element;
 	}
 	
-	public HashMap<String, PointSet> get_points() {
-		HashMap<String, PointSet> points = new HashMap<String, PointSet>();
+	public HashMap<String, PointSet<Backend>> get_points() {
+		HashMap<String, PointSet<Backend>> points = new HashMap<String, PointSet<Backend>>();
 		points.put("Standards", this.standards);
 		points.put("Unknowns", this.unknowns);
 		return points;

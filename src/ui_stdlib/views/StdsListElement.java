@@ -15,16 +15,16 @@ import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SingleViewPanel;
 
 @SuppressWarnings("serial")
-public class StdsListElement extends SystemPanel {
-	private SingleViewPanel model;
-	private SingleViewPanel actual;
+public class StdsListElement extends SystemPanel<DataStore> {
+	private SingleViewPanel<DataStore> model;
+	private SingleViewPanel<DataStore> actual;
 	private DataStore datastore;
 	private boolean backend_loaded;
 	private String standard;
 	private GridBagConstraints constraints;
 	
 	private CalculatedContent list;
-	private ArrayList<SingleViewPanel> panels;
+	private ArrayList<SingleViewPanel<DataStore>> panels;
 	
 	private Double model_val;
 	private Double actual_val;
@@ -71,7 +71,7 @@ public class StdsListElement extends SystemPanel {
 				display = SystemThemes.get_display_number(d);
 			}
 			
-			SingleViewPanel element_panel = new SingleViewPanel(display, SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
+			SingleViewPanel<DataStore> element_panel = new SingleViewPanel<DataStore>(display, SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 			
 			element_panel.toggle_color(datastore.not_used_in_model(standard, disp_e));
 			
@@ -93,13 +93,13 @@ public class StdsListElement extends SystemPanel {
 				display = SystemThemes.get_display_number(d);
 			}
 
-			panels.add(new SingleViewPanel(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
+			panels.add(new SingleViewPanel<DataStore>(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		}
 		
-		model = new SingleViewPanel(SystemThemes.get_display_number(model_val), 
+		model = new SingleViewPanel<DataStore>(SystemThemes.get_display_number(model_val), 
 				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
-		actual = new SingleViewPanel(SystemThemes.get_display_number(actual_val), 
+		actual = new SingleViewPanel<DataStore>(SystemThemes.get_display_number(actual_val), 
 									 SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
 		panels.add(model);
@@ -131,13 +131,13 @@ public class StdsListElement extends SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 
 	@Override
 	public void on_start() {
 		constraints = SystemThemes.get_grid_constraints();
-		panels = new ArrayList<SingleViewPanel>();	
+		panels = new ArrayList<SingleViewPanel<DataStore>>();	
 	}
 
 }

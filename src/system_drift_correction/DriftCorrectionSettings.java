@@ -1,10 +1,9 @@
 package system_drift_correction;
 
-import system_utils.DataStore;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class DriftCorrectionSettings extends ui_framework.SystemPanel {
+public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends ui_framework.SystemPanel<Backend> implements Refreshable<Backend> {
 	
 	public DriftCorrectionSettings() {
 		super();
@@ -15,11 +14,11 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 
 	}
 

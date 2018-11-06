@@ -18,29 +18,29 @@ import ui_stdlib.components.PanelHeader;
 import ui_stdlib.components.SingleViewPanel;
 
 @SuppressWarnings("serial")
-public class CalculatedValuesPanel extends ui_framework.SystemPanel {
+public class CalculatedValuesPanel extends ui_framework.SystemPanel<DataStore> {
 	private DataStore datastore;
 	private JComboBox<Element> selection_dropdown;
 	private GridBagConstraints constraints;
-	private ArrayList<SingleViewPanel> header_panels;
+	private ArrayList<SingleViewPanel<DataStore>> header_panels;
 	private JScrollPane pane;
 
 	private CalculatedContent header;
 	private CalculatedValsScrollingSet set_list;
 	private boolean backend_loaded = false;
 	
-	private SingleViewPanel model_label;
-	private SingleViewPanel actual_label;
+	private SingleViewPanel<DataStore> model_label;
+	private SingleViewPanel<DataStore> actual_label;
 	
 	public CalculatedValuesPanel() {
 		super();
 		selection_dropdown = new JComboBox<Element>(Element.values());
 		set_list = new CalculatedValsScrollingSet();
 
-		header_panels = new ArrayList<SingleViewPanel>();
+		header_panels = new ArrayList<SingleViewPanel<DataStore>>();
 		
-		model_label =  new SingleViewPanel("Model",SystemThemes.MAIN,SystemThemes.BACKGROUND);
-		actual_label =  new SingleViewPanel("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		model_label =  new SingleViewPanel<DataStore>("Model",SystemThemes.MAIN,SystemThemes.BACKGROUND);
+		actual_label =  new SingleViewPanel<DataStore>("Actual",SystemThemes.MAIN,SystemThemes.BACKGROUND);
 
 		header = new CalculatedContent();
 	}
@@ -61,11 +61,11 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 			ArrayList<String> header_labels = datastore.get_WM_headers();
 			
 			for (Element elem : header_elems ) {
-				header_panels.add(new SingleViewPanel(elem.toString(), main, bg));
+				header_panels.add(new SingleViewPanel<DataStore>(elem.toString(), main, bg));
 			}
 			
 			for (String l_string : header_labels) {
-				header_panels.add(new SingleViewPanel(l_string, main, bg));
+				header_panels.add(new SingleViewPanel<DataStore>(l_string, main, bg));
 			}
 			
 			header_panels.add(model_label);
@@ -83,7 +83,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel {
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
 		constraints.gridwidth = 3;
-		PanelHeader panel_header = new PanelHeader("Calculated Values: ", SystemThemes.MAIN);
+		PanelHeader<DataStore> panel_header = new PanelHeader<DataStore>("Calculated Values: ", SystemThemes.MAIN);
 		panel_header.on_start();
 		add(panel_header, constraints);
 		

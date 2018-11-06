@@ -1,36 +1,26 @@
 package ui_graphlib;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
-import java.math.*;
 import java.text.DecimalFormat;
 import system_utils.DataStore;
 import system_utils.ElementCorrelationInfo;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
-import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")
-public class ModelGraph extends ui_framework.SystemPanel {
+public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 	//extends SystemPanel 
 	private DataStore data_store;
-	private GraphPanel graph;
+	private GraphPanel<DataStore> graph;
 	private ElementCorrelationInfo data_to_plot;
-	private HashMap<String, PointSet> data_sets;
+	private HashMap<String, PointSet<DataStore>> data_sets;
 	private EquationPlot eqn;
 
 	private Point line_min;
@@ -53,7 +43,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		super();
 		this.setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
-		this.graph = new GraphPanel(450, 250);
+		this.graph = new GraphPanel<DataStore>(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
 		
 		toggle_unknowns = new JButton("Toggle");
@@ -113,7 +103,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 		this.data_to_plot = this.data_store.get_model_data_corr();
 		this.data_sets = data_to_plot.get_pointsets();
 		this.eqn = data_to_plot.get_equation();
-		ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
+		ArrayList<PointSet<DataStore>> point_sets = new ArrayList<PointSet<DataStore>>();
 		point_sets.add(data_sets.get("standard"));
 		this.graph.set_point_sets(point_sets);
 		this.graph.refresh();
@@ -145,7 +135,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -171,7 +161,7 @@ public class ModelGraph extends ui_framework.SystemPanel {
 	}
 	
 	private void set_labels() {
-		PointSet models = data_to_plot.get_model_plot();
+		PointSet<DataStore> models = data_to_plot.get_model_plot();
 		String s = models.get_y_label();
 		this.graph.set_y_label(s);
 		s = models.get_x_label();

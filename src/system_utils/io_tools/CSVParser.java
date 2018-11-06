@@ -2,10 +2,8 @@ package system_utils.io_tools;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import system_utils.DataTable;
 import system_utils.Element;
 import system_utils.TableKey;

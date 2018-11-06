@@ -10,7 +10,7 @@ import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class ListingSet<E extends ui_framework.ListingPanel> extends ui_framework.SystemPanel {
+public class ListingSet<E extends ui_framework.ListingPanel<DataStore>> extends ui_framework.SystemPanel<DataStore> {
 	private ArrayList<E> all_elements;
 	private DataStore storage_ref;
 	private final Class<E> element_class;
@@ -51,6 +51,7 @@ public class ListingSet<E extends ui_framework.ListingPanel> extends ui_framewor
 		    constraints.anchor = GridBagConstraints.EAST;
 		    add(new_minus_button, constraints); 
 	        
+		    //TODO
 	        new_list_element.set_datastore(this.storage_ref);
 	        new_list_element.on_start();
 	        this.storage_ref.notify_update();
@@ -73,12 +74,12 @@ public class ListingSet<E extends ui_framework.ListingPanel> extends ui_framewor
 
 	@Override
 	public void set_datastore(DataStore datastore) {
-		this.storage_ref = datastore;
+		this.storage_ref =datastore;
 		this.backend_loaded = true;
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 	
 	private void add_plus_to_bottom() {

@@ -60,7 +60,7 @@ public class DataStore extends DataBackend implements Serializable {
 		this.elem_num = 5;
 	}
 	
-	public void set_window(SystemWindow window_parent) {
+	public void set_window(SystemWindow<DataBackend> window_parent) {
 		super.set_window_parent(window_parent);
 	}
 	
@@ -618,7 +618,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return (this.primary == primary && this.secondary == secondary);
 	}
 	
-	
+	@Override
 	public void notify_update() {
 		//on changes to data
 		this.internal_refresh();

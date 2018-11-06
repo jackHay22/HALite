@@ -10,26 +10,25 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.math.*;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.components.PanelHeader;
 import ui_stdlib.components.VerticalPanel;
 
 @SuppressWarnings("serial")
-public class GraphPanel extends ui_framework.SystemPanel implements DrawableManager, MouseListener {
+public class GraphPanel<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> implements DrawableManager, MouseListener {
 	//extends SystemPanel 
 	
-	private ArrayList<PointSet> point_sets;
-	private DrawablePanel points_panel;
-	private PanelHeader header_panel;
-	private PanelHeader r_sqrd_panel;
-	private VerticalPanel y_label;
-	private PanelHeader x_label;
+	private ArrayList<PointSet<Backend>> point_sets;
+	private DrawablePanel<Backend> points_panel;
+	private PanelHeader<Backend> header_panel;
+	private PanelHeader<Backend> r_sqrd_panel;
+	private VerticalPanel<Backend> y_label;
+	private PanelHeader<Backend> x_label;
 	
 	private GridBagConstraints constraints;
-	private DataStore data_store;
+	private Backend data_store;
 	
 	
 	private int draw_width;
@@ -56,14 +55,14 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	
 	public GraphPanel(int width, int height) {
 		super();
-		this.points_panel = new DrawablePanel(this, 450, 250);
+		this.points_panel = new DrawablePanel<Backend>(this, 450, 250);
 
 		setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
-		this.header_panel = new PanelHeader("GRAPH TITLE", SystemThemes.MAIN);
-		this.r_sqrd_panel = new PanelHeader("R^2 EQUATION HERE", SystemThemes.MAIN);
-		this.y_label = new VerticalPanel("y label", SystemThemes.MAIN);
-		this.x_label = new PanelHeader("x label", SystemThemes.MAIN);
+		this.header_panel = new PanelHeader<Backend>("GRAPH TITLE", SystemThemes.MAIN);
+		this.r_sqrd_panel = new PanelHeader<Backend>("R^2 EQUATION HERE", SystemThemes.MAIN);
+		this.y_label = new VerticalPanel<Backend>("y label", SystemThemes.MAIN);
+		this.x_label = new PanelHeader<Backend>("x label", SystemThemes.MAIN);
 		
 		this.draw_width = width;
 		this.draw_height = height;
@@ -288,17 +287,6 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		this.revalidate();
 	}
 
-	@Override
-	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-		this.data_store = datastore;
-	}
-
-	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void draw_components(Graphics2D g) {
@@ -316,7 +304,7 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		point_selected(e);
 	}
 
-	public void set_point_sets(ArrayList<PointSet> pnts) {
+	public void set_point_sets(ArrayList<PointSet<Backend>> pnts) {
 		point_sets = pnts;
 	}
 	
@@ -404,6 +392,17 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void set_datastore(Backend datastore) {
+		this.data_store = datastore;
+		
+	}
+
+	@Override
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 		
 	}
 }

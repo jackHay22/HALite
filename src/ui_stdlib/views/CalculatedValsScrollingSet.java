@@ -7,7 +7,7 @@ import system_utils.Element;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
+public class CalculatedValsScrollingSet extends ui_framework.SystemPanel<DataStore> {
 	private DataStore datastore;
 	private ArrayList<StdsListElement> views;
 	private boolean backend_loaded;
@@ -74,7 +74,7 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 
 	}
 

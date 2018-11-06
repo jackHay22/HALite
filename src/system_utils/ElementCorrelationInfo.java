@@ -14,7 +14,7 @@ import ui_stdlib.SystemThemes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ElementCorrelationInfo implements Refreshable, Serializable {
+public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private static final long serialVersionUID = 4;
 	private Element element;
 	private HashMap<Element, CorrelationInfo> all_correlations;
@@ -29,7 +29,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private HashMap<String, Double> unknown_std_dev;
 	private HashMap<String, ArrayList<Element>> pairs_to_avoid;
 	private EquationPlot Equation;
-	private PointSet model_points;
+	private PointSet<DataStore> model_points;
 	
 	public ElementCorrelationInfo(Element element, HashMap<Element, CorrelationInfo> all_correlations) {
 		this.element = element;
@@ -124,7 +124,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			}
 		}
 		
-		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Model", element.toString() + " Model", true);
+		model_points = new PointSet<DataStore>(point_list, SystemThemes.HIGHLIGHT, "Actual", "Model", element.toString() + " Model", true);
 		
 		double x_0 = reg_obj.getIntercept();
 		double x_1 = reg_obj.getSlope();
@@ -138,12 +138,12 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return Equation;
 	}
 	
-	public PointSet get_model_plot(){
+	public PointSet<DataStore> get_model_plot(){
 		return model_points;
 	}
 	
-	public HashMap<String, PointSet> get_pointsets() {
-		HashMap<String, PointSet> pts = new HashMap<String, PointSet>();
+	public HashMap<String, PointSet<DataStore>> get_pointsets() {
+		HashMap<String, PointSet<DataStore>> pts = new HashMap<String, PointSet<DataStore>>();
 		pts.put("standard", model_points);
 		return pts;
 	}
@@ -414,7 +414,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		}
 	}
 
-	private PointSet std_vs_std() {
+	private PointSet<DataStore> std_vs_std() {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
@@ -427,7 +427,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			}
 		}
 		
-		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
+		model_points = new PointSet<DataStore>(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
 		double x_0 = reg_obj.getIntercept();
 		double x_1 = reg_obj.getSlope();
 		double r_2 = reg_obj.getRSquare();
@@ -448,7 +448,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 		// TODO Auto-generated method stub
 		
 	}

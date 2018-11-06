@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public abstract class SystemPanel extends JPanel implements Refreshable {
+public abstract class SystemPanel<Backend extends DataBackend> extends JPanel implements Refreshable<Backend> {
 	public SystemPanel() {
 		super();
 	}

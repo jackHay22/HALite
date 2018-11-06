@@ -7,11 +7,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.text.DecimalFormat;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;

@@ -14,7 +14,7 @@ import ui_stdlib.components.ListingSet;
 import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
-public class R2SettingsPanel extends ui_framework.SystemPanel{
+public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
 	private int display_rsqrd_assocs = 9; //-1 
@@ -38,7 +38,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 	}
 	
 	public JComboBox<String> get_rsqrd_dropdown(int size) {
@@ -64,7 +64,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel{
 		GridBagConstraints constraints = SystemThemes.get_grid_constraints();
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		PanelHeader header = new PanelHeader("R^2 Entries to display: ", SystemThemes.MAIN);
+		PanelHeader<DataStore> header = new PanelHeader<DataStore>("R^2 Entries to display: ", SystemThemes.MAIN);
 
 		header.add(get_rsqrd_dropdown(10));
 		this.add(header, constraints);
