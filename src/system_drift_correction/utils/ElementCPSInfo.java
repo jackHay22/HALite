@@ -1,5 +1,9 @@
 package system_drift_correction.utils;
 
-public class ElementCPSInfo {
+import ui_graphlib.Point;
 
+public class ElementCPSInfo {
+	public void set_pair(String name, Point pt) {
+		
+	}
 }
