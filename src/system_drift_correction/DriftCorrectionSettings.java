@@ -4,7 +4,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import system_utils.Element;
@@ -18,7 +17,7 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 	private JComboBox<Element> element_selection;
 	private JComboBox<Integer> degree_selection;
 	private int max_degree = 10;
-	private int default_degree = 6;
+	private int default_degree = 5;
 	private int current_elem_index;
 	private int total_elems;
 	private JButton next_element;
@@ -151,7 +150,7 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		add(element_label, constraints);
 		
 		for (int i = 0; i < max_degree; i++) {
-			degree_selection.addItem((Integer) i);
+			degree_selection.addItem((Integer) i + 1);
 		}
 		degree_selection.setSelectedIndex(default_degree);
 			
@@ -162,6 +161,7 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		constraints.gridx = 2;
 		constraints.weightx = 0.5;
 		constraints.gridwidth = 2;
+		constraints.weighty = 0.05;
 		
 		//add degree label
 		add(degree_label, constraints);
@@ -176,10 +176,11 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		constraints.gridwidth = 4;
 		constraints.gridy++;
 		constraints.weighty = 0;
+		constraints.weighty = 0.05;
 		
 		//add spanning label
 		add(label_one, constraints);
-		constraints.weighty = 1;
+		constraints.weighty = 0.9;
 		
 		//add second spanning label
 		constraints.gridy++;
