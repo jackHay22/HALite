@@ -11,7 +11,7 @@ import system_utils.Element;
 import system_utils.Pair;
 
 @SuppressWarnings("serial")
-public class RSquaredListElement extends ui_framework.ListingPanel {
+public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private JComboBox<Element> selection_dropdown;
 	private DataStore datastore;
 	private boolean backend_loaded = false;
@@ -91,7 +91,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 	
 	@Override

@@ -8,13 +8,13 @@ import ui_stdlib.SystemThemes;
 import ui_stdlib.components.SplitViewPanel;
 import system_utils.Element;
 
-public class RSqrdAssocSet implements Refreshable{
+public class RSqrdAssocSet implements Refreshable<DataStore>{
 	private DataStore datastore;
-	private SplitViewPanel graphical_view;
+	private SplitViewPanel<DataStore> graphical_view;
 	
 	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected, boolean value_selected) {
 		
-		graphical_view = new SplitViewPanel(element2.toString(),
+		graphical_view = new SplitViewPanel<DataStore>(element2.toString(),
 											SystemThemes.get_display_number(val),
 											SystemThemes.HIGHLIGHT,
 											SystemThemes.MAIN,
@@ -52,12 +52,12 @@ public class RSqrdAssocSet implements Refreshable{
 
 	}
 	
-	public SplitViewPanel get_graphical_element() {
+	public SplitViewPanel<DataStore> get_graphical_element() {
 		return graphical_view;
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 
 	@Override

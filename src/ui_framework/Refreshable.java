@@ -1,8 +1,8 @@
 package ui_framework;
 
-public interface Refreshable {
+public interface Refreshable <Backend extends DataBackend> { 
 	void refresh();
-	void set_datastore(system_utils.DataStore datastore);
-	void add_refreshable(Refreshable refreshable_component);
+	void set_datastore(Backend datastore);
+	void add_refreshable(Refreshable<Backend> refreshable_component);
 	void on_start();
 }

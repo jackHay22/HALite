@@ -1,15 +1,12 @@
 package ui_graphlib;
 
 import java.util.ArrayList;
-
-import system_utils.DataStore;
-
 import java.awt.Color;
 import java.io.Serializable;
-
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 
-public class PointSet implements Refreshable, Serializable {
+public class PointSet<Backend extends DataBackend> implements Refreshable<Backend>, Serializable {
 	private static final long serialVersionUID = 9;
 
 	private ArrayList<Point> points;
@@ -121,13 +118,13 @@ public class PointSet implements Refreshable, Serializable {
 	}
 	
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 		// TODO Auto-generated method stub
 		
 	}

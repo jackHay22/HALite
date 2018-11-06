@@ -5,13 +5,13 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class SplitViewPanel extends SystemPanel {
+public class SplitViewPanel<Backend extends DataBackend> extends SystemPanel<Backend> {
 	private JButton field_one;
 	private JButton field_two;
 	private Color top_color;
@@ -70,11 +70,11 @@ public class SplitViewPanel extends SystemPanel {
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
+	public void set_datastore(Backend datastore) {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {
 	}
 
 	@Override

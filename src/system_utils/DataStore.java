@@ -9,22 +9,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
 import system_utils.io_tools.TestSuiteReader;
+import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
-
 import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import ui_graphlib.Point;
 
-public class DataStore extends ui_framework.StateResult implements Serializable {
+public class DataStore extends DataBackend implements Serializable {
 
 	private static final long serialVersionUID = 1;
-
-	transient private SystemWindow window_parent;
 	
 	private String save_path;
 	
@@ -44,8 +41,10 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	private int elem_num;
 
+	public boolean calculated_vals_updated = true;
+	
 	public DataStore(SystemWindow window_parent) {
-		this.window_parent = window_parent;
+		super(window_parent);
 		
 		this.save_path = "";
 		
@@ -61,8 +60,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		this.elem_num = 5;
 	}
 	
-	public void set_window(SystemWindow win) {
-		this.window_parent = win;
+	public void set_window(SystemWindow<DataBackend> window_parent) {
+		super.set_window_parent(window_parent);
 	}
 	
 	public void set_save_path(String path) {
@@ -345,6 +344,7 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 	
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
+		calculated_vals_updated = true;
 		this.notify_update();
 	}
 	
@@ -408,14 +408,51 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return this.elem_num;
 	}
 	
-	public ArrayList<String> get_WM_header() {
-		
-		ArrayList<String> headers = this.correlations.get(this.model_data_element).get_selected_names();
-		if (headers.size() > 0) {
+	public ArrayList<Element> get_WM_elems() {
+		ArrayList<Element> headers = this.correlations.get(this.model_data_element).get_selected_names();
+		return headers;
+	}
+	
+	public ArrayList<String> get_WM_headers() {
+		ArrayList<String> headers = new ArrayList<String>();
+		if (get_WM_elems().size() > 0) {
 			headers.add("Std Dev");
 			headers.add("WM");
 		}
 		return headers;
+	}
+	
+	public String get_detailed_report() {
+		HashMap<Element, ElementReport> reports = new HashMap<Element, ElementReport>(); 
+		for (Element elem : Element.values()) {
+			ElementCorrelationInfo elem_info = this.get_correlations(elem);
+			if (elem_info != null) {
+				reports.put(elem, elem_info.create_report());
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.report_header(reports));
+		for (String s : this.get_STDlist()) {
+			for (Element report_elem : Element.values()) {
+				sb.append(reports.get(report_elem).get_row(s));
+			}
+		}
+		sb.append('\n');
+		sb.append('\n');
+		for (String s : this.get_unknown_list()) {
+			for (Element report_elem : Element.values()) {
+				sb.append(reports.get(report_elem).get_row(s));
+			}
+		}
+		return sb.toString();
+	}
+	
+	private String report_header(HashMap<Element, ElementReport> reports) {
+		StringBuilder sb = new StringBuilder();
+		for (Element elem : Element.values()) {
+			sb.append(reports.get(elem).get_header_row());
+		}
+		return sb.toString();
 	}
 	
 	public HashMap<String, HashMap<String, Double>> get_WM_data() {
@@ -428,6 +465,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 			return get_current_actual(std);
 		}
 		return result;
+	}
+	
+	public boolean not_used_in_model(String s, Element e) {
+		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
+		return elem_info.not_in_model(s, e);
 	}
 	
 	public Double get_current_actual(String std) {
@@ -482,7 +524,13 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
 		
 		// Remove all except elements with n highest r2 value
-		for (int j = pairs.size() - elem_num; j < pairs.size(); j++) {
+		int j;
+		if (pairs.size() - elem_num > 0) {
+			j = pairs.size() - elem_num;
+		} else {
+			j = 0;
+		}
+		for (; j < pairs.size(); j++) {
 			n_pairs.add(0, pairs.get(j));
 		}
 		
@@ -532,15 +580,24 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		elem_corr.add_selected(secondary);
-		
+		calculated_vals_updated = true;
 		notify_update();
 	}
 	
+	// Used by CalcValPanel to remove elements from certain calculations
+	public void toggle_sample_elem_pair(String s, Element e) {
+		ElementCorrelationInfo elem_info = this.get_correlations(this.model_data_element);
+		elem_info.toggle_pair_for_model(s, e);
+		calculated_vals_updated = true;
+		notify_update();
+	}
+	
+	// Removes an element from the list of elements used to calculate the model 
 	public void remove_selected_rsqrd_assocs(Element primary, Element secondary) {
 		ElementCorrelationInfo elem_corr = this.correlations.get(primary);
 		
 		elem_corr.remove_selected(secondary);
-		
+		calculated_vals_updated = true;
 		notify_update();
 	}
 	
@@ -548,14 +605,11 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		return (this.primary == primary && this.secondary == secondary);
 	}
 	
-	public void add_update_notify(ui_framework.SystemWindow window_parent) {
-		
-	}
-	
+	@Override
 	public void notify_update() {
 		//on changes to data
 		this.internal_refresh();
-		this.window_parent.refresh();
+		super.notify_update();
 	}
 	
 	private String get_STD_computed_string() {

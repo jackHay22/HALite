@@ -32,6 +32,8 @@ if [ $# -eq 0 ]; then
 elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
+    #write metadata
+    python metadata.py "out/bundles/Interface.app/Contents/Info.plist" ${2}
     RELEASE_VERSION_LABEL=${2}_$DATE
     mkdir -p release/${RELEASE_VERSION_LABEL}
     BUILD_NAME="${APP_NAME}_${RELEASE_VERSION_LABEL}"

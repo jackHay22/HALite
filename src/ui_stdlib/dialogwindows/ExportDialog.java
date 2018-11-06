@@ -10,13 +10,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+=======
+>>>>>>> 4851cc83ef1afd0f4523e33227966d582285a102
 import javax.swing.JLabel;
-
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
 import system_utils.Element;
@@ -25,9 +27,12 @@ import system_utils.FileChooser;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
+<<<<<<< HEAD
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
 import ui_stdlib.SystemThemes;
+=======
+>>>>>>> 4851cc83ef1afd0f4523e33227966d582285a102
 
 @SuppressWarnings("serial")
 public class ExportDialog extends SystemDialog implements ScheduledState {

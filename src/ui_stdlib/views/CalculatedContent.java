@@ -8,7 +8,7 @@ import ui_stdlib.components.SingleViewBar;
 import ui_stdlib.components.SingleViewPanel;
 
 @SuppressWarnings("serial")
-public class CalculatedContent extends SingleViewBar {
+public class CalculatedContent extends SingleViewBar<DataStore> {
 
 	public CalculatedContent() {
 		super();
@@ -18,9 +18,9 @@ public class CalculatedContent extends SingleViewBar {
 	public void refresh() {
 	}
 	
-	public void set_panels(ArrayList<SingleViewPanel> panels) {
+	public void set_panels(ArrayList<SingleViewPanel<DataStore>> panels) {
 		clear_views();
-		for (SingleViewPanel p : panels) {
+		for (SingleViewPanel<DataStore> p : panels) {
 			p.setPreferredSize(SystemThemes.get_std_cell_dim());
 			add_single_view(p);
 		}
@@ -33,7 +33,7 @@ public class CalculatedContent extends SingleViewBar {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 	}
 
 	@Override

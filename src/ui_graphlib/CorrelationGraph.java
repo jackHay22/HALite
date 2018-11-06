@@ -6,21 +6,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JButton;
 import java.text.DecimalFormat;
 import system_utils.DataStore;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.components.ImageRadioButton;
 import system_utils.CorrelationInfo;;
 
 @SuppressWarnings("serial")
-public class CorrelationGraph extends ui_framework.SystemPanel {
+public class CorrelationGraph extends ui_framework.SystemPanel<DataStore> {
 	//extends SystemPanel 
 	private DataStore data_store;
-	private GraphPanel graph;
+	private GraphPanel<DataStore> graph;
 	private CorrelationInfo data_to_plot;
-	private HashMap<String, PointSet> data_sets;
+	private HashMap<String, PointSet<DataStore>> data_sets;
 	private EquationPlot eqn;
 
 	private Point line_min;
@@ -35,16 +35,16 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	private double bottom_buffer_x;
 	private double bottom_buffer_y;
 	
-	private ImageRadioButton toggle_unknowns;
+	private JButton toggle_unknowns;
 	private GridBagConstraints constraints;
 	
 	public CorrelationGraph() {
 		super();
 		this.setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();
-		this.graph = new GraphPanel(450, 250);
+		this.graph = new GraphPanel<DataStore>(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
-		toggle_unknowns = new ImageRadioButton("/buttons/blank_button.png");
+		toggle_unknowns = new JButton("Toggle Unknowns");
 	}
 	
 	public DrawablePanel get_points_panel() {
@@ -106,7 +106,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		if (data_to_plot != null) {
 			data_sets = data_to_plot.get_data();
 			this.eqn = data_to_plot.get_equation();
-			ArrayList<PointSet> point_sets = new ArrayList<PointSet>();
+			ArrayList<PointSet<DataStore>> point_sets = new ArrayList<PointSet<DataStore>>();
 			point_sets.add(data_sets.get("standard"));
 			point_sets.add(data_sets.get("unknown"));
 			this.graph.set_point_sets(point_sets);
@@ -140,7 +140,7 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -149,13 +149,14 @@ public class CorrelationGraph extends ui_framework.SystemPanel {
 		this.constraints.gridx = 0;
 		this.constraints.gridy = 0;
 		constraints.weighty = 1;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		this.add(this.graph, constraints);
 		constraints.weighty = 0;
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
+		constraints.weightx = 0;
 		this.add(toggle_unknowns, constraints);
 		
 	}

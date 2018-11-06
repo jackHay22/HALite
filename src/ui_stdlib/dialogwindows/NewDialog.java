@@ -13,25 +13,26 @@ import javax.swing.BorderFactory;
 import system_utils.DataStore;
 import system_utils.FileChooser;
 import system_utils.io_tools.CSVParser;
+import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
+public class NewDialog<Backend extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
-	private SystemWindow main_window;
+	private SystemWindow<Backend> main_window;
 	private DataStore loaded_datastore;
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public NewDialog(String title, SystemWindow main_window) {
+	public NewDialog(String title, SystemWindow<Backend> main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
@@ -50,7 +51,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
-			//loaded_datastore = new DataStore(main_window);
 			try {
 				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
 											 standards, file_chooser.standards_table, 
@@ -58,10 +58,10 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				continue_button.setEnabled(true);
 				continue_button.setBackground(SystemThemes.MAIN);
 			} catch (Exception e) {
-				e.printStackTrace();
 				continue_button.setEnabled(false);
 				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
+			
 		}
 	}
 	
@@ -155,7 +155,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-				if (file_found) {
+				if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -194,7 +194,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (file_found) {
+		    	if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -233,7 +233,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (file_found) {
+		    	if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 		    		ArrayList<String> tables = new ArrayList<String>();
 					try {

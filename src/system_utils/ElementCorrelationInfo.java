@@ -14,7 +14,7 @@ import ui_stdlib.SystemThemes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ElementCorrelationInfo implements Refreshable, Serializable {
+public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private static final long serialVersionUID = 4;
 	private Element element;
 	private HashMap<Element, CorrelationInfo> all_correlations;
@@ -26,8 +26,10 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	private HashMap<String, Double> standards_std_devs;
 	private HashMap<String, Double> unknown_WMs;
 	private HashMap<String, Double> unknown_models;
+	private HashMap<String, Double> unknown_std_dev;
+	private HashMap<String, ArrayList<Element>> pairs_to_avoid;
 	private EquationPlot Equation;
-	private PointSet model_points;
+	private PointSet<DataStore> model_points;
 	
 	public ElementCorrelationInfo(Element element, HashMap<Element, CorrelationInfo> all_correlations) {
 		this.element = element;
@@ -39,6 +41,34 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		this.std_models = new HashMap<String, Double>();
 		this.unknown_models = new HashMap<String, Double>();
 		this.standards_std_devs = new HashMap<String, Double>();
+		this.unknown_std_dev = new HashMap<String, Double>();
+		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
+	}
+	
+	public boolean not_in_model(String s, Element e) {
+		ArrayList<Element> elems = this.pairs_to_avoid.get(s);
+		return ((elems != null) && elems.indexOf(e) != -1);
+	}
+	
+	public ElementReport create_report() {
+		return new ElementReport(element, selected_elements, pairs_to_avoid, this.get_WM_panel_data());
+	}
+	
+	public void toggle_pair_for_model(String s, Element e) {
+		ArrayList<Element> elems = pairs_to_avoid.get(s);
+		if (elems != null) {
+			int i = elems.indexOf(e);
+			if (i == -1) {
+				elems.add(e);
+				this.pairs_to_avoid.put(s, elems);
+			} else {
+				elems.remove(i);
+			}
+		} else {
+			elems = new ArrayList<Element>();
+			elems.add(0, e);
+			this.pairs_to_avoid.put(s, elems);
+		}
 	}
 	
 	public HashMap<String, Double> get_standard_computed() {
@@ -94,7 +124,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			}
 		}
 		
-		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Model", element.toString() + " Model", true);
+		model_points = new PointSet<DataStore>(point_list, SystemThemes.HIGHLIGHT, "Actual", "Model", element.toString() + " Model", true);
 		
 		double x_0 = reg_obj.getIntercept();
 		double x_1 = reg_obj.getSlope();
@@ -108,12 +138,12 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return Equation;
 	}
 	
-	public PointSet get_model_plot(){
+	public PointSet<DataStore> get_model_plot(){
 		return model_points;
 	}
 	
-	public HashMap<String, PointSet> get_pointsets() {
-		HashMap<String, PointSet> pts = new HashMap<String, PointSet>();
+	public HashMap<String, PointSet<DataStore>> get_pointsets() {
+		HashMap<String, PointSet<DataStore>> pts = new HashMap<String, PointSet<DataStore>>();
 		pts.put("standard", model_points);
 		return pts;
 	}
@@ -163,16 +193,20 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		return corr.in_use();
 	}
 	
-	public ArrayList<String> get_selected_names() {
-		ArrayList<String> sel = new ArrayList<String>();
+	public ArrayList<Element> get_selected_names() {
+		ArrayList<Element> sel = new ArrayList<Element>();
 		for (CorrelationInfo corr : get_selected()) {
-			sel.add(corr.get_secondary().toString());
+			sel.add(corr.get_secondary());
 		}
 		return sel;
 	}
 	
 	private Double get_corr_eq_val(String std, Element elem) {
 		return this.all_correlations.get(elem).get_corr_result(std);
+	}
+	
+	private Double get_unknown_eq_val(String sample, Element elem) {
+		return this.all_correlations.get(elem).get_unknown_corr(sample);
 	}
 	
 	public HashMap<String, HashMap<String, Double>> get_WM_panel_data() {
@@ -182,7 +216,11 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		for (String s : data_store.get_STDlist()) {
 			HashMap<String, Double> inner_map = new HashMap<String, Double>();
 			for (CorrelationInfo corr : this.selected_elements) {
-				inner_map.put(corr.get_secondary().toString(), get_corr_eq_val(s, corr.get_secondary()));
+				Double d = get_corr_eq_val(s, corr.get_secondary());
+				if (d == null) {
+					d = -1.0;
+				}
+				inner_map.put(corr.get_secondary().toString(), d);
 			}
 			
 			inner_map.put("WM", std_WMs.get(s));
@@ -190,6 +228,26 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			
 			inner_map.put("Model_Value", this.std_models.get(s));
 			inner_map.put("Actual", data_store.get_raw_std_elem(s, element));
+			
+			outer_map.put(s, inner_map);
+			
+		}
+		
+		for (String s : data_store.get_unknown_list()) {
+			HashMap<String, Double> inner_map = new HashMap<String, Double>();
+			for (CorrelationInfo corr : this.selected_elements) {
+				Double d = get_unknown_eq_val(s, corr.get_secondary());
+				if (d == null) {
+					d = -1.0;
+				}
+				inner_map.put(corr.get_secondary().toString(), d);
+			}
+			
+			inner_map.put("WM", unknown_WMs.get(s));
+			inner_map.put("Std Dev", this.unknown_std_dev.get(s));
+			
+			inner_map.put("Model_Value", this.unknown_models.get(s));
+			inner_map.put("Actual", data_store.get_raw_unknown_elem(s, element));
 			
 			outer_map.put(s, inner_map);
 			
@@ -250,34 +308,53 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	
-	// neeed ot fix this (apparent by spelign)
+	// This applies the model created using the standards to the unknown data
 	private Double compute_unknown_WM(String sample) {
 		double dividend = 0;
-		
+		DescriptiveStatistics std_dev = new DescriptiveStatistics();
+		Double std_error_sum = 0.0;
+		ArrayList<Element> elems_to_avoid = this.pairs_to_avoid.get(sample);
+		if (elems_to_avoid == null) {
+			elems_to_avoid = new ArrayList<Element>();
+		}
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			Double response = elem_info.get_unknown_corr(sample);
-			if (response != null) {
-				// Make sure these are corrct!! that call to getSE most likely needs to change
-				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
+				Double response = elem_info.get_unknown_corr(sample);
+				if (response != null) {
+					std_dev.addValue(response);
+					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+					std_error_sum += 1/this.getSE(elem_info.get_secondary());
+				}
 			}
 		}
-		return (dividend)/this.getSEInverseSum();
+		Double stdev = std_dev.getStandardDeviation();
+		this.unknown_std_dev.put(sample, stdev);
+		return (dividend)/std_error_sum;
 	}
 	
+	// This applies the model to the standards to be displayed in the bottom left panel 
 	private Double computeWM(String std) {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
+		Double std_error_sum = 0.0;
+		ArrayList<Element> elems_to_avoid = this.pairs_to_avoid.get(std);
+		if (elems_to_avoid == null) {
+			elems_to_avoid = new ArrayList<Element>();
+		}
 		// Read this over for correctness
 		for (CorrelationInfo elem_info : this.selected_elements) {
-			Double response = elem_info.get_corr_result(std);
-			if (response != null) {
-				std_dev.addValue(response);
-				dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
+				Double response = elem_info.get_corr_result(std);
+				if (response != null) {
+					std_dev.addValue(response);
+					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
+					std_error_sum += 1/this.getSE(elem_info.get_secondary());
+				}
 			}
 		}
 		Double stdev = std_dev.getStandardDeviation();
 		this.standards_std_devs.put(std, stdev);
-		return (dividend/this.getSEInverseSum());	
+		return (dividend/std_error_sum);	
 		
 	}
 	
@@ -337,7 +414,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 		}
 	}
 
-	private PointSet std_vs_std() {
+	private PointSet<DataStore> std_vs_std() {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
@@ -350,7 +427,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 			}
 		}
 		
-		model_points = new PointSet(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
+		model_points = new PointSet<DataStore>(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
 		double x_0 = reg_obj.getIntercept();
 		double x_1 = reg_obj.getSlope();
 		double r_2 = reg_obj.getRSquare();
@@ -371,7 +448,7 @@ public class ElementCorrelationInfo implements Refreshable, Serializable {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 		// TODO Auto-generated method stub
 		
 	}

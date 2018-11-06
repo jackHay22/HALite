@@ -3,17 +3,18 @@ package ui_framework;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
-import system_utils.DataStore;
 import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow extends JFrame implements Refreshable, ScheduledState {
-	private ArrayList<Refreshable> refreshable_frames;
-	private ArrayList<SystemPanel> panel_references;
+public class SystemWindow<Backend extends DataBackend> extends JFrame implements Refreshable<Backend>, ScheduledState {
+	private ArrayList<Refreshable<Backend>> refreshable_frames;
+	private ArrayList<SystemPanel<Backend>> panel_references;
 	private int subframe_width;
 	private int subframe_height;
 	private int resize_buffer;
@@ -23,19 +24,25 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	private boolean windows_split = false;
 	private ArrayList<JSplitPane> double_panes;
 	private JSplitPane main_split;
-	private DataStore datastore;
+	private Backend datastore;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
 		
-		refreshable_frames = new ArrayList<Refreshable>();
-		panel_references = new ArrayList<SystemPanel>();
+		refreshable_frames = new ArrayList<Refreshable<Backend>>();
+		panel_references = new ArrayList<SystemPanel<Backend>>();
 		resize_buffer = 20;
 		
 		split_panels = new ArrayList<JFrame>();
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowFocusListener(new WindowAdapter() {
+		    public void windowGainedFocus(WindowEvent e) {
+		    	//System.out.println("Gained focus");
+		        //setVisible(true);
+		    }
+		});
 		this.validate();
 	}
 	
@@ -55,14 +62,14 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
-		this.datastore = datastore;
+	public void set_datastore(Backend datastore) {
+		this.datastore = (Backend) datastore;
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}
 	}
 	
-	public void add_system_panel(SystemPanel new_panel) {
+	public void add_system_panel(SystemPanel<Backend> new_panel) {
 		
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
 		new_panel.setBackground(SystemThemes.BACKGROUND);
@@ -77,7 +84,7 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	}
 	
 	@Override
-	public void add_refreshable(Refreshable refreshable_window) {
+	public void add_refreshable(Refreshable<Backend> refreshable_window) {
 		refreshable_frames.add(refreshable_window);
 	}
 	
@@ -86,12 +93,13 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 	}
 	
 	public void split_panels() {
-		if (did_load_datastore && !windows_split) {
+		//prevent panels from being split if ds not loaded, windows already split, or drift correction loaded
+		if (did_load_datastore && !windows_split && this.panel_references.size() > 2) {
 			remove(main_split);
 			revalidate();
 			repaint();
 			getContentPane().setBackground(SystemThemes.BACKGROUND);
-			SystemPanel temp;
+			SystemPanel<Backend> temp;
 			JFrame temp_frame;
 			Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 			int half_width = screen_dim.width/2;
@@ -161,10 +169,11 @@ public class SystemWindow extends JFrame implements Refreshable, ScheduledState 
 		setVisible(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_state) {
 		if (prev_state != null) {
-			set_datastore((DataStore) prev_state);
+			set_datastore((Backend) prev_state);
 			getContentPane().removeAll();
 			repaint();
 			on_start();

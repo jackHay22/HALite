@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -66,6 +65,9 @@ public class SystemThemes {
 	}
 	
 	public static String get_display_number(Double val, String mask) {
+		if (val == null) {
+			return "N/A";
+		}
 		DecimalFormat df = new DecimalFormat(mask);
 		return df.format(val);
 	}
@@ -93,5 +95,9 @@ public class SystemThemes {
 	
 	public static Dimension get_std_cell_dim() {
 		return new Dimension(40,30);
+	}
+	
+	public static boolean valid_csv(String file_path) {
+		return file_path.endsWith(".csv");
 	}
 }

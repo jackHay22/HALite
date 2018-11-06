@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CorrelationInfo implements Refreshable, Serializable {
+public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private static final long serialVersionUID = 5;
-	private ElementPair data_to_plot;
+	private ElementPair<DataStore> data_to_plot;
 	private Element secondary_element;
 	private EquationPlot equation;
 	private boolean use_in_wm;
@@ -20,7 +20,7 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	private HashMap<String, Double> STD_corr_results = new HashMap<String, Double>();
 	private HashMap<String, Double> unknown_corr_results = new HashMap<String, Double>();
 	
-	public CorrelationInfo(ElementPair elements) {
+	public CorrelationInfo(ElementPair<DataStore> elements) {
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
 		
 		this.data_to_plot = elements;
@@ -30,12 +30,12 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	}
 	
 	private void init() {
-		PointSet points_to_fit = data_to_plot.get_standards();
+		PointSet<DataStore> points_to_fit = data_to_plot.get_standards();
 		this.equation = compute_fit(points_to_fit);
 		this.use_in_wm = false;
 	}
 	
-	private EquationPlot compute_fit(PointSet point_set) {
+	private EquationPlot compute_fit(PointSet<DataStore> point_set) {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> points = point_set.get_points();
 		
@@ -75,11 +75,11 @@ public class CorrelationInfo implements Refreshable, Serializable {
 		return equation.get_r2();
 	}
 	
-	public HashMap<String, PointSet> get_data() {
-		HashMap<String, PointSet> data = new HashMap<String, PointSet>();
+	public HashMap<String, PointSet<DataStore>> get_data() {
+		HashMap<String, PointSet<DataStore>> data = new HashMap<String, PointSet<DataStore>>();
 		
-		PointSet standards = data_to_plot.get_standards();
-		PointSet unknowns = data_to_plot.get_unknowns();
+		PointSet<DataStore> standards = data_to_plot.get_standards();
+		PointSet<DataStore> unknowns = data_to_plot.get_unknowns();
 		
 		data.put("standard", standards);
 		data.put("unknown", unknowns);
@@ -147,7 +147,7 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		PointSet points_to_fit = data_to_plot.get_standards();
+		PointSet<DataStore> points_to_fit = data_to_plot.get_standards();
 		this.equation = compute_fit(points_to_fit);
 		STD_corrs();
 		unknown_corrs();
@@ -160,7 +160,7 @@ public class CorrelationInfo implements Refreshable, Serializable {
 	}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
+	public void add_refreshable(Refreshable<DataStore> refreshable_component) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,48 +1,42 @@
 package ui_stdlib.components;
 
 import java.awt.Color;
-//import java.awt.geom.AffineTransform;
 import javax.swing.JLabel;
-import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 
 @SuppressWarnings("serial")
-public class VerticalPanel extends ui_framework.SystemPanel {
+public class VerticalPanel<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> {
 	private JLabel title;
 	public VerticalPanel(String text, Color color) {
 		super();
 		this.setBackground(color);
 		
-		//AffineTransform transformer = new AffineTransform();
-		this.title = new JLabel(text);
-		this.add(this.title);
+		this.title = new VerticalLabel(text);
+		this.setToolTipText(text);
 	}
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void set_text(String text) {
 		this.title.setText(text);
+		this.setToolTipText(text);
+		revalidate();
 	}
 
 	@Override
-	public void set_datastore(DataStore datastore) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void set_datastore(Backend datastore) {}
 
 	@Override
-	public void add_refreshable(Refreshable refreshable_component) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void add_refreshable(Refreshable<Backend> refreshable_component) {}
 
 	@Override
 	public void on_start() {
-		// TODO Auto-generated method stub
+		title.setVisible(true);
+		revalidate();
+		add(title);
 		
 	}
 
