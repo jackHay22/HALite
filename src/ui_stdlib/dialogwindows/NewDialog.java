@@ -54,18 +54,13 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
-			if (SystemThemes.valid_csv(standards) && SystemThemes.valid_csv(xrf) && SystemThemes.valid_csv(means)) {
-				try {
-					loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
-												 standards, file_chooser.standards_table, 
-												 means, file_chooser.means_table);
-					continue_button.setEnabled(true);
-					continue_button.setBackground(SystemThemes.MAIN);
-				} catch (Exception e) {
-					continue_button.setEnabled(false);
-					continue_button.setBackground(SystemThemes.HIGHLIGHT);
-				}
-			} else {
+			try {
+				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
+											 standards, file_chooser.standards_table, 
+											 means, file_chooser.means_table);
+				continue_button.setEnabled(true);
+				continue_button.setBackground(SystemThemes.MAIN);
+			} catch (Exception e) {
 				continue_button.setEnabled(false);
 				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
