@@ -81,8 +81,8 @@ public class ViewBuilder {
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
     	
-    	main_window.add_system_panel(new DriftCorrectionSettings<DriftCorrectionDS>());	
-    	main_window.add_system_panel(new DriftCorrectionGraph<DriftCorrectionDS>());
+    	main_window.add_system_panel(new DriftCorrectionSettings());	
+    	main_window.add_system_panel(new DriftCorrectionGraph());
     	
     	return main_window;
 	}

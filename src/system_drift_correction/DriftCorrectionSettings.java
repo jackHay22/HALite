@@ -12,7 +12,7 @@ import ui_stdlib.SystemThemes;
 import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
-public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends ui_framework.SystemPanel<Backend> implements Refreshable<Backend> {
+public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorrectionDS> implements Refreshable<DriftCorrectionDS> {
 	private GridBagConstraints constraints;
 	private JComboBox<Element> element_selection;
 	private JComboBox<Integer> degree_selection;
@@ -32,8 +32,13 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 	private PanelHeader<DriftCorrectionDS> label_one; //TODO: rename
 	private PanelHeader<DriftCorrectionDS> label_two; //TODO: rename
 	
+	private boolean backend_loaded;
+	private DriftCorrectionDS datastore;
+	
+	
 	public DriftCorrectionSettings() {
 		super();
+		backend_loaded = false;
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
 		
@@ -63,6 +68,9 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 		    public void actionPerformed(ActionEvent e) {
 				current_elem_index = element_selection.getSelectedIndex();
 				update_button_state();
+				if (backend_loaded) {
+					datastore.notify_update();
+				}
 		    }
 		});
 		
@@ -70,6 +78,9 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 
 	@Override
 	public void refresh() {
+		if (backend_loaded) {
+			System.out.println("Running ds update");
+		}
 	}
 	
 	private void get_next_element() {
@@ -103,11 +114,13 @@ public class DriftCorrectionSettings<Backend extends DriftCorrectionDS> extends 
 	}
 
 	@Override
-	public void set_datastore(Backend datastore) {
+	public void set_datastore(DriftCorrectionDS datastore) {
+		this.datastore = datastore;
+		backend_loaded = true;
 	}
 
 	@Override
-	public void add_refreshable(Refreshable<Backend> refreshable_component) {
+	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 
 	}
 

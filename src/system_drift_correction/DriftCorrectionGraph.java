@@ -7,15 +7,15 @@ import ui_graphlib.GraphPanel;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class DriftCorrectionGraph<Backend extends DriftCorrectionDS> extends ui_framework.SystemPanel<Backend> {
-	private GraphPanel<Backend> graph;
+public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrectionDS> {
+	private GraphPanel<DriftCorrectionDS> graph;
 	private GridBagConstraints constraints;
 	
 	public DriftCorrectionGraph() {
 		super();
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
-		graph = new GraphPanel<Backend>(450, 250);
+		graph = new GraphPanel<DriftCorrectionDS>(450, 250);
 		graph.setBackground(SystemThemes.BACKGROUND);
 		graph.set_title("Drift Correction Graph");
 	}
@@ -26,12 +26,12 @@ public class DriftCorrectionGraph<Backend extends DriftCorrectionDS> extends ui_
 	}
 
 	@Override
-	public void set_datastore(Backend datastore) {
+	public void set_datastore(DriftCorrectionDS datastore) {
 
 	}
 
 	@Override
-	public void add_refreshable(Refreshable<Backend> refreshable_component) {	
+	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {	
 	}
 
 	@Override
