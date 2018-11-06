@@ -1,10 +1,12 @@
 package ui_stdlib.components;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
@@ -24,6 +26,11 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 		this.add(this.title, constraints);
 		this.constraint_loc ++;
 	}
+	
+	public PanelHeader(String title, Color color, int inset) {	
+		this(title,color);
+		setBorder(new EmptyBorder(inset, inset, inset, inset));
+	}
 		
 	@Override
 	public void refresh() {
@@ -38,6 +45,11 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 		this.add(c, constraints);
 		this.constraint_loc ++;
 		add_refreshable(c);
+	}
+	
+	public void add_maximized_component(Component c) {
+		constraints.weightx = 1;
+		add(c, constraints);
 	}
 
 	@Override
