@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
@@ -35,8 +34,8 @@ public class ViewBuilder {
 	
 	private static SystemWindow<DataStore> get_app_view() {
     	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("Ablation Analysis", 
-				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
-				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+														ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
@@ -51,8 +50,8 @@ public class ViewBuilder {
 	
 	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
 		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("Drift Correction", 
-				ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
-				ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+															ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
+															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH, 
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
@@ -110,6 +109,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
+		    	
 		    	@SuppressWarnings("unchecked")
 				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
