@@ -47,6 +47,10 @@ public class CorrelationGraph extends ui_framework.SystemPanel<DataStore> {
 		toggle_unknowns = new JButton("Toggle Unknowns");
 	}
 	
+	public DrawablePanel get_points_panel() {
+		return this.graph.get_points_panel();
+	}
+	
 	private void set_line_endpoints() {
 		double x = 0;
 		double y = g(for_y(f_inv(0)));

@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
+import system_utils.Element;
+
 public class SystemThemes {
 	public static final Color BACKGROUND = new Color(39, 47, 50);
 	public static final Color MAIN = new Color(157, 189, 198);
@@ -22,7 +24,7 @@ public class SystemThemes {
 	public static final Color HIGHLIGHT3 = new Color(202, 41, 62);
 	public static final Color HOVER = new Color(220, 220, 220, 20);
 	
-	private static final int INSET = 5;
+	public static final int INSET = 5;
 	public static final int HEADER_PADDING = 5;
 	
 	public static final String COPYRIGHT = "© 2018 Ben Parfitt, Jack Hay, and Oliver Keh";
@@ -34,7 +36,9 @@ public class SystemThemes {
 	public static final int MAIN_WINDOW_HEIGHT = 750;
 	public static KeyStroke SAVE_BINDING = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
 	
-	public static int SCROLL_PANE_SPEED = 8;
+	public static final int SCROLL_PANE_SPEED = 8;
+	
+	public static final int TOTAL_ELEMENTS = Element.values().length;
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
