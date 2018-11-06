@@ -8,6 +8,7 @@ import ui_framework.SystemWindow;
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
 	private int degree;
+	//TODO: hashmap
 
 	public DriftCorrectionDS(SystemWindow<DataBackend> window_parent) {
 		super(window_parent);
@@ -49,6 +50,15 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	public void set_degree(int degree) {
 		this.degree = degree;
+	}
+	
+	public String get_eqn() {
+		//TODO: use system themes for superscript
+		return "";
+	}
+	
+	public String get_rsqrd() {
+		return "";
 	}
 
 	@Override

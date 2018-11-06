@@ -29,8 +29,8 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	private PanelHeader<DriftCorrectionDS> element_label;
 	private PanelHeader<DriftCorrectionDS> degree_label;
 	
-	private PanelHeader<DriftCorrectionDS> label_one; //TODO: rename
-	private PanelHeader<DriftCorrectionDS> label_two; //TODO: rename
+	private PanelHeader<DriftCorrectionDS> eqn_label; //TODO: rename
+	private PanelHeader<DriftCorrectionDS> rsqrd_label; //TODO: rename
 	
 	private boolean backend_loaded;
 	private DriftCorrectionDS datastore;
@@ -57,10 +57,11 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		element_label = new PanelHeader<DriftCorrectionDS>("Current Element: ", SystemThemes.MAIN, SystemThemes.INSET);
 		degree_label = new PanelHeader<DriftCorrectionDS>("Degree: ", SystemThemes.MAIN, SystemThemes.INSET);
 	
-		label_one = new PanelHeader<DriftCorrectionDS>(SystemThemes.superscript("Placeholder1"), SystemThemes.MAIN);
-		label_one.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
-		label_two = new PanelHeader<DriftCorrectionDS>("Placeholder", SystemThemes.MAIN);
-		label_two.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
+		eqn_label = new PanelHeader<DriftCorrectionDS>(SystemThemes.superscript("---"), SystemThemes.MAIN);
+		eqn_label.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
+		
+		rsqrd_label = new PanelHeader<DriftCorrectionDS>("---", SystemThemes.MAIN);
+		rsqrd_label.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
 		
 		static_button_width = next_element.getPreferredSize().width;
 		
@@ -69,17 +70,27 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 				current_elem_index = element_selection.getSelectedIndex();
 				update_button_state();
 				if (backend_loaded) {
+					datastore.set_element((Element)element_selection.getSelectedItem());
 					datastore.notify_update();
 				}
 		    }
 		});
 		
+		degree_selection.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+				if (backend_loaded) {
+					datastore.set_degree((int)degree_selection.getSelectedItem());
+					datastore.notify_update();
+				}
+		    }
+		});
 	}
 
 	@Override
 	public void refresh() {
 		if (backend_loaded) {
-			System.out.println("Running ds update");
+			eqn_label.set_text(datastore.get_eqn());
+			rsqrd_label.set_text(datastore.get_rsqrd());
 		}
 	}
 	
@@ -192,12 +203,12 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		constraints.weighty = 0.05;
 		
 		//add spanning label
-		add(label_one, constraints);
+		add(eqn_label, constraints);
 		constraints.weighty = 0.9;
 		
 		//add second spanning label
 		constraints.gridy++;
-		add(label_two, constraints);
+		add(rsqrd_label, constraints);
 		
 		constraints.gridy++;
 		constraints.gridx = 0;
