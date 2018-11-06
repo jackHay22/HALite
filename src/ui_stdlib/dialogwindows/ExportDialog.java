@@ -10,14 +10,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
-=======
->>>>>>> 4851cc83ef1afd0f4523e33227966d582285a102
 import javax.swing.JLabel;
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
@@ -27,12 +23,9 @@ import system_utils.FileChooser;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
-<<<<<<< HEAD
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
 import ui_stdlib.SystemThemes;
-=======
->>>>>>> 4851cc83ef1afd0f4523e33227966d582285a102
 
 @SuppressWarnings("serial")
 public class ExportDialog extends SystemDialog implements ScheduledState {
@@ -65,6 +58,9 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 			else if (mode.equals("response")) {
 				save_response_graphs(ds, save_path);
 			}
+			else if (mode.equals("report")) {
+				save_report(ds, save_path);
+			}
 			// 2 more cases
 			
 		}
@@ -95,7 +91,7 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 			ArrayList<CorrelationInfo> corrs;
 			
 			
-			Map<Element, ElementCorrelationInfo> all_corrs = ds.get_correlations();
+			Map<Element, ElementCorrelationInfo> all_corrs = ds.get_correlation_map();
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
 				ElementCorrelationInfo elem_corrs = entry.getValue();
 				ArrayList<CorrelationInfo> selected_elems = elem_corrs.get_selected();
@@ -126,6 +122,17 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		try {
 			PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
 			String output = ds.get_model_string();
+			pw.write(output);
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void save_report(DataStore ds, String save_path) {
+		try {
+			PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
+			String output = ds.get_detailed_report();
 			pw.write(output);
 			pw.close();
 		} catch (FileNotFoundException e) {

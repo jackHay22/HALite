@@ -252,6 +252,25 @@ public class ViewBuilder {
 			}
 		});
 		
+		JMenuItem export_detailed_data = new JMenuItem("Full Model Report (CSV)");
+		export_detailed_data.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//open dialog, set return state to main
+		    	ScheduledState current_state = main_app_view;
+		    	@SuppressWarnings("unchecked")
+				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
+		    	if (current_window.datastore_set()) {
+		    		ExportDialog export_dialog = new ExportDialog("Export as", "report");
+		    		export_dialog.init();
+		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    	}
+		    	else {
+					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
+					err.show_dialog();
+		    	}
+			}
+		});
+		
 		JMenu open_submenu = new JMenu("Open...");
 		
 		open_submenu.add(open_new);
@@ -263,6 +282,7 @@ public class ViewBuilder {
 		export_submenu.add(export_response_graphs);
 		export_submenu.add(export_calibration_graphs);
 		export_submenu.add(export_model_data);
+		export_submenu.add(export_detailed_data);
 		
 		file.add(open_submenu);
 		file.addSeparator();

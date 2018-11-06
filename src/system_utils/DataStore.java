@@ -266,7 +266,11 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
-	public HashMap<Element, ElementCorrelationInfo> get_correlations() {
+	public ElementCorrelationInfo get_correlations(Element elem) {
+		return this.correlations.get(elem);
+	}
+	
+	public HashMap<Element, ElementCorrelationInfo> get_correlation_map() {
 		return this.correlations;
 	}
 	

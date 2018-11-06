@@ -3,6 +3,7 @@ package ui_graphlib;
 import javax.swing.JPanel;
 
 import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemPanel;
 
@@ -16,7 +17,7 @@ public class ExportPanel extends SystemPanel {
 		
 	}
 
-	@Override
+	//@Override
 	public void set_datastore(DataStore datastore) {
 		this.data_store = datastore;
 	}
@@ -28,6 +29,12 @@ public class ExportPanel extends SystemPanel {
 
 	@Override
 	public void on_start() {
+		
+	}
+
+	@Override
+	public void set_datastore(DataBackend datastore) {
+		// TODO Auto-generated method stub
 		
 	}
 
