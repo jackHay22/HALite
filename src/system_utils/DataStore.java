@@ -43,7 +43,7 @@ public class DataStore extends DataBackend implements Serializable {
 
 	public boolean calculated_vals_updated = true;
 	
-	public DataStore(SystemWindow window_parent) {
+	public DataStore(SystemWindow<DataBackend> window_parent) {
 		super(window_parent);
 		
 		this.save_path = "";
@@ -191,7 +191,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return coords;
 	}
 	
-	private PointSet create_pointset(Element y_elem, Element x_elem, Boolean standards) {
+	private PointSet<DataStore> create_pointset(Element y_elem, Element x_elem, Boolean standards) {
 		String x_axis = x_elem.name();
 		String y_axis = y_elem.name();
 		String title = x_axis + " vs. " + y_axis;
@@ -218,7 +218,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 	
 		// Create point set from coordinates
-		PointSet set = new PointSet(points, color, x_axis, y_axis, title, render);
+		PointSet<DataStore> set = new PointSet<DataStore>(points, color, x_axis, y_axis, title, render);
 		
 		return set;
 	}
@@ -236,15 +236,15 @@ public class DataStore extends DataBackend implements Serializable {
 			for (int j = 0; j < elements.size(); j++) {
 				Element y_elem = elements.get(j);
 				
-				PointSet standards = create_pointset(x_elem, y_elem, true);
-				PointSet unknowns = create_pointset(x_elem, y_elem, false);
+				PointSet<DataStore> standards = create_pointset(x_elem, y_elem, true);
+				PointSet<DataStore> unknowns = create_pointset(x_elem, y_elem, false);
 
 				if (standards != null) {
 
 					standards.set_color(SystemThemes.HIGHLIGHT);
 					unknowns.set_color(SystemThemes.BACKGROUND);
 					
-					ElementPair pair = new ElementPair(x_elem, y_elem, standards, unknowns);
+					ElementPair<DataStore> pair = new ElementPair<DataStore>(x_elem, y_elem, standards, unknowns);
 					
 					CorrelationInfo corr_info = new CorrelationInfo(pair);
 					

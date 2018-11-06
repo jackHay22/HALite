@@ -2,8 +2,6 @@ package system_main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -40,11 +38,11 @@ public class ViewBuilder {
     	//open dialog, set return state to main
     	ScheduledState current_state = main_app_view;
 
-		SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
+		SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
     	
     	if (current_window.datastore_set()) {
     		current_state = create_new_window(get_app_view(), manager);
-    		current_window = (SystemWindow<DataStore>) current_state;
+    		current_window = (SystemWindow<DataBackend>) current_state;
     	}
     	
     	DataStore ds = new DataStore(current_window);
@@ -159,14 +157,14 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	ScheduledState current_state = main_app_view;
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
+				SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
 		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow<DataStore>) current_state;
+		    		current_window = (SystemWindow<DataBackend>) current_state;
 		    	}
 		    	
-		    	NewDialog<DataStore> file_selector = new NewDialog<DataStore>("Select Files", current_window);
+		    	NewDialog file_selector = new NewDialog("Select Files", current_window);
 			    file_selector.init();
 			    file_selector.on_scheduled(manager, current_state, null);
 		    }

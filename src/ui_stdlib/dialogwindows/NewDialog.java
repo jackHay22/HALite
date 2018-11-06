@@ -20,19 +20,19 @@ import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class NewDialog<Backend extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState {
+public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
-	private SystemWindow<Backend> main_window;
+	private SystemWindow<DataBackend> main_window;
 	private DataStore loaded_datastore;
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public NewDialog(String title, SystemWindow<Backend> main_window) {
+	public NewDialog(String title, SystemWindow<DataBackend> main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
