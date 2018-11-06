@@ -1,6 +1,15 @@
 package system_drift_correction;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import system_drift_correction.utils.DriftCorrectionCSVReader;
+import system_drift_correction.utils.ElementCPSInfo;
 import system_utils.Element;
+import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemWindow;
@@ -8,19 +17,45 @@ import ui_framework.SystemWindow;
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
 	private int degree;
-	//TODO: hashmap
+	private boolean loaded_cps_info;
+	private HashMap<Element, ElementCPSInfo> cps_info;
+	private ArrayList<String> standards;
 
 	public DriftCorrectionDS(SystemWindow<DataBackend> window_parent) {
 		super(window_parent);
 		
 		//default degree
 		degree = 6;
+		loaded_cps_info = false;
+		standards = new ArrayList<String>();
 	}
 	
 	@Override
 	public void refresh() {
-
+		if (loaded_cps_info) {
+			
+		}
+	}
+	
+	public boolean init_from_file(String file_path) {
+		DriftCorrectionCSVReader csv_reader = new DriftCorrectionCSVReader();
+		BufferedReader file_reader;
 		
+		try {
+			file_reader = new BufferedReader(new FileReader(file_path));
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+		
+		try {
+			cps_info = csv_reader.load_dc_file(file_reader, standards);
+			loaded_cps_info = true;
+			
+		} catch (ValExpectedException | IOException e) {
+			//IO ERROR OR DATE/TIME NOT FOUND
+			return false;
+		}
+		return loaded_cps_info;
 	}
 	
 	@Override

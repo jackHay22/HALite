@@ -2,6 +2,7 @@ package system_drift_correction.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import system_utils.Element;
@@ -12,7 +13,7 @@ import ui_graphlib.Point;
 public class DriftCorrectionCSVReader {
 	private final String DELIM = ",";
 	
-	public HashMap<Element, ElementCPSInfo> load_dc_file(BufferedReader file_reader) throws ValExpectedException, IOException {
+	public HashMap<Element, ElementCPSInfo> load_dc_file(BufferedReader file_reader, ArrayList<String> stds) throws ValExpectedException, IOException {
 		HashMap<Element, ElementCPSInfo> data_output = new HashMap<Element, ElementCPSInfo>();
 		HashMap<Integer, Element> col_index_elem = new HashMap<Integer, Element>();
 		CSVParser elem_parser = new CSVParser();
@@ -68,6 +69,7 @@ public class DriftCorrectionCSVReader {
 				current_date = current_split_line[date];
 				current_time = current_split_line[time];
 				current_output = current_split_line[0];
+				stds.add(current_output);
 				
 				time_fraction = time_calc();
 				
