@@ -192,7 +192,7 @@ public class ViewBuilder {
 		    	SystemWindow current_window = (SystemWindow) current_state;
 		    	
 		    	if (current_window.datastore_set()) {
-		    		ExportDialog export_dialog = new ExportDialog("Export as", "response");
+		    		ExportDialog export_dialog = new ExportDialog("Exporting", "response");
 		    		export_dialog.init();
 		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}

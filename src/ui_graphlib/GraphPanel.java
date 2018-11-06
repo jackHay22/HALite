@@ -130,6 +130,10 @@ public class GraphPanel extends ui_framework.SystemPanel implements DrawableMana
 		set_ratio();
 	}
 	
+	public DrawablePanel get_points_panel() {
+		return this.points_panel;
+	}
+	
 	private void set_ratio() {
 
 		for (int i = 0; i < point_sets.size(); i++) {

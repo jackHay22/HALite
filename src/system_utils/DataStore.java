@@ -267,21 +267,8 @@ public class DataStore extends ui_framework.StateResult implements Serializable 
 		}
 	}
 	
-	public void displayed_elems(Element elem) {
-		if (this.displayed_elems.contains(elem)) {
-			this.displayed_elems.remove(elem);
-		}
-		else {
-			this.displayed_elems.add(elem);
-		}
-	}
-	
-	public ArrayList<Element> get_displayed_elems() {
-		return this.displayed_elems;
-	}
-	
-	public ElementCorrelationInfo get_correlations(Element elem) {
-		return this.correlations.get(elem);
+	public HashMap<Element, ElementCorrelationInfo> get_correlations() {
+		return this.correlations;
 	}
 	
 	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
