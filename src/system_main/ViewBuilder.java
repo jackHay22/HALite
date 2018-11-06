@@ -169,12 +169,16 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	ScheduledState drift_state = create_new_drift_window(get_drift_correction_view(), manager);
-		    	@SuppressWarnings("unchecked")
+
+				@SuppressWarnings("unchecked")
 				SystemWindow<DriftCorrectionDS> drift_window = (SystemWindow<DriftCorrectionDS>) drift_state;
 		    	
-				NewDialog<DriftCorrectionDS> file_selector = new NewDialog<DriftCorrectionDS>("Select Files", (SystemWindow<DriftCorrectionDS>) drift_window);
-			    file_selector.init();
-			    file_selector.on_scheduled(manager, drift_state, null);
+				drift_window.on_start();
+				//TODO
+//				NewDialog<DriftCorrectionDS> file_selector = new NewDialog<DriftCorrectionDS>("Select Files", (SystemWindow<DriftCorrectionDS>) drift_window);
+//			    
+//				file_selector.init();
+//			    file_selector.on_scheduled(manager, drift_state, null);
 		    }
 		});
 		
