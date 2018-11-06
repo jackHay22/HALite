@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,18 +54,22 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			String xrf = file_chooser.get_xrf();
 			String standards = file_chooser.get_standards();
 			
-			//loaded_datastore = new DataStore(main_window);
-			try {
-				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
-											 standards, file_chooser.standards_table, 
-											 means, file_chooser.means_table);
-				continue_button.setEnabled(true);
-				continue_button.setBackground(SystemThemes.MAIN);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (SystemThemes.valid_csv(standards) && SystemThemes.valid_csv(xrf) && SystemThemes.valid_csv(means)) {
+				try {
+					loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
+												 standards, file_chooser.standards_table, 
+												 means, file_chooser.means_table);
+					continue_button.setEnabled(true);
+					continue_button.setBackground(SystemThemes.MAIN);
+				} catch (Exception e) {
+					continue_button.setEnabled(false);
+					continue_button.setBackground(SystemThemes.HIGHLIGHT);
+				}
+			} else {
 				continue_button.setEnabled(false);
 				continue_button.setBackground(SystemThemes.HIGHLIGHT);
 			}
+			
 		}
 	}
 	
@@ -155,7 +163,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-				if (file_found) {
+				if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -194,7 +202,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (file_found) {
+		    	if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 			    	ArrayList<String> tables = new ArrayList<String>();
 					try {
@@ -233,7 +241,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	String file = loaded_datastore.get_path();
 		    	
 		    	// Open file dialog and wait for action
-		    	if (file_found) {
+		    	if (file_found && SystemThemes.valid_csv(file)) {
 		    		
 		    		ArrayList<String> tables = new ArrayList<String>();
 					try {

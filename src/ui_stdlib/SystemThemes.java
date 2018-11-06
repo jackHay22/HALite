@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
@@ -96,5 +99,9 @@ public class SystemThemes {
 	
 	public static Dimension get_std_cell_dim() {
 		return new Dimension(40,30);
+	}
+	
+	public static boolean valid_csv(String file_path) {
+		return file_path.endsWith(".csv");
 	}
 }
