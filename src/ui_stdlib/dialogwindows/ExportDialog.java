@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,6 +16,10 @@ import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
 import system_utils.Element;
@@ -86,6 +91,28 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		this.add(button2, BorderLayout.PAGE_END);
 		
 		show_dialog();
+
+		
+		PDDocument document = new PDDocument();
+		PDPage blankPage = new PDPage();
+		document.addPage( blankPage );
+
+		// Save the newly created document
+		try {
+			document.save(save_path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// finally make sure that the document is properly
+		// closed.
+		try {
+			document.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		try {
 			ArrayList<CorrelationInfo> corrs;
