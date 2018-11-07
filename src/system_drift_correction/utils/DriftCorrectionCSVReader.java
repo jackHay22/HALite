@@ -44,10 +44,12 @@ public class DriftCorrectionCSVReader {
 		}
 		
 		if (date == -1) {
+			System.out.println("Debug: No date in drift correction csv!");
 			throw new ValExpectedException("No date in drift correction csv!");
 		}
 		
 		if (time == -1) {
+			System.out.println("Debug: No time in drift correction csv!");
 			throw new ValExpectedException("No time in drift correction csv!");
 		}
 		

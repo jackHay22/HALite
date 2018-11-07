@@ -21,7 +21,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	private HashMap<Element, ElementCPSInfo> cps_info;
 	private ArrayList<String> standards;
 
-	public DriftCorrectionDS(SystemWindow<DataBackend> window_parent) {
+	public DriftCorrectionDS(SystemWindow<DriftCorrectionDS> window_parent) {
 		super(window_parent);
 		
 		//default degree
