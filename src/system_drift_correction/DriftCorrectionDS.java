@@ -110,5 +110,4 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
 	}
-
 }

@@ -44,17 +44,15 @@ public class DriftCorrectionCSVReader {
 		}
 		
 		if (date == -1) {
-			System.out.println("Debug: No date in drift correction csv!");
 			throw new ValExpectedException("No date in drift correction csv!");
 		}
 		
 		if (time == -1) {
-			System.out.println("Debug: No time in drift correction csv!");
 			throw new ValExpectedException("No time in drift correction csv!");
 		}
 		
 		double current_val;
-		double time_fraction;
+		double time_fraction = 0.0;
 		Element current_elem;
 		String current_output;
 		ElementCPSInfo current_cpsobj;
@@ -73,7 +71,7 @@ public class DriftCorrectionCSVReader {
 				current_output = current_split_line[0];
 				stds.add(current_output);
 				
-				time_fraction = time_calc();
+				time_fraction = time_calc(current_date, current_time);
 				
 				for (Map.Entry<Integer, Element> entry : col_index_elem.entrySet()) {
 					
@@ -91,8 +89,19 @@ public class DriftCorrectionCSVReader {
 		return data_output;
 	}
 	
-	public double time_calc() {
-		//TODO @BEN
+	//tries to parse time and date and calculate
+	public double time_calc(String date, String time) throws ValExpectedException {
+		String[] date_components = date.trim().split("/");
+		String[] time_components = time.trim().split(":");
+		
+		int month = Integer.parseInt(date_components[0]);
+		int day = Integer.parseInt(date_components[1]);
+		int year = Integer.parseInt(date_components[2]);
+		
+		int hr = Integer.parseInt(time_components[0]);
+		int min = Integer.parseInt(time_components[1]);
+		int sec = Integer.parseInt(time_components[2]);
+		
 		return 0.0;
 	}
 }
