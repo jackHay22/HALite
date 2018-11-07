@@ -1,11 +1,14 @@
-package system_utils;
+package system_utils.io_tools;
 
 import java.awt.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
+
+import system_utils.DataStore;
+import ui_framework.DataBackend;
 import ui_stdlib.dialogwindows.SystemDialog;
 
-public class FileChooser extends ui_framework.StateResult {
+public class FileChooser<Backend extends DataBackend> extends ui_framework.StateResult {
 	FileDialog file_dialog;
 	public String xrf;
 	public String standards;
@@ -57,6 +60,10 @@ public class FileChooser extends ui_framework.StateResult {
 	
 	public String get_xrf() {
 		return xrf;
+	}
+	
+	public void sys_get_filepath(Backend to_load) {
+		
 	}
 	
 	public String get_standards() {

@@ -21,7 +21,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	private HashMap<Element, ElementCPSInfo> cps_info;
 	private ArrayList<String> standards;
 
-	public DriftCorrectionDS(SystemWindow<DataBackend> window_parent) {
+	public DriftCorrectionDS(SystemWindow<DriftCorrectionDS> window_parent) {
 		super(window_parent);
 		
 		//default degree
@@ -39,6 +39,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		}
 	}
 	
+	@Override
 	public boolean init_from_file(String file_path) {
 		DriftCorrectionCSVReader csv_reader = new DriftCorrectionCSVReader();
 		BufferedReader file_reader;
@@ -111,5 +112,4 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
 	}
-
 }
