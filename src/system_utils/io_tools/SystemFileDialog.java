@@ -41,7 +41,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	private String get_path() {
 		system_file_dialog.setMode(FileDialog.LOAD);
 		system_file_dialog.setVisible(true);
-		
-		return system_file_dialog.getFile();
+
+		return system_file_dialog.getDirectory() + system_file_dialog.getFile();
 	}
 }
