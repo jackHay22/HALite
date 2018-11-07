@@ -35,7 +35,7 @@ public class DriftCorrectionCSVReader {
 				Element current_element = Element.valueOf(elem_parser.col_name(current_split_line[i]));
 				col_index_elem.put(new Integer(i), current_element);
 				
-				data_output.put(current_element, new ElementCPSInfo());
+				data_output.put(current_element, new ElementCPSInfo(current_element));
 			} else if (current_split_line[i].toLowerCase().contains("date")) {
 				date = i;
 			} else if (current_split_line[i].toLowerCase().contains("time")) {

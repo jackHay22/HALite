@@ -33,7 +33,9 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void refresh() {
 		if (loaded_cps_info) {
-			
+			for (ElementCPSInfo elem_info : cps_info.values()) {
+				elem_info.set_datastore(this);
+			}
 		}
 	}
 	
