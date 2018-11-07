@@ -19,6 +19,9 @@ import javax.swing.JLabel;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
@@ -91,28 +94,9 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		this.add(button2, BorderLayout.PAGE_END);
 		
 		show_dialog();
-
 		
+		// Create new PDF 
 		PDDocument document = new PDDocument();
-		PDPage blankPage = new PDPage();
-		document.addPage( blankPage );
-
-		// Save the newly created document
-		try {
-			document.save(save_path);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		// finally make sure that the document is properly
-		// closed.
-		try {
-			document.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {
 			ArrayList<CorrelationInfo> corrs;
@@ -122,6 +106,16 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
 				ElementCorrelationInfo elem_corrs = entry.getValue();
 				ArrayList<CorrelationInfo> selected_elems = elem_corrs.get_selected();
+				
+				// Go to next element if no secondary elements selected
+				if (selected_elems.isEmpty())
+					continue;
+				
+				// Create a new page for every element
+				PDPage curr_elem = new PDPage();
+				document.addPage(curr_elem);
+				
+				
 				
 				for (CorrelationInfo corr_info : selected_elems) {
 					
@@ -142,6 +136,23 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		} catch (Exception e) {
 			ErrorDialog err = new ErrorDialog("Export Error", "Unable to export project to PDF.");
 			err.show_dialog();
+		}
+		
+		// Save the newly created document
+		try {
+			document.save(save_path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// finally make sure that the document is properly
+		// closed.
+		try {
+			document.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	
