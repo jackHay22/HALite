@@ -8,7 +8,14 @@ public class Formulas {
 		
 	}
 	
-	private static Double mean_of_array(ArrayList<Double> points) {
+	public static ArrayList<Double> normalize(ArrayList<Double> vals, Double norm) {
+		for (Double d : vals) {
+			d = d/norm;
+		}
+		return vals;
+	}
+	
+	public static Double mean_of_array(ArrayList<Double> points) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		
 		for (Double pt : points) {
@@ -18,9 +25,20 @@ public class Formulas {
 		return mean;
 	}
 	
-	private static Double sum_mean_diff_squared(ArrayList<Double> points) {
+	public static Double sum_mean_diff_squared(ArrayList<Double> points) {
 		
 		Double mean = mean_of_array(points);
+		Double squares_sum = 0.0;
+		for (Double pt : points) {
+			squares_sum += Math.pow((pt - mean), 2);
+		}
+		
+		return squares_sum;
+		
+	}
+	
+	public static Double sum_mean_diff_squared(ArrayList<Double> points, Double mean) {
+		
 		Double squares_sum = 0.0;
 		for (Double pt : points) {
 			squares_sum += Math.pow((pt - mean), 2);

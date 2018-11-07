@@ -85,6 +85,10 @@ public class PointSet<Backend extends DataBackend> implements Refreshable<Backen
 		this.color = c;
 	}
 	
+	public void set_points(ArrayList<Point> points) {
+		this.points = points;
+	}
+	
 	public String get_title() {
 		return this.title;
 	}
@@ -115,6 +119,22 @@ public class PointSet<Backend extends DataBackend> implements Refreshable<Backen
 
 	public ArrayList<Point> get_points() {
 		return points;
+	}
+	
+	public ArrayList<Double> get_x_vals() {
+		ArrayList<Double> x_vals = new ArrayList<Double>();
+		for (Point point : points) {
+			x_vals.add(point.get_x());
+		}
+		return x_vals;
+	}
+	
+	public ArrayList<Double> get_y_vals() {
+		ArrayList<Double> y_vals = new ArrayList<Double>();
+		for (Point point : points) {
+			y_vals.add(point.get_y());
+		}
+		return y_vals;
 	}
 	
 	@Override

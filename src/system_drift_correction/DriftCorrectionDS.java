@@ -83,6 +83,10 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return degree;
 	}
 	
+	public ArrayList<String> get_sample_list() {
+		return this.standards;
+	}
+	
 	public void set_degree(int degree) {
 		this.degree = degree;
 	}

@@ -69,12 +69,19 @@ public class ElementReport {
 		sb.append(s);
 		row_length++;
 		sb.append(',');
+		ArrayList<Element> avoid = this.pairs_to_avoid.get(s);
 		for (Element elem : elements_used) {
 			Double d = data.get(elem.toString());
 			if (d == null) {
 				sb.append("N/A");
 			} else {
-				sb.append(d);
+				if (avoid.indexOf(elem) == -1) {
+					sb.append("*");
+					sb.append(d);
+					sb.append("*");
+				} else {
+					sb.append(d);
+				}
 			}
 			sb.append(',');
 			row_length++;
@@ -86,7 +93,11 @@ public class ElementReport {
 			sb.append(',');
 			row_length += 2;
 		}
-		sb.append(data.get("Model_Value"));
+		if (data.get("Model_Value") == null) {
+			sb.append(data.get("Actual"));
+		} else {
+			sb.append(data.get("Model_Value")); 
+		}
 		sb.append(',');
 		sb.append(data.get("Actual"));
 		sb.append(",");
