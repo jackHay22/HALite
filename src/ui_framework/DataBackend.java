@@ -24,4 +24,9 @@ public abstract class DataBackend extends StateResult {
 		//ds subclasses override (return read status
 		return false;
 	}
+	
+	public boolean save_to_filepath(String path) {
+		//ds subclasses override (return read status
+		return false;
+	}
 }
