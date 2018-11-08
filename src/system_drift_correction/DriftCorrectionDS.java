@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import system_drift_correction.utils.DriftCorrectionCSVReader;
 import system_drift_correction.utils.ElementCPSInfo;
+import system_drift_correction.utils.ElementDriftInfo;
 import system_utils.Element;
 import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
@@ -61,6 +62,121 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return loaded_cps_info;
 	}
 	
+	private ArrayList<Double> sorted_times(String s) {
+		
+		ArrayList<Double> times = new ArrayList<Double>();
+		
+		for (Element e : Element.values()) {
+			if (cps_info.containsKey(e)) {
+				times = cps_info.get(e).get_sorted_times();
+				break;
+			}
+		}	
+		return times;
+	}
+	
+	public String get_full_report() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.get_header());
+		
+		for (String s : this.get_sample_list()) {
+			ArrayList<Double> times = this.sorted_times(s);
+			
+			for (int i = 0; i < times.size(); i++) {
+				Double d = times.get(i);
+				sb.append(s);
+				sb.append(',');
+				sb.append(d);
+				sb.append(',');
+				
+				for (Element elem : Element.values()) {
+					ElementCPSInfo info = cps_info.get(elem);
+					if (info != null) {
+						sb.append(info.get_sorted_points(s).get(i).get_y());
+						sb.append(',');
+					}
+				}
+				sb.append('\n');
+			}
+			
+			sb.append("mean,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("mean"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append("std dev,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("std dev"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append("see,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("see"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append('\n');
+		}
+
+		return sb.toString();
+		
+	}
+	
+	public String get_means() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("#Means, , \n");
+		sb.append(this.get_header());
+		
+		for (String s : this.get_sample_list()) {
+			sb.append(s);
+			sb.append(",mean,");
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_mean(s));
+					sb.append(',');
+				}
+			}
+			sb.append('\n');
+		}
+
+		sb.append("#END");
+		return sb.toString();
+	}
+	
+	private String get_header() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("sourcefile,note,");
+		
+		for (Element elem : Element.values()) {
+			if (cps_info.get(elem) != null) {
+				sb.append(elem.toString());
+				sb.append(',');
+			}
+		}
+		
+		sb.append('\n');
+		
+		return sb.toString();
+	}
+	
 	@Override
 	public void notify_update() {
 		//on changes to data
@@ -84,6 +200,12 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	public int get_degree() {
 		return degree;
+	}
+	
+	public ElementDriftInfo get_plot_info() {
+		ElementDriftInfo info = this.cps_info.get(this.get_element()).get_drift_info();
+		
+		return info;
 	}
 	
 	public ArrayList<String> get_sample_list() {

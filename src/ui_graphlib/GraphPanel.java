@@ -36,11 +36,11 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	private double x_ratio;
 	private double y_ratio;
 	
-	private int min_x = 0;
-	private int max_x = 0;
+	private Double min_x = 0.0;
+	private Double max_x = 0.0;
 	
-	private int min_y = 0;
-	private int max_y = 0;
+	private Double min_y = 0.0;
+	private Double max_y = 0.0;
 
 	private double bottom_buffer_x;
 	private double top_buffer_x;
@@ -68,6 +68,14 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		this.draw_height = height;
 	}
 
+	public Double get_min_x() {
+		return this.min_x;
+	}
+	
+	public Double get_max_x() {
+		return this.max_x;
+	}
+	
 	public void set_title(String s) {
 		header_panel.set_text(s);
 	}
@@ -140,27 +148,29 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 			ArrayList<Point> points = point_sets.get(i).get_points();
 
 			if ((i == 0) && points.size() > 0) {
-				min_x = (int)Math.floor(points.get(0).get_x());
+				min_x = points.get(0).get_x();
 				max_x = min_x;
-				min_y = (int)Math.floor(points.get(0).get_y());
+				min_y = points.get(0).get_y();
 				max_y = min_y;
 			}
 			
 			for (int j = 0; j < points.size(); j++) {
 				if (points.get(j).get_x() < min_x) {
-					min_x = (int)Math.floor(points.get(j).get_x());
+					min_x = points.get(j).get_x();
 				}
 				if (points.get(j).get_y() < min_y) {
-					min_y = (int)Math.floor(points.get(j).get_y());
+					min_y = points.get(j).get_y();
 				}
 				if (points.get(j).get_x() > max_x) {
-					max_x = (int)Math.ceil(points.get(j).get_x());
+					max_x = points.get(j).get_x();
 				}
 				if (points.get(j).get_y() > max_y) {
-					max_y = (int)Math.ceil(points.get(j).get_y());
+					max_y = points.get(j).get_y();
 				}
 			}
 		}
+		
+		
 
 		// These are used to create a buffer around the points placed on the graphs
 		bottom_buffer_x = bottom_buffer(min_x, max_x);
@@ -174,12 +184,12 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	}
 	
 	// The buffer is meant to be 5% on either side, thus / by 20
-	private double bottom_buffer(int min, int max) {
-		return min - (max - min)/buffer_div;
+	private double bottom_buffer(Double min_x2, Double max_x2) {
+		return min_x2 - (max_x2 - min_x2)/buffer_div;
 	}
 
-	private double top_buffer(int min, int max) {
-		return max + (max - min)/buffer_div;
+	private double top_buffer(Double min_x2, Double max_x2) {
+		return max_x2 + (max_x2 - min_x2)/buffer_div;
 	}
 	
 	private void place_line(Graphics2D g) {
@@ -223,16 +233,16 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	
 	private void set_labels(Graphics2D g) {
 		
-		g.drawString(Integer.toString(min_x), draw_width/10, draw_height*39/40);
+		g.drawString(Double.toString(min_x), draw_width/10, draw_height*39/40);
 		g.drawLine(draw_width/buffer_div, draw_height, draw_width/buffer_div, draw_height-(draw_height*1/40));
 		
-		g.drawString(Integer.toString(min_y), draw_width*1/40, draw_height*9/10);
+		g.drawString(Double.toString(min_y), draw_width*1/40, draw_height*9/10);
 		g.drawLine(0, draw_height*7/buffer_div, draw_width/60, draw_height*7/buffer_div);
 		
-		g.drawString(Integer.toString(max_x), draw_width*7/8, draw_height*39/40);
+		g.drawString(Double.toString(max_x), draw_width*7/8, draw_height*39/40);
 		g.drawLine(draw_width*7/buffer_div, draw_height, (int) (draw_width*7/buffer_div), draw_height-(draw_height*1/40));
 		
-		g.drawString(Integer.toString(max_y), draw_width*1/40, draw_height*1/10);
+		g.drawString(Double.toString(max_y), draw_width*1/40, draw_height*1/10);
 		g.drawLine(0, draw_height*1/buffer_div, draw_width/60, draw_height*1/buffer_div);
 	}
 	
