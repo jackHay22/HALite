@@ -41,6 +41,9 @@ public class SystemThemes {
 	
 	public static final float LARGE_TEXT_FONT_SIZE = 20.0f;
 	
+	//FILE EXPORT TYPES
+	public static final int PDF_RESPONSE_GRAPHS = 0;
+	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;

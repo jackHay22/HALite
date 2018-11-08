@@ -253,7 +253,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	}
 	
 	@Override
-	public boolean on_export(String file_path) {
+	public boolean on_export(String file_path, int export_type) {
 		//TODO: write to output file
 		
 		CSVWriter.writeToCSV(file_path + "_full_report", get_full_report());

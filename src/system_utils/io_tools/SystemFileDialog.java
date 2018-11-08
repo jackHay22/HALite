@@ -56,7 +56,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		String component = get_path(FileDialog.SAVE);
 		
 		if (component != null) {
-			return databackend.on_export(component);
+			return databackend.on_export(component, 0); //TODO type
 		} else {
 			return false;
 		}
