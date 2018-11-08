@@ -10,11 +10,11 @@ import system_drift_correction.utils.DriftCorrectionCSVReader;
 import system_drift_correction.utils.ElementCPSInfo;
 import system_drift_correction.utils.ElementDriftInfo;
 import system_utils.Element;
+import system_utils.io_tools.CSVWriter;
 import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemWindow;
-import ui_stdlib.dialogwindows.CSVWriter;
 
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
