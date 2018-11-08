@@ -19,6 +19,7 @@ import system_utils.DataStore;
 import system_utils.Element;
 import system_utils.ElementCorrelationInfo;
 import system_utils.io_tools.SystemFileDialog;
+import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
@@ -26,9 +27,9 @@ import ui_graphlib.DrawablePanel;
 @SuppressWarnings("serial")
 public class ExportDialog<Backend extends DataBackend> extends SystemDialog implements ScheduledState<Backend> {
 	private JLabel save_current_instructions;
-	private String mode;
+	private int mode;
 	
-	public ExportDialog(String title, String mode) {
+	public ExportDialog(String title, int mode) {
 		super(title);
 		//this.setLayout(new BorderLayout(4,0));
 		
@@ -164,7 +165,7 @@ public class ExportDialog<Backend extends DataBackend> extends SystemDialog impl
 			String save_path = backend.get_path().toString();
 			update_save_label(save_path);
 			
-			if (mode.equals("model")) {
+			/*if (mode.equals("model")) {
 				save_model_csv(backend, save_path);
 			}
 			else if (mode.equals("response")) {
@@ -172,7 +173,7 @@ public class ExportDialog<Backend extends DataBackend> extends SystemDialog impl
 			}
 			else if (mode.equals("report")) {
 				save_report(backend, save_path);
-			}
+			}*/
 			// 2 more cases
 			
 		}

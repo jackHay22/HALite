@@ -43,6 +43,10 @@ public class SystemThemes {
 	
 	//FILE EXPORT TYPES
 	public static final int PDF_RESPONSE_GRAPHS = 0;
+	public static final int PDF_CALIBRATION_GRAPHS = 1;
+	public static final int CSV_MODEL_DATA = 2;
+	public static final int CSV_FULL_REPORT = 3;
+	public static final int CSV_DRIFT_CORRECTION = 4;
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();

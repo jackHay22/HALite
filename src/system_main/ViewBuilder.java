@@ -10,9 +10,11 @@ import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
 import system_utils.io_tools.SystemFileDialog;
+import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
+import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.ExportDialog;
 import ui_stdlib.dialogwindows.NewDialog;
@@ -319,7 +321,8 @@ public class ViewBuilder {
 				//open dialog, set return state to main
 
 		    	if (window.datastore_set()) {
-		    		ExportDialog export_dialog = new ExportDialog("Exporting", "response");
+		    		int mode = SystemThemes.PDF_RESPONSE_GRAPHS;
+		    		ExportDialog<DataBackend> export_dialog = new ExportDialog<DataBackend>("Exporting", mode);
 		    		//export_dialog.init();
 		    		//TODO
 		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
@@ -343,7 +346,8 @@ public class ViewBuilder {
 				//open dialog, set return state to main
 
 		    	if (window.datastore_set()) {
-		    		ExportDialog export_dialog = new ExportDialog("Export as", "model");
+		    		int mode = SystemThemes.CSV_MODEL_DATA;
+		    		ExportDialog<DataBackend> export_dialog = new ExportDialog<DataBackend>("Export as", mode);
 		    		//export_dialog.init();
 		    		//TODO
 		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
@@ -360,7 +364,8 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	if (window.datastore_set()) {
-		    		ExportDialog export_dialog = new ExportDialog("Export as", "report");
+		    		int mode = SystemThemes.CSV_FULL_REPORT;
+		    		ExportDialog<DataBackend> export_dialog = new ExportDialog<DataBackend>("Export as", mode);
 		    		
 		    		//TODO this is only for datastore
 		    		//export_dialog.on_scheduled(window.get_datastore());
