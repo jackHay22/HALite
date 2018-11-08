@@ -22,8 +22,13 @@ public abstract class DataBackend {
 		return false;
 	}
 	
-	public boolean add_component_filepath(String path) {
-		//ds subclasses override (return read status)
+	public boolean add_component_filepath(String path, String label) {
+		//ds subclasses override (return read status
+		return false;
+	}
+	
+	public boolean save_to_filepath(String path) {
+		//ds subclasses override (return read status
 		return false;
 	}
 }

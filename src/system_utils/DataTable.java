@@ -8,8 +8,10 @@ public class DataTable implements Serializable {
 	private static final long serialVersionUID = 2;
 	private HashMap<TableKey, Data> data;
 	private HashMap<TableKey, ArrayList<String>> string_data;
+	private String table_name;
 	
-	public DataTable() {
+	public DataTable(String table_name) {
+		this.table_name = table_name;
 		this.data = new HashMap<TableKey, Data>();
 		this.string_data = new HashMap<TableKey, ArrayList<String>>();
 	}
@@ -47,6 +49,10 @@ public class DataTable implements Serializable {
 	
 	public HashMap<TableKey, Data> get_data() {
 		return this.data;
+	}
+	
+	public String name() {
+		return table_name;
 	}
 	
 }

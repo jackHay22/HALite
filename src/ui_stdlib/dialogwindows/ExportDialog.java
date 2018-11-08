@@ -4,12 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
 import system_utils.Element;
@@ -57,6 +66,16 @@ public class ExportDialog extends SystemDialog implements ScheduledState<DataSto
 		
 		show_dialog();
 		
+		// Create new PDF 
+		PDDocument document = new PDDocument();
+		
+		//Creating the PDDocumentInformation object 
+	    PDDocumentInformation pdd = document.getDocumentInformation();
+		pdd.setTitle("Response Graphs");
+		
+		PDPage page = document.getPage(1);
+		//PDPageContentStream contentStream = new PDPageContentStream(document, page);
+		
 		try {
 			ArrayList<CorrelationInfo> corrs;
 			
@@ -65,6 +84,16 @@ public class ExportDialog extends SystemDialog implements ScheduledState<DataSto
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
 				ElementCorrelationInfo elem_corrs = entry.getValue();
 				ArrayList<CorrelationInfo> selected_elems = elem_corrs.get_selected();
+				
+				// Go to next element if no secondary elements selected
+				if (selected_elems.isEmpty())
+					continue;
+				
+				// Create at least one new page for every primary element
+				PDPage curr_elem = new PDPage();
+				document.addPage(curr_elem);
+				
+				
 				
 				for (CorrelationInfo corr_info : selected_elems) {
 					
@@ -85,6 +114,23 @@ public class ExportDialog extends SystemDialog implements ScheduledState<DataSto
 		} catch (Exception e) {
 			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Export Error", "Unable to export project to PDF.");
 			err.show_dialog();
+		}
+		
+		// Save the newly created document
+		try {
+			document.save(save_path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// finally make sure that the document is properly
+		// closed.
+		try {
+			document.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	

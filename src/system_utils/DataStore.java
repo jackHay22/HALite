@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
 import system_utils.io_tools.TestSuiteReader;
@@ -25,14 +28,23 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	private String save_path;
 	
+	public String xrf_path;
+	public String means_path;
+	public String standards_path;
+	
 	private Element primary;
 	private Element secondary;
 	
 	private Element model_data_element = Element.Hf;
 	
-	private DataTable xrf_data;
-	private DataTable standards_data;
-	private DataTable means_data;
+	private ArrayList<DataTable> xrf_data;
+	private ArrayList<DataTable> standards_data;
+	private ArrayList<DataTable> means_data;
+	
+	private String xrf_in_use;
+	private String standards_in_use;
+	private String means_in_use;
+	
 	private DataTable standards_means_data;
 	private DataTable unknown_means_data;
 	
@@ -48,16 +60,102 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		this.save_path = "";
 		
-		this.xrf_data = new DataTable();
-		this.standards_data = new DataTable();
-		this.means_data = new DataTable();
-		this.standards_means_data = new DataTable();
-		this.unknown_means_data = new DataTable();
+		this.standards_means_data = new DataTable("Standards_means");
+		this.unknown_means_data = new DataTable("Unknown_means");
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		this.displayed_elems = new ArrayList<Element>();
 		
 		this.elem_num = 5;
+	}
+	
+	@Override
+	public boolean add_component_filepath(String path, String label) {
+		CSVParser parser = new CSVParser();
+		if (label.equals("xrf")) {
+			try {
+				xrf_data = parser.parse_data(path);
+				xrf_in_use = xrf_data.get(0).name();
+				xrf_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		else if (label.equals("means")) {
+			try {
+				// Haven't imported standards data yet - can't parse means data
+				if (standards_data == null) {
+					return false;
+				}
+				
+				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
+				BufferedReader reader = new BufferedReader(new FileReader(path));
+				
+				
+				// NEED TO REDO THIS SECTION
+				
+				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
+				
+				ArrayList<String> means_table = parser.get_table_names(reader);
+				tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(path)));
+				this.standards_means_data = tables.get("standards");
+				this.unknown_means_data = tables.get("unknowns");
+				
+				create_element_correlations();
+				
+				means_data = parser.parse_data(path);
+				
+				means_in_use = means_data.get(0).name();
+				means_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		else if (label.equals("standards")) {
+			try {
+				standards_data = parser.parse_data(path);
+				standards_in_use = standards_data.get(0).name();
+				standards_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public ArrayList<DataTable> all_tables(String label) {
+		if (label.equals("xrf"))
+			return xrf_data;
+		else if (label.equals("means"))
+			return means_data;
+		else if (label.equals("standards"))
+			return standards_data;
+		
+		return null;
+	}
+	
+	public void set_tables_in_use(String xrf, String standards, String means) {
+		xrf_in_use = xrf;
+		standards_in_use = standards;
+		means_in_use = means;
+	}
+	
+	private DataTable get_table(String name, ArrayList<DataTable> table_list) {
+		for (DataTable dt : table_list) {
+			if (dt.name().equals(name))
+				return dt;
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean save_to_filepath(String path) {
+		//ds subclasses override (return read status
+		return false;
 	}
 	
 	public void set_window(SystemWindow<DataBackend> window_parent) {
@@ -117,9 +215,11 @@ public class DataStore extends DataBackend implements Serializable {
 
 			if (standards_means_data.contains_data(new TableKey(elem.name()))) {
 				
+				DataTable standards = get_table(standards_in_use, standards_data);
+				
 				means = standards_means_data.get_data(new TableKey(elem.name())).get_data();
-				names = standards_data.get_info(new TableKey("Calibrationvalues"));
-				Data temp_stds = standards_data.get_data(new TableKey(elem.name()));
+				names = standards.get_info(new TableKey("Calibrationvalues"));
+				Data temp_stds = standards.get_data(new TableKey(elem.name()));
 				
 				if (temp_stds == null) {
 					data_in_use = new ArrayList<Double>();
@@ -138,9 +238,12 @@ public class DataStore extends DataBackend implements Serializable {
 		} else {
 
 			if (unknown_means_data.contains_data(new TableKey(elem.name()))) {
+				
+				DataTable xrf = get_table(xrf_in_use, xrf_data);
+				
 				means = unknown_means_data.get_data(new TableKey(elem.name())).get_data();
-				names = xrf_data.get_info(new TableKey("Name"));
-				Data temp_xrf = xrf_data.get_data(new TableKey(elem.name()));
+				names = xrf.get_info(new TableKey("Name"));
+				Data temp_xrf = xrf.get_data(new TableKey(elem.name()));
 				
 				// If we have no data to calculate coords with, return an empty arraylist
 				if (temp_xrf == null) {
@@ -273,47 +376,26 @@ public class DataStore extends DataBackend implements Serializable {
 	public HashMap<Element, ElementCorrelationInfo> get_correlation_map() {
 		return this.correlations;
 	}
-	
-	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
-			String means, ArrayList<String> means_table) throws FileNotFoundException {
-		CSVParser parser = new CSVParser();
-				
-		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf_table.get(0), new BufferedReader(new FileReader(xrf)));
-		this.standards_data = parser.data_from_csv(calibration_table.get(0), new BufferedReader(new FileReader(calibration)));
-		
-		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
-		
-		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
-		tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
-		this.standards_means_data = tables.get("standards");
-		this.unknown_means_data = tables.get("unknowns");
-		this.means_data = parser.data_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
-		
-		create_element_correlations();
-		
-	}
-	
-	public void import_test_data(String xrf, String stds, String means) throws FileNotFoundException {
-		CSVParser parser = new CSVParser();
-		
-		TestSuiteReader test_reader = new TestSuiteReader();
-		
-		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv("XRF", test_reader.get_resources_input(xrf));
-		this.standards_data = parser.data_from_csv("standards", test_reader.get_resources_input(stds));
 
-		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
+	public boolean import_test_data(String xrf, String stds, String means) {
+		URI xrf_uri;
+		URI standards_uri;
+		URI means_uri;
+		try {
+			xrf_uri = new URI(getClass().getResource(xrf).toString());
+			standards_uri = new URI(getClass().getResource(stds).toString());
+			means_uri = new URI(getClass().getResource(means).toString());
+		} catch (URISyntaxException e) {
+			return false;
+		}
 		
-		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
-		tables = means_parser.tables_from_csv("MEANS", test_reader.get_resources_input(means));
-		this.standards_means_data = tables.get("standards");
-		this.unknown_means_data = tables.get("unknowns");
-		this.means_data = parser.data_from_csv("MEANS", test_reader.get_resources_input(means));
-
-		create_element_correlations();
+		boolean xrf_loaded = add_component_filepath(xrf_uri.getPath(), "xrf");
+		boolean standards_loaded = add_component_filepath(standards_uri.getPath(), "standards");
+		boolean means_loaded = add_component_filepath(means_uri.getPath(), "means");
+		
+		return xrf_loaded && standards_loaded && means_loaded;
 	}
-	
+		
 	public Double get_std_response_value(String sample, Element elem) {
 		
 		Double top = get_mean_value(sample, elem);		
@@ -339,9 +421,11 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public Double get_mean_value(String sample, Element elem) {
-		int pos = means_data.get_info(new TableKey("sourcefile")).indexOf(sample);
+		DataTable means = get_table(means_in_use, means_data);
+		
+		int pos = means.get_info(new TableKey("sourcefile")).indexOf(sample);
 		if (pos >= 0) {
-			return means_data.get_data(elem).get_data(pos);
+			return means.get_data(elem).get_data(pos);
 		}
 		return null;
 	}
@@ -379,17 +463,21 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<String> get_STDlist() {
-		return standards_data.get_info(new TableKey("Calibrationvalues"));
+		DataTable standards = get_table(standards_in_use, standards_data);
+		
+		return standards.get_info(new TableKey("Calibrationvalues"));
 	}
 	
 	public Double get_raw_std_elem(String standard, Element elem) {
-		Data elem_data = this.standards_data.get_data(elem);
+		DataTable standards = get_table(standards_in_use, standards_data);
+		
+		Data elem_data = standards.get_data(elem);
 		if (elem_data == null) {
 			return null;
 		}
 		
 		// Integer object so it can be tested for null
-		Integer pos = standards_data.get_info(new TableKey("Calibrationvalues")).indexOf(standard);
+		Integer pos = standards.get_info(new TableKey("Calibrationvalues")).indexOf(standard);
 		if (pos.equals(-1)) {
 			return null;
 		}
@@ -546,13 +634,15 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public Double get_raw_unknown_elem(String sample, Element elem) {
-		Data elem_data = this.xrf_data.get_data(elem);
+		DataTable xrf = get_table(xrf_in_use, xrf_data);
+		
+		Data elem_data = xrf.get_data(elem);
 		if (elem_data == null) {
 			return null;
 		}
 
 		// Integer object so it can be tested for null
-		Integer pos = xrf_data.get_info(new TableKey("Name")).indexOf(sample);
+		Integer pos = xrf.get_info(new TableKey("Name")).indexOf(sample);
 		if (pos.equals(-1)) {
 			return null;
 		}
@@ -566,7 +656,9 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<String> get_unknown_list() {
-		return xrf_data.get_info(new TableKey("Name"));
+		DataTable xrf = get_table(xrf_in_use, xrf_data);
+		
+		return xrf.get_info(new TableKey("Name"));
 	}
 	
 	public void set_correlation_graph_elements(Element primary, Element secondary) {

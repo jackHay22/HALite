@@ -2,8 +2,10 @@ package system_utils.io_tools;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import system_utils.DataTable;
 import system_utils.Element;
 import system_utils.TableKey;
@@ -24,7 +26,7 @@ public class CSVParser {
 		
 		// First, read in CSV file row by row
 		try {
-			Boolean found_data = false;
+			Boolean found_data = true;
 			// Parse CSV data from beginning of found data to ending marker
 			while ((current_line = reader.readLine()) != null) {
 				// Get data from the current row
@@ -65,14 +67,6 @@ public class CSVParser {
 	        e.printStackTrace();
 	    } catch (IOException e) {
 	        e.printStackTrace();
-	    } finally {
-	        if (reader != null) {
-	            try {
-	                reader.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
 	    }
 
 		return raw_data;
@@ -160,13 +154,13 @@ public class CSVParser {
 		return table_names;
 	}
 	
-	public DataTable data_from_csv(String table_name, BufferedReader reader) throws FileNotFoundException {
+	private DataTable data_from_csv(BufferedReader reader, String table_name) throws FileNotFoundException {
 		
 		// Empty mapping that will hold all column data for imported CSV data
-		DataTable table = new DataTable();
+		DataTable table = new DataTable(table_name);
 		
 		ArrayList<String[]> raw_data = this.get_raw_table_data(table_name, reader);
-				
+		
 		String[] column_names = raw_data.get(0);
 		
 		// Transpose the raw data and add to DataTable
@@ -213,5 +207,50 @@ public class CSVParser {
 		}
 		
 		return table;
+	}
+	
+	public ArrayList<DataTable> parse_data(String path) throws FileNotFoundException {
+		
+		BufferedReader reader = new BufferedReader(new FileReader(path));
+		
+		String current_line = "";
+		String delimiter = ",";
+		
+		ArrayList<DataTable> tables = new ArrayList<DataTable>();
+		
+		// Parse CSV data from beginning of found data to ending marker
+		try {
+			while ((current_line = reader.readLine()) != null) {
+				String[] row_data = current_line.split(delimiter);
+				
+				if (row_data.length == 0 || row_data[0].length() == 0) {
+					continue;
+				}
+				
+				// Found beginning of a table, skip this line (and comments)
+				if (row_data[0].charAt(0) == '#' && !row_data[0].substring(1).isEmpty() && !row_data[0].substring(1).equals("END")) {
+					
+					// Create new table 
+					DataTable table = data_from_csv(reader, row_data[0].substring(1));
+					tables.add(table);
+					continue;
+				}
+				
+				// Found end of desired table
+				if (row_data[0].charAt(0) == '#' && row_data[0].substring(1).equals("END")) {
+					continue;
+				}
+				
+				// If beginning of row contains '#', ignore as comment
+				if (row_data[0].charAt(0) == '#') {
+					continue;
+				}
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return tables;
 	}
 }

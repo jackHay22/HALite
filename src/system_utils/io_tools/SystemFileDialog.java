@@ -1,6 +1,8 @@
 package system_utils.io_tools;
 
 import java.awt.FileDialog;
+import java.io.File;
+
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import ui_stdlib.dialogwindows.SystemDialog;
@@ -18,7 +20,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean init_backend_on_path(Backend databackend) {
 		//returns read_status
-		String path = get_path();
+		String path = get_path(FileDialog.LOAD);
 		
 		if (path != null) {
 			return databackend.init_from_file(path);
@@ -27,21 +29,38 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		}
 	}
 	
-	public boolean add_component_path(Backend databackend) {
+	public boolean add_component_path(Backend databackend, String label) {
 		//returns read_status
-		String component = get_path();
+		String component = get_path(FileDialog.LOAD);
 		
 		if (component != null) {
-			return databackend.add_component_filepath(component);
+			return databackend.add_component_filepath(component, label);
 		} else {
 			return false;
 		}
 	}
 	
-	private String get_path() {
-		system_file_dialog.setMode(FileDialog.LOAD);
+	public boolean save_on_path(Backend databackend) {
+		//returns read_status
+		String component = get_path(FileDialog.SAVE);
+		
+		if (component != null) {
+			return databackend.save_to_filepath(component);
+		} else {
+			return false;
+		}
+	}
+	
+	private String get_path(int mode) {
+		system_file_dialog.setMode(mode);
 		system_file_dialog.setVisible(true);
-
-		return system_file_dialog.getDirectory() + system_file_dialog.getFile();
+		
+		File[] path = system_file_dialog.getFiles();
+		
+		if (path.length == 0) {
+			return null;
+		}
+		
+		return path[0].getAbsolutePath();
 	}
 }

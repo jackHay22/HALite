@@ -43,6 +43,7 @@ public class FileChooser<Backend extends DataBackend> {
 	public boolean save_file(DataStore ds) {
 		file_dialog.setMode(FileDialog.SAVE);
 		file_dialog.setVisible(true);
+		
 		File[] path = this.file_dialog.getFiles();
 		
 		if (path.length == 0) {
