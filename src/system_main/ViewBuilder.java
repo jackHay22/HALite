@@ -132,10 +132,8 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 
 				DriftCorrectionDS ds = window.get_datastore();
-				
-				if (ds.on_export()) {
-					
-				}
+				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
+				dialog.export_on_path(ds);
 				
 				//TODO: write to file
 //				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
