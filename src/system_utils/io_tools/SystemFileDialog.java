@@ -51,12 +51,12 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		}
 	}
 	
-	public boolean export_on_path(Backend databackend) {
+	public boolean export_on_path(Backend databackend, int type) {
 		//returns read_status
 		String component = get_path(FileDialog.SAVE);
 		
 		if (component != null) {
-			return databackend.on_export(component, 0); //TODO type
+			return databackend.on_export(component, type); //TODO type
 		} else {
 			return false;
 		}
