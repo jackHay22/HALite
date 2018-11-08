@@ -93,7 +93,8 @@ public class ViewBuilder {
 
 	//MENU ITEMS FOR DRIFT CORRECTION SYSTEM VIEW
 	private static JMenuBar get_dc_menu_items(SystemWindow<DriftCorrectionDS> window) {
-		JMenuItem open_new = new JMenuItem("New...");
+		
+		JMenuItem open_new = new JMenuItem("New Analysis...");
 		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +109,22 @@ public class ViewBuilder {
 		    }
 		});
 		
-		JMenu window_menu = new JMenu("Window");
+		JMenuItem open_new_dc = new JMenuItem("New Drift Correction...");
+		//open_new.setAccelerator(SystemKeybindings.NEW);
+		open_new_dc.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+
+				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
+				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
+				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
+
+				if (open_dialog.init_backend_on_path(dc_backend)) {
+					drift_window.on_scheduled(dc_backend);
+				} else {
+					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+				}
+		    }
+		});
 		
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
@@ -140,23 +156,23 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuBar bar = new JMenuBar();
+		
+		//MENUS
+		JMenu file = new JMenu("File");
+		file.add(open_new);
+		file.add(open_new_dc);
+		bar.add(file);
+		
+		JMenu window_menu = new JMenu("Window");
 		window_menu.add(separate_subpanels);
 		window_menu.add(regroup_subpanels);
 		window_menu.addSeparator();
 		window_menu.add(close_window);
-		
-		JMenu open_submenu = new JMenu("Open...");
-
-		open_submenu.add(open_new);
-		
-		JMenuBar bar = new JMenuBar();
-
-		
 		bar.add(window_menu);
 		
-		//MENUS
-		JMenu file = new JMenu("File");
-		bar.add(file);
+		JMenu help = new JMenu("Help");
+		bar.add(help);
 		
 		return bar;
 	}
@@ -334,9 +350,6 @@ public class ViewBuilder {
 		file.addSeparator();
 		file.add(save_as);
 		file.add(save);
-
-		JMenu edit = new JMenu("Edit");
-		bar.add(edit);
 
 		JMenu window_menu = new JMenu("Window");
 		bar.add(window_menu);
