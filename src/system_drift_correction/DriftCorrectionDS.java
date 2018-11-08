@@ -181,6 +181,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void notify_update() {
 		//on changes to data
+		refresh();
 		super.notify_update();
 	}
 
