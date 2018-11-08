@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import system_drift_correction.utils.DriftCorrectionCSVReader;
 import system_drift_correction.utils.ElementCPSInfo;
+import system_drift_correction.utils.ElementDriftInfo;
 import system_utils.Element;
 import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
@@ -21,7 +22,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	private HashMap<Element, ElementCPSInfo> cps_info;
 	private ArrayList<String> standards;
 
-	public DriftCorrectionDS(SystemWindow<DataBackend> window_parent) {
+	public DriftCorrectionDS(SystemWindow<DriftCorrectionDS> window_parent) {
 		super(window_parent);
 		
 		//default degree
@@ -33,7 +34,9 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void refresh() {
 		if (loaded_cps_info) {
-			
+			for (ElementCPSInfo elem_info : cps_info.values()) {
+				elem_info.set_datastore(this);
+			}
 		}
 	}
 	
@@ -57,6 +60,121 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 			return false;
 		}
 		return loaded_cps_info;
+	}
+	
+	private ArrayList<Double> sorted_times(String s) {
+		
+		ArrayList<Double> times = new ArrayList<Double>();
+		
+		for (Element e : Element.values()) {
+			if (cps_info.containsKey(e)) {
+				times = cps_info.get(e).get_sorted_times();
+				break;
+			}
+		}	
+		return times;
+	}
+	
+	public String get_full_report() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.get_header());
+		
+		for (String s : this.get_sample_list()) {
+			ArrayList<Double> times = this.sorted_times(s);
+			
+			for (int i = 0; i < times.size(); i++) {
+				Double d = times.get(i);
+				sb.append(s);
+				sb.append(',');
+				sb.append(d);
+				sb.append(',');
+				
+				for (Element elem : Element.values()) {
+					ElementCPSInfo info = cps_info.get(elem);
+					if (info != null) {
+						sb.append(info.get_sorted_points(s).get(i).get_y());
+						sb.append(',');
+					}
+				}
+				sb.append('\n');
+			}
+			
+			sb.append("mean,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("mean"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append("std dev,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("std dev"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append("see,");
+			
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_stats(s).get("see"));
+					sb.append(',');
+				}
+			}
+
+			sb.append('\n');
+			sb.append('\n');
+		}
+
+		return sb.toString();
+		
+	}
+	
+	public String get_means() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("#Means, , \n");
+		sb.append(this.get_header());
+		
+		for (String s : this.get_sample_list()) {
+			sb.append(s);
+			sb.append(",mean,");
+			for (Element elem : Element.values()) {
+				ElementCPSInfo info = cps_info.get(elem);
+				if (info != null) {
+					sb.append(info.get_mean(s));
+					sb.append(',');
+				}
+			}
+			sb.append('\n');
+		}
+
+		sb.append("#END");
+		return sb.toString();
+	}
+	
+	private String get_header() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("sourcefile,note,");
+		
+		for (Element elem : Element.values()) {
+			if (cps_info.get(elem) != null) {
+				sb.append(elem.toString());
+				sb.append(',');
+			}
+		}
+		
+		sb.append('\n');
+		
+		return sb.toString();
 	}
 	
 	@Override
@@ -84,6 +202,11 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return degree;
 	}
 	
+	public ElementDriftInfo get_plot_info() {
+		ElementDriftInfo info = this.cps_info.get(this.get_element()).get_drift_info();
+		return info;
+	}
+	
 	public ArrayList<String> get_sample_list() {
 		return this.standards;
 	}
@@ -94,11 +217,11 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	public String get_eqn() {
 		//TODO: use system themes for superscript
-		return "";
+		return this.get_plot_info().get_equation().get_str_rep();
 	}
 	
 	public String get_rsqrd() {
-		return "";
+		return Double.toString(this.get_plot_info().get_equation().get_r2());
 	}
 
 	@Override
@@ -110,5 +233,4 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
 	}
-
 }

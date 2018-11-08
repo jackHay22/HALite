@@ -75,7 +75,7 @@ public class ElementReport {
 			if (d == null) {
 				sb.append("N/A");
 			} else {
-				if (avoid.indexOf(elem) == -1) {
+				if (!(avoid == null || avoid.indexOf(elem) == -1)) {
 					sb.append("*");
 					sb.append(d);
 					sb.append("*");

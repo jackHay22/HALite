@@ -38,6 +38,16 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		refresh();
 	}
 	
+	public EquationPlot get_equation() {
+		return this.equation;
+	}
+	
+	public ArrayList<PointSet<DriftCorrectionDS>> get_point_sets() {
+		ArrayList<PointSet<DriftCorrectionDS>> sets = new ArrayList<PointSet<DriftCorrectionDS>>();
+		sets.add(this.points_to_plot);
+		return sets;
+	}
+	
 	private void create_fit() {
 		// uses the apache library to fit a polynomial equation to the set of points
 		PolynomialCurveFitter reg_object = PolynomialCurveFitter.create(this.degree_for_fit);
@@ -124,7 +134,10 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
+		this.degree_for_fit = datastore.get_degree();
+		
 		points_to_plot.refresh();
+		
 		create_fit();
 	}
 

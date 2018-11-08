@@ -554,6 +554,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.report_header(reports));
+		sb.append('\n');
 		for (String s : this.get_STDlist()) {
 			for (Element report_elem : Element.values()) {
 				sb.append(reports.get(report_elem).get_row(s));
@@ -568,6 +569,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 			sb.append('\n');
 		}
+		//System.out.print(sb.toString());
 		return sb.toString();
 	}
 	

@@ -3,20 +3,22 @@ package ui_framework;
 public abstract class DataBackend extends StateResult {
 	protected SystemWindow<DataBackend> window_parent;
 	
-	protected DataBackend(SystemWindow<DataBackend> window_parent) {
-		this.window_parent = window_parent;
+	@SuppressWarnings("unchecked")
+	protected <T extends DataBackend> DataBackend(SystemWindow<T> window_parent) {
+		this.window_parent = (SystemWindow<DataBackend>) window_parent;
 	}
 	
 	public void notify_update() {
 		window_parent.refresh();
 	}
 	
-	protected void set_window_parent(SystemWindow<DataBackend> window_parent) {
-		this.window_parent = window_parent;
+	@SuppressWarnings("unchecked")
+	protected <T extends DataBackend> void set_window_parent(SystemWindow<T> window_parent) {
+		this.window_parent = (SystemWindow<DataBackend>) window_parent;
 	}
 	
 	public boolean init_from_file(String file_path) {
-		//ds subclasses override (return read status
+		//ds subclasses override (return read status)
 		return false;
 	}
 	

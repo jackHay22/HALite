@@ -10,6 +10,7 @@ import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
+import system_utils.io_tools.SystemFileDialog;
 import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -199,14 +200,16 @@ public class ViewBuilder {
 		    	ScheduledState drift_state = create_new_drift_window(get_drift_correction_view(), manager);
 
 				@SuppressWarnings("unchecked")
-				SystemWindow<DriftCorrectionDS> drift_window = (SystemWindow<DriftCorrectionDS>) drift_state;
+				SystemWindow<DriftCorrectionDS> drift_window = (SystemWindow<DriftCorrectionDS>) drift_state;		
+				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);	
+				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
 		    	
-				drift_window.on_start();
-				//TODO
-//				NewDialog<DriftCorrectionDS> file_selector = new NewDialog<DriftCorrectionDS>("Select Files", (SystemWindow<DriftCorrectionDS>) drift_window);
-//			    
-//				file_selector.init();
-//			    file_selector.on_scheduled(manager, drift_state, null);
+				if (open_dialog.init_backend_on_path(dc_backend)) {
+					drift_window.set_datastore(dc_backend);	
+					drift_window.on_start();
+				} else {
+					new ErrorDialog("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+				}
 		    }
 		});
 		

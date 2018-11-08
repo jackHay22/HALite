@@ -137,6 +137,10 @@ public class PointSet<Backend extends DataBackend> implements Refreshable<Backen
 		return y_vals;
 	}
 	
+	public void add_point(Point pt) {
+		this.points.add(pt);
+	}
+	
 	@Override
 	public void set_datastore(Backend datastore) {
 		// TODO Auto-generated method stub
