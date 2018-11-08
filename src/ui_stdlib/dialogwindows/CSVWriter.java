@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 public class CSVWriter {
 	
 	
-	static boolean writeToCSV(String save_path, String output) {
+	static public boolean writeToCSV(String save_path, String output) {
 		
 		try {
 			PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
