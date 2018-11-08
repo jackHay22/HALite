@@ -3,17 +3,12 @@ package ui_stdlib.dialogwindows;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import system_utils.DataStore;
 import system_utils.DataTable;
-import system_utils.io_tools.CSVParser;
-import system_utils.io_tools.FileChooser;
 import system_utils.io_tools.SystemFileDialog;
 import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
@@ -95,8 +90,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		file_chooser = new SystemFileDialog<DataStore>(this, "Open new project");
 		loaded_datastore = new DataStore(main_window);
-		
-		CSVParser table_reader = new CSVParser();
 		
 		JButton xrf_chooser = new JButton("XRF");
 		//Causes windows graphical bug

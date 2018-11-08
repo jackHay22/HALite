@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
@@ -376,53 +376,23 @@ public class DataStore extends DataBackend implements Serializable {
 	public HashMap<Element, ElementCorrelationInfo> get_correlation_map() {
 		return this.correlations;
 	}
-	
-	/*
-	public void import_data(String xrf, ArrayList<String> xrf_table, String calibration, ArrayList<String> calibration_table, 
-			String means, ArrayList<String> means_table) throws FileNotFoundException {
-		CSVParser parser = new CSVParser();
-			
-		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv(xrf_table.get(0), new BufferedReader(new FileReader(xrf)));
-		this.standards_data = parser.data_from_csv(calibration_table.get(0), new BufferedReader(new FileReader(calibration)));
-		
-		
-		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
-		
-		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
-		tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
-		this.standards_means_data = tables.get("standards");
-		this.unknown_means_data = tables.get("unknowns");
-		this.means_data = parser.data_from_csv(means_table.get(0), new BufferedReader(new FileReader(means)));
-		
-		create_element_correlations();
-		
-	}*/
-	
-	/*public void import_test_data(String xrf, String stds, String means) throws FileNotFoundException {
-		CSVParser parser = new CSVParser();
-		
-		TestSuiteReader test_reader = new TestSuiteReader();
-		
-		// Collect all imported data sets
-		this.xrf_data = parser.data_from_csv("XRF", test_reader.get_resources_input(xrf));
-		this.standards_data = parser.data_from_csv("standards", test_reader.get_resources_input(stds));
-
-		MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
-		
-		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
-		tables = means_parser.tables_from_csv("MEANS", test_reader.get_resources_input(means));
-		this.standards_means_data = tables.get("standards");
-		this.unknown_means_data = tables.get("unknowns");
-		this.means_data = parser.data_from_csv("MEANS", test_reader.get_resources_input(means));
-
-		create_element_correlations();
-	}*/
 
 	public boolean import_test_data(String xrf, String stds, String means) {
-		boolean xrf_loaded = add_component_filepath(xrf, "xrf");
-		boolean standards_loaded = add_component_filepath(stds, "standards");
-		boolean means_loaded = add_component_filepath(means, "means");
+		URI xrf_uri;
+		URI standards_uri;
+		URI means_uri;
+		try {
+			xrf_uri = new URI(getClass().getResource(xrf).toString());
+			standards_uri = new URI(getClass().getResource(stds).toString());
+			means_uri = new URI(getClass().getResource(means).toString());
+		} catch (URISyntaxException e) {
+			return false;
+		}
+		
+		boolean xrf_loaded = add_component_filepath(xrf_uri.getPath(), "xrf");
+		boolean standards_loaded = add_component_filepath(standards_uri.getPath(), "standards");
+		boolean means_loaded = add_component_filepath(means_uri.getPath(), "means");
+		
 		return xrf_loaded && standards_loaded && means_loaded;
 	}
 		
