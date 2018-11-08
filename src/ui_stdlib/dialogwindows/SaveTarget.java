@@ -1,9 +1,8 @@
 package ui_stdlib.dialogwindows;
 
 import java.io.File;
-import ui_framework.StateResult;
 
-public class SaveTarget extends StateResult {
+public class SaveTarget {
 	private File path;
 	private boolean target_assigned = false;
 	

@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow<Backend extends DataBackend> extends JFrame implements Refreshable<Backend>, ScheduledState {
+public class SystemWindow<Backend extends DataBackend> extends JFrame implements Refreshable<Backend>, ScheduledState<Backend> {
 	private ArrayList<Refreshable<Backend>> refreshable_frames;
 	private ArrayList<SystemPanel<Backend>> panel_references;
 	private int subframe_width;
@@ -24,7 +24,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	private boolean windows_split = false;
 	private ArrayList<JSplitPane> double_panes;
 	private JSplitPane main_split;
-	private Backend datastore;
+	private Backend datastore_ref;
 
 	public SystemWindow(String title, int width, int height) {
 		super(title);
@@ -60,14 +60,6 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 			}
 		}
 	}
-
-	@Override
-	public void set_datastore(Backend datastore) {
-		this.datastore = (Backend) datastore;
-		for (int i=0; i < this.refreshable_frames.size(); i++) {
-			this.refreshable_frames.get(i).set_datastore(datastore);
-		}
-	}
 	
 	public void add_system_panel(SystemPanel<Backend> new_panel) {
 		
@@ -79,10 +71,6 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		add_refreshable(new_panel);
 	}
 	
-	public StateResult get_datastore() {
-		return (StateResult) datastore;
-	}
-	
 	@Override
 	public void add_refreshable(Refreshable<Backend> refreshable_window) {
 		refreshable_frames.add(refreshable_window);
@@ -90,6 +78,10 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	
 	public boolean datastore_set() {
 		return did_load_datastore;
+	}
+	
+	public Backend get_datastore() {
+		return datastore_ref;
 	}
 	
 	public void split_panels() {
@@ -159,33 +151,39 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 
 	@Override
 	public void on_start() {
+		//Add placeholder label and set visible
 		
-		add_panels_to_panes();
+		placeholder = SystemThemes.get_default_placeholder();
+		add(placeholder);
 		
-		for (int i=0; i < this.refreshable_frames.size(); i++) {
-			this.refreshable_frames.get(i).on_start();
-		}
 		revalidate();
 		setVisible(true);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_state) {
-		if (prev_state != null) {
-			set_datastore((Backend) prev_state);
-			getContentPane().removeAll();
-			repaint();
-			on_start();
-			did_load_datastore = true;
-		} 
+	public void on_scheduled(Backend backend) {
+		getContentPane().removeAll();
+		repaint();
+		
+		//assign datastore to subcomponents
+		set_datastore(backend);
+		
+		//add system panels
+		add_panels_to_panes();
+		
+		//start system panels
+		for (int i=0; i < this.refreshable_frames.size(); i++) {
+			this.refreshable_frames.get(i).on_start();
+		}
+		setVisible(true);
 	}
 
 	@Override
-	public void init() {
-		//Default view
-		setVisible(true);
-		placeholder = SystemThemes.get_default_placeholder();
-		add(placeholder);
+	public void set_datastore(Backend backend) {
+		datastore_ref = backend;
+		for (int i=0; i < this.refreshable_frames.size(); i++) {
+			this.refreshable_frames.get(i).set_datastore(backend);
+		}
+		did_load_datastore = true;
 	}
 }

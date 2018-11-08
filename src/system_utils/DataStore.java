@@ -11,10 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
-import system_utils.io_tools.TestSuiteReader;
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import java.awt.Color;
@@ -55,7 +53,7 @@ public class DataStore extends DataBackend implements Serializable {
 
 	public boolean calculated_vals_updated = true;
 	
-	public DataStore(SystemWindow<DataBackend> window_parent) {
+	public DataStore(SystemWindow<DataStore> window_parent) {
 		super(window_parent);
 		
 		this.save_path = "";
@@ -155,25 +153,30 @@ public class DataStore extends DataBackend implements Serializable {
 	@Override
 	public boolean save_to_filepath(String path) {
 		//ds subclasses override (return read status
+
 		return false;
 	}
 	
-	public void set_window(SystemWindow<DataBackend> window_parent) {
-		super.set_window_parent(window_parent);
-	}
+//	@Override
+//	public <T extends DataBackend> void set_window(SystemWindow<T> window_parent) {
+//		super.set_window(window_parent);
+//	}
 	
 	public void set_save_path(String path) {
 		this.save_path = path;
 	}
 	
+	@Override
 	public String get_path() {
 		return this.save_path;
 	}
 	
+	@Override
 	public boolean path_assigned() {
 		return !this.save_path.isEmpty();
 	}
 	
+	@Override
 	public boolean check_valid_target() {
 		File save_file = new File(this.save_path);
 		String parent_path = save_file.getParent();
@@ -758,5 +761,11 @@ public class DataStore extends DataBackend implements Serializable {
 		sb.append(this.get_unknown_computed_string());
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public boolean init_from_file(String path) {
+		set_save_path(path);
+		return true;
 	}
 }

@@ -51,6 +51,17 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		}
 	}
 	
+	public boolean export_on_path(Backend databackend) {
+		//returns read_status
+		String component = get_path(FileDialog.SAVE);
+		
+		if (component != null) {
+			return databackend.on_export(component);
+		} else {
+			return false;
+		}
+	}
+	
 	private String get_path(int mode) {
 		system_file_dialog.setMode(mode);
 		system_file_dialog.setVisible(true);
@@ -60,7 +71,6 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		if (path.length == 0) {
 			return null;
 		}
-		
 		return path[0].getAbsolutePath();
 	}
 }

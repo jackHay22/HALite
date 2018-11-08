@@ -180,6 +180,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void notify_update() {
 		//on changes to data
+		refresh();
 		super.notify_update();
 	}
 
@@ -232,5 +233,13 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
+	}
+	
+	@Override
+	public boolean on_export(String file_path) {
+		//TODO: write to output file
+		
+		//return write status
+		return false;
 	}
 }

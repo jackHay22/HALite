@@ -4,17 +4,13 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-
 import javax.swing.JLabel;
-
-import system_utils.DataStore;
-import system_utils.io_tools.FileChooser;
+import system_utils.io_tools.SystemFileDialog;
+import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
-import ui_framework.StateManager;
-import ui_framework.StateResult;
 
 @SuppressWarnings("serial")
-public class SaveDialog extends SystemDialog implements ScheduledState {
+public class SaveDialog<Backend extends DataBackend> extends SystemDialog implements ScheduledState<Backend> {
 	private JLabel save_current_instructions;
 	
 	public SaveDialog(String title) {
@@ -27,49 +23,10 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		save_current_instructions.setHorizontalAlignment(JLabel.CENTER);
 	}
 
-	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-		DataStore ds = (DataStore) prev_res;
-		FileChooser file_chooser = new FileChooser(this);
-
-		if (try_save(ds)) {
-			String save_path = ds.get_path().toString();
-    		update_save_label(save_path);
-    		
-    		try {
-    			String datastore_save = ds.toString();
-    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
-    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
-    			objectOut.writeObject(datastore_save);
-    			objectOut.close();
-    		} catch (Exception e) {
-    			ErrorDialog err = new ErrorDialog("Save Error", "Unable to save project.");
-    			err.show_dialog();
-    		}
-    		
-    		close_dialog();
-    	}
-		else if (file_chooser.save_file(ds) && try_save(ds)) {
-			String save_path = ds.get_path().toString();
-    		update_save_label(save_path);
-    		
-    		try {
-    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
-    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
-    			objectOut.writeObject(ds);
-    			objectOut.close();
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    		
-    		close_dialog();
-		}
-		
-	}
 	
-	private boolean try_save(DataStore ds) {
-		if (ds.path_assigned()) {
-			return ds.check_valid_target();
+	private boolean try_save(Backend backend) {
+		if (backend.path_assigned()) {
+			return backend.check_valid_target();
 		} else {	
 			return false;
 		}
@@ -80,6 +37,42 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 	}
 
 	@Override
-	public void init() {
+	public void on_scheduled(Backend backend) {
+		SystemFileDialog<Backend> save_file_chooser = new SystemFileDialog<Backend>(this, "Save...");
+
+		if (try_save(backend)) {
+			String save_path = backend.get_path().toString();
+    		update_save_label(save_path);
+    		
+    		try {
+    			String datastore_save = backend.toString();
+    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
+    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
+    			objectOut.writeObject(datastore_save);
+    			objectOut.close();
+    		} catch (Exception e) {
+    			ErrorDialog<Backend> err = new ErrorDialog<Backend>("Save Error", "Unable to save project.");
+    			err.show_dialog();
+    		}
+    		
+    		close_dialog();
+    	}
+		else if (save_file_chooser.save_on_path(backend) && try_save(backend)) {
+			String save_path = backend.get_path().toString();
+    		update_save_label(save_path);
+    		
+    		try {
+    			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
+    			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
+    			objectOut.writeObject(backend);
+    			objectOut.close();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		
+    		close_dialog();
+		}
+		
 	}
+
 }

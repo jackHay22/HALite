@@ -2,10 +2,6 @@ package ui_stdlib.dialogwindows;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,31 +9,22 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
 import system_utils.Element;
 import system_utils.ElementCorrelationInfo;
-import system_utils.io_tools.FileChooser;
+import system_utils.io_tools.SystemFileDialog;
 import ui_framework.ScheduledState;
-import ui_framework.StateManager;
-import ui_framework.StateResult;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
-import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class ExportDialog extends SystemDialog implements ScheduledState {
+public class ExportDialog extends SystemDialog implements ScheduledState<DataStore> {
 	private JLabel save_current_instructions;
 	private String mode;
 	
@@ -51,37 +38,15 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		
 		this.mode = mode;
 	}
-	
-	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-		DataStore ds = (DataStore) prev_res;
-		FileChooser file_chooser = new FileChooser(this);
-		
-		if (file_chooser.save_file(ds)) {
-			String save_path = ds.get_path().toString();
-			update_save_label(save_path);
-			
-			if (mode.equals("model")) {
-				save_model_csv(ds, save_path);
-			}
-			else if (mode.equals("response")) {
-				save_response_graphs(ds, save_path);
-			}
-			else if (mode.equals("report")) {
-				save_report(ds, save_path);
-			}
-			// 2 more cases
-			
-		}
-		
 
-	}
 	
 	private void save_response_graphs(DataStore ds, String save_path) {
 		
 		CorrelationGraph graph = new CorrelationGraph();
 		graph.set_datastore(ds);
-		DrawablePanel gpanel = graph.get_points_panel();
+		
+		@SuppressWarnings("unchecked")
+		DrawablePanel<DataStore> gpanel = graph.get_points_panel();
 		gpanel.refresh();
 		//add(gpanel);
 		
@@ -142,7 +107,7 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		    //ImageIO.write(img, "png", outputfile);
 			
 		} catch (Exception e) {
-			ErrorDialog err = new ErrorDialog("Export Error", "Unable to export project to PDF.");
+			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Export Error", "Unable to export project to PDF.");
 			err.show_dialog();
 		}
 		
@@ -190,9 +155,28 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		save_current_instructions.setText(new_label);
 	}
 
+
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
+	public void on_scheduled(DataStore backend) {
+		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(this, "Save...");
+		
+		if (save_dialog.save_on_path(backend)) {
+			String save_path = backend.get_path().toString();
+			update_save_label(save_path);
+			
+			if (mode.equals("model")) {
+				save_model_csv(backend, save_path);
+			}
+			else if (mode.equals("response")) {
+				save_response_graphs(backend, save_path);
+			}
+			else if (mode.equals("report")) {
+				save_report(backend, save_path);
+			}
+			// 2 more cases
+			
+		}
+		
 
 	}
 
