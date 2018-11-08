@@ -1,10 +1,5 @@
 # Geochemical Analysis Interface
 
-## System Outline
-### Windows
-- R^2 selection settings pane
-- Graph Pane
-
 ## Build
 - In Eclipse go to File -> Export:
   - Select Java > Runnable Jar file
@@ -14,12 +9,14 @@
 - Optionally, specify release version with ```./build --release 0.0.0``` (replace with desired release version)
 
 ## About
-- This project uses the Apache Commons Math Library.  The licence for this can be found in:
+- This project uses the Apache Commons Math Library.  The license for this can be found in:
     - ```docs/APACHE_COMMONS_LICENCE.txt```
 
 ## Setup
 To setup the project, configure the following:
 - Add ```commons-math3-3.6.1.jar``` to a new folder called ```lib/```. This may also need to be added as an external library in eclipse.
+- Add ```pdfbox-app-2.0.12.jar``` to lib as well.
 
 ## Dependencies
 - Apache Commons Math3 3.6.1
+- PdfBox 2.0.12
