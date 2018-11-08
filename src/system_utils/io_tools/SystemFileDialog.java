@@ -60,7 +60,6 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		if (path.length == 0) {
 			return null;
 		}
-		
 		return path[0].getAbsolutePath();
 	}
 }

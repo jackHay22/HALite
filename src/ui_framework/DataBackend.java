@@ -13,7 +13,7 @@ public abstract class DataBackend {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T extends DataBackend> void set_window_parent(SystemWindow<T> window_parent) {
+	public <T extends DataBackend> void set_window(SystemWindow<T> window_parent) {
 		this.window_parent = (SystemWindow<DataBackend>) window_parent;
 	}
 	
@@ -30,5 +30,17 @@ public abstract class DataBackend {
 	public boolean save_to_filepath(String path) {
 		//ds subclasses override (return read status
 		return false;
+	}
+	
+	public boolean path_assigned() {
+		return false;
+	}
+	
+	public boolean check_valid_target() {
+		return false;
+	}
+	
+	public String get_path() {
+		return null;
 	}
 }

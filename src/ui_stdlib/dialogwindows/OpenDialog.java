@@ -1,56 +1,26 @@
 package ui_stdlib.dialogwindows;
 
-import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
 import system_utils.DataStore;
-import system_utils.io_tools.FileChooser;
+import system_utils.io_tools.SystemFileDialog;
 import ui_framework.DataBackend;
-import ui_framework.ScheduledState;
-import ui_framework.StateManager;
-import ui_framework.StateResult;
 import ui_framework.SystemWindow;
 
 @SuppressWarnings("serial")
-public class OpenDialog extends SystemDialog implements ui_framework.ScheduledState<DataStore> { //TODO: is this reusable?
-	DataStore save_loader;
-	FileDialog save_dialog;
-	FileChooser file_chooser;
-	SystemWindow main_window;
+public class OpenDialog<T extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState<T> {
+	private SystemWindow<T> main_window;
+	private SystemFileDialog<T> file_dialog;
 	
-	public OpenDialog(String title, SystemWindow main_window) {
+	public OpenDialog(String title, SystemWindow<T> main_window) {
 		super(title);
-		save_loader = new DataStore(main_window);
-		save_dialog = new FileDialog(this, "Choose saved file");
-		this.main_window = main_window;
 		this.setLayout(new GridLayout(4,0));
+		
+		file_dialog = new SystemFileDialog<T>(this, "Open...");
 	}
 
-	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-		
-		file_chooser = new FileChooser(this);
-		boolean file = file_chooser.import_file(this.save_loader);
-		String file_path = this.save_loader.get_path();
-		
-		if (file && is_datastore_file(file_path)) {
-			try {
-				FileInputStream fileInputStream = new FileInputStream(file_path);
-				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-				DataStore ds = (DataStore) objectInputStream.readObject();
-				objectInputStream.close();
-				
-				ds.set_window(main_window);
-				callback.release_to(previous, (StateResult) ds);
-				
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	private boolean is_datastore_file(String file) {
 		int pos = file.indexOf('.');
@@ -66,9 +36,28 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 	}
 
 	@Override
-	public void on_scheduled(DataStore backend) {
-		//Backend is a ref to a datastore
-		//TODO load backend 
+	public void on_scheduled(T backend) {
+		
+		boolean status = file_dialog.init_backend_on_path(backend);
+		
+		String file_path = backend.get_path();
+		
+		if (status && is_datastore_file(file_path)) {
+			try {
+				FileInputStream fileInputStream = new FileInputStream(file_path);
+				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+				DataStore ds = (DataStore) objectInputStream.readObject();
+				objectInputStream.close();
+				
+				backend.set_window(main_window);
+
+				main_window.on_scheduled(backend);
+				System.out.println("Scheduling window");
+				
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

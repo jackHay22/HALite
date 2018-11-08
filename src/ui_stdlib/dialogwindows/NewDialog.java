@@ -8,35 +8,20 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import system_utils.DataStore;
-<<<<<<< HEAD
-import system_utils.io_tools.CSVParser;
-import system_utils.io_tools.FileChooser;
-=======
 import system_utils.DataTable;
 import system_utils.io_tools.SystemFileDialog;
-import ui_framework.DataBackend;
-import ui_framework.ScheduledState;
-import ui_framework.StateManager;
->>>>>>> 5de165b9de5ce231e6a5a48667c7118e7ca9dabf
 import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class NewDialog extends SystemDialog implements ui_framework.ScheduledState<DataStore> {
 	private JButton continue_button;
-<<<<<<< HEAD
-	//TODO: remove
-	private FileChooser file_chooser;
-=======
-	//private FileChooser file_chooser;
 	private SystemFileDialog<DataStore> file_chooser;
->>>>>>> 5de165b9de5ce231e6a5a48667c7118e7ca9dabf
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
 	private SystemWindow<DataStore> main_window;
-	private DataStore loaded_datastore;
 	
 	private ArrayList<JButton> added_buttons;
 	
@@ -74,46 +59,28 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		}
 	}
 
-	//TODO: this is no longer the method for starting dialog (move to version farther down)
-//	@Override
-//	public void on_scheduled(StateManager callback, ScheduledState previous, ui_framework.StateResult previous_res) {
-//		
-//		continue_button = new JButton("Continue");
-//		continue_button.setEnabled(false);
-//		continue_button.setBackground(SystemThemes.MAIN);
-//		continue_button.setOpaque(true);
-//		
-//		continue_button.addActionListener(new ActionListener () {
-//			public void actionPerformed(ActionEvent e) {
-//				remove(continue_button);
-//				callback.release_to(previous, loaded_datastore);
-//				close_dialog();
-//			}
-//        }); 
-//		add(continue_button);
-//		
-//		show_dialog();
-//	}
 	
-	//@Override
-	
-	//TODO: redo this base on on_scheduled(Backend)
-	public void init() {
+
+	@Override
+	public void on_scheduled(DataStore backend) {
+		continue_button = new JButton("Continue");
+		continue_button.setEnabled(false);
+		continue_button.setBackground(SystemThemes.MAIN);
+		continue_button.setOpaque(true);
 		
-<<<<<<< HEAD
-		//TODO
-//		file_chooser = new FileChooser(this);
-//		loaded_datastore = new DataStore(main_window);
+		continue_button.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				remove(continue_button);
+				main_window.on_scheduled(backend);
+				close_dialog();
+			}
+        }); 
 		
 		xrf_chosen = false;
 		means_chosen = false;
 		standards_chosen = false;
-=======
-		//file_chooser = new FileChooser(this);
->>>>>>> 5de165b9de5ce231e6a5a48667c7118e7ca9dabf
 		
 		file_chooser = new SystemFileDialog<DataStore>(this, "Open new project");
-		loaded_datastore = new DataStore(main_window);
 		
 		JButton xrf_chooser = new JButton("XRF");
 		//Causes windows graphical bug
@@ -161,8 +128,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    public void actionPerformed(ActionEvent e) {
 		    	
 		    	// Load xrf file and check result
-		    	xrf_chosen = file_chooser.add_component_path(loaded_datastore, "xrf");
-		    	String file = loaded_datastore.xrf_path;
+		    	xrf_chosen = file_chooser.add_component_path(backend, "xrf");
+		    	String file = backend.xrf_path;
 		    	
 		    	// Check if xrf file has been imported successfully
 				if (xrf_chosen && SystemThemes.valid_csv(file)) {
@@ -172,7 +139,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		// Clear all previous elements from dropdown
 		    		xrf_table_selection.removeAllItems();
 		    		
-		    		ArrayList<DataTable> all_tables = loaded_datastore.all_tables("xrf");
+		    		ArrayList<DataTable> all_tables = backend.all_tables("xrf");
 		    		
 		    		for (DataTable table : all_tables) {
 		    			String table_name = table.name();
@@ -192,8 +159,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	means_chosen = file_chooser.add_component_path(loaded_datastore, "means");
-		    	String file = loaded_datastore.means_path;
+		    	means_chosen = file_chooser.add_component_path(backend, "means");
+		    	String file = backend.means_path;
 		    	
 		    	// Check if means file has been imported successfully
 		    	if (means_chosen && SystemThemes.valid_csv(file)) {
@@ -203,7 +170,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			    	// Clear all previous elements from dropdown
 			    	means_table_selection.removeAllItems();
 			    	
-			    	ArrayList<DataTable> all_tables = loaded_datastore.all_tables("means");
+			    	ArrayList<DataTable> all_tables = backend.all_tables("means");
 					
 		    		for (DataTable table : all_tables) {
 		    			String table_name = table.name();
@@ -223,8 +190,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	standards_chosen = file_chooser.add_component_path(loaded_datastore, "standards");
-		    	String file = loaded_datastore.standards_path;
+		    	standards_chosen = file_chooser.add_component_path(backend, "standards");
+		    	String file = backend.standards_path;
 		    	
 		    	// Check if standards file has been imported successfully
 		    	if (standards_chosen && SystemThemes.valid_csv(file)) {
@@ -234,7 +201,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		// Clear all previous elements from dropdown
 		    		stds_table_selection.removeAllItems();
 		    		
-		    		ArrayList<DataTable> all_tables = loaded_datastore.all_tables("standards");
+		    		ArrayList<DataTable> all_tables = backend.all_tables("standards");
 					
 		    		for (DataTable table : all_tables) {
 		    			String table_name = table.name();
@@ -249,12 +216,9 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	can_continue();
 		    }
 		});
-	}
-
-	@Override
-	public void on_scheduled(DataStore backend) {
-		// TODO Auto-generated method stub
+		add(continue_button);
 		
+		show_dialog();
 	}
 	
 }

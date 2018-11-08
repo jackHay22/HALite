@@ -30,23 +30,20 @@ public class ViewBuilder {
 	public static int OPEN_VIEWS = 0;
 
 
-	@SuppressWarnings("unchecked")
 	private static void open_example_data(SystemWindow<DataStore> current_window) {
     	//open dialog, set return state to main
+		
+		//create a new window if the current window already has datastore set
+    	if (current_window.datastore_set()) {
+    		current_window = get_app_view();
+    	}
 
-		//TODO
-//    	if (current_window.datastore_set()) {
-//    		current_state = create_new_window(get_app_view());
-//    	}
+    	//import example data to new datastore
+    	DataStore ds = new DataStore(current_window);
+    	ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
 
-    	//DataStore ds = new DataStore(current_window);
-//    	try {
-//			ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
-//		} catch (FileNotFoundException e1) {
-//			ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
-//			err.show_dialog();
-//		}
-//    	current_state.on_scheduled(manager, null, (StateResult) ds);
+    	//schedule window on datastore
+    	current_window.on_scheduled(ds);
 	}
 
 	private static SystemWindow<DataStore> get_app_view() {
@@ -89,7 +86,7 @@ public class ViewBuilder {
 		//add menu
 		window.setJMenuBar(get_menu_items(window));
 
-		//update widow counter
+		//update window counter
 		OPEN_VIEWS++;
 	}
 
@@ -123,16 +120,8 @@ public class ViewBuilder {
 				//open dialog, set return state to mai
 
 		    	if (window.datastore_set()) {
-		    		SaveDialog save_dialog = new SaveDialog("Save as");
-		    		//TODO: on_scheduled
-		    		//save_dialog.init();
-
-		    		//TODO: transfer datastore to save state
-//		    		save_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
-		    	}
-		    	else {
-					ErrorDialog err = new ErrorDialog("Save Error", "Empty project: Cannot save an empty project. Please open an existing project or create a new project.");
-					err.show_dialog();
+		    		SaveDialog<T> save_dialog = new SaveDialog<T>("Save as");
+		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 			}
 		});
@@ -143,16 +132,15 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 
-		    	if (window.datastore_set()) {
-		    		SystemWindow<DataStore> new_window = get_app_view();
-		    		new_window.on_start();
-		    		NewDialog file_selector = new NewDialog("Select Files", new_window);
-		    		//TODO: on_scheduled
-//		    		file_selector.init();
-		    	}
-		    	//TODO: systemwindow type problem
-//		    	NewDialog file_selector = new NewDialog("Select Files", window);
-//			    file_selector.init();
+//		    	if (window.datastore_set()) {
+				//TODO: by default always create new window
+	    		SystemWindow<DataStore> new_window = get_app_view();
+	    		new_window.on_start();
+	    		
+	    		NewDialog file_selector = new NewDialog("Select Files", new_window);
+	    		
+	    		DataStore new_ds = new DataStore(new_window);
+	    		file_selector.on_scheduled(new_ds);
 		    }
 		});
 
@@ -161,17 +149,12 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 
-		    	if (window.datastore_set()) {
-		    		SystemWindow<DataStore> new_window = get_app_view();
-		    		new_window.on_start();
-		    		//TODO: create datastore
-		    	}
-
-		    	OpenDialog open_dialog = new OpenDialog("Open Files", window);
-		    	//TODO: on_scheduled
-		    	//open_dialog.init();
-		    	//TODO
-//		    	open_dialog.on_scheduled(manager, current_window, null);
+		    	//if (window.datastore_set()) {
+		    	SystemWindow<DataStore> new_window = get_app_view();
+		    	DataStore backend = new DataStore(new_window);
+		    	OpenDialog<DataStore> open_dialog = new OpenDialog<DataStore>("Open Files", new_window);
+		    	
+		    	open_dialog.on_scheduled(backend);
 
 		    }
 		});
@@ -186,10 +169,27 @@ public class ViewBuilder {
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
 
 				if (open_dialog.init_backend_on_path(dc_backend)) {
-					drift_window.on_start();
 					drift_window.on_scheduled(dc_backend);
 				} else {
 					new ErrorDialog("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+				}
+		    }
+		});
+		
+		JMenuItem main_analysis = new JMenuItem("Analysis");
+		//main_analysis.setAccelerator();
+		main_analysis.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+
+				SystemWindow<DataStore> drift_window = get_app_view();
+				DataStore backend = new DataStore(drift_window);
+				SystemFileDialog<DataStore> open_dialog = new SystemFileDialog<DataStore>(drift_window, "Analysis");
+
+				if (open_dialog.init_backend_on_path(backend)) {
+					drift_window.on_start();
+					drift_window.on_scheduled(backend);
+				} else {
+					new ErrorDialog<DataStore>("Error (Error msg placeholder)", "Bad DataStore File").show_dialog();
 				}
 		    }
 		});
@@ -199,8 +199,7 @@ public class ViewBuilder {
 		open_test_data.setAccelerator(SystemKeybindings.EX_DATA);
 		open_test_data.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: types
-		    	//open_example_data(window);
+				open_example_data(get_app_view());
 		    }
 		});
 
@@ -279,6 +278,7 @@ public class ViewBuilder {
 		file.add(open_submenu);
 		file.addSeparator();
 		file.add(drift_correction);
+		file.add(main_analysis);
 		file.addSeparator();
 		file.add(export_submenu);
 		file.addSeparator();
