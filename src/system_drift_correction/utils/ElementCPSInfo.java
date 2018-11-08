@@ -33,7 +33,7 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	}
 	
 	public void set_pair(String name, Point pt) {
-		if (name.contains("DRFIT") ) {
+		if (name.contains("DRIFT") ) {
 			drift_points.add_point(pt);
 		} else {
 			PointSet<DriftCorrectionDS> points = all_point_sets.get(name);
@@ -60,6 +60,10 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 			means.put(set.getKey(), Formulas.mean_of_array(y_values));
 		}
 		return means;
+	}
+	
+	public Element get_element() {
+		return this.element;
 	}
 	
 	public Double get_mean(String s) {
@@ -137,17 +141,18 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		this.drift_info = new ElementDriftInfo(drift_points);
-		this.drift_info.set_datastore(datastore);
-		this.drift_info.refresh();
-		this.correct_info();
+		if (drift_points != null && this.drift_points.get_points().size() != 0) {
+			this.drift_info = new ElementDriftInfo(drift_points);
+			this.drift_info.set_datastore(datastore);
+			this.drift_info.refresh();
+			this.correct_info();
+		}
 	}
 
 	@Override
 	public void set_datastore(DriftCorrectionDS datastore) {
 		// TODO Auto-generated method stub
 		this.datastore = datastore;
-		this.refresh();
 	}
 
 	@Override

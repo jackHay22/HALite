@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
@@ -233,16 +234,18 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	
 	private void set_labels(Graphics2D g) {
 		
-		g.drawString(Double.toString(min_x), draw_width/10, draw_height*39/40);
+		DecimalFormat df = new DecimalFormat("#.####");
+		
+		g.drawString(df.format(min_x), draw_width/10, draw_height*39/40);
 		g.drawLine(draw_width/buffer_div, draw_height, draw_width/buffer_div, draw_height-(draw_height*1/40));
 		
-		g.drawString(Double.toString(min_y), draw_width*1/40, draw_height*9/10);
+		g.drawString(df.format(min_y), draw_width*1/40, draw_height*9/10);
 		g.drawLine(0, draw_height*7/buffer_div, draw_width/60, draw_height*7/buffer_div);
 		
-		g.drawString(Double.toString(max_x), draw_width*7/8, draw_height*39/40);
+		g.drawString(df.format(max_x), draw_width*7/8, draw_height*39/40);
 		g.drawLine(draw_width*7/buffer_div, draw_height, (int) (draw_width*7/buffer_div), draw_height-(draw_height*1/40));
 		
-		g.drawString(Double.toString(max_y), draw_width*1/40, draw_height*1/10);
+		g.drawString(df.format(max_y), draw_width*1/40, draw_height*1/10);
 		g.drawLine(0, draw_height*1/buffer_div, draw_width/60, draw_height*1/buffer_div);
 	}
 	

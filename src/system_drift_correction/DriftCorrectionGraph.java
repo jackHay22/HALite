@@ -45,7 +45,7 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 		
 		ArrayList<Point> points_for_line = new ArrayList<Point>();
 		
-		for (Double x = this.graph.get_min_x(); x < this.graph.get_max_x(); x += 0.005) {
+		for (Double x = this.graph.get_min_x(); x < this.graph.get_max_x(); x += 0.0005) {
 			Double y = this.equation.get_y(x);
 			points_for_line.add(new Point(x, y));
 		}
