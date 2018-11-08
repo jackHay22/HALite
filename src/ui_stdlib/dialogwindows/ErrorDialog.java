@@ -6,12 +6,10 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import ui_framework.ScheduledState;
-import ui_framework.StateManager;
-import ui_framework.StateResult;
+import ui_framework.DataBackend;
 
 @SuppressWarnings("serial")
-public class ErrorDialog extends SystemDialog implements ui_framework.ScheduledState {
+public class ErrorDialog<Backend extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState<Backend> {
 	private String message;
 	private JLabel error_message;
 	
@@ -32,11 +30,6 @@ public class ErrorDialog extends SystemDialog implements ui_framework.ScheduledS
 	}
 	
 	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_res) {
-
-	}
-	
-	@Override
 	public void show_dialog() {
 		
 		this.add(error_message);
@@ -50,9 +43,11 @@ public class ErrorDialog extends SystemDialog implements ui_framework.ScheduledS
 
 		setVisible(true);
 	}
-
+	
 	@Override
-	public void init() {
+	public void on_scheduled(Backend backend) {
+		//TODO
+		show_dialog();
 	}
 
 }

@@ -1,6 +1,6 @@
 package ui_framework;
 
-public abstract class DataBackend extends StateResult {
+public abstract class DataBackend {
 	protected SystemWindow<DataBackend> window_parent;
 	
 	@SuppressWarnings("unchecked")

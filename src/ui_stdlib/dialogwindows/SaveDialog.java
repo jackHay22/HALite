@@ -14,7 +14,7 @@ import ui_framework.StateManager;
 import ui_framework.StateResult;
 
 @SuppressWarnings("serial")
-public class SaveDialog extends SystemDialog implements ScheduledState {
+public class SaveDialog extends SystemDialog implements ScheduledState { //TODO: What type should this be?
 	private JLabel save_current_instructions;
 	
 	public SaveDialog(String title) {
@@ -79,7 +79,4 @@ public class SaveDialog extends SystemDialog implements ScheduledState {
 		save_current_instructions.setText(new_label);
 	}
 
-	@Override
-	public void init() {
-	}
 }

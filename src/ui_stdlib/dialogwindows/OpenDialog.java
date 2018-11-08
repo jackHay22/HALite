@@ -8,13 +8,14 @@ import java.io.ObjectInputStream;
 
 import system_utils.DataStore;
 import system_utils.io_tools.FileChooser;
+import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
 import ui_framework.StateResult;
 import ui_framework.SystemWindow;
 
 @SuppressWarnings("serial")
-public class OpenDialog extends SystemDialog implements ui_framework.ScheduledState {
+public class OpenDialog extends SystemDialog implements ui_framework.ScheduledState<DataStore> { //TODO: is this reusable?
 	DataStore save_loader;
 	FileDialog save_dialog;
 	FileChooser file_chooser;
@@ -65,7 +66,9 @@ public class OpenDialog extends SystemDialog implements ui_framework.ScheduledSt
 	}
 
 	@Override
-	public void init() {
-
+	public void on_scheduled(DataStore backend) {
+		//Backend is a ref to a datastore
+		//TODO load backend 
 	}
+
 }

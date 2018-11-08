@@ -8,7 +8,7 @@ import system_utils.DataStore;
 import ui_framework.DataBackend;
 import ui_stdlib.dialogwindows.SystemDialog;
 
-public class FileChooser<Backend extends DataBackend> extends ui_framework.StateResult {
+public class FileChooser<Backend extends DataBackend> {
 	FileDialog file_dialog;
 	public String xrf;
 	public String standards;

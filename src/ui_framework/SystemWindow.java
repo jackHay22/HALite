@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class SystemWindow<Backend extends DataBackend> extends JFrame implements Refreshable<Backend>, ScheduledState {
+public class SystemWindow<Backend extends DataBackend> extends JFrame implements Refreshable<Backend>, ScheduledState<Backend> {
 	private ArrayList<Refreshable<Backend>> refreshable_frames;
 	private ArrayList<SystemPanel<Backend>> panel_references;
 	private int subframe_width;
@@ -63,7 +63,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 
 	@Override
 	public void set_datastore(Backend datastore) {
-		this.datastore = (Backend) datastore;
+		this.datastore = datastore;
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(datastore);
 		}
@@ -77,10 +77,6 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		
 		//add to list of refreshable objects
 		add_refreshable(new_panel);
-	}
-	
-	public StateResult get_datastore() {
-		return (StateResult) datastore;
 	}
 	
 	@Override
@@ -165,27 +161,23 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).on_start();
 		}
+		
+		setVisible(true);
+		placeholder = SystemThemes.get_default_placeholder();
+		add(placeholder);
+		
 		revalidate();
 		setVisible(true);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, StateResult prev_state) {
-		if (prev_state != null) {
-			set_datastore((Backend) prev_state);
-			getContentPane().removeAll();
-			repaint();
-			on_start();
-			did_load_datastore = true;
-		} 
+	public void on_scheduled(Backend backend) {
+		//TODO: check if ds not set?
+		set_datastore(backend);
+		getContentPane().removeAll();
+		repaint();
+		on_start();
+		did_load_datastore = true;
 	}
 
-	@Override
-	public void init() {
-		//Default view
-		setVisible(true);
-		placeholder = SystemThemes.get_default_placeholder();
-		add(placeholder);
-	}
 }

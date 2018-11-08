@@ -13,26 +13,24 @@ import javax.swing.BorderFactory;
 import system_utils.DataStore;
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.FileChooser;
-import ui_framework.DataBackend;
-import ui_framework.ScheduledState;
-import ui_framework.StateManager;
 import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
+public class NewDialog extends SystemDialog implements ui_framework.ScheduledState<DataStore> {
 	private JButton continue_button;
+	//TODO: remove
 	private FileChooser file_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
 	private int path_display_length = 40;
-	private SystemWindow<DataBackend> main_window;
+	private SystemWindow<DataStore> main_window;
 	private DataStore loaded_datastore;
 	
 	private ArrayList<JButton> added_buttons;
 	
-	public NewDialog(String title, SystemWindow<DataBackend> main_window) {
+	public NewDialog(String title, SystemWindow<DataStore> main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
@@ -75,30 +73,35 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		}
 	}
 
-	@Override
-	public void on_scheduled(StateManager callback, ScheduledState previous, ui_framework.StateResult previous_res) {
-		
-		continue_button = new JButton("Continue");
-		continue_button.setEnabled(false);
-		continue_button.setBackground(SystemThemes.MAIN);
-		continue_button.setOpaque(true);
-		
-		continue_button.addActionListener(new ActionListener () {
-			public void actionPerformed(ActionEvent e) {
-				remove(continue_button);
-				callback.release_to(previous, loaded_datastore);
-				close_dialog();
-			}
-        }); 
-		add(continue_button);
-		
-		show_dialog();
-	}
-	@Override
+	//TODO: this is no longer the method for starting dialog (move to version farther down)
+//	@Override
+//	public void on_scheduled(StateManager callback, ScheduledState previous, ui_framework.StateResult previous_res) {
+//		
+//		continue_button = new JButton("Continue");
+//		continue_button.setEnabled(false);
+//		continue_button.setBackground(SystemThemes.MAIN);
+//		continue_button.setOpaque(true);
+//		
+//		continue_button.addActionListener(new ActionListener () {
+//			public void actionPerformed(ActionEvent e) {
+//				remove(continue_button);
+//				callback.release_to(previous, loaded_datastore);
+//				close_dialog();
+//			}
+//        }); 
+//		add(continue_button);
+//		
+//		show_dialog();
+//	}
+	
+	//@Override
+	
+	//TODO: redo this base on on_scheduled(Backend)
 	public void init() {
 		
-		file_chooser = new FileChooser(this);
-		loaded_datastore = new DataStore(main_window);
+		//TODO
+//		file_chooser = new FileChooser(this);
+//		loaded_datastore = new DataStore(main_window);
 		
 		xrf_chosen = false;
 		means_chosen = false;
@@ -264,6 +267,12 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	can_continue();
 		    }
 		});
+	}
+
+	@Override
+	public void on_scheduled(DataStore backend) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

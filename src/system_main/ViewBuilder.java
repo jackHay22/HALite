@@ -2,7 +2,6 @@ package system_main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -12,9 +11,6 @@ import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
 import system_utils.io_tools.SystemFileDialog;
 import ui_framework.DataBackend;
-import ui_framework.ScheduledState;
-import ui_framework.StateManager;
-import ui_framework.StateResult;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
@@ -35,25 +31,22 @@ public class ViewBuilder {
 	
 	
 	@SuppressWarnings("unchecked")
-	private static void open_example_data(StateManager manager, ScheduledState main_app_view) {
+	private static void open_example_data(SystemWindow<DataStore> current_window) {
     	//open dialog, set return state to main
-    	ScheduledState current_state = main_app_view;
-
-		SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
     	
-    	if (current_window.datastore_set()) {
-    		current_state = create_new_window(get_app_view(), manager);
-    		current_window = (SystemWindow<DataBackend>) current_state;
-    	}
+		//TODO
+//    	if (current_window.datastore_set()) {
+//    		current_state = create_new_window(get_app_view());
+//    	}
     	
-    	DataStore ds = new DataStore(current_window);
-    	try {
-			ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
-		} catch (FileNotFoundException e1) {
-			ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
-			err.show_dialog();
-		}
-    	current_state.on_scheduled(manager, null, (StateResult) ds);
+    	//DataStore ds = new DataStore(current_window);
+//    	try {
+//			ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
+//		} catch (FileNotFoundException e1) {
+//			ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
+//			err.show_dialog();
+//		}
+//    	current_state.on_scheduled(manager, null, (StateResult) ds);
 	}
 	
 	private static SystemWindow<DataStore> get_app_view() {
@@ -69,6 +62,8 @@ public class ViewBuilder {
     	main_window.add_system_panel(new CalculatedValuesPanel());
     	main_window.add_system_panel(new ModelGraph());
     	
+    	//add menu items
+		init_sys_view(main_window);
     	return main_window;
 	}
 	
@@ -83,37 +78,29 @@ public class ViewBuilder {
     	main_window.add_system_panel(new DriftCorrectionSettings());	
     	main_window.add_system_panel(new DriftCorrectionGraph());
     	
+    	//add menu items
+    	init_sys_view(main_window);
     	return main_window;
 	}
-	
-	private static ScheduledState create_new_drift_window(SystemWindow<DriftCorrectionDS> window, StateManager manager) {
-		
-		ScheduledState main_app_view = window;
-		
-		window.setJMenuBar(get_menu_items(manager, main_app_view));
-		OPEN_VIEWS++;
-		
-		return main_app_view;
-	}
 
 	
-	private static ScheduledState create_new_window(SystemWindow<DataStore> window, StateManager manager) {
+	private static <T extends DataBackend> void init_sys_view(SystemWindow<T> window) {
 		
-		ScheduledState main_app_view = window;
+		//add menu
+		window.setJMenuBar(get_menu_items(window));
 		
-		window.setJMenuBar(get_menu_items(manager, main_app_view));
+		//update widow counter
 		OPEN_VIEWS++;
-		
-		return main_app_view;
 	}
 	
-	public static ScheduledState create_new_default_window(StateManager manager) {
-		return create_new_window(get_app_view(), manager);
+	public static SystemWindow<DataStore> create_new_default_window() {
+		SystemWindow<DataStore> new_window = get_app_view();
+		return new_window;
 	}
 	
 
 	
-	private static JMenuBar get_menu_items(StateManager manager, ScheduledState main_app_view) {
+	private static <T extends DataBackend> JMenuBar get_menu_items(SystemWindow<T> window) {
 		JMenuBar bar = new JMenuBar();
 		
 		//MENUS
@@ -133,16 +120,15 @@ public class ViewBuilder {
 		JMenuItem save_as = new JMenuItem("Save as...");
 		save_as.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
+				//open dialog, set return state to mai
 		    	
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
-		    	
-		    	if (current_window.datastore_set()) {
+		    	if (window.datastore_set()) {
 		    		SaveDialog save_dialog = new SaveDialog("Save as");
-		    		save_dialog.init();
-		    		save_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    		//TODO: on_scheduled
+		    		//save_dialog.init();
+		    		
+		    		//TODO: transfer datastore to save state
+//		    		save_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Save Error", "Empty project: Cannot save an empty project. Please open an existing project or create a new project.");
@@ -154,39 +140,38 @@ public class ViewBuilder {
 		JMenuItem open_new = new JMenuItem("New...");
 		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
-		    @SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-				SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
 		    	
-		    	if (current_window.datastore_set()) {
-		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow<DataBackend>) current_state;
+		    	if (window.datastore_set()) {
+		    		SystemWindow<DataStore> new_window = get_app_view();
+		    		new_window.on_start();
+		    		NewDialog file_selector = new NewDialog("Select Files", new_window);
+		    		//TODO: on_scheduled
+//		    		file_selector.init();
 		    	}
-		    	
-		    	NewDialog file_selector = new NewDialog("Select Files", current_window);
-			    file_selector.init();
-			    file_selector.on_scheduled(manager, current_state, null);
+		    	//TODO: systemwindow type problem
+//		    	NewDialog file_selector = new NewDialog("Select Files", window);
+//			    file_selector.init();
 		    }
 		});
 		
 		JMenuItem open_saved = new JMenuItem("Saved...");
 		open_saved.addActionListener(new ActionListener () {
-		    @SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
-		    	if (current_window.datastore_set()) {
-		    		current_state = create_new_window(get_app_view(), manager);
-		    		current_window = (SystemWindow<DataStore>) current_state;
+		    	if (window.datastore_set()) {
+		    		SystemWindow<DataStore> new_window = get_app_view();
+		    		new_window.on_start();
+		    		//TODO: create datastore
 		    	}
 		    	
-		    	OpenDialog open_dialog = new OpenDialog("Open Files", current_window);
-		    	open_dialog.init();
-		    	open_dialog.on_scheduled(manager, current_window, null);
+		    	OpenDialog open_dialog = new OpenDialog("Open Files", window);
+		    	//TODO: on_scheduled
+		    	//open_dialog.init();
+		    	//TODO
+//		    	open_dialog.on_scheduled(manager, current_window, null);
 		    	
 		    }
 		});
@@ -195,17 +180,14 @@ public class ViewBuilder {
 		drift_correction.setAccelerator(SystemKeybindings.DRIFT_CORRECTION);
 		drift_correction.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	//open dialog, set return state to main
-		    	ScheduledState drift_state = create_new_drift_window(get_drift_correction_view(), manager);
 
-				@SuppressWarnings("unchecked")
-				SystemWindow<DriftCorrectionDS> drift_window = (SystemWindow<DriftCorrectionDS>) drift_state;		
+				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();		
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);	
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
 		    	
 				if (open_dialog.init_backend_on_path(dc_backend)) {
-					drift_window.set_datastore(dc_backend);	
 					drift_window.on_start();
+					drift_window.on_scheduled(dc_backend);
 				} else {
 					new ErrorDialog("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
 				}
@@ -217,7 +199,8 @@ public class ViewBuilder {
 		open_test_data.setAccelerator(SystemKeybindings.EX_DATA);
 		open_test_data.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-		    	open_example_data(manager, main_app_view);
+				//TODO: types
+		    	//open_example_data(window);
 		    }
 		});
 		
@@ -225,14 +208,12 @@ public class ViewBuilder {
 		export_response_graphs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
 		    	
-		    	if (current_window.datastore_set()) {
+		    	if (window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Exporting", "response");
-		    		export_dialog.init();
-		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    		//export_dialog.init();
+		    		//TODO
+		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
@@ -251,13 +232,12 @@ public class ViewBuilder {
 		export_model_data.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
-		    	if (current_window.datastore_set()) {
+
+		    	if (window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Export as", "model");
-		    		export_dialog.init();
-		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    		//export_dialog.init();
+		    		//TODO
+		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
@@ -270,13 +250,11 @@ public class ViewBuilder {
 		export_detailed_data.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
-		    	ScheduledState current_state = main_app_view;
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataStore> current_window = (SystemWindow<DataStore>) current_state;
-		    	if (current_window.datastore_set()) {
+		    	if (window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Export as", "report");
-		    		export_dialog.init();
-		    		export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+//		    		export_dialog.init();
+		    		//TODO
+		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
@@ -310,14 +288,13 @@ public class ViewBuilder {
 		JMenu edit = new JMenu("Edit");
 		bar.add(edit);
 		
-		JMenu window = new JMenu("Window");
-		bar.add(window);
+		JMenu window_menu = new JMenu("Window");
+		bar.add(window_menu);
 		
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataBackend> temp = (SystemWindow<DataBackend>) main_app_view;
+				SystemWindow<T> temp = window;
 		    	temp.split_panels();
 		    }
 		});
@@ -325,8 +302,7 @@ public class ViewBuilder {
 		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
 		regroup_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataBackend> temp = (SystemWindow<DataBackend>) main_app_view;
+		    	SystemWindow<T> temp = window;
 		    	temp.regroup_panels();
 		    }
 		});
@@ -335,14 +311,11 @@ public class ViewBuilder {
 		close_window.setAccelerator(SystemKeybindings.CLOSE_WINDOW);
 		close_window.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	
-		    	ScheduledState current_state = main_app_view;
-		    	@SuppressWarnings("unchecked")
-				SystemWindow<DataBackend> current_window = (SystemWindow<DataBackend>) current_state;
+
 		    	if (OPEN_VIEWS > 1) {
 	    			OPEN_VIEWS--;
-		    		current_window.setVisible(false);
-		    		current_window.dispose();
+		    		window.setVisible(false);
+		    		window.dispose();
 	    		}
 		    	//TODO: check if datastore set and state currently saved
 		    	
@@ -360,10 +333,10 @@ public class ViewBuilder {
 		    }
 		});
 		
-		window.add(separate_subpanels);
-		window.add(regroup_subpanels);
-		window.addSeparator();
-		window.add(close_window);
+		window_menu.add(separate_subpanels);
+		window_menu.add(regroup_subpanels);
+		window_menu.addSeparator();
+		window_menu.add(close_window);
 		
 		JMenu help = new JMenu("Help");
 		bar.add(help);
