@@ -204,7 +204,6 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	public ElementDriftInfo get_plot_info() {
 		ElementDriftInfo info = this.cps_info.get(this.get_element()).get_drift_info();
-		
 		return info;
 	}
 	
@@ -218,11 +217,11 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	public String get_eqn() {
 		//TODO: use system themes for superscript
-		return "";
+		return this.get_plot_info().get_equation().get_str_rep();
 	}
 	
 	public String get_rsqrd() {
-		return "";
+		return Double.toString(this.get_plot_info().get_equation().get_r2());
 	}
 
 	@Override
