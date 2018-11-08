@@ -46,12 +46,13 @@ public class ViewBuilder {
     	}
     	
     	DataStore ds = new DataStore(current_window);
-    	try {
+    	ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
+    	/*try {
 			ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
 		} catch (FileNotFoundException e1) {
 			ErrorDialog err = new ErrorDialog("Import Error", "Import Error: Not able to import selected project.");
 			err.show_dialog();
-		}
+		}*/
     	current_state.on_scheduled(manager, null, (StateResult) ds);
 	}
 	

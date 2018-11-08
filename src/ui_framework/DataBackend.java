@@ -20,7 +20,7 @@ public abstract class DataBackend extends StateResult {
 		return false;
 	}
 	
-	public boolean add_component_filepath(String path) {
+	public boolean add_component_filepath(String path, String label) {
 		//ds subclasses override (return read status
 		return false;
 	}

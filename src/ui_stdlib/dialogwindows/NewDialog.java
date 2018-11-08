@@ -11,8 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import system_utils.DataStore;
+import system_utils.DataTable;
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.FileChooser;
+import system_utils.io_tools.SystemFileDialog;
 import ui_framework.DataBackend;
 import ui_framework.ScheduledState;
 import ui_framework.StateManager;
@@ -22,7 +24,8 @@ import ui_stdlib.SystemThemes;
 @SuppressWarnings("serial")
 public class NewDialog extends SystemDialog implements ui_framework.ScheduledState {
 	private JButton continue_button;
-	private FileChooser file_chooser;
+	//private FileChooser file_chooser;
+	private SystemFileDialog<DataStore> file_chooser;
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
@@ -46,21 +49,12 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	
 	private void can_continue() {
 		if (xrf_chosen && standards_chosen && means_chosen) {
+			continue_button.setEnabled(true);
+			continue_button.setBackground(SystemThemes.MAIN);
 			
-			String means = file_chooser.get_means();
-			String xrf = file_chooser.get_xrf();
-			String standards = file_chooser.get_standards();
+			//String xrf_selected = xrf_table_selection.getSelectedItem().toString();
 			
-			try {
-				loaded_datastore.import_data(xrf, file_chooser.xrf_table, 
-											 standards, file_chooser.standards_table, 
-											 means, file_chooser.means_table);
-				continue_button.setEnabled(true);
-				continue_button.setBackground(SystemThemes.MAIN);
-			} catch (Exception e) {
-				continue_button.setEnabled(false);
-				continue_button.setBackground(SystemThemes.HIGHLIGHT);
-			}
+			//loaded_datastore.set_tables_in_use(xrf_selected, standards_selected, means_selected);
 			
 		}
 	}
@@ -97,12 +91,10 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	@Override
 	public void init() {
 		
-		file_chooser = new FileChooser(this);
-		loaded_datastore = new DataStore(main_window);
+		//file_chooser = new FileChooser(this);
 		
-		xrf_chosen = false;
-		means_chosen = false;
-		standards_chosen = false;
+		file_chooser = new SystemFileDialog<DataStore>(this, "Open new project");
+		loaded_datastore = new DataStore(main_window);
 		
 		CSVParser table_reader = new CSVParser();
 		
@@ -120,20 +112,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		xrf_table_selection.setBackground(SystemThemes.MAIN);
 		xrf_table_selection.setOpaque(true);
 		
-		JButton means_chooser = new JButton("Means");
-		//Causes windows graphical bug
-			//means_chooser.setBackground(SystemThemes.BACKGROUND);
-			//means_chooser.setOpaque(true);
-		this.add(means_chooser);
-		added_buttons.add(means_chooser);
-		
-		JComboBox<String> means_table_selection = new JComboBox<String>();
-		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
-		this.add(means_table_selection);
-		means_table_selection.setEnabled(false);
-		means_table_selection.setBackground(SystemThemes.MAIN);
-		means_table_selection.setOpaque(true);
-		
 		JButton stds_chooser = new JButton("Standards");
 		//Causes windows graphical bug
 			//stds_chooser.setBackground(SystemThemes.BACKGROUND);
@@ -148,39 +126,46 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_table_selection.setBackground(SystemThemes.MAIN);
 		stds_table_selection.setOpaque(true);
 		
+		JButton means_chooser = new JButton("Means");
+		//Causes windows graphical bug
+			//means_chooser.setBackground(SystemThemes.BACKGROUND);
+			//means_chooser.setOpaque(true);
+		this.add(means_chooser);
+		added_buttons.add(means_chooser);
+		
+		JComboBox<String> means_table_selection = new JComboBox<String>();
+		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
+		this.add(means_table_selection);
+		means_table_selection.setEnabled(false);
+		means_table_selection.setBackground(SystemThemes.MAIN);
+		means_table_selection.setOpaque(true);
+		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	boolean file_found = file_chooser.import_file(loaded_datastore);
-		    	String file = loaded_datastore.get_path();
+		    	// Load xrf file and check result
+		    	xrf_chosen = file_chooser.add_component_path(loaded_datastore, "xrf");
+		    	String file = loaded_datastore.xrf_path;
 		    	
-		    	// Open file dialog and wait for action
-				if (file_found && SystemThemes.valid_csv(file)) {
+		    	// Check if xrf file has been imported successfully
+				if (xrf_chosen && SystemThemes.valid_csv(file)) {
 		    		
-			    	ArrayList<String> tables = new ArrayList<String>();
-					try {
-						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-			    	xrf_chooser.setText(
-			    			get_file_display("XRF", file));
-			    	if (!file.isEmpty()) {
-			    		xrf_chosen = true;
-			    		
-			    		// Clear all previous elements from dropdown
-			    		file_chooser.xrf_table.clear();
-			    		xrf_table_selection.removeAllItems();
-			    		
-			    		for (String table_name : tables) {
-			    			xrf_table_selection.addItem(table_name);
-			    		}
-			    		xrf_table_selection.setEnabled(true);
-			    		xrf_table_selection.setBackground(SystemThemes.MAIN);
-			    		xrf_table_selection.setOpaque(false);
-			    	}
-			    	file_chooser.xrf = file;
-			    	file_chooser.xrf_table.add(xrf_table_selection.getSelectedItem().toString());
+			    	xrf_chooser.setText(get_file_display("XRF", file));
+		    		
+		    		// Clear all previous elements from dropdown
+		    		xrf_table_selection.removeAllItems();
+		    		
+		    		ArrayList<DataTable> all_tables = loaded_datastore.all_tables("xrf");
+		    		
+		    		for (DataTable table : all_tables) {
+		    			String table_name = table.name();
+		    			xrf_table_selection.addItem(table_name);
+		    		}
+		    		
+		    		xrf_table_selection.setEnabled(true);
+		    		xrf_table_selection.setBackground(SystemThemes.MAIN);
+		    		xrf_table_selection.setOpaque(false);
+			    	
 		    	}
 		    	
 		    	can_continue();
@@ -190,36 +175,28 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	boolean file_found = file_chooser.import_file(loaded_datastore);
-		    	String file = loaded_datastore.get_path();
+		    	means_chosen = file_chooser.add_component_path(loaded_datastore, "means");
+		    	String file = loaded_datastore.means_path;
 		    	
-		    	// Open file dialog and wait for action
-		    	if (file_found && SystemThemes.valid_csv(file)) {
+		    	// Check if means file has been imported successfully
+		    	if (means_chosen && SystemThemes.valid_csv(file)) {
 		    		
-			    	ArrayList<String> tables = new ArrayList<String>();
-					try {
-						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-			    	means_chooser.setText(
-			    			get_file_display("Means", file));
-			    	if (!file.isEmpty()) {
-				    	means_chosen = true;
-				    	
-				    	// Clear all previous elements from dropdown
-				    	file_chooser.means_table.clear();
-				    	means_table_selection.removeAllItems();
-				    	
-				    	for (String table_name : tables) {
-			    			means_table_selection.addItem(table_name);
-			    		}
-			    		means_table_selection.setEnabled(true);
-			    		means_table_selection.setBackground(SystemThemes.MAIN);
-			    		means_table_selection.setOpaque(false);
-			    	}
-			    	file_chooser.means = file;
-			    	file_chooser.means_table.add(means_table_selection.getSelectedItem().toString());
+			    	means_chooser.setText(get_file_display("Means", file));
+			    	
+			    	// Clear all previous elements from dropdown
+			    	means_table_selection.removeAllItems();
+			    	
+			    	ArrayList<DataTable> all_tables = loaded_datastore.all_tables("means");
+					
+		    		for (DataTable table : all_tables) {
+		    			String table_name = table.name();
+		    			means_table_selection.addItem(table_name);
+		    		}
+			    	
+		    		means_table_selection.setEnabled(true);
+		    		means_table_selection.setBackground(SystemThemes.MAIN);
+		    		means_table_selection.setOpaque(false);
+			    		
 		    	}
 		    	
 		    	can_continue();
@@ -229,36 +206,27 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
-		    	boolean file_found = file_chooser.import_file(loaded_datastore);
-		    	String file = loaded_datastore.get_path();
+		    	standards_chosen = file_chooser.add_component_path(loaded_datastore, "standards");
+		    	String file = loaded_datastore.standards_path;
 		    	
-		    	// Open file dialog and wait for action
-		    	if (file_found && SystemThemes.valid_csv(file)) {
+		    	// Check if standards file has been imported successfully
+		    	if (standards_chosen && SystemThemes.valid_csv(file)) {
 		    		
-		    		ArrayList<String> tables = new ArrayList<String>();
-					try {
-						tables = table_reader.get_table_names(new BufferedReader(new FileReader(file)));
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-			    	stds_chooser.setText(
-			    			get_file_display("Standards", file));
-			    	if (!file.isEmpty()) {
-			    		standards_chosen = true;
-			    		
-			    		// Clear all previous elements from dropdown
-			    		file_chooser.standards_table.clear();
-			    		stds_table_selection.removeAllItems();
-			    		
-			    		for (String table_name : tables) {
-			    			stds_table_selection.addItem(table_name);
-			    		}
-			    		stds_table_selection.setEnabled(true);
-			    		stds_table_selection.setBackground(SystemThemes.MAIN);
-			    		stds_table_selection.setOpaque(false);
-			    	}
-			    	file_chooser.standards = file;
-			    	file_chooser.standards_table.add(stds_table_selection.getSelectedItem().toString());	
+			    	stds_chooser.setText(get_file_display("Standards", file));
+		    		
+		    		// Clear all previous elements from dropdown
+		    		stds_table_selection.removeAllItems();
+		    		
+		    		ArrayList<DataTable> all_tables = loaded_datastore.all_tables("standards");
+					
+		    		for (DataTable table : all_tables) {
+		    			String table_name = table.name();
+		    			stds_table_selection.addItem(table_name);
+		    		}
+		    		
+		    		stds_table_selection.setEnabled(true);
+		    		stds_table_selection.setBackground(SystemThemes.MAIN);
+		    		stds_table_selection.setOpaque(false);
 		    	}
 		    	
 		    	can_continue();

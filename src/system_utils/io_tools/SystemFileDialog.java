@@ -29,12 +29,12 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		}
 	}
 	
-	public boolean add_component_path(Backend databackend) {
+	public boolean add_component_path(Backend databackend, String label) {
 		//returns read_status
 		String component = get_path(FileDialog.LOAD);
 		
 		if (component != null) {
-			return databackend.add_component_filepath(component);
+			return databackend.add_component_filepath(component, label);
 		} else {
 			return false;
 		}
@@ -56,6 +56,10 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		system_file_dialog.setVisible(true);
 		
 		File[] path = system_file_dialog.getFiles();
+		
+		if (path.length == 0) {
+			return null;
+		}
 		
 		return path[0].getAbsolutePath();
 	}

@@ -62,8 +62,8 @@ public class MeansCSVParser extends CSVParser {
 	public HashMap<String, DataTable> tables_from_csv(String table_name, BufferedReader reader) throws FileNotFoundException {
 
 		// Empty mapping that will hold all column data for imported CSV data
-		DataTable stds_table = new DataTable();
-		DataTable unknowns_table = new DataTable();
+		DataTable stds_table = new DataTable("standards");
+		DataTable unknowns_table = new DataTable("standards");
 		
 		ArrayList<String[]> raw_data = this.get_raw_table_data(table_name, reader);
 		

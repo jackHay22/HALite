@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -98,6 +99,13 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 		// Create new PDF 
 		PDDocument document = new PDDocument();
 		
+		//Creating the PDDocumentInformation object 
+	    PDDocumentInformation pdd = document.getDocumentInformation();
+		pdd.setTitle("Response Graphs");
+		
+		PDPage page = document.getPage(1);
+		//PDPageContentStream contentStream = new PDPageContentStream(document, page);
+		
 		try {
 			ArrayList<CorrelationInfo> corrs;
 			
@@ -111,7 +119,7 @@ public class ExportDialog extends SystemDialog implements ScheduledState {
 				if (selected_elems.isEmpty())
 					continue;
 				
-				// Create a new page for every element
+				// Create at least one new page for every primary element
 				PDPage curr_elem = new PDPage();
 				document.addPage(curr_elem);
 				
