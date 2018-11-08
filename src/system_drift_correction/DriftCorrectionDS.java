@@ -14,6 +14,7 @@ import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemWindow;
+import ui_stdlib.dialogwindows.CSVWriter;
 
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
@@ -254,7 +255,9 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	public boolean on_export(String file_path) {
 		//TODO: write to output file
 		
-		//return write status
-		return false;
+		CSVWriter.writeToCSV(file_path+"_stats_report", get_full_report());
+		
+		return CSVWriter.writeToCSV(file_path, get_means());
+		
 	}
 }
