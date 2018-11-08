@@ -66,14 +66,16 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 	@Override
 	public void refresh() {
 		this.info_to_plot = this.datastore.get_plot_info();
-		this.points_to_plot = info_to_plot.get_point_sets();
-		this.equation = info_to_plot.get_equation();
-		this.graph.set_point_sets(this.points_to_plot);
-		this.graph.refresh();
-		this.set_vals();
-		this.points_to_plot.add(this.get_equation_points());
-		this.graph.refresh();
-		this.revalidate();
+		if (this.info_to_plot != null) {
+			this.points_to_plot = info_to_plot.get_point_sets();
+			this.equation = info_to_plot.get_equation();
+			this.graph.set_point_sets(this.points_to_plot);
+			this.graph.refresh();
+			this.set_vals();
+			this.points_to_plot.add(this.get_equation_points());
+			this.graph.refresh();
+			this.revalidate();
+		}
 	}
 
 	@Override
