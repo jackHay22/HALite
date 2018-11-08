@@ -133,18 +133,10 @@ public class ViewBuilder {
 
 				DriftCorrectionDS ds = window.get_datastore();
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
-				dialog.export_on_path(ds);
 				
-				//TODO: write to file
-//				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
-//				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
-//				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
-//
-//				if (open_dialog.init_backend_on_path(dc_backend)) {
-//					drift_window.on_scheduled(dc_backend);
-//				} else {
-//					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
-//				}
+				if (!dialog.export_on_path(ds)) {
+					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+				}
 		    }
 		});
 		
@@ -154,15 +146,23 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				
 				SystemWindow<DataStore> new_analysis_window = get_app_view();
-//				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
-//				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
-//				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
-//
-//				if (open_dialog.init_backend_on_path(dc_backend)) {
-//					drift_window.on_scheduled(dc_backend);
-//				} else {
-//					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
-//				}
+				
+				DriftCorrectionDS ds = window.get_datastore();
+				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
+				
+				if (!dialog.export_on_path(ds)) {
+					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+				} else {
+					
+					//TODO: set with means file selected
+					NewDialog file_selector = new NewDialog("Select Files", new_analysis_window);
+		    		
+		    		DataStore new_ds = new DataStore(new_analysis_window);
+		    		file_selector.on_scheduled(new_ds);
+		    		
+		    		window.setVisible(false);
+		    		window.dispose();
+				}
 		    }
 		});
 		
