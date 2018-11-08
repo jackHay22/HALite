@@ -24,7 +24,7 @@ import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
 
 @SuppressWarnings("serial")
-public class ExportDialog extends SystemDialog implements ScheduledState<DataStore> {
+public class ExportDialog<Backend extends DataBackend> extends SystemDialog implements ScheduledState<Backend> {
 	private JLabel save_current_instructions;
 	private String mode;
 	
@@ -157,8 +157,8 @@ public class ExportDialog extends SystemDialog implements ScheduledState<DataSto
 
 
 	@Override
-	public void on_scheduled(DataStore backend) {
-		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(this, "Save...");
+	public void on_scheduled(Backend backend) {
+		SystemFileDialog<Backend> save_dialog = new SystemFileDialog<Backend>(this, "Save...");
 		
 		if (save_dialog.save_on_path(backend)) {
 			String save_path = backend.get_path().toString();
