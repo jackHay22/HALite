@@ -46,13 +46,13 @@ public class OpenDialog<T extends DataBackend> extends SystemDialog implements u
 			try {
 				FileInputStream fileInputStream = new FileInputStream(file_path);
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-				DataStore ds = (DataStore) objectInputStream.readObject();
+				
+				T ds = (T) objectInputStream.readObject();
 				objectInputStream.close();
 				
-				backend.set_window(main_window);
+				ds.set_window(main_window);
 
-				main_window.on_scheduled(backend);
-				System.out.println("Scheduling window");
+				main_window.on_scheduled(ds);
 				
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();

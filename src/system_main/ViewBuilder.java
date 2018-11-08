@@ -10,7 +10,6 @@ import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
 import system_utils.io_tools.SystemFileDialog;
-import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
@@ -60,7 +59,10 @@ public class ViewBuilder {
     	main_window.add_system_panel(new ModelGraph());
 
     	//add menu items
-		init_sys_view(main_window);
+    	main_window.setJMenuBar(get_main_menu_items(main_window));
+
+		//update window counter
+		OPEN_VIEWS++;
     	return main_window;
 	}
 
@@ -76,18 +78,11 @@ public class ViewBuilder {
     	main_window.add_system_panel(new DriftCorrectionGraph());
 
     	//add menu items
-    	init_sys_view(main_window);
-    	return main_window;
-	}
-
-
-	private static <T extends DataBackend> void init_sys_view(SystemWindow<T> window) {
-
-		//add menu
-		window.setJMenuBar(get_menu_items(window));
+		main_window.setJMenuBar(get_dc_menu_items(main_window));
 
 		//update window counter
 		OPEN_VIEWS++;
+    	return main_window;
 	}
 
 	public static SystemWindow<DataStore> create_new_default_window() {
@@ -96,17 +91,90 @@ public class ViewBuilder {
 	}
 
 
+	//MENU ITEMS FOR DRIFT CORRECTION SYSTEM VIEW
+	private static JMenuBar get_dc_menu_items(SystemWindow<DriftCorrectionDS> window) {
+		JMenuItem open_new = new JMenuItem("New...");
+		open_new.setAccelerator(SystemKeybindings.NEW);
+		open_new.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
 
-	private static <T extends DataBackend> JMenuBar get_menu_items(SystemWindow<T> window) {
+	    		SystemWindow<DataStore> new_window = get_app_view();
+	    		new_window.on_start();
+	    		
+	    		NewDialog file_selector = new NewDialog("Select Files", new_window);
+	    		
+	    		DataStore new_ds = new DataStore(new_window);
+	    		file_selector.on_scheduled(new_ds);
+		    }
+		});
+		
+		JMenu window_menu = new JMenu("Window");
+		
+
+		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
+		separate_subpanels.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+				SystemWindow<DriftCorrectionDS> temp = window;
+		    	temp.split_panels();
+		    }
+		});
+
+		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		regroup_subpanels.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	SystemWindow<DriftCorrectionDS> temp = window;
+		    	temp.regroup_panels();
+		    }
+		});
+
+		JMenuItem close_window = new JMenuItem("Close Window");
+		close_window.setAccelerator(SystemKeybindings.CLOSE_WINDOW);
+		close_window.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+
+		    	if (OPEN_VIEWS > 1) {
+	    			OPEN_VIEWS--;
+		    		window.setVisible(false);
+		    		window.dispose();
+	    		}
+		    }
+		});
+		
+		window_menu.add(separate_subpanels);
+		window_menu.add(regroup_subpanels);
+		window_menu.addSeparator();
+		window_menu.add(close_window);
+		
+		JMenu open_submenu = new JMenu("Open...");
+
+		open_submenu.add(open_new);
+		
+		JMenuBar bar = new JMenuBar();
+
+		
+		bar.add(window_menu);
+		
+		//MENUS
+		JMenu file = new JMenu("File");
+		bar.add(file);
+		
+		return bar;
+	}
+	
+	
+	//MENU ITEMS FOR MAIN SYSTEM VIEW
+	private static JMenuBar get_main_menu_items(SystemWindow<DataStore> window) {
 		JMenuBar bar = new JMenuBar();
 
 		//MENUS
 		JMenu file = new JMenu("File");
 		bar.add(file);
 
+		
 		//FUNCTION ITEMS
 		JMenuItem save = new JMenuItem("Save");
 		save.setAccelerator(SystemKeybindings.SAVE);
+
 		save.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
@@ -114,13 +182,14 @@ public class ViewBuilder {
 		    }
 		});
 
+
 		JMenuItem save_as = new JMenuItem("Save as...");
 		save_as.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to mai
 
 		    	if (window.datastore_set()) {
-		    		SaveDialog<T> save_dialog = new SaveDialog<T>("Save as");
+		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save as");
 		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 			}
@@ -171,25 +240,7 @@ public class ViewBuilder {
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					new ErrorDialog("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
-				}
-		    }
-		});
-		
-		JMenuItem main_analysis = new JMenuItem("Analysis");
-		//main_analysis.setAccelerator();
-		main_analysis.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-
-				SystemWindow<DataStore> drift_window = get_app_view();
-				DataStore backend = new DataStore(drift_window);
-				SystemFileDialog<DataStore> open_dialog = new SystemFileDialog<DataStore>(drift_window, "Analysis");
-
-				if (open_dialog.init_backend_on_path(backend)) {
-					drift_window.on_start();
-					drift_window.on_scheduled(backend);
-				} else {
-					new ErrorDialog<DataStore>("Error (Error msg placeholder)", "Bad DataStore File").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
 				}
 		    }
 		});
@@ -251,9 +302,9 @@ public class ViewBuilder {
 				//open dialog, set return state to main
 		    	if (window.datastore_set()) {
 		    		ExportDialog export_dialog = new ExportDialog("Export as", "report");
-//		    		export_dialog.init();
-		    		//TODO
-		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+		    		
+		    		//TODO this is only for datastore
+		    		//export_dialog.on_scheduled(window.get_datastore());
 		    	}
 		    	else {
 					ErrorDialog err = new ErrorDialog("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.");
@@ -278,7 +329,6 @@ public class ViewBuilder {
 		file.add(open_submenu);
 		file.addSeparator();
 		file.add(drift_correction);
-		file.add(main_analysis);
 		file.addSeparator();
 		file.add(export_submenu);
 		file.addSeparator();
@@ -294,7 +344,7 @@ public class ViewBuilder {
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-				SystemWindow<T> temp = window;
+				SystemWindow<DataStore> temp = window;
 		    	temp.split_panels();
 		    }
 		});
@@ -302,7 +352,7 @@ public class ViewBuilder {
 		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
 		regroup_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	SystemWindow<T> temp = window;
+		    	SystemWindow<DataStore> temp = window;
 		    	temp.regroup_panels();
 		    }
 		});

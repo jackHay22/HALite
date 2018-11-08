@@ -153,6 +153,7 @@ public class DataStore extends DataBackend implements Serializable {
 	@Override
 	public boolean save_to_filepath(String path) {
 		//ds subclasses override (return read status
+
 		return false;
 	}
 	
@@ -760,5 +761,11 @@ public class DataStore extends DataBackend implements Serializable {
 		sb.append(this.get_unknown_computed_string());
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public boolean init_from_file(String path) {
+		set_save_path(path);
+		return true;
 	}
 }
