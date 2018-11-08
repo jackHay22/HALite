@@ -43,4 +43,8 @@ public abstract class DataBackend {
 	public String get_path() {
 		return null;
 	}
+	
+	public boolean on_export(String file_path) {
+		return false;
+	}
 }

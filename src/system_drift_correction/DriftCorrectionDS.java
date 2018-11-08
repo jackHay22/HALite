@@ -249,4 +249,12 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
 	}
+	
+	@Override
+	public boolean on_export(String file_path) {
+		//TODO: write to output file
+		
+		//return write status
+		return false;
+	}
 }

@@ -126,6 +126,46 @@ public class ViewBuilder {
 		    }
 		});
 		
+		JMenuItem export = new JMenuItem("Export");
+		//open_new.setAccelerator(SystemKeybindings.NEW);
+		export.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+
+				DriftCorrectionDS ds = window.get_datastore();
+				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
+				dialog.export_on_path(ds);
+				
+				//TODO: write to file
+//				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
+//				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
+//				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
+//
+//				if (open_dialog.init_backend_on_path(dc_backend)) {
+//					drift_window.on_scheduled(dc_backend);
+//				} else {
+//					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+//				}
+		    }
+		});
+		
+		JMenuItem export_analysis = new JMenuItem("Proceed to analysis...");
+		//open_new.setAccelerator(SystemKeybindings.NEW);
+		export_analysis.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				
+				SystemWindow<DataStore> new_analysis_window = get_app_view();
+//				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
+//				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
+//				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
+//
+//				if (open_dialog.init_backend_on_path(dc_backend)) {
+//					drift_window.on_scheduled(dc_backend);
+//				} else {
+//					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+//				}
+		    }
+		});
+		
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		separate_subpanels.addActionListener(new ActionListener () {
@@ -162,6 +202,9 @@ public class ViewBuilder {
 		JMenu file = new JMenu("File");
 		file.add(open_new);
 		file.add(open_new_dc);
+		file.addSeparator();
+		file.add(export);
+		file.add(export_analysis);
 		bar.add(file);
 		
 		JMenu window_menu = new JMenu("Window");
