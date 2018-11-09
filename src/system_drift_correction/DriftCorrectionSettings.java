@@ -1,11 +1,14 @@
 package system_drift_correction;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
 import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
@@ -139,19 +142,40 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 
 	@Override
 	public void on_start() {
-
 		panel_header.on_start();
 		
-		//constraints.gridy = 0;
-		//enforce side column widths:
-		//constraints.gridwidth = 1;
-		//constraints.gridx = 0;
-		//add(javax.swing.Box.createHorizontalStrut(static_button_width), constraints);
-		//constraints.gridx = 3;
-		//add(javax.swing.Box.createHorizontalStrut(static_button_width), constraints);
+		//add bottom buttons
+		//prev_element.setPreferredSize(new Dimension(250,40));
 		
-		constraints.gridwidth = 4;
-		constraints.gridy = 1;
+		prev_element.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+				get_prev_element();
+		    }
+		});
+		
+		constraints.gridy = 5;
+		constraints.gridx = 0;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		//constraints.ipady = 20;
+		
+		add(prev_element, constraints);
+	
+		//next_element.setPreferredSize(new Dimension(250,40));
+		next_element.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+				get_next_element();
+		    }
+		});
+		
+		constraints.gridx = 1;
+		constraints.weightx = 0;
+		constraints.gridwidth = 1;
+		add(next_element, constraints);
+
+		constraints.gridwidth = 2;
+		constraints.gridy = 0;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
@@ -166,10 +190,9 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		element_label.add(element_selection);
 		
 		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 2;
+		constraints.gridy++;
+		constraints.gridwidth = 1;
 		constraints.weighty = 0;
-		constraints.weightx = 0.5;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		
 		//add element panel to main panel
@@ -184,22 +207,15 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		degree_label.on_start();
 		degree_label.add(degree_selection);
 		
-		constraints.gridx = 2;
-		constraints.weightx = 0.5;
-		constraints.gridwidth = 2;
+		constraints.gridx = 1;
+		constraints.gridwidth = 1;
 		constraints.weighty = 0.05;
 		
 		//add degree label
 		add(degree_label, constraints);
 		
-		prev_element.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-				get_prev_element();
-		    }
-		});
-		
 		constraints.gridx = 0;
-		constraints.gridwidth = 4;
+		constraints.gridwidth = 2;
 		constraints.gridy++;
 		constraints.weighty = 0;
 		constraints.weighty = 0.05;
@@ -207,33 +223,9 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		//add spanning label
 		add(SystemThemes.get_horiz_scrollable_panel(eqn_label), constraints);
 		constraints.weighty = 0.9;
-		
 		//add second spanning label
 		constraints.gridy++;
 		add(rsqrd_label, constraints);
-		
-		constraints.gridy++;
-		constraints.gridx = 0;
-		constraints.gridwidth = 1;
-		constraints.weightx = 0;
-		constraints.weighty = 0;
-		
-		add(prev_element, constraints);
-		
-		constraints.weightx = 1;
-		constraints.gridx = 1;
-		constraints.gridwidth = 2;
-		
-		next_element.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-				get_next_element();
-		    }
-		});
-		
-		constraints.gridx = 3;
-		constraints.weightx = 0;
-		constraints.gridwidth = 1;
-		add(next_element, constraints);
 		
 		setVisible(true);
 	}
