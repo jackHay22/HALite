@@ -12,6 +12,7 @@ import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
+import ui_stdlib.SystemThemes;
 
 public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	
@@ -35,7 +36,8 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 			points.add(new Point(time_vals.get(i), normed_CPS_vals.get(i)));
 		}
 		
-		refresh();
+		points_to_plot = new PointSet<DriftCorrectionDS>(points, SystemThemes.HIGHLIGHT, "Time", "counts", "", true);
+		
 	}
 	
 	public EquationPlot get_equation() {

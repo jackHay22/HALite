@@ -72,7 +72,7 @@ public class DriftCorrectionCSVReader {
 				//TODO: calculate time
 				current_date = current_split_line[date];
 				current_time = current_split_line[time];
-				current_output = current_split_line[0];
+				current_output = current_split_line[1];
 				stds.add(current_output);
 				
 				time_fraction = time_calc(current_date, current_time);

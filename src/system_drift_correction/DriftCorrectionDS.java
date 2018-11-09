@@ -27,7 +27,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		super(window_parent);
 		
 		//default degree
-		degree = 6;
+		degree = 3;
 		loaded_cps_info = false;
 		standards = new ArrayList<String>();
 	}
@@ -35,8 +35,10 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void refresh() {
 		if (loaded_cps_info) {
-			for (ElementCPSInfo elem_info : cps_info.values()) {
+			ElementCPSInfo elem_info = cps_info.get(this.element);
+			if (elem_info != null) {
 				elem_info.set_datastore(this);
+				elem_info.refresh();
 			}
 		}
 	}
@@ -55,6 +57,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		try {
 			cps_info = csv_reader.load_dc_file(file_reader, standards);
 			loaded_cps_info = true;
+			this.refresh();
 			
 		} catch (ValExpectedException | IOException e) {
 			//IO ERROR OR DATE/TIME NOT FOUND

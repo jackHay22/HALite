@@ -2,7 +2,6 @@ package system_utils.io_tools;
 
 import java.awt.FileDialog;
 import java.io.File;
-
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import ui_stdlib.dialogwindows.SystemDialog;
@@ -56,7 +55,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		String component = get_path(FileDialog.SAVE);
 		
 		if (component != null) {
-			return databackend.on_export(component, type); //TODO type
+			return databackend.on_export(component, type);
 		} else {
 			return false;
 		}
