@@ -89,6 +89,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		if (backend_loaded) {
 			eqn_label.set_text(datastore.get_eqn());
 			rsqrd_label.set_text(datastore.get_rsqrd());
+			datastore.set_element((Element)element_selection.getSelectedItem());
 		}
 	}
 	
