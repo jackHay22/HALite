@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
 import ui_framework.DataBackend;
@@ -18,6 +27,9 @@ import ui_framework.SystemWindow;
 import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.dialogwindows.ErrorDialog;
+import ui_graphlib.CorrelationGraph;
+import ui_graphlib.DrawablePanel;
 import ui_graphlib.Point;
 
 public class DataStore extends DataBackend implements Serializable {
@@ -65,6 +77,114 @@ public class DataStore extends DataBackend implements Serializable {
 		this.displayed_elems = new ArrayList<Element>();
 		
 		this.elem_num = 5;
+	}
+	
+	@Override
+	public boolean on_export(String file_path, int export_type) {
+		if (export_type == SystemThemes.CSV_DRIFT_CORRECTION) {
+			
+		}
+		else if (export_type == SystemThemes.CSV_FULL_REPORT) {
+			try {
+				PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
+				String output = this.get_detailed_report();
+				pw.write(output);
+				pw.close();
+				return true;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+		}
+		else if (export_type == SystemThemes.CSV_MODEL_DATA) {
+			try {
+				PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
+				String output = this.get_model_string();
+				pw.write(output);
+				pw.close();
+				return true;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+		}
+		else if (export_type == SystemThemes.PDF_CALIBRATION_GRAPHS) {
+			return export_calibration_graphs();
+		}
+		else if (export_type == SystemThemes.PDF_RESPONSE_GRAPHS) {
+			
+		}
+		return false;
+	}
+	
+	private boolean export_calibration_graphs() {
+		CorrelationGraph graph = new CorrelationGraph();
+		graph.set_datastore(this);
+		
+		@SuppressWarnings("unchecked")
+		DrawablePanel<DataStore> gpanel = graph.get_points_panel();
+		gpanel.refresh();
+		//add(gpanel);
+		
+		graph.on_start();
+		graph.refresh();
+		//add(graph);
+		
+		int progress = 0;
+		
+		// Create new PDF 
+		PDDocument document = new PDDocument();
+		
+		//Creating the PDDocumentInformation object 
+	    PDDocumentInformation pdd = document.getDocumentInformation();
+		pdd.setTitle("Response Graphs");
+		
+		PDPage page = document.getPage(1);
+		//PDPageContentStream contentStream = new PDPageContentStream(document, page);
+		
+		try {
+			ArrayList<CorrelationInfo> corrs;
+			
+			
+			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
+			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
+				ElementCorrelationInfo elem_corrs = entry.getValue();
+				ArrayList<CorrelationInfo> selected_elems = elem_corrs.get_selected();
+				
+				// Go to next element if no secondary elements selected
+				if (selected_elems.isEmpty())
+					continue;
+				
+				// Create at least one new page for every primary element
+				PDPage curr_elem = new PDPage();
+				document.addPage(curr_elem);
+				
+				for (CorrelationInfo corr_info : selected_elems) {
+					
+				}
+				
+			}
+			
+			// Output final image to disk
+			//File outputfile = new File(save_path);
+		    //ImageIO.write(img, "png", outputfile);
+			
+		} catch (Exception e) {
+			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Export Error", "Unable to export project to PDF.");
+			err.show_dialog();
+		}
+		
+		// Save the newly created document
+		try {
+			document.save(save_path);
+		} catch (IOException e1) {
+		}
+
+		// finally make sure that the document is properly closed.
+		try {
+			document.close();
+			return true;
+		} catch (IOException e1) {
+			return false;
+		}
 	}
 	
 	@Override
