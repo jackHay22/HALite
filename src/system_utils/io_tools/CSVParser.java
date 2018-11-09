@@ -211,6 +211,8 @@ public class CSVParser {
 	
 	public ArrayList<DataTable> parse_data(BufferedReader reader) throws FileNotFoundException {
 		
+		//BufferedReader reader = new BufferedReader(new FileReader(path));
+		
 		String current_line = "";
 		String delimiter = ",";
 		

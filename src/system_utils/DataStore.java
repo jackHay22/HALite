@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URI;
@@ -22,6 +23,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
+import system_utils.io_tools.TestSuiteReader;
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import java.awt.Color;
@@ -228,6 +230,7 @@ public class DataStore extends DataBackend implements Serializable {
 				
 				create_element_correlations();
 				
+				reader = new BufferedReader(new FileReader(path));
 				means_data = parser.parse_data(reader);
 				
 				means_in_use = means_data.get(0).name();
@@ -507,25 +510,81 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 
 	public boolean import_test_data(String xrf, String stds, String means) {
-		URI xrf_uri;
-		URI standards_uri;
-		URI means_uri;
 		
-		//new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(resource_path)));
+		TestSuiteReader testreader = new TestSuiteReader();
 		
-		try {
-			xrf_uri = new URI(getClass().getResource(xrf).toString());
-			standards_uri = new URI(getClass().getResource(stds).toString());
-			means_uri = new URI(getClass().getResource(means).toString());
-		} catch (URISyntaxException e) {
-			return false;
-		}
+		BufferedReader reader = testreader.get_resources_input(xrf);
+		boolean xrf_loaded = example_add_component_filepath(reader, xrf, "xrf");
 		
-		boolean xrf_loaded = add_component_filepath(xrf_uri.getPath(), "xrf");
-		boolean standards_loaded = add_component_filepath(standards_uri.getPath(), "standards");
-		boolean means_loaded = add_component_filepath(means_uri.getPath(), "means");
+		reader = testreader.get_resources_input(stds);
+		boolean standards_loaded = example_add_component_filepath(reader, stds, "standards");
+		
+		reader = testreader.get_resources_input(means);
+		boolean means_loaded = example_add_component_filepath(reader, means, "means");
 		
 		return xrf_loaded && standards_loaded && means_loaded;
+	}
+	
+	public boolean example_add_component_filepath(BufferedReader reader, String path, String label) {
+		CSVParser parser = new CSVParser();
+
+		if (label.equals("xrf")) {
+			try {
+				xrf_data = parser.parse_data(reader);
+				xrf_in_use = xrf_data.get(0).name();
+				xrf_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		else if (label.equals("means")) {
+			try {
+				// Haven't imported standards data yet - can't parse means data
+				if (standards_data == null) {
+					return false;
+				}
+				
+				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
+				
+				// NEED TO REDO THIS SECTION
+				
+				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
+				
+				ArrayList<String> means_table = parser.get_table_names(reader);
+				
+				TestSuiteReader test_reader = new TestSuiteReader();
+				reader = test_reader.get_resources_input(path);
+				tables = means_parser.tables_from_csv(means_table.get(0), reader);
+				
+				this.standards_means_data = tables.get("standards");
+				this.unknown_means_data = tables.get("unknowns");
+				
+				create_element_correlations();
+				
+				test_reader = new TestSuiteReader();
+				reader = test_reader.get_resources_input(path);
+				means_data = parser.parse_data(reader);
+				
+				means_in_use = means_data.get(0).name();
+				means_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		else if (label.equals("standards")) {
+			try {
+				standards_data = parser.parse_data(reader);
+				standards_in_use = standards_data.get(0).name();
+				standards_path = path;
+			} catch (FileNotFoundException e) {
+				return false;
+			}
+			return true;
+		}
+		
+		return false;
 	}
 		
 	public Double get_std_response_value(String sample, Element elem) {
