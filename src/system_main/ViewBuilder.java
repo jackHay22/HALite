@@ -10,13 +10,11 @@ import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
 import system_utils.io_tools.SystemFileDialog;
-import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
-import ui_stdlib.dialogwindows.ExportDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;
@@ -329,11 +327,12 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 
-		    	if (window.datastore_set()) {
-		    		ExportDialog<DataStore> export_dialog = new ExportDialog<DataStore>("Exporting", SystemThemes.PDF_RESPONSE_GRAPHS);
-		    		//export_dialog.init();
-		    		//TODO
-		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+				if (window.datastore_set()) {
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
+		    		
+		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
+		    		}
 		    	}
 		    	else {
 					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
@@ -344,6 +343,17 @@ public class ViewBuilder {
 		JMenuItem export_calibration_graphs = new JMenuItem("Calibration Models & Graphs (PDF)");
 		export_calibration_graphs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if (window.datastore_set()) {
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
+		    		
+		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
+		    		}
+		    	}
+		    	else {
+					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
+		    	}
 			}
 		});
 
@@ -352,12 +362,12 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 
-		    	if (window.datastore_set()) {
-		    		int mode = SystemThemes.CSV_MODEL_DATA;
-		    		ExportDialog<DataStore> export_dialog = new ExportDialog<DataStore>("Export as", mode);
-		    		//export_dialog.init();
-		    		//TODO
-		    		//export_dialog.on_scheduled(manager, current_state, current_window.get_datastore());
+				if (window.datastore_set()) {
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data");
+		    		
+		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
+		    		}
 		    	}
 		    	else {
 					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
@@ -370,11 +380,11 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	if (window.datastore_set()) {
-		    		int mode = SystemThemes.CSV_FULL_REPORT;
-		    		ExportDialog<DataStore> export_dialog = new ExportDialog<DataStore>("Export as", mode);
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
 		    		
-		    		//TODO this is only for datastore
-		    		//export_dialog.on_scheduled(window.get_datastore());
+		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
+		    		}
 		    	}
 		    	else {
 					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();

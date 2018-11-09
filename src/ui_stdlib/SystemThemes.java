@@ -39,7 +39,7 @@ public class SystemThemes {
 	
 	public static final int TOTAL_ELEMENTS = Element.values().length;
 	
-	public static final float LARGE_TEXT_FONT_SIZE = 20.0f;
+	public static final float LARGE_TEXT_FONT_SIZE = 16.0f;
 	
 	//FILE EXPORT TYPES
 	public static final int PDF_RESPONSE_GRAPHS = 0;
