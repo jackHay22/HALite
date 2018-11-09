@@ -66,13 +66,13 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return loaded_cps_info;
 	}
 	
-	private ArrayList<Double> sorted_times(String s) {
+	private ArrayList<Double> sorted_times(String sample) {
 		
 		ArrayList<Double> times = new ArrayList<Double>();
 		
 		for (Element e : Element.values()) {
 			if (cps_info.containsKey(e)) {
-				times = cps_info.get(e).get_sorted_times();
+				times = cps_info.get(e).get_sorted_times(sample);
 				break;
 			}
 		}	
@@ -233,7 +233,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 				return this.get_plot_info().get_equation().get_str_rep();
 			}
 		}
-		return "---";
+		return "No Data Found";
 	}
 	
 	public String get_rsqrd() {
@@ -242,7 +242,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 				return Double.toString(this.get_plot_info().get_equation().get_r2());
 			}
 		}
-		return "---";
+		return "No Data Found";
 	}
 
 	@Override

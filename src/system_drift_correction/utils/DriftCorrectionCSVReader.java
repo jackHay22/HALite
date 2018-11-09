@@ -73,7 +73,9 @@ public class DriftCorrectionCSVReader {
 				current_date = current_split_line[date];
 				current_time = current_split_line[time];
 				current_output = current_split_line[1];
-				stds.add(current_output);
+				if (!current_output.contains("DRIFT") && !stds.contains(current_output)) {
+					stds.add(current_output);
+				}
 				
 				time_fraction = time_calc(current_date, current_time);
 				
