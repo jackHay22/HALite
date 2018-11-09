@@ -53,7 +53,6 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	private void correct_info() {
 		for (Map.Entry<String, PointSet<DriftCorrectionDS>> set : this.all_point_sets.entrySet()) {
 			this.corrected_point_sets.put(set.getKey(), set.getValue());
-			System.out.println(set.getValue());
 		}
 		drift_info.correct_map(this.corrected_point_sets);
 	}
@@ -78,7 +77,6 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	}
 	
 	public ArrayList<Point> get_sorted_points(String s) {
-		System.out.println(s + ", " + this.element);
 		ArrayList<Point> points = this.corrected_point_sets.get(s).get_points();
 		ArrayList<Point> sorted_points = new ArrayList<Point>();
 		

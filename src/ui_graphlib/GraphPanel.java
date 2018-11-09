@@ -194,7 +194,6 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	}
 	
 	private void place_line(Graphics2D g) {
-		//System.out.println((int)this.left_point.get_x() + " " + (int)this.left_point.get_y()+ " " +(int)this.right_point.get_x()+ " " +(int)this.right_point.get_y());
 		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_y());
 	}
 	

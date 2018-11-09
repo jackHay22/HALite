@@ -26,7 +26,7 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		ArrayList<Double> time_vals = points_data.get_x_vals();
 		ArrayList<Double> drift_CPS_vals = points_data.get_y_vals();
 		
-		Double middle = drift_CPS_vals.get((int)drift_CPS_vals.size()/2);
+		Double middle = Formulas.mean_of_array(drift_CPS_vals);//drift_CPS_vals.get((int)drift_CPS_vals.size()/2);
 		
 		ArrayList<Double> normed_CPS_vals = Formulas.normalize(drift_CPS_vals, middle);
 		ArrayList<Point> points = new ArrayList<Point>();
