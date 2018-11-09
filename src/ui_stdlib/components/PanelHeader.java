@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
@@ -62,7 +63,7 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 	}
 	
 	public void set_text(String text) {
-		this.title.setText(text);
+		title.setText(text);
 	}
 
 	@Override
