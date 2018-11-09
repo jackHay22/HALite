@@ -22,7 +22,6 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	private int total_elems;
 	private JButton next_element;
 	private JButton prev_element;
-	private JButton calc_fit;
 	private int static_button_width;
 	
 	private PanelHeader<DriftCorrectionDS> panel_header;
@@ -50,7 +49,6 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		
 		next_element = new JButton("Next Element");
 		prev_element = new JButton("Previous Element");
-		calc_fit = new JButton("Calculate Fit");
 		prev_element.setEnabled(false);
 		
 		panel_header = new PanelHeader<DriftCorrectionDS>("Drift Correction", SystemThemes.MAIN);
@@ -104,6 +102,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	
 	private void update_button_state() {
 		//update datastore
+		datastore.set_element((Element)element_selection.getSelectedItem());
 		datastore.notify_update();
 		
 		if (current_elem_index == total_elems - 1) {
@@ -224,7 +223,6 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		constraints.weightx = 1;
 		constraints.gridx = 1;
 		constraints.gridwidth = 2;
-		add(calc_fit, constraints);
 		
 		next_element.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
