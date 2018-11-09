@@ -190,9 +190,17 @@ public class DataStore extends DataBackend implements Serializable {
 	@Override
 	public boolean add_component_filepath(String path, String label) {
 		CSVParser parser = new CSVParser();
+		BufferedReader reader;
+		
+		try {
+			reader = new BufferedReader(new FileReader(path));
+		} catch (FileNotFoundException e1) {
+			return false;
+		}
+		
 		if (label.equals("xrf")) {
 			try {
-				xrf_data = parser.parse_data(path);
+				xrf_data = parser.parse_data(reader);
 				xrf_in_use = xrf_data.get(0).name();
 				xrf_path = path;
 			} catch (FileNotFoundException e) {
@@ -208,8 +216,6 @@ public class DataStore extends DataBackend implements Serializable {
 				}
 				
 				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
-				BufferedReader reader = new BufferedReader(new FileReader(path));
-				
 				
 				// NEED TO REDO THIS SECTION
 				
@@ -222,7 +228,7 @@ public class DataStore extends DataBackend implements Serializable {
 				
 				create_element_correlations();
 				
-				means_data = parser.parse_data(path);
+				means_data = parser.parse_data(reader);
 				
 				means_in_use = means_data.get(0).name();
 				means_path = path;
@@ -233,7 +239,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		else if (label.equals("standards")) {
 			try {
-				standards_data = parser.parse_data(path);
+				standards_data = parser.parse_data(reader);
 				standards_in_use = standards_data.get(0).name();
 				standards_path = path;
 			} catch (FileNotFoundException e) {

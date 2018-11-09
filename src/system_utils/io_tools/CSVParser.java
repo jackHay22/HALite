@@ -209,9 +209,7 @@ public class CSVParser {
 		return table;
 	}
 	
-	public ArrayList<DataTable> parse_data(String path) throws FileNotFoundException {
-		
-		BufferedReader reader = new BufferedReader(new FileReader(path));
+	public ArrayList<DataTable> parse_data(BufferedReader reader) throws FileNotFoundException {
 		
 		String current_line = "";
 		String delimiter = ",";
