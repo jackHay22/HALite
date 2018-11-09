@@ -86,7 +86,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		else if (export_type == SystemThemes.CSV_FULL_REPORT) {
 			try {
-				PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
+				PrintWriter pw = new PrintWriter(new File(file_path + ".csv"));
 				String output = this.get_detailed_report();
 				pw.write(output);
 				pw.close();
@@ -97,7 +97,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		else if (export_type == SystemThemes.CSV_MODEL_DATA) {
 			try {
-				PrintWriter pw = new PrintWriter(new File(save_path + ".csv"));
+				PrintWriter pw = new PrintWriter(new File(file_path + ".csv"));
 				String output = this.get_model_string();
 				pw.write(output);
 				pw.close();
@@ -107,7 +107,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		else if (export_type == SystemThemes.PDF_CALIBRATION_GRAPHS) {
-			return export_calibration_graphs();
+			return export_calibration_graphs(file_path);
 		}
 		else if (export_type == SystemThemes.PDF_RESPONSE_GRAPHS) {
 			
@@ -115,7 +115,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return false;
 	}
 	
-	private boolean export_calibration_graphs() {
+	private boolean export_calibration_graphs(String file_path) {
 		CorrelationGraph graph = new CorrelationGraph();
 		graph.set_datastore(this);
 		
@@ -174,7 +174,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		// Save the newly created document
 		try {
-			document.save(save_path);
+			document.save(file_path);
 		} catch (IOException e1) {
 		}
 
