@@ -105,6 +105,16 @@ public class SystemThemes {
 		return pane;
 	}
 	
+	public static JScrollPane get_horiz_scrollable_panel(Component panel) {
+		JScrollPane pane = new JScrollPane(panel, 
+                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		pane.getHorizontalScrollBar().setUnitIncrement(SCROLL_PANE_SPEED);
+		Dimension panel_size = panel.getMinimumSize();
+		pane.setMinimumSize(new Dimension(panel_size.width, panel_size.height + 20));
+		return pane;
+	}
+	
 	public static Dimension get_std_cell_dim() {
 		return new Dimension(40,30);
 	}

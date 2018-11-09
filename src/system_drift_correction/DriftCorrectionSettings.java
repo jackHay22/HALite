@@ -206,7 +206,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		constraints.weighty = 0.05;
 		
 		//add spanning label
-		add(eqn_label, constraints);
+		add(SystemThemes.get_horiz_scrollable_panel(eqn_label), constraints);
 		constraints.weighty = 0.9;
 		
 		//add second spanning label
