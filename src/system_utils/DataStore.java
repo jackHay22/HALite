@@ -510,6 +510,9 @@ public class DataStore extends DataBackend implements Serializable {
 		URI xrf_uri;
 		URI standards_uri;
 		URI means_uri;
+		
+		//new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(resource_path)));
+		
 		try {
 			xrf_uri = new URI(getClass().getResource(xrf).toString());
 			standards_uri = new URI(getClass().getResource(stds).toString());

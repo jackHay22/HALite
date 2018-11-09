@@ -9,8 +9,10 @@ public class Formulas {
 	}
 	
 	public static ArrayList<Double> normalize(ArrayList<Double> vals, Double norm) {
-		for (Double d : vals) {
-			d = d/norm;
+		for (int i = 0; i < vals.size(); i++) {
+			Double d = vals.get(i)/norm;
+			vals.add(i, d);
+			vals.remove(i+1);
 		}
 		return vals;
 	}
