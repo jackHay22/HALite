@@ -102,7 +102,6 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	
 	private void update_button_state() {
 		//update datastore
-		datastore.set_element((Element)element_selection.getSelectedItem());
 		datastore.notify_update();
 		
 		if (current_elem_index == total_elems - 1) {
