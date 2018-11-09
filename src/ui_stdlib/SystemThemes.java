@@ -39,7 +39,7 @@ public class SystemThemes {
 	
 	public static final int TOTAL_ELEMENTS = Element.values().length;
 	
-	public static final float LARGE_TEXT_FONT_SIZE = 14.0f;
+	public static final float LARGE_TEXT_FONT_SIZE = 16.0f;
 	
 	//FILE EXPORT TYPES
 	public static final int PDF_RESPONSE_GRAPHS = 0;
@@ -112,6 +112,9 @@ public class SystemThemes {
 		pane.getHorizontalScrollBar().setUnitIncrement(SCROLL_PANE_SPEED);
 		Dimension panel_size = panel.getMinimumSize();
 		pane.setMinimumSize(new Dimension(panel_size.width, panel_size.height + 20));
+		pane.setBackground(MAIN);
+		pane.setBorder(null);
+		pane.setOpaque(false);
 		return pane;
 	}
 	

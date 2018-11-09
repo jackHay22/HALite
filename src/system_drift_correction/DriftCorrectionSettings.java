@@ -17,7 +17,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	private JComboBox<Element> element_selection;
 	private JComboBox<Integer> degree_selection;
 	private int max_degree = 10;
-	private int default_degree = 5;
+	private int default_degree = 3;
 	private int current_elem_index;
 	private int total_elems;
 	private JButton next_element;
