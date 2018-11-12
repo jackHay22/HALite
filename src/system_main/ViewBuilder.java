@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
@@ -195,6 +198,24 @@ public class ViewBuilder {
 		
 		//MENUS
 		JMenu file = new JMenu("File");
+		
+		//add state listener on dropdown
+		file.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				//TODO
+			    //boolean can_export = window.get_datastore().can_export();
+			    //export.setEnabled(can_export);
+			    //export_analysis.setEnabled(can_export);
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
+		
 		file.add(open_new);
 		file.add(open_new_dc);
 		file.addSeparator();
@@ -413,6 +434,22 @@ public class ViewBuilder {
 		file.addSeparator();
 		file.add(save_as);
 		file.add(save);
+		
+		file.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				boolean can_proceed = window.datastore_set();
+				export_submenu.setEnabled(can_proceed);
+				save_as.setEnabled(can_proceed);
+				save.setEnabled(can_proceed);
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
 
 		JMenu window_menu = new JMenu("Window");
 		bar.add(window_menu);
@@ -443,19 +480,6 @@ public class ViewBuilder {
 		    		window.setVisible(false);
 		    		window.dispose();
 	    		}
-		    	//TODO: check if datastore set and state currently saved
-
-//		    	if (current_window.datastore_set()) {
-//		    		//TODO: warn if data unsaved
-//		    		//if unsaved, open save dialog
-//		    		//else close
-//		    	} else {
-//		    		if (OPEN_VIEWS > 1) {
-//		    			OPEN_VIEWS--;
-//			    		current_window.setVisible(false);
-//			    		current_window.dispose();
-//		    		}
-//		    	}
 		    }
 		});
 
