@@ -27,6 +27,7 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	private DriftCorrectionDS datastore;
 
 	public boolean creation_complete = false;
+	public boolean has_corrected_points = false;
 	
 	public ElementCPSInfo(Element elem) {
 		this.element = elem;
@@ -54,6 +55,7 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		for (Map.Entry<String, PointSet<DriftCorrectionDS>> set : this.all_point_sets.entrySet()) {
 			this.corrected_point_sets.put(set.getKey(), set.getValue());
 		}
+		this.has_corrected_points = true;
 		drift_info.correct_map(this.corrected_point_sets);
 	}
 	
