@@ -102,7 +102,8 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 				}
 				sb.append('\n');
 			}
-			
+			sb.append(s);
+			sb.append(',');
 			sb.append("mean,");
 			
 			for (Element elem : Element.values()) {
@@ -114,7 +115,9 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 			}
 
 			sb.append('\n');
-			sb.append("std dev,");
+			sb.append(s);
+			sb.append(',');
+			sb.append("Std Dev,");
 			
 			for (Element elem : Element.values()) {
 				ElementCPSInfo info = cps_info.get(elem);
@@ -125,7 +128,9 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 			}
 
 			sb.append('\n');
-			sb.append("see,");
+			sb.append(s);
+			sb.append(',');
+			sb.append("%SEE,");
 			
 			for (Element elem : Element.values()) {
 				ElementCPSInfo info = cps_info.get(elem);
@@ -253,6 +258,15 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	@Override
 	public void add_refreshable(Refreshable<DriftCorrectionDS> refreshable_component) {
 		
+	}
+	
+	public boolean can_export() {
+		for (ElementCPSInfo info : this.cps_info.values()) {
+			if (!info.has_corrected_points) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override
