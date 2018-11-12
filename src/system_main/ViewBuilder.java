@@ -172,8 +172,6 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 				SystemWindow<DriftCorrectionDS> temp = window;
 		    	temp.split_panels();
-		    	separate_subpanels.setEnabled(false);
-		    	regroup_subpanels.setEnabled(true);
 		    }
 		});
 
@@ -181,8 +179,6 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DriftCorrectionDS> temp = window;
 		    	temp.regroup_panels();
-		    	separate_subpanels.setEnabled(true);
-		    	regroup_subpanels.setEnabled(false);
 		    }
 		});
 
@@ -208,10 +204,9 @@ public class ViewBuilder {
 		file.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
-				//TODO
-			    //boolean can_export = window.get_datastore().can_export();
-			    //export.setEnabled(can_export);
-			    //export_analysis.setEnabled(can_export);
+			    boolean can_export = window.get_datastore().can_export();
+			    export.setEnabled(can_export);
+			    export_analysis.setEnabled(can_export);
 			}
 
 			@Override
@@ -234,6 +229,22 @@ public class ViewBuilder {
 		window_menu.addSeparator();
 		window_menu.add(close_window);
 		bar.add(window_menu);
+		
+		window_menu.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+			    boolean ds_loaded = window.datastore_set();
+			    boolean is_split = window.windows_split();	    
+			    separate_subpanels.setEnabled(ds_loaded & !is_split);
+			    regroup_subpanels.setEnabled(ds_loaded & is_split);
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
 		
 		JMenu help = new JMenu("Help");
 		bar.add(help);
@@ -466,8 +477,6 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 				SystemWindow<DataStore> temp = window;
 		    	temp.split_panels();
-		    	separate_subpanels.setEnabled(false);
-		    	regroup_subpanels.setEnabled(true);
 		    }
 		});
 
@@ -475,8 +484,6 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DataStore> temp = window;
 		    	temp.regroup_panels();
-		    	regroup_subpanels.setEnabled(false);
-		    	separate_subpanels.setEnabled(true);
 		    }
 		});
 
@@ -497,6 +504,22 @@ public class ViewBuilder {
 		window_menu.add(regroup_subpanels);
 		window_menu.addSeparator();
 		window_menu.add(close_window);
+		
+		window_menu.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+			    boolean ds_loaded = window.datastore_set();
+			    boolean is_split = window.windows_split();	    
+			    separate_subpanels.setEnabled(ds_loaded & !is_split);
+			    regroup_subpanels.setEnabled(ds_loaded & is_split);
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
 
 		JMenu help = new JMenu("Help");
 		bar.add(help);

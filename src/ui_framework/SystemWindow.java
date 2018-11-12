@@ -113,6 +113,10 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		}
 	}
 	
+	public boolean windows_split() {
+		return windows_split;
+	}
+	
 	public void regroup_panels() {
 		if (windows_split) {
 			add_panels_to_panes();
