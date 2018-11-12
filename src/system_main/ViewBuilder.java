@@ -166,18 +166,23 @@ public class ViewBuilder {
 		
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
+		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				SystemWindow<DriftCorrectionDS> temp = window;
 		    	temp.split_panels();
+		    	separate_subpanels.setEnabled(false);
+		    	regroup_subpanels.setEnabled(true);
 		    }
 		});
 
-		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
 		regroup_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DriftCorrectionDS> temp = window;
 		    	temp.regroup_panels();
+		    	separate_subpanels.setEnabled(true);
+		    	regroup_subpanels.setEnabled(false);
 		    }
 		});
 
@@ -455,18 +460,23 @@ public class ViewBuilder {
 		bar.add(window_menu);
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
+		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				SystemWindow<DataStore> temp = window;
 		    	temp.split_panels();
+		    	separate_subpanels.setEnabled(false);
+		    	regroup_subpanels.setEnabled(true);
 		    }
 		});
 
-		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
 		regroup_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DataStore> temp = window;
 		    	temp.regroup_panels();
+		    	regroup_subpanels.setEnabled(false);
+		    	separate_subpanels.setEnabled(true);
 		    }
 		});
 
