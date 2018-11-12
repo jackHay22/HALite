@@ -11,8 +11,12 @@ import system_utils.io_tools.ValExpectedException;
 import ui_graphlib.Point;
 
 public class DriftCorrectionCSVReader {
-	private final String DELIM = ",";
 	
+	// Allows commas within quotes in the csv file
+	private final String DELIM = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+	
+	// Will hold the values of the first day and month read in from
+	// the csv - use to calculate x(time) values
 	private Integer first_day;		
 	private Integer first_month;
 	
@@ -38,7 +42,7 @@ public class DriftCorrectionCSVReader {
 				//parse element from col name
 				Element current_element = Element.valueOf(elem_parser.col_name(current_split_line[i]));
 				col_index_elem.put(new Integer(i), current_element);
-				
+
 				data_output.put(current_element, new ElementCPSInfo(current_element));
 			} else if (current_split_line[i].toLowerCase().contains("date")) {
 				date = i;
@@ -69,11 +73,10 @@ public class DriftCorrectionCSVReader {
 			if (current_line.length() > 0 && current_line.charAt(0) == 'O') {
 				current_split_line = current_line.split(DELIM);
 				
-				//TODO: calculate time
 				current_date = current_split_line[date];
 				current_time = current_split_line[time];
 				current_output = current_split_line[1];
-				if (!current_output.contains("DRIFT") && !stds.contains(current_output)) {
+				if (!(current_output.contains("DRIFT") || stds.contains(current_output))) {
 					stds.add(current_output);
 				}
 				
@@ -129,7 +132,6 @@ public class DriftCorrectionCSVReader {
 		
 		int month = Integer.parseInt(date_components[0]);
 		int day = Integer.parseInt(date_components[1]);
-		int year = Integer.parseInt(date_components[2]);
 		
 		// If we haven't read any days from the file yet we set the value read in as the middle
 		// day in a three day range used to normalize the time value down to a fraction of 1

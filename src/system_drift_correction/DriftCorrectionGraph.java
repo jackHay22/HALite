@@ -18,15 +18,6 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 	private GridBagConstraints constraints;
 	private DriftCorrectionDS datastore;
 	
-	private double x_ratio;
-	private double y_ratio;
-	
-	private int draw_width;
-	private int draw_height;
-
-	private double bottom_buffer_x;
-	private double bottom_buffer_y;
-	
 	private EquationPlot equation;
 	
 	private ElementDriftInfo info_to_plot;
@@ -53,15 +44,7 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 		return new PointSet<DriftCorrectionDS>(points_for_line, SystemThemes.HIGHLIGHT2, "", "", "", true);
 		
 	}
-	
-	private void set_vals() {
-		this.draw_width = graph.get_width();
-		this.draw_height = graph.get_height();
-		this.x_ratio = graph.get_x_r();
-		this.y_ratio = graph.get_y_r();
-		this.bottom_buffer_x = graph.get_bbx();
-		this.bottom_buffer_y = graph.get_bby();
-	}
+
 	
 	@Override
 	public void refresh() {
@@ -71,7 +54,6 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 			this.equation = info_to_plot.get_equation();
 			this.graph.set_point_sets(this.points_to_plot);
 			this.graph.refresh();
-			this.set_vals();
 			this.points_to_plot.add(this.get_equation_points());
 			this.graph.refresh();
 			this.revalidate();

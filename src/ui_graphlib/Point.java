@@ -50,4 +50,9 @@ public class Point implements Serializable {
 		return draw_y;
 	}
 	
+	@Override
+	public String toString() {
+		return (Double.toString(graph_x) + ", " + Double.toString(graph_y));
+	}
+	
 }
