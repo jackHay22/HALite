@@ -7,7 +7,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
@@ -32,6 +31,20 @@ public class ViewBuilder {
 	public static int OPEN_VIEWS = 0;
 
 
+	private static JMenuItem get_help_item() {
+		JMenuItem help_menu_item = new JMenuItem("Show help");
+		help_menu_item.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO: create new help dialog
+				
+			}
+		});
+		
+		return help_menu_item;
+	}
+	
 	private static void open_example_data(SystemWindow<DataStore> current_window) {
     	//open dialog, set return state to main
 
@@ -247,6 +260,7 @@ public class ViewBuilder {
 		});
 		
 		JMenu help = new JMenu("Help");
+		help.add(get_help_item());
 		bar.add(help);
 		
 		return bar;
@@ -522,6 +536,7 @@ public class ViewBuilder {
 		});
 
 		JMenu help = new JMenu("Help");
+		help.add(get_help_item());
 		bar.add(help);
 
 		return bar;
