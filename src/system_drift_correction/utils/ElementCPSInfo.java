@@ -88,8 +88,12 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 			} else {
 				for (int i = 0; i < sorted_points.size(); i++) {
 					Point e = sorted_points.get(i);
-					if (p.get_x() > e.get_x()) {
-						sorted_points.add(i + 1, p);
+					if (p.get_x() < e.get_x()) {
+						sorted_points.add(i, p);
+						break;
+					} else if (i == sorted_points.size() - 1) {
+						sorted_points.add(sorted_points.size(), p);
+						break;
 					}
 				}
 			}
@@ -115,8 +119,12 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 				} else {
 					for (int i = 0; i < sorted_points.size(); i++) {
 						Double e = sorted_points.get(i);
-						if (p.get_x() > e) {
-							sorted_points.add(i + 1, p.get_x());
+						if (p.get_x() < e) {
+							sorted_points.add(i, p.get_x());
+							break;
+						} else if (i == sorted_points.size() - 1) {
+							sorted_points.add(sorted_points.size(), p.get_x());
+							break;
 						}
 					}
 				}
