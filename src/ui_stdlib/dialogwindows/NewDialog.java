@@ -92,7 +92,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				
 				//if means override, add means
 				if (means_override != null) {
-					System.out.println(means_override);
 					backend.add_component_filepath(means_override, "means");	
 				}
 				
