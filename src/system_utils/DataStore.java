@@ -125,6 +125,7 @@ public class DataStore extends DataBackend implements Serializable {
 		DrawablePanel<DataStore> gpanel = graph.get_points_panel();
 		gpanel.refresh();
 		
+		
 		graph.on_start();
 		graph.refresh();
 		//add(graph);
