@@ -195,7 +195,12 @@ public class DataStore extends DataBackend implements Serializable {
 				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
 				
 				ArrayList<String> means_table = parser.get_table_names(reader);
-				tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(path)));
+				try {
+					tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(path)));
+				} catch (Exception e) {
+					return false;
+				}
+				
 				this.standards_means_data = tables.get("standards");
 				this.unknown_means_data = tables.get("unknowns");
 				
