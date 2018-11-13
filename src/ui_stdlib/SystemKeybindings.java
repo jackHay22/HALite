@@ -1,4 +1,4 @@
-package system_main;
+package ui_stdlib;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;

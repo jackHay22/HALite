@@ -15,6 +15,7 @@ import system_utils.io_tools.SystemFileDialog;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
+import ui_stdlib.SystemKeybindings;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.NewDialog;
@@ -138,7 +139,7 @@ public class ViewBuilder {
 		});
 		
 		JMenuItem export = new JMenuItem("Export");
-		//open_new.setAccelerator(SystemKeybindings.NEW);
+		//export.setAccelerator(SystemKeyBindings.);
 		export.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 
