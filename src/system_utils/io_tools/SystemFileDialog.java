@@ -4,36 +4,44 @@ import java.awt.FileDialog;
 import java.io.File;
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
+import ui_stdlib.SystemFileFilter;
 import ui_stdlib.dialogwindows.SystemDialog;
 
 public class SystemFileDialog<Backend extends DataBackend> {
 	private FileDialog system_file_dialog;
+	private String last_path;
 	
-	public SystemFileDialog(SystemDialog dialog_parent, String title) {
+	public SystemFileDialog(SystemDialog dialog_parent, String title, String ext_type) {
 		system_file_dialog = new FileDialog(dialog_parent, title);
+		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
 	}
 	
-	public SystemFileDialog(SystemWindow<Backend> window_parent, String title) {
+	public SystemFileDialog(SystemWindow<Backend> window_parent, String title, String ext_type) {
 		system_file_dialog = new FileDialog(window_parent, title);
+		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
 	}
 	
 	public boolean init_backend_on_path(Backend databackend) {
 		//returns read_status
-		String path = get_path(FileDialog.LOAD);
+		last_path = get_path(FileDialog.LOAD);
 		
-		if (path != null) {
-			return databackend.init_from_file(path);
+		if (last_path != null) {
+			return databackend.init_from_file(last_path);
 		} else {
 			return false;
 		}
 	}
 	
+	public String last_path() {
+		return last_path;
+	}
+	
 	public boolean add_component_path(Backend databackend, String label) {
 		//returns read_status
-		String component = get_path(FileDialog.LOAD);
+		last_path = get_path(FileDialog.LOAD);
 		
-		if (component != null) {
-			return databackend.add_component_filepath(component, label);
+		if (last_path != null) {
+			return databackend.add_component_filepath(last_path, label);
 		} else {
 			return false;
 		}
@@ -41,10 +49,10 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean save_on_path(Backend databackend) {
 		//returns read_status
-		String component = get_path(FileDialog.SAVE);
+		last_path = get_path(FileDialog.SAVE);
 		
-		if (component != null) {
-			return databackend.save_to_filepath(component);
+		if (last_path != null) {
+			return databackend.save_to_filepath(last_path);
 		} else {
 			return false;
 		}
@@ -52,10 +60,10 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean export_on_path(Backend databackend, int type) {
 		//returns read_status
-		String component = get_path(FileDialog.SAVE);
+		last_path = get_path(FileDialog.SAVE);
 		
-		if (component != null) {
-			return databackend.on_export(component, type);
+		if (last_path != null) {
+			return databackend.on_export(last_path, type);
 		} else {
 			return false;
 		}

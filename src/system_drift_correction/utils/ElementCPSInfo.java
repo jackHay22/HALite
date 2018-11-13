@@ -148,8 +148,9 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		all_data.put("std dev", stats.getStandardDeviation());
 		
 		Double see = -1.0;
-		if (y_vals != null && all_data.get("std_dev") != null) {
-			see = all_data.get("std_dev")*100/Math.pow(y_vals.size(), 0.5);
+		
+		if (y_vals != null && all_data.get("std dev") != null) {
+			see = all_data.get("std dev")*100/Formulas.mean_of_array(y_vals);
 		}
 		all_data.put("%SEE", see);
 		

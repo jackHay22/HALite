@@ -138,7 +138,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		set_ratio();
 	}
 	
-	public DrawablePanel get_points_panel() {
+	public DrawablePanel<Backend> get_points_panel() {
 		return this.points_panel;
 	}
 	

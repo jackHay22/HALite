@@ -15,6 +15,7 @@ import system_utils.io_tools.ValExpectedException;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
 import ui_framework.SystemWindow;
+import ui_stdlib.SystemThemes;
 
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
@@ -135,7 +136,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 			for (Element elem : Element.values()) {
 				ElementCPSInfo info = cps_info.get(elem);
 				if (info != null) {
-					sb.append(info.get_stats(s).get("see"));
+					sb.append(SystemThemes.get_display_number(info.get_stats(s).get("%SEE")));
 					sb.append(',');
 				}
 			}

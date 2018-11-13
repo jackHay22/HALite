@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
-import java.text.DecimalFormat;
 import system_utils.DataStore;
 import system_utils.ElementCorrelationInfo;
 import system_utils.EquationPlot;
@@ -17,11 +16,11 @@ import ui_stdlib.SystemThemes;
 @SuppressWarnings("serial")
 public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 	//extends SystemPanel 
-	private DataStore data_store;
-	private GraphPanel<DataStore> graph;
+	protected DataStore data_store;
+	protected GraphPanel<DataStore> graph;
 	private ElementCorrelationInfo data_to_plot;
-	private HashMap<String, PointSet<DataStore>> data_sets;
-	private EquationPlot eqn;
+	protected HashMap<String, PointSet<DataStore>> data_sets;
+	protected EquationPlot eqn;
 
 	private Point line_min;
 	private Point line_max;
@@ -34,10 +33,9 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 
 	private double bottom_buffer_x;
 	private double bottom_buffer_y;
-	
-	private GridBagConstraints constraints;
-	
+
 	private JButton toggle_unknowns;
+	private GridBagConstraints constraints;
 	
 	public ModelGraph() {
 		super();
@@ -45,8 +43,12 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 		this.constraints = SystemThemes.get_grid_constraints();
 		this.graph = new GraphPanel<DataStore>(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
-		
-		toggle_unknowns = new JButton("Toggle");
+		toggle_unknowns = new JButton("Toggle Unknowns");
+	}
+	
+	// This return the drawable panel to be converted into an image
+	public DrawablePanel<DataStore> get_points_panel() {
+		return this.graph.get_points_panel();
 	}
 	
 	private void set_line_endpoints() {
@@ -100,20 +102,38 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 	@Override
 	public void refresh() {
 		// Pulls the relevant data for the new points to display
-		this.data_to_plot = this.data_store.get_model_data_corr();
-		this.data_sets = data_to_plot.get_pointsets();
-		this.eqn = data_to_plot.get_equation();
-		ArrayList<PointSet<DataStore>> point_sets = new ArrayList<PointSet<DataStore>>();
-		point_sets.add(data_sets.get("standard"));
-		this.graph.set_point_sets(point_sets);
-		this.graph.refresh();
-		set_labels();
-		set_vals();
-		this.graph.refresh();
-		this.revalidate();
+		set_data_to_plot(this.data_store.get_model_data_corr());
+		ArrayList<String> keys = new ArrayList<String>();
+		keys.add("standard");
+		refresh_data(keys);
 	}
 	
-	private void set_vals() {
+	protected void set_data_to_plot(ElementCorrelationInfo info) {
+		this.data_to_plot = info;
+	}
+	
+	private void refresh_data(ArrayList<String> keys) {
+		if (data_to_plot != null) {
+			this.data_sets = data_to_plot.get_pointsets();
+			this.eqn = data_to_plot.get_equation();
+			this.add_point_sets(keys);
+			this.graph.refresh();
+			set_labels();
+			set_vals();
+			this.graph.refresh();
+			this.revalidate();
+		}
+	}
+	
+	protected void add_point_sets(ArrayList<String> keys) {
+		ArrayList<PointSet<DataStore>> point_sets = new ArrayList<PointSet<DataStore>>();
+		for (String key : keys) {
+			point_sets.add(data_sets.get(key));
+		}
+		this.graph.set_point_sets(point_sets);
+	}
+	
+	protected void set_vals() {
 		this.draw_width = graph.get_width();
 		this.draw_height = graph.get_height();
 		this.x_ratio = graph.get_x_r();
@@ -140,24 +160,22 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 		
 	}
 	
-	private void set_constraints() {
+	protected void set_constraints() {
 		this.constraints.gridx = 0;
 		this.constraints.gridy = 0;
 		constraints.weighty = 1;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		this.add(this.graph, constraints);
 		constraints.weighty = 0;
 		constraints.gridwidth = 1;
 		this.constraints.gridx = 1;
 		this.constraints.gridy = 1;
-		//this.add(toggle_unknowns, constraints);
-		
+		constraints.weightx = 0;
 	}
-
-	private String get_display_number(Double val) {
-		DecimalFormat df = new DecimalFormat("#.00000");
-		return df.format(val);
+	
+	protected void add_toggle_button() {
+		this.add(toggle_unknowns, constraints);
 	}
 	
 	private void set_labels() {
@@ -166,7 +184,7 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 		this.graph.set_y_label(s);
 		s = models.get_x_label();
 		this.graph.set_x_label(s);
-		s = "r²: " + get_display_number(data_to_plot.get_equation().get_r2()) + "    ||    " + data_to_plot.get_equation().get_str_rep();
+		s = "r²: " + SystemThemes.get_display_number(data_to_plot.get_equation().get_r2(), "#.00000") + "    ||    " + data_to_plot.get_equation().get_str_rep();
 		this.graph.set_r2_eqn_label(s);
 		s = models.get_title();
 		this.graph.set_title(s);

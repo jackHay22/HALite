@@ -6,12 +6,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
 import system_utils.Element;
 
 public class SystemThemes {
@@ -33,7 +31,6 @@ public class SystemThemes {
 	
 	public static final int MAIN_WINDOW_WIDTH = 1200;
 	public static final int MAIN_WINDOW_HEIGHT = 750;
-	public static KeyStroke SAVE_BINDING = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
 	
 	public static final int SCROLL_PANE_SPEED = 8;
 	

@@ -38,7 +38,7 @@ public class SaveDialog<Backend extends DataBackend> extends SystemDialog implem
 
 	@Override
 	public void on_scheduled(Backend backend) {
-		SystemFileDialog<Backend> save_file_chooser = new SystemFileDialog<Backend>(this, "Save...");
+		SystemFileDialog<Backend> save_file_chooser = new SystemFileDialog<Backend>(this, "Save...", "ds");
 
 		if (try_save(backend)) {
 			String save_path = backend.get_path().toString();

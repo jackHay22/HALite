@@ -2,10 +2,12 @@ package system_drift_correction;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import system_utils.Element;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
@@ -27,8 +29,8 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	private PanelHeader<DriftCorrectionDS> element_label;
 	private PanelHeader<DriftCorrectionDS> degree_label;
 	
-	private PanelHeader<DriftCorrectionDS> eqn_label; //TODO: rename
-	private PanelHeader<DriftCorrectionDS> rsqrd_label; //TODO: rename
+	private PanelHeader<DriftCorrectionDS> eqn_label;
+	private PanelHeader<DriftCorrectionDS> rsqrd_label;
 	
 	private boolean backend_loaded;
 	private DriftCorrectionDS datastore;
@@ -38,6 +40,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		super();
 		backend_loaded = false;
 		setLayout(new GridBagLayout());
+		
 		constraints = SystemThemes.get_grid_constraints();
 		
 		element_selection = new JComboBox<Element>(Element.values());
@@ -186,38 +189,38 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		//add spanning label
 		add(SystemThemes.get_horiz_scrollable_panel(eqn_label), constraints);
 		constraints.weighty = 0.9;
+		
 		//add second spanning label
 		constraints.gridy = 3;
 		add(rsqrd_label, constraints);
 		
-
-		//add bottom buttons
-		//prev_element.setPreferredSize(new Dimension(250,40));
+		//make jpanel and set layout to add both buttons with equal width
+		JPanel button_panel = new JPanel();
+		button_panel.setLayout(new GridLayout(0,2));
+		button_panel.setBackground(SystemThemes.BACKGROUND);
 		
+		button_panel.add(prev_element);
+		button_panel.add(next_element);
+		
+		//add action listeners to next and prev buttons
 		prev_element.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				get_prev_element();
 		    }
 		});
 		
-		constraints.gridy = 4;
-		constraints.gridx = 0;
-		constraints.gridwidth = 1;
-		constraints.weightx = 0;
-		constraints.weighty = 0;
-		//constraints.ipady = 20;
 		
-		add(prev_element, constraints);
-	
-		//next_element.setPreferredSize(new Dimension(250,40));
 		next_element.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				get_next_element();
 		    }
 		});
 		
-		constraints.gridx = 1;
-		add(next_element, constraints);
+		constraints.gridy = 4;
+		constraints.gridx = 0;
+		constraints.gridwidth = 2;
+		constraints.weighty = 0;
+		add(button_panel, constraints);
 		
 		setVisible(true);
 	}

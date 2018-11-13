@@ -18,7 +18,7 @@ public class OpenDialog<T extends DataBackend> extends SystemDialog implements u
 		super(title);
 		this.setLayout(new GridLayout(4,0));
 		
-		file_dialog = new SystemFileDialog<T>(this, "Open...");
+		file_dialog = new SystemFileDialog<T>(this, "Open...", "ds");
 	}
 
 	
