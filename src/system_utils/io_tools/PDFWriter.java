@@ -45,8 +45,6 @@ public class PDFWriter {
 			contentStream.beginText();
 			contentStream.newLineAtOffset((title_page.getMediaBox().getWidth() - titleWidth) / 2, title_page.getMediaBox().getHeight() - marginTop - titleHeight);
 			
-			System.out.println("WIDTH: " + title_page.getMediaBox().getWidth() + ", HEIGHT: " + title_page.getMediaBox().getHeight());
-			
 			contentStream.setFont(font, title_font_size);
 			contentStream.showText(title);
 			contentStream.endText();
