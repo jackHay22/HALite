@@ -97,15 +97,17 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				
+				boolean loaded_means = true;
 				//if means override, add means
 				if (means_override != null) {
-					backend.add_component_filepath(means_override, "means");	
+					loaded_means = backend.add_component_filepath(means_override, "means");	
 				}
-				
-				remove(continue_button);
-				main_window.on_scheduled(backend);
-				close_dialog();
+				//if able to load means, move to window
+				if (loaded_means) {
+					remove(continue_button);
+					main_window.on_scheduled(backend);
+					close_dialog();
+				}
 			}
         }); 
 		
