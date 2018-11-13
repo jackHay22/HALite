@@ -1,6 +1,7 @@
 package ui_stdlib.dialogwindows;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	private boolean xrf_chosen = false;
 	private boolean means_chosen = false;
 	private boolean standards_chosen = false;
-	private int path_display_length = 40;
+	private int path_display_length = 20;
 	private SystemWindow<DataStore> main_window;
 	
 	private ArrayList<JButton> added_buttons;
@@ -28,12 +29,15 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	
 	private String means_override;
 	
+	private GridBagConstraints constraints;
+	
 	public NewDialog(String title, SystemWindow<DataStore> main_window) {
 		super(title);	
 		
 		this.main_window = main_window;
 		
-		this.setLayout(new GridLayout(4,2));
+		this.setLayout(new GridBagLayout());
+		constraints = SystemThemes.get_grid_constraints();
 		
 		this.setBackground(SystemThemes.BACKGROUND);
 		
@@ -58,7 +62,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	private void can_continue() {
 		if (xrf_chosen && standards_chosen && means_chosen) {
 			continue_button.setEnabled(true);
-			continue_button.setBackground(SystemThemes.MAIN);
+			//continue_button.setBackground(SystemThemes.MAIN);
 			
 			//String xrf_selected = xrf_table_selection.getSelectedItem().toString();
 			
@@ -83,9 +87,13 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	public void on_scheduled(DataStore backend) {
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
-		continue_button.setBackground(SystemThemes.MAIN);
+		//continue_button.setBackground(SystemThemes.MAIN);
 		continue_button.setOpaque(true);
 		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weighty = 0.2;
 		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
@@ -109,28 +117,35 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		//Causes windows graphical bug
 			//xrf_chooser.setBackground(SystemThemes.BACKGROUND);
 			//xrf_chooser.setOpaque(true);
-		this.add(xrf_chooser);
+		add(xrf_chooser, constraints);
 		added_buttons.add(xrf_chooser);
 		
 		JComboBox<String> xrf_table_selection = new JComboBox<String>();
 		xrf_table_selection.setBorder(BorderFactory.createTitledBorder("Select XRF Table"));
-		this.add(xrf_table_selection);
+		
+		constraints.gridx = 1;
+		add(xrf_table_selection, constraints);
 		xrf_table_selection.setEnabled(false);
-		xrf_table_selection.setBackground(SystemThemes.MAIN);
+		//xrf_table_selection.setBackground(SystemThemes.MAIN);
 		xrf_table_selection.setOpaque(true);
 		
 		JButton stds_chooser = new JButton("Standards");
 		//Causes windows graphical bug
 			//stds_chooser.setBackground(SystemThemes.BACKGROUND);
 			//stds_chooser.setOpaque(true);
-		this.add(stds_chooser);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		add(stds_chooser, constraints);
 		added_buttons.add(stds_chooser);
 		
 		JComboBox<String> stds_table_selection = new JComboBox<String>();
 		stds_table_selection.setBorder(BorderFactory.createTitledBorder("Select Standards Table"));
-		this.add(stds_table_selection);
+		
+		constraints.gridx = 1;
+		add(stds_table_selection, constraints);
 		stds_table_selection.setEnabled(false);
-		stds_table_selection.setBackground(SystemThemes.MAIN);
+		//stds_table_selection.setBackground(SystemThemes.MAIN);
 		stds_table_selection.setOpaque(true);
 		
 		
@@ -144,12 +159,16 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		JComboBox<String> means_table_selection = new JComboBox<String>();
 		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
 		means_table_selection.setEnabled(false);
-		means_table_selection.setBackground(SystemThemes.MAIN);
+		//means_table_selection.setBackground(SystemThemes.MAIN);
 		means_table_selection.setOpaque(true);
 		
 		if (means_override == null) {
-			add(means_chooser);
-			add(means_table_selection);
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			add(means_chooser, constraints);
+			
+			constraints.gridx = 1;
+			add(means_table_selection, constraints);
 		}	
 		
 		xrf_chooser.addActionListener(new ActionListener () {
@@ -245,7 +264,13 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	can_continue();
 		    }
 		});
-		add(continue_button);
+		
+		constraints.gridwidth = 2;
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.weighty = 0.4;
+		
+		add(continue_button, constraints);
 		
 		show_dialog();
 	}
