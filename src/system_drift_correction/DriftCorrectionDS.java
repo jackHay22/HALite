@@ -135,7 +135,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 			for (Element elem : Element.values()) {
 				ElementCPSInfo info = cps_info.get(elem);
 				if (info != null) {
-					sb.append(info.get_stats(s).get("see"));
+					sb.append(info.get_stats(s).get("%SEE"));
 					sb.append(',');
 				}
 			}
