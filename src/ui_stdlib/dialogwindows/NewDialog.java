@@ -24,6 +24,9 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	private SystemWindow<DataStore> main_window;
 	
 	private ArrayList<JButton> added_buttons;
+	private JButton means_chooser;
+	
+	private String means_override;
 	
 	public NewDialog(String title, SystemWindow<DataStore> main_window) {
 		super(title);	
@@ -35,6 +38,21 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		this.setBackground(SystemThemes.BACKGROUND);
 		
 		added_buttons = new ArrayList<JButton>();
+		
+		file_chooser = new SystemFileDialog<DataStore>(this, "Open new project", "csv");
+		
+		means_override = null;
+		
+		means_chooser = new JButton("Means");
+		
+		means_chosen = false;
+	}
+	
+	public NewDialog(String title, SystemWindow<DataStore> main_window, String pre_selected_means) {
+		this(title, main_window);
+		means_override = pre_selected_means + ".csv";
+		means_chooser.setText(get_file_display("Means", means_override));
+		means_chosen = true;
 	}
 	
 	private void can_continue() {
@@ -68,8 +86,16 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		continue_button.setBackground(SystemThemes.MAIN);
 		continue_button.setOpaque(true);
 		
+		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+				
+				//if means override, add means
+				if (means_override != null) {
+					System.out.println(means_override);
+					backend.add_component_filepath(means_override, "means");	
+				}
+				
 				remove(continue_button);
 				main_window.on_scheduled(backend);
 				close_dialog();
@@ -77,10 +103,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
         }); 
 		
 		xrf_chosen = false;
-		means_chosen = false;
 		standards_chosen = false;
 		
-		file_chooser = new SystemFileDialog<DataStore>(this, "Open new project");
 		
 		JButton xrf_chooser = new JButton("XRF");
 		//Causes windows graphical bug
@@ -110,19 +134,24 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_table_selection.setBackground(SystemThemes.MAIN);
 		stds_table_selection.setOpaque(true);
 		
-		JButton means_chooser = new JButton("Means");
+		
 		//Causes windows graphical bug
 			//means_chooser.setBackground(SystemThemes.BACKGROUND);
 			//means_chooser.setOpaque(true);
-		this.add(means_chooser);
+		
+		
 		added_buttons.add(means_chooser);
 		
 		JComboBox<String> means_table_selection = new JComboBox<String>();
 		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
-		this.add(means_table_selection);
 		means_table_selection.setEnabled(false);
 		means_table_selection.setBackground(SystemThemes.MAIN);
 		means_table_selection.setOpaque(true);
+		
+		if (means_override == null) {
+			add(means_chooser);
+			add(means_table_selection);
+		}	
 		
 		xrf_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -155,6 +184,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    	can_continue();
 		    }
 		});
+	
 		
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {

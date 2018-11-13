@@ -126,7 +126,7 @@ public class ViewBuilder {
 
 				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
-				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
+				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
 
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					//new Backend was able to init on new file
@@ -143,7 +143,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 
 				DriftCorrectionDS ds = window.get_datastore();
-				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
+				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
 					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
@@ -159,14 +159,14 @@ public class ViewBuilder {
 				SystemWindow<DataStore> new_analysis_window = get_app_view();
 				
 				DriftCorrectionDS ds = window.get_datastore();
-				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...");
+				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
 					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 				} else {
 					
 					//TODO: set with means file selected
-					NewDialog file_selector = new NewDialog("Select Files", new_analysis_window);
+					NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
 		    		
 		    		DataStore new_ds = new DataStore(new_analysis_window);
 		    		file_selector.on_scheduled(new_ds);
@@ -349,7 +349,7 @@ public class ViewBuilder {
 
 				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
-				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction");
+				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
 
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
@@ -381,7 +381,7 @@ public class ViewBuilder {
 				//open dialog, set return state to main
 
 				if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
@@ -398,7 +398,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
@@ -416,7 +416,7 @@ public class ViewBuilder {
 				//open dialog, set return state to main
 
 				if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data");
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
@@ -433,7 +433,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog, set return state to main
 		    	if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export");
+		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
