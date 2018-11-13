@@ -5,11 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,12 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.pdmodel.PDPage;
-
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.MeansCSVParser;
+import system_utils.io_tools.PDFWriter;
 import system_utils.io_tools.TestSuiteReader;
 import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
@@ -61,7 +55,6 @@ public class DataStore extends DataBackend implements Serializable {
 	private DataTable unknown_means_data;
 	
 	private HashMap<Element, ElementCorrelationInfo> correlations;
-	private ArrayList<Element> displayed_elems;
 	
 	private int elem_num;
 
@@ -76,7 +69,6 @@ public class DataStore extends DataBackend implements Serializable {
 		this.unknown_means_data = new DataTable("Unknown_means");
 		
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
-		this.displayed_elems = new ArrayList<Element>();
 		
 		this.elem_num = 5;
 	}
@@ -109,15 +101,15 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		else if (export_type == SystemThemes.PDF_CALIBRATION_GRAPHS) {
-			return export_calibration_graphs(file_path);
+			
 		}
 		else if (export_type == SystemThemes.PDF_RESPONSE_GRAPHS) {
-			
+			return export_response_graphs(file_path);
 		}
 		return false;
 	}
 	
-	private boolean export_calibration_graphs(String file_path) {
+	private boolean export_response_graphs(String file_path) {
 		CorrelationGraph graph = new CorrelationGraph();
 		graph.set_datastore(this);
 		
@@ -130,21 +122,10 @@ public class DataStore extends DataBackend implements Serializable {
 		graph.refresh();
 		//add(graph);
 		
-		int progress = 0;
-		
 		// Create new PDF 
-		PDDocument document = new PDDocument();
-		
-		//Creating the PDDocumentInformation object 
-	    PDDocumentInformation pdd = document.getDocumentInformation();
-		pdd.setTitle("Response Graphs");
-		
-		PDPage page = document.getPage(1);
-		//PDPageContentStream contentStream = new PDPageContentStream(document, page);
+		PDFWriter pdf_doc = new PDFWriter("Response Graphs");
 		
 		try {
-			ArrayList<CorrelationInfo> corrs;
-			
 			
 			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
@@ -154,39 +135,25 @@ public class DataStore extends DataBackend implements Serializable {
 				// Go to next element if no secondary elements selected
 				if (selected_elems.isEmpty())
 					continue;
-				
+
 				// Create at least one new page for every primary element
-				PDPage curr_elem = new PDPage();
-				document.addPage(curr_elem);
+				String primary_elem = entry.getKey().name();
+				pdf_doc.new_page(primary_elem);
 				
 				for (CorrelationInfo corr_info : selected_elems) {
 					
+					String secondary_elem = corr_info.get_secondary().name();
+					pdf_doc.write(secondary_elem);
 				}
 				
 			}
-			
-			// Output final image to disk
-			//File outputfile = new File(save_path);
-		    //ImageIO.write(img, "png", outputfile);
 			
 		} catch (Exception e) {
 			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Export Error", "Unable to export project to PDF.");
 			err.show_dialog();
 		}
 		
-		// Save the newly created document
-		try {
-			document.save(file_path);
-		} catch (IOException e1) {
-		}
-
-		// finally make sure that the document is properly closed.
-		try {
-			document.close();
-			return true;
-		} catch (IOException e1) {
-			return false;
-		}
+		return pdf_doc.write_to_disk(file_path);
 	}
 	
 	@Override
@@ -214,6 +181,10 @@ public class DataStore extends DataBackend implements Serializable {
 			try {
 				// Haven't imported standards data yet - can't parse means data
 				if (standards_data == null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+					}
 					return false;
 				}
 				
@@ -249,6 +220,12 @@ public class DataStore extends DataBackend implements Serializable {
 				return false;
 			}
 			return true;
+		}
+		
+		try {
+			reader.close();
+		}
+		catch (IOException e) {
 		}
 		
 		return false;
