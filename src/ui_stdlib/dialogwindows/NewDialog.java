@@ -59,15 +59,18 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chosen = true;
 	}
 	
-	private void can_continue() {
-		if (xrf_chosen && standards_chosen && means_chosen) {
-			continue_button.setEnabled(true);
-			//continue_button.setBackground(SystemThemes.MAIN);
+	private void can_continue(DataStore backend) {
+		//means set by dc export
+
+		if (xrf_chosen && standards_chosen) {
 			
-			//String xrf_selected = xrf_table_selection.getSelectedItem().toString();
+			if (means_override != null) {
+				means_chosen = backend.add_component_filepath(means_override, "means");	
+			}
 			
-			//loaded_datastore.set_tables_in_use(xrf_selected, standards_selected, means_selected);
-			
+			if (means_chosen) {
+				continue_button.setEnabled(true);
+			}
 		}
 	}
 	
@@ -97,17 +100,9 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		continue_button.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				boolean loaded_means = true;
-				//if means override, add means
-				if (means_override != null) {
-					loaded_means = backend.add_component_filepath(means_override, "means");	
-				}
-				//if able to load means, move to window
-				if (loaded_means) {
-					remove(continue_button);
-					main_window.on_scheduled(backend);
-					close_dialog();
-				}
+				remove(continue_button);
+				main_window.on_scheduled(backend);
+				close_dialog();
 			}
         }); 
 		
@@ -201,7 +196,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			    	
 		    	}
 		    	
-		    	can_continue();
+		    	can_continue(backend);
 		    }
 		});
 	
@@ -233,7 +228,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			    		
 		    	}
 		    	
-		    	can_continue();
+		    	can_continue(backend);
 		    }
 		});
 		
@@ -263,7 +258,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setOpaque(false);
 		    	}
 		    	
-		    	can_continue();
+		    	can_continue(backend);
 		    }
 		});
 		
