@@ -32,7 +32,7 @@ public class ViewBuilder {
 
 
 	private static JMenuItem get_help_item() {
-		JMenuItem help_menu_item = new JMenuItem("Show help");
+		JMenuItem help_menu_item = new JMenuItem("Show help...");
 		help_menu_item.addActionListener(new ActionListener() {
 
 			@Override
@@ -243,6 +243,8 @@ public class ViewBuilder {
 		window_menu.add(close_window);
 		bar.add(window_menu);
 		
+		
+		//disable splitting if backend not loaded, otherwise toggle between options
 		window_menu.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
@@ -519,6 +521,7 @@ public class ViewBuilder {
 		window_menu.addSeparator();
 		window_menu.add(close_window);
 		
+		//disable splitting if backend not loaded, otherwise toggle between options
 		window_menu.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
