@@ -19,7 +19,9 @@ To setup the project, configure the following:
 
 ## Crash reporting
 If a failed try/catch is severe enough to record as a log, add the following to the catch block:
-```CrashReporter.report_crash(window, exception);```
+```java
+CrashReporter.report_crash(window, exception);
+```
 This will save a timestamped log file to Application Support with the exception.
 
 ## Dependencies
