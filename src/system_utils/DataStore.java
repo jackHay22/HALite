@@ -128,8 +128,10 @@ public class DataStore extends DataBackend implements Serializable {
 					continue;
 
 				// Create at least one new page for every primary element
-				String primary_elem = entry.getKey().name();
-				pdf_doc.new_page(primary_elem);
+				String model_elem = entry.getKey().name() + " Model";
+				pdf_doc.new_page(model_elem);
+				
+				this.set_model_data_element(entry.getKey());
 				
 				DrawablePanel<DataStore> gpanel = model_graph.get_points_panel();
 				gpanel.refresh();
@@ -137,6 +139,7 @@ public class DataStore extends DataBackend implements Serializable {
 				model_graph.on_start();
 				model_graph.refresh();
 				
+				pdf_doc.write("", gpanel);
 			}
 			
 		} catch (Exception e) {
@@ -168,7 +171,7 @@ public class DataStore extends DataBackend implements Serializable {
 					continue;
 				
 				// Create at least one new page for every primary element
-				String primary_elem = entry.getKey().name();
+				String primary_elem = entry.getKey().name() + " Responses";
 				pdf_doc.new_page(primary_elem);
 				
 				for (CorrelationInfo corr_info : selected_elems) {

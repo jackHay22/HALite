@@ -74,7 +74,7 @@ public class PDFWriter {
 		PDPage page = new PDPage();
 		document.addPage(page);
 		
-		String page_title = text + " Responses";
+		String page_title = text;
 
 		try {
 			// Beginning to add to document
@@ -101,7 +101,8 @@ public class PDFWriter {
 	}
 	
 	private BufferedImage get_buff_img(DrawablePanel gpanel) {
-		gpanel.setSize(400, 190);
+		System.out.println("OFFSET: " + (int) Math.ceil(graphing_offset));
+		gpanel.setSize(400, (int) Math.ceil(graphing_offset) - 100);
 		int w = gpanel.getWidth();
 	    int h = gpanel.getHeight();
 	    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
