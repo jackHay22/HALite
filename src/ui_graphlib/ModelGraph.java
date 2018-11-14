@@ -9,18 +9,14 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import system_utils.DataStore;
 import system_utils.ElementCorrelationInfo;
-import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
+public class ModelGraph extends BaseGraph<DataStore> {
 	//extends SystemPanel 
-	protected DataStore data_store;
-	protected GraphPanel<DataStore> graph;
 	private ElementCorrelationInfo data_to_plot;
 	protected HashMap<String, PointSet<DataStore>> data_sets;
-	protected EquationPlot eqn;
 
 	private Point line_min;
 	private Point line_max;
@@ -35,7 +31,6 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 	private double bottom_buffer_y;
 
 	private JButton toggle_unknowns;
-	private GridBagConstraints constraints;
 	
 	public ModelGraph() {
 		super();
@@ -44,11 +39,6 @@ public class ModelGraph extends ui_framework.SystemPanel<DataStore> {
 		this.graph = new GraphPanel<DataStore>(450, 250);
 		this.graph.setBackground(SystemThemes.BACKGROUND);
 		toggle_unknowns = new JButton("Toggle Unknowns");
-	}
-	
-	// This return the drawable panel to be converted into an image
-	public DrawablePanel<DataStore> get_points_panel() {
-		return this.graph.get_points_panel();
 	}
 	
 	private void set_line_endpoints() {
