@@ -75,10 +75,7 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean on_export(String file_path, int export_type) {
-		if (export_type == SystemThemes.CSV_DRIFT_CORRECTION) {
-			
-		}
-		else if (export_type == SystemThemes.CSV_FULL_REPORT) {
+		if (export_type == SystemThemes.CSV_FULL_REPORT) {
 			try {
 				PrintWriter pw = new PrintWriter(new File(file_path + ".csv"));
 				String output = this.get_detailed_report();
@@ -101,7 +98,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		else if (export_type == SystemThemes.PDF_CALIBRATION_GRAPHS) {
-			
+			return export_calibration_graphs(file_path);
 		}
 		else if (export_type == SystemThemes.PDF_RESPONSE_GRAPHS) {
 			return export_response_graphs(file_path);
@@ -109,20 +106,21 @@ public class DataStore extends DataBackend implements Serializable {
 		return false;
 	}
 	
-	private boolean export_response_graphs(String file_path) {
-		CorrelationGraph graph = new CorrelationGraph();
-		graph.set_datastore(this);
+	private boolean export_calibration_graphs(String file_path) {
+		CorrelationGraph corr_graph = new CorrelationGraph();
+		corr_graph.set_datastore(this);
 		
-		@SuppressWarnings("unchecked")
-		DrawablePanel<DataStore> gpanel = graph.get_points_panel();
+		DrawablePanel<DataStore> gpanel = corr_graph.get_points_panel();
 		gpanel.refresh();
 		
-		graph.on_start();
-		graph.refresh();
+		corr_graph.on_start();
+		corr_graph.refresh();
+		
 		//add(graph);
 		
 		// Create new PDF 
-		PDFWriter pdf_doc = new PDFWriter("Response Graphs");
+		int graphs_per_page = 1;
+		PDFWriter pdf_doc = new PDFWriter("Calibration Model Graphs", graphs_per_page);
 		
 		try {
 			
@@ -139,10 +137,57 @@ public class DataStore extends DataBackend implements Serializable {
 				String primary_elem = entry.getKey().name();
 				pdf_doc.new_page(primary_elem);
 				
+				
+				
+			}
+			
+		} catch (Exception e) {
+			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Export Error", "Unable to export project to PDF.");
+			err.show_dialog();
+		}
+		
+		return pdf_doc.write_to_disk(file_path);
+	}
+	
+	private boolean export_response_graphs(String file_path) {
+		
+		// Create new PDF 
+		int graphs_per_page = 3;
+		PDFWriter pdf_doc = new PDFWriter("Response Graphs", graphs_per_page);
+		
+		CorrelationGraph corr_graph = new CorrelationGraph();
+		corr_graph.set_datastore(this);
+		
+		try {
+			
+			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
+			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
+				ElementCorrelationInfo elem_corrs = entry.getValue();
+				ArrayList<CorrelationInfo> selected_elems = elem_corrs.get_selected();
+				
+				// Go to next element if no secondary elements selected
+				if (selected_elems.isEmpty())
+					continue;
+				
+				// Create at least one new page for every primary element
+				String primary_elem = entry.getKey().name();
+				pdf_doc.new_page(primary_elem);
+				
 				for (CorrelationInfo corr_info : selected_elems) {
 					
 					String secondary_elem = corr_info.get_secondary().name();
-					pdf_doc.write(secondary_elem);
+					
+
+					this.set_correlation_graph_elements(entry.getKey(), corr_info.get_secondary());
+					
+					corr_graph.on_start();
+					corr_graph.refresh();
+					
+					DrawablePanel<DataStore> gpanel = corr_graph.get_points_panel();
+					gpanel.refresh();
+					
+					// Write secondary element name and corresponding graph to PDF file
+					pdf_doc.write(secondary_elem, gpanel);
 				}
 				
 			}

@@ -1,5 +1,7 @@
 package system_utils.io_tools;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -7,6 +9,10 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
+import ui_graphlib.DrawablePanel;
 
 public class PDFWriter {
 	private PDDocument document;
@@ -17,14 +23,17 @@ public class PDFWriter {
 	private int title_font_size = 24;
 	private float margin_top = 150;
 	private float margin_bottom = 150;
+	private float margin_side = 100;
 	
 	private float graphing_offset;
 	private int graphs_on_page;
+	private int graphs_per_page;
 	private String current_page_title;
 	
-	public PDFWriter(String title) {
+	public PDFWriter(String title, int graphs_per_page) {
 		this.document = new PDDocument();
 		this.graphs_on_page = 0;
+		this.graphs_per_page = graphs_per_page;
 		
 		set_title_page(title);
 	}
@@ -54,7 +63,7 @@ public class PDFWriter {
 		
 		// Set graphing offset for the rest of the document
 		float page_height = title_page.getMediaBox().getHeight();
-		graphing_offset = (page_height - (this.margin_top + this.margin_bottom)) / 4;
+		graphing_offset = (page_height - (this.margin_top)) / graphs_per_page;
 	}
 	
 	private float graph_position() {
@@ -91,9 +100,20 @@ public class PDFWriter {
 		}
 	}
 	
-	public void write(String text) {
+	private BufferedImage get_buff_img(DrawablePanel gpanel) {
+		gpanel.setSize(400, 190);
+		int w = gpanel.getWidth();
+	    int h = gpanel.getHeight();
+	    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+	    Graphics2D g = bi.createGraphics();
+	    gpanel.paint(g);
+	    g.dispose();
+	    return bi;
+	}
+	
+	public void write(String text, DrawablePanel gpanel) {
 		
-		if (graphs_on_page == 4) 
+		if (graphs_on_page == graphs_per_page) 
 			new_page(current_page_title);
 		
 		try {
@@ -103,12 +123,17 @@ public class PDFWriter {
 
 			float pos = graph_position();
 			
+			BufferedImage graph_img = get_buff_img(gpanel);
+			PDImageXObject pdImage = JPEGFactory.createFromImage(document, graph_img);
+			contentStream.drawImage(pdImage, margin_side, pos - gpanel.getHeight() - 5);
+			
 			contentStream.beginText();
-			contentStream.newLineAtOffset(100, pos);
+			contentStream.newLineAtOffset(margin_side, pos);
 			
 			contentStream.setFont(font, font_size);
 			contentStream.showText(text);
 			contentStream.endText();
+			
 			contentStream.close();
 			
 			graphs_on_page++;
