@@ -101,7 +101,6 @@ public class PDFWriter {
 	}
 	
 	private BufferedImage get_buff_img(DrawablePanel gpanel) {
-		System.out.println("OFFSET: " + (int) Math.ceil(graphing_offset));
 		gpanel.setSize(400, (int) Math.ceil(graphing_offset) - 100);
 		int w = gpanel.getWidth();
 	    int h = gpanel.getHeight();
