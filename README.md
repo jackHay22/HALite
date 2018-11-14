@@ -17,6 +17,11 @@ To setup the project, configure the following:
 - Add ```commons-math3-3.6.1.jar``` to a new folder called ```lib/```. This may also need to be added as an external library in eclipse.
 - Add ```pdfbox-app-2.0.12.jar``` to lib as well.
 
+## Crash reporting
+If a failed try/catch is severe enough to record as a log, add the following to the catch block:
+```CrashReporter.report_crash(window, exception);```
+This will save a timestamped log file to Application Support with the exception.
+
 ## Dependencies
 - Apache Commons Math3 3.6.1
 - PdfBox 2.0.12
