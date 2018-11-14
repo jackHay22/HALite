@@ -129,6 +129,8 @@ public class DataStore extends DataBackend implements Serializable {
 
 				// Create at least one new page for every primary element
 				String model_elem = entry.getKey().name() + " Model";
+				
+				System.out.println(model_elem);
 				pdf_doc.new_page(model_elem);
 				
 				this.set_model_data_element(entry.getKey());
@@ -147,7 +149,7 @@ public class DataStore extends DataBackend implements Serializable {
 			err.show_dialog();
 		}
 		
-		return pdf_doc.write_to_disk(file_path);
+		return pdf_doc.write_to_disk(file_path + ".pdf");
 	}
 	
 	private boolean export_response_graphs(String file_path) {
@@ -198,7 +200,7 @@ public class DataStore extends DataBackend implements Serializable {
 			err.show_dialog();
 		}
 		
-		return pdf_doc.write_to_disk(file_path);
+		return pdf_doc.write_to_disk(file_path + ".pdf");
 	}
 	
 	@Override
