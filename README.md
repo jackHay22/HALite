@@ -22,7 +22,7 @@ If a failed try/catch is severe enough to record as a log, add the following to 
 ```java
 CrashReporter.report_crash(window, exception);
 ```
-This will save a timestamped log file to Application Support with the exception.
+This will prompt the user to save a timestamped log file to Application Support with the exception stack trace.
 
 ## Dependencies
 - Apache Commons Math3 3.6.1
