@@ -47,7 +47,7 @@ public class CrashReporter {
 		if(action == 0){
 			try {
 				if (unix()) {
-					write_trace(get_log_filename() , e.getMessage());
+					write_trace(get_log_filename() , e);
 				} else {
 					//TODO windows:
 				}
@@ -66,9 +66,9 @@ public class CrashReporter {
 		return new File(APP_SUPPORT + SAVE_DIR + "/" + application_support_file);
 	}
 	
-	private static void write_trace(String file_name, String trace) throws FileNotFoundException {
+	private static void write_trace(String file_name, Exception ex) throws FileNotFoundException {
 		try (PrintWriter out = new PrintWriter(mk_file(file_name))) {
-		    out.println(trace);
+		    ex.printStackTrace(out);
 		}
 	}
 

@@ -311,7 +311,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 				SystemWindow<DataStore> window_update;
-				
+
 		    	if (window.datastore_set()) {
 		    		window_update = get_app_view();
 		    	} else {
