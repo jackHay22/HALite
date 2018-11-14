@@ -56,7 +56,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	
 	public GraphPanel(int width, int height) {
 		super();
-		this.points_panel = new DrawablePanel<Backend>(this, 450, 250);
+		this.points_panel = new DrawablePanel<Backend>(this, 750, 550);
 
 		setLayout(new GridBagLayout());
 		this.constraints = SystemThemes.get_grid_constraints();

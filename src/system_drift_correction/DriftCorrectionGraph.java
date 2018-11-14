@@ -5,20 +5,15 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import system_drift_correction.utils.ElementDriftInfo;
-import system_utils.EquationPlot;
 import ui_framework.Refreshable;
+import ui_graphlib.BaseGraph;
 import ui_graphlib.GraphPanel;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
-public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrectionDS> {
-	private GraphPanel<DriftCorrectionDS> graph;
-	private GridBagConstraints constraints;
-	private DriftCorrectionDS datastore;
-	
-	private EquationPlot equation;
+public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 	
 	private ElementDriftInfo info_to_plot;
 	private ArrayList<PointSet<DriftCorrectionDS>> points_to_plot;
@@ -37,7 +32,7 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 		ArrayList<Point> points_for_line = new ArrayList<Point>();
 		
 		for (Double x = this.graph.get_min_x(); x < this.graph.get_max_x(); x += 0.0001) {
-			Double y = this.equation.get_y(x);
+			Double y = this.eqn.get_y(x);
 			points_for_line.add(new Point(x, y));
 		}
 		
@@ -48,10 +43,10 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 	
 	@Override
 	public void refresh() {
-		this.info_to_plot = this.datastore.get_plot_info();
+		this.info_to_plot = this.data_store.get_plot_info();
 		if (this.info_to_plot != null) {
 			this.points_to_plot = info_to_plot.get_point_sets();
-			this.equation = info_to_plot.get_equation();
+			this.eqn = info_to_plot.get_equation();
 			this.graph.set_point_sets(this.points_to_plot);
 			this.graph.refresh();
 			this.points_to_plot.add(this.get_equation_points());
@@ -62,7 +57,7 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 
 	@Override
 	public void set_datastore(DriftCorrectionDS datastore) {
-		this.datastore = datastore;
+		this.data_store = datastore;
 		this.graph.set_datastore(datastore);
 	}
 
@@ -77,7 +72,7 @@ public class DriftCorrectionGraph extends ui_framework.SystemPanel<DriftCorrecti
 		constraints.weighty = 1;
 		constraints.gridwidth = 1;
 		constraints.fill = GridBagConstraints.BOTH;
-		add(graph, constraints);
+		this.add(graph, constraints);
 		graph.on_start();
 		setVisible(true);
 	}
