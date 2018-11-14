@@ -114,7 +114,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		// Create new PDF 
 		int graphs_per_page = 1;
-		PDFWriter pdf_doc = new PDFWriter("Calibration Model Graphs", graphs_per_page);
+		PDFWriter<DataStore> pdf_doc = new PDFWriter<DataStore>("Calibration Model Graphs", graphs_per_page);
 		
 		write_graphs(pdf_doc, model_graph, export_type);
 		
@@ -128,14 +128,14 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		// Create new PDF 
 		int graphs_per_page = 3;
-		PDFWriter pdf_doc = new PDFWriter("Response Graphs", graphs_per_page);
+		PDFWriter<DataStore> pdf_doc = new PDFWriter<DataStore>("Response Graphs", graphs_per_page);
 		
 		write_graphs(pdf_doc, corr_graph, export_type);
 		
 		return pdf_doc.write_to_disk(file_path + ".pdf");
 	}
 	
-	private void write_graphs(PDFWriter pdf_doc, ModelGraph graph, int export_type) {
+	private void write_graphs(PDFWriter<DataStore> pdf_doc, ModelGraph graph, int export_type) {
 		try {
 			
 			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
