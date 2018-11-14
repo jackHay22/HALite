@@ -10,20 +10,23 @@ import ui_stdlib.dialogwindows.SystemDialog;
 public class SystemFileDialog<Backend extends DataBackend> {
 	private FileDialog system_file_dialog;
 	private String last_path;
+	private String ext_type;
 	
 	public SystemFileDialog(SystemDialog dialog_parent, String title, String ext_type) {
 		system_file_dialog = new FileDialog(dialog_parent, title);
 		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
+		this.ext_type = "." + ext_type;
 	}
 	
 	public SystemFileDialog(SystemWindow<Backend> window_parent, String title, String ext_type) {
 		system_file_dialog = new FileDialog(window_parent, title);
 		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
+		this.ext_type = "." + ext_type;
 	}
 	
 	public boolean init_backend_on_path(Backend databackend) {
 		//returns read_status
-		last_path = get_path(FileDialog.LOAD);
+		last_path = remove_ext(get_path(FileDialog.LOAD));
 		
 		if (last_path != null) {
 			return databackend.init_from_file(last_path);
@@ -36,9 +39,17 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		return last_path;
 	}
 	
+	public String remove_ext(String in) {
+		if (in.endsWith(ext_type)) {
+			return in.replace(ext_type, "");
+		} else {
+			return in;
+		}
+	}
+	
 	public boolean add_component_path(Backend databackend, String label) {
 		//returns read_status
-		last_path = get_path(FileDialog.LOAD);
+		last_path = remove_ext(get_path(FileDialog.LOAD));
 		
 		if (last_path != null) {
 			return databackend.add_component_filepath(last_path, label);
@@ -49,7 +60,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean save_on_path(Backend databackend) {
 		//returns read_status
-		last_path = get_path(FileDialog.SAVE);
+		last_path = remove_ext(get_path(FileDialog.SAVE));
 		
 		if (last_path != null) {
 			return databackend.save_to_filepath(last_path);
@@ -60,7 +71,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean export_on_path(Backend databackend, int type) {
 		//returns read_status
-		last_path = get_path(FileDialog.SAVE);
+		last_path = remove_ext(get_path(FileDialog.SAVE));
 		
 		if (last_path != null) {
 			return databackend.on_export(last_path, type);
