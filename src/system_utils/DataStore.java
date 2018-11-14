@@ -26,6 +26,7 @@ import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
+import ui_graphlib.ModelGraph;
 import ui_graphlib.Point;
 
 public class DataStore extends DataBackend implements Serializable {
@@ -107,16 +108,9 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	private boolean export_calibration_graphs(String file_path) {
-		CorrelationGraph corr_graph = new CorrelationGraph();
-		corr_graph.set_datastore(this);
 		
-		DrawablePanel<DataStore> gpanel = corr_graph.get_points_panel();
-		gpanel.refresh();
-		
-		corr_graph.on_start();
-		corr_graph.refresh();
-		
-		//add(graph);
+		ModelGraph model_graph = new ModelGraph();
+		model_graph.set_datastore(this);
 		
 		// Create new PDF 
 		int graphs_per_page = 1;
@@ -137,7 +131,11 @@ public class DataStore extends DataBackend implements Serializable {
 				String primary_elem = entry.getKey().name();
 				pdf_doc.new_page(primary_elem);
 				
+				DrawablePanel<DataStore> gpanel = model_graph.get_points_panel();
+				gpanel.refresh();
 				
+				model_graph.on_start();
+				model_graph.refresh();
 				
 			}
 			
@@ -239,7 +237,12 @@ public class DataStore extends DataBackend implements Serializable {
 				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
 				
 				ArrayList<String> means_table = parser.get_table_names(reader);
-				tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(path)));
+				try {
+					tables = means_parser.tables_from_csv(means_table.get(0), new BufferedReader(new FileReader(path)));
+				} catch (Exception e) {
+					return false;
+				}
+				
 				this.standards_means_data = tables.get("standards");
 				this.unknown_means_data = tables.get("unknowns");
 				
