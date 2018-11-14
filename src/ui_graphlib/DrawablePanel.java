@@ -20,6 +20,7 @@ public class DrawablePanel<Backend extends DataBackend> extends JPanel implement
 		this.manager = manager;
 		this.addMouseListener(this);
 		this.setBorder(BorderFactory.createLineBorder(SystemThemes.MAIN, 2, true));
+		setPreferredSize(new Dimension(width, height));
 	}
 	
 	@Override
