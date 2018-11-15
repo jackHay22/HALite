@@ -33,6 +33,14 @@ public class ViewBuilder {
 	public static int OPEN_VIEWS = 0;
 
 
+	private static void set_close_window_status(JMenuItem close_window) {
+		if (OPEN_VIEWS <= 1) {
+    		close_window.setEnabled(false);
+    	} else {
+    		close_window.setEnabled(true);
+    	}
+	}
+	
 	private static JMenuItem get_help_item() {
 		JMenuItem help_menu_item = new JMenuItem("Show help...");
 		help_menu_item.addActionListener(new ActionListener() {
@@ -208,6 +216,8 @@ public class ViewBuilder {
 		    		window.setVisible(false);
 		    		window.dispose();
 	    		}
+		    	
+		    	set_close_window_status(close_window);
 		    }
 		});
 		
@@ -522,6 +532,8 @@ public class ViewBuilder {
 		    		window.setVisible(false);
 		    		window.dispose();
 	    		}
+		    	
+		    	set_close_window_status(close_window);
 		    }
 		});
 
@@ -538,6 +550,8 @@ public class ViewBuilder {
 			    boolean is_split = window.windows_split();	    
 			    separate_subpanels.setEnabled(ds_loaded & !is_split);
 			    regroup_subpanels.setEnabled(ds_loaded & is_split);
+			    
+			    set_close_window_status(close_window);
 			}
 
 			@Override
