@@ -34,11 +34,7 @@ public class ViewBuilder {
 
 
 	private static void set_close_window_status(JMenuItem close_window) {
-		if (OPEN_VIEWS <= 1) {
-    		close_window.setEnabled(false);
-    	} else {
-    		close_window.setEnabled(true);
-    	}
+		close_window.setEnabled(OPEN_VIEWS > 1);
 	}
 	
 	private static JMenuItem get_help_item() {
