@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.text.html.StyleSheet;
+
 import system_utils.Element;
 
 public class SystemThemes {
@@ -44,6 +46,8 @@ public class SystemThemes {
 	public static final int CSV_MODEL_DATA = 2;
 	public static final int CSV_FULL_REPORT = 3;
 	public static final int CSV_DRIFT_CORRECTION = 4;
+	
+	private static final String[] HELP_MARKUP_RULES = {"h1 {color: blue;}"};
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
@@ -100,6 +104,12 @@ public class SystemThemes {
 		pane.getVerticalScrollBar().setUnitIncrement(SCROLL_PANE_SPEED);
 		pane.setMinimumSize(new Dimension(200, 600));
 		return pane;
+	}
+	
+	public static void set_help_markup_rules(StyleSheet style_sheet) {
+		for (String r : HELP_MARKUP_RULES) {
+			style_sheet.addRule(r);
+		}
 	}
 	
 	public static JScrollPane get_horiz_scrollable_panel(Component panel) {
