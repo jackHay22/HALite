@@ -311,6 +311,12 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 				SystemWindow<DataStore> window_update;
+				
+//				try {
+//					int x = 1 / 0;
+//				} catch (Exception ex) {
+//					CrashReporter.report_crash(window, ex);
+//				}
 
 		    	if (window.datastore_set()) {
 		    		window_update = get_app_view();
