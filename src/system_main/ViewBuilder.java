@@ -135,7 +135,7 @@ public class ViewBuilder {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
 				}
 		    }
 		});
@@ -149,7 +149,7 @@ public class ViewBuilder {
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
-					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+					//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 				}
 		    }
 		});
@@ -165,7 +165,7 @@ public class ViewBuilder {
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
-					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+					//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 				} else {
 					
 					//TODO: set with means file selected
@@ -363,7 +363,7 @@ public class ViewBuilder {
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
 				}
 		    }
 		});
@@ -393,11 +393,11 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
-		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
+		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
 		    		}
 		    	}
 		    	else {
-					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
+					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -410,11 +410,11 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
-		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
+		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
 		    		}
 		    	}
 		    	else {
-					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
+					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -428,11 +428,11 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
-		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
+		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
 		    		}
 		    	}
 		    	else {
-					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
+					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -445,11 +445,11 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
-		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
+		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
 		    		}
 		    	}
 		    	else {
-					new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
+					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
