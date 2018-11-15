@@ -41,22 +41,40 @@ public class ViewBuilder {
 		close_window.setEnabled(OPEN_VIEWS > 1);
 	}
 	
-	private static JMenuItem get_help_item() {
-		JMenuItem help_menu_item = new JMenuItem("Show help...");
-		help_menu_item.addActionListener(new ActionListener() {
+	private static void open_help_window(String title, String html_file) {
+		JFrame help_frame = new JFrame(title);
+		help_frame.setMinimumSize(new Dimension(600,400));
+		HelpWindow help_pane = new HelpWindow(html_file);
+		help_pane.show();
+		help_frame.add(SystemThemes.get_scrollable_panel(help_pane));
+		help_frame.setVisible(true);
+		
+	}
+	
+	private static JMenu get_help_menu() {
+		JMenu help = new JMenu("Help");
+		
+		JMenuItem help_menu_general = new JMenuItem("User Guide...");
+		help_menu_general.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame help_frame = new JFrame();
-				help_frame.setMinimumSize(new Dimension(600,400));
-				HelpWindow help_pane = new HelpWindow("/docs/help.html");
-				help_pane.show();
-				help_frame.add(SystemThemes.get_scrollable_panel(help_pane));
-				help_frame.setVisible(true);
+				open_help_window("User Guide","/docs/help.html");
 			}
 		});
 		
-		return help_menu_item;
+		JMenuItem help_menu_format = new JMenuItem("Format Guide...");
+		help_menu_format.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				open_help_window("Formatting Guide","/docs/format.html");
+			}
+		});
+		
+		help.add(help_menu_general);
+		help.add(help_menu_format);
+		return help;
 	}
 	
 	private static void open_example_data(SystemWindow<DataStore> current_window) {
@@ -278,9 +296,7 @@ public class ViewBuilder {
 			public void menuCanceled(MenuEvent e) {}
 		});
 		
-		JMenu help = new JMenu("Help");
-		help.add(get_help_item());
-		bar.add(help);
+		bar.add(get_help_menu());
 		
 		return bar;
 	}
@@ -565,9 +581,8 @@ public class ViewBuilder {
 			public void menuCanceled(MenuEvent e) {}
 		});
 
-		JMenu help = new JMenu("Help");
-		help.add(get_help_item());
-		bar.add(help);
+		
+		bar.add(get_help_menu());
 
 		return bar;
 	}

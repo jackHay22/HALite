@@ -48,10 +48,12 @@ public class SystemThemes {
 	public static final int CSV_DRIFT_CORRECTION = 4;
 	
 	private static final String[] HELP_MARKUP_RULES = {
+			"body { margin-left: 5px; }",
 			"h1 {color: rgb(39,47,50); font-weight: 100; text-align: center;}",
 			"h2 {color: rgb(157,189,198); }",
 			".section { margin-left: 5px;}",
 			".list { margin-left: 10px; margin-bottom: 10px;}",
+			"footer p {text-align: center; color: rgb(157,189,198); }"
 	};
 	
 	public static GridBagConstraints get_grid_constraints() {
