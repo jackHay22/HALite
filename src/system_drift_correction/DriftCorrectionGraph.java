@@ -20,6 +20,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 	
 	public DriftCorrectionGraph() {
 		super();
+		points_to_plot = new ArrayList<PointSet<DriftCorrectionDS>>();
 		setLayout(new GridBagLayout());
 		constraints = SystemThemes.get_grid_constraints();
 		graph = new GraphPanel<DriftCorrectionDS>(450, 250);
@@ -50,9 +51,32 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 			this.graph.set_point_sets(this.points_to_plot);
 			this.graph.refresh();
 			this.points_to_plot.add(this.get_equation_points());
+			set_labels();
+			this.graph.refresh();
+			this.revalidate();
+		} else {
+			this.points_to_plot.clear();
+			this.graph.set_point_sets(this.points_to_plot);
+			this.clear_labels();
 			this.graph.refresh();
 			this.revalidate();
 		}
+	}
+	
+	private void set_labels() {
+		this.graph.set_r2_eqn_label(this.info_to_plot.get_element().toString());
+		
+		this.graph.set_y_label("Normalized CPS");
+		
+		this.graph.set_x_label("Time (out of tree days)");	
+	}
+	
+	private void clear_labels() {
+		this.graph.set_r2_eqn_label("No Data Found");
+		
+		this.graph.set_y_label("No Data Found");
+		
+		this.graph.set_x_label("No Data Found");
 	}
 
 	@Override

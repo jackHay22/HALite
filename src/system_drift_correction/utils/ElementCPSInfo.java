@@ -163,7 +163,7 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		// TODO Auto-generated method stub
 		if (drift_points != null && this.drift_points.get_points().size() != 0) {
 			if (!creation_complete) {
-				this.drift_info = new ElementDriftInfo(drift_points);
+				this.drift_info = new ElementDriftInfo(drift_points, this.element);
 				this.drift_info.set_datastore(datastore);
 				creation_complete = true;
 			}

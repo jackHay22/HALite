@@ -8,6 +8,7 @@ import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 import system_drift_correction.DriftCorrectionDS;
 import system_formulas.Formulas;
+import system_utils.Element;
 import system_utils.EquationPlot;
 import ui_framework.Refreshable;
 import ui_graphlib.Point;
@@ -16,12 +17,15 @@ import ui_stdlib.SystemThemes;
 
 public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	
+	private Element element;
 	private EquationPlot equation;
 	private PointSet<DriftCorrectionDS> points_to_plot;
 	private DriftCorrectionDS datastore;
 	private Integer degree_for_fit;
 	
-	public ElementDriftInfo(PointSet<DriftCorrectionDS> points_data) {
+	public ElementDriftInfo(PointSet<DriftCorrectionDS> points_data, Element element) {
+		
+		this.element = element;
 		
 		ArrayList<Double> time_vals = points_data.get_x_vals();
 		ArrayList<Double> drift_CPS_vals = points_data.get_y_vals();
@@ -43,6 +47,10 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	
 	public EquationPlot get_equation() {
 		return this.equation;
+	}
+	
+	public Element get_element() {
+		return element;
 	}
 	
 	public ArrayList<PointSet<DriftCorrectionDS>> get_point_sets() {
