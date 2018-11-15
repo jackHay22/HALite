@@ -15,6 +15,7 @@ import system_utils.io_tools.SystemFileDialog;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
+import ui_stdlib.CrashReporter;
 import ui_stdlib.SystemKeybindings;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
@@ -48,7 +49,7 @@ public class ViewBuilder {
 	
 	private static void open_example_data(SystemWindow<DataStore> current_window) {
     	//open dialog, set return state to main
-
+		
     	//import example data to new datastore
     	DataStore ds = new DataStore(current_window);
     	ds.import_test_data(TEST_XRF, TEST_STANDARDS, TEST_MEANS);
@@ -122,6 +123,7 @@ public class ViewBuilder {
 		
 		JMenuItem open_new_dc = new JMenuItem("New Drift Correction...");
 		//open_new.setAccelerator(SystemKeybindings.NEW);
+		
 		open_new_dc.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 
@@ -309,7 +311,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 				SystemWindow<DataStore> window_update;
-				
+
 		    	if (window.datastore_set()) {
 		    		window_update = get_app_view();
 		    	} else {

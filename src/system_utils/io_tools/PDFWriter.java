@@ -12,9 +12,10 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import ui_framework.DataBackend;
 import ui_graphlib.DrawablePanel;
 
-public class PDFWriter {
+public class PDFWriter<Backend extends DataBackend> {
 	private PDDocument document;
 	private PDPage current_page;
 	
@@ -100,8 +101,15 @@ public class PDFWriter {
 		}
 	}
 	
-	private BufferedImage get_buff_img(DrawablePanel gpanel) {
-		gpanel.setSize(400, (int) Math.ceil(graphing_offset) - 100);
+	private BufferedImage get_buff_img(DrawablePanel<Backend> gpanel) {
+		
+		int y_pos = (int) Math.ceil(graphing_offset);
+		if (graphs_per_page == 1)
+			y_pos -= 100;
+		else 
+			y_pos -= 25;
+		
+		gpanel.setSize(400, y_pos);
 		int w = gpanel.getWidth();
 	    int h = gpanel.getHeight();
 	    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -111,7 +119,7 @@ public class PDFWriter {
 	    return bi;
 	}
 	
-	public void write(String text, DrawablePanel gpanel) {
+	public void write(String text, DrawablePanel<Backend> gpanel) {
 		
 		if (graphs_on_page == graphs_per_page) 
 			new_page(current_page_title);

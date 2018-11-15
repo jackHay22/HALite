@@ -40,7 +40,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	}
 	
 	public String remove_ext(String in) {
-		if (in.endsWith(ext_type)) {
+		if (in != null && in.endsWith(ext_type)) {
 			return in.replace(ext_type, "");
 		} else {
 			return in;
