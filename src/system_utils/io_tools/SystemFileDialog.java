@@ -26,7 +26,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean init_backend_on_path(Backend databackend) {
 		//returns read_status
-		last_path = remove_ext(get_path(FileDialog.LOAD));
+		last_path = get_path(FileDialog.LOAD);
 		
 		if (last_path != null) {
 			return databackend.init_from_file(last_path);
@@ -49,7 +49,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	public boolean add_component_path(Backend databackend, String label) {
 		//returns read_status
-		last_path = remove_ext(get_path(FileDialog.LOAD));
+		last_path = get_path(FileDialog.LOAD);
 		
 		if (last_path != null) {
 			return databackend.add_component_filepath(last_path, label);
