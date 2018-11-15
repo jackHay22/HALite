@@ -1,7 +1,10 @@
 package system_main;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -11,6 +14,7 @@ import system_drift_correction.DriftCorrectionDS;
 import system_drift_correction.DriftCorrectionGraph;
 import system_drift_correction.DriftCorrectionSettings;
 import system_utils.DataStore;
+import system_utils.HelpWindow;
 import system_utils.io_tools.SystemFileDialog;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
@@ -43,8 +47,12 @@ public class ViewBuilder {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: create new help dialog
-				
+				JFrame help_frame = new JFrame();
+				help_frame.setMinimumSize(new Dimension(600,400));
+				HelpWindow help_pane = new HelpWindow("/docs/help.html");
+				help_pane.show();
+				help_frame.add(SystemThemes.get_scrollable_panel(help_pane));
+				help_frame.setVisible(true);
 			}
 		});
 		
