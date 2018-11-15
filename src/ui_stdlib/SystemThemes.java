@@ -47,7 +47,12 @@ public class SystemThemes {
 	public static final int CSV_FULL_REPORT = 3;
 	public static final int CSV_DRIFT_CORRECTION = 4;
 	
-	private static final String[] HELP_MARKUP_RULES = {"h1 {color: blue;}"};
+	private static final String[] HELP_MARKUP_RULES = {
+			"h1 {color: rgb(39,47,50); font-weight: 100; text-align: center;}",
+			"h2 {color: rgb(157,189,198); }",
+			".section { margin-left: 5px;}",
+			".list { margin-left: 10px; margin-bottom: 10px;}",
+	};
 	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();

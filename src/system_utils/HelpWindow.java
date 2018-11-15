@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
-
 import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
