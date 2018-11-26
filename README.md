@@ -1,7 +1,7 @@
 # HALite geochemical analysis interface
 
 ## About
-HALite is a Geochemical Analysis tool created by the Hamilton College Geoscience Department, the Hamilton Analytical Laboratory, and the Hamilton College Computer Science Department.
+HALite is a geochemical analysis tool created by the Hamilton College Geoscience department, the Hamilton Analytical Laboratory, and the Hamilton College Computer Science department.
 
 ## Build
 - In Eclipse go to File -> Export:
