@@ -27,4 +27,4 @@ This will prompt the user to save a timestamped log file to Application Support 
 - Apache Commons Math3 3.6.1 (license included: ```docs/APACHE_COMMONS_LICENCE.txt```)
 - PdfBox 2.0.12
 
-### © 2018 Ben Parfitt, Jack Hay, and Oliver Keh
+#### © 2018 Ben Parfitt, Jack Hay, and Oliver Keh
