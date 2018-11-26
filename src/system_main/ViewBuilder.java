@@ -89,7 +89,7 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DataStore> get_app_view() {
-    	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("HALite Ablation Analysis",
+    	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("HALite Analysis",
 														ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
