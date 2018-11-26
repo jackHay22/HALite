@@ -89,7 +89,7 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DataStore> get_app_view() {
-    	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("Ablation Analysis",
+    	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("HALite Ablation Analysis",
 														ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
@@ -110,7 +110,7 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
-		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("Drift Correction",
+		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("HALite Drift Correction",
 															ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
