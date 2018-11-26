@@ -1,10 +1,10 @@
-# Geochemical Analysis Interface
+# HALite geochemical analysis interface
 
 ## Build
 - In Eclipse go to File -> Export:
   - Select Java > Runnable Jar file
-  - Select correct Launch Configuration
-  - Export Destination: ```rock_analysis_interface/out/Interface.jar```
+  - Select correct Launch Configuration (HALite)
+  - Export Destination: ```rock_analysis_interface/out/HALite.jar```
 - From the command line execute ```./build```
 - Optionally, specify release version with ```./build --release 0.0.0``` (replace with desired release version)
 
