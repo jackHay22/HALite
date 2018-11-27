@@ -21,34 +21,24 @@ public class MeansCSVParser extends CSVParser {
 	}
 	
 	public HashMap<String, ArrayList<Integer>> get_sample_indices(ArrayList<String[]> data) {
-		
-		int name_col = -1;
-		
+				
 		HashMap<String, ArrayList<Integer>> names = new HashMap<String, ArrayList<Integer>>();
 		ArrayList<Integer> std_index = new ArrayList<Integer>();
 		ArrayList<Integer> unknown_index = new ArrayList<Integer>();
 		
+		
+		
 		for (String[] row : data) {
 			
-			for (int i = 0; i < row.length; i++) {
-				String item = row[i];
-				if (name_col == -1) {
-					if (item.replaceAll("\\s+","").equals("sourcefile")) {
-						name_col = i;
-						break;
-					}
-				} else if (name_col == i) {
-					item = item.replaceAll("\\s+","");
-					Integer s_index = std_names.indexOf(item);
-					if (s_index != -1) {
-						std_index.add(data.indexOf(row));
-					} else {
-						Integer u_index = unknown_names.indexOf(item);
-						if (u_index != -1) {
-							unknown_index.add(data.indexOf(row));
-						}
-					}
-					break;
+			String item = row[0];
+			item = item.replaceAll("\\s+","");
+			Integer s_index = std_names.indexOf(item);
+			if (s_index != -1) {
+				std_index.add(data.indexOf(row));
+			} else {
+				Integer u_index = unknown_names.indexOf(item);
+				if (u_index != -1) {
+					unknown_index.add(data.indexOf(row));
 				}
 			}
 		}
@@ -72,6 +62,22 @@ public class MeansCSVParser extends CSVParser {
 		ArrayList<Integer> unknown_row_indices = name_locs.get("unknowns");
 		
 		String[] column_names = raw_data.get(0);
+		
+		
+		ArrayList<String> stds_column_names = new ArrayList<String>();
+		ArrayList<String> unknowns_column_names = new ArrayList<String>();
+		
+		for (int j = 1; j < raw_data.size(); j++) {
+			String entry = raw_data.get(j)[0];
+			if (std_row_indices.indexOf(j) != -1) {
+				stds_column_names.add(entry);
+			} else if (unknown_row_indices.indexOf(j) != -1) {
+				unknowns_column_names.add(entry);
+			}
+		}
+		stds_table.put_info(new TableKey("Sample Names"), stds_column_names);
+		unknowns_table.put_info(new TableKey("Sample Names"), unknowns_column_names);
+		
 		
 		// Transpose the raw data and add to DataTable
 		for (int i = 0; i < raw_data.get(0).length; i ++) {
@@ -108,21 +114,7 @@ public class MeansCSVParser extends CSVParser {
 				}
 				stds_table.put_data(current_column_name, stds_column_data);
 				unknowns_table.put_data(current_column_name, unknowns_column_data);
-			} else {
-				ArrayList<String> stds_column_data = new ArrayList<String>();
-				ArrayList<String> unknowns_column_data = new ArrayList<String>();
-				
-				for (int j = 1; j < raw_data.size(); j++) {
-					String entry = raw_data.get(j)[i];
-					if (std_row_indices.indexOf(j) != -1) {
-						stds_column_data.add(entry);
-					} else if (unknown_row_indices.indexOf(j) != -1) {
-						unknowns_column_data.add(entry);
-					}
-				}
-				stds_table.put_info(current_column_name, stds_column_data);
-				unknowns_table.put_info(current_column_name, unknowns_column_data);
-			}	
+			}
 		}
 		HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
 		tables.put("standards", stds_table);

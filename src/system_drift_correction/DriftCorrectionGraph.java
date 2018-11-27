@@ -3,7 +3,6 @@ package system_drift_correction;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
-
 import system_drift_correction.utils.ElementDriftInfo;
 import ui_framework.Refreshable;
 import ui_graphlib.BaseGraph;
