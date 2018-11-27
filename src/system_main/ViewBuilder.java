@@ -322,7 +322,7 @@ public class ViewBuilder {
 		    	
 		    	if (window.datastore_set()) {
 		    		SaveDialog save_dialog = new SaveDialog("Save", window);
-		    		save_dialog.on_scheduled(window.get_datastore());
+		    		save_dialog.save(window.get_datastore());
 		    	}
 		    }
 		});
@@ -335,7 +335,7 @@ public class ViewBuilder {
 
 		    	if (window.datastore_set()) {
 		    		SaveDialog save_dialog = new SaveDialog("Save as", window);
-		    		save_dialog.on_scheduled(window.get_datastore());
+		    		save_dialog.save_as(window.get_datastore());
 		    	}
 			}
 		});
