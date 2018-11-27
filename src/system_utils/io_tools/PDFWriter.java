@@ -23,7 +23,6 @@ public class PDFWriter<Backend extends DataBackend> {
 	private int font_size = 16;
 	private int title_font_size = 24;
 	private float margin_top = 150;
-	private float margin_bottom = 150;
 	private float margin_side = 100;
 	
 	private float graphing_offset;
@@ -37,6 +36,7 @@ public class PDFWriter<Backend extends DataBackend> {
 		this.graphs_per_page = graphs_per_page;
 		
 		set_title_page(title);
+		
 	}
 	
 	private void set_title_page(String title) {
@@ -117,6 +117,10 @@ public class PDFWriter<Backend extends DataBackend> {
 	    gpanel.paint(g);
 	    g.dispose();
 	    return bi;
+	}
+	
+	public void init_img(DrawablePanel<Backend> gpanel) {
+		get_buff_img(gpanel);
 	}
 	
 	public void write(String text, DrawablePanel<Backend> gpanel) {

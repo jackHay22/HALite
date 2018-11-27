@@ -1,5 +1,7 @@
 package ui_graphlib;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import system_utils.CorrelationInfo;
 import system_utils.DataStore;
@@ -15,6 +17,7 @@ public class CorrelationGraph extends ModelGraph {
 	public CorrelationGraph() {
 		super();
 	}
+	
 	@Override
 	public void refresh() {
 		// Once data store has these we can proceed
@@ -67,7 +70,15 @@ public class CorrelationGraph extends ModelGraph {
 	
 	@Override
 	public void on_start() {
-		super.on_start();
+		this.graph.on_start();
+		set_constraints();
+		toggle_unknowns.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        toggle_unknowns();
+		    }
+		});
+		this.refresh();
 	}
 
 }

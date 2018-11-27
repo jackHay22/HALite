@@ -319,6 +319,11 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 		    	//save_dialog.on_scheduled(manager, main_app_view, datastore);
+		    	
+		    	if (window.datastore_set()) {
+		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save");
+		    		save_dialog.on_scheduled(window.get_datastore());
+		    	}
 		    }
 		});
 

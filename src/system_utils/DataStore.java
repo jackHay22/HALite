@@ -24,6 +24,7 @@ import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import ui_stdlib.dialogwindows.ErrorDialog;
+import ui_graphlib.BaseGraph;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.DrawablePanel;
 import ui_graphlib.ModelGraph;
@@ -135,8 +136,10 @@ public class DataStore extends DataBackend implements Serializable {
 		return pdf_doc.write_to_disk(file_path + ".pdf");
 	}
 	
-	private void write_graphs(PDFWriter<DataStore> pdf_doc, ModelGraph graph, int export_type) {
+	private void write_graphs(PDFWriter<DataStore> pdf_doc, BaseGraph<DataStore> graph, int export_type) {
 		try {
+			CorrelationGraph cgraph = (CorrelationGraph) graph;
+			cgraph.on_start();
 			
 			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
@@ -155,18 +158,22 @@ public class DataStore extends DataBackend implements Serializable {
 					
 					for (CorrelationInfo corr_info : selected_elems) {
 						
-						String secondary_elem = corr_info.get_secondary().name();
+						String title = corr_info.get_secondary().name() + " vs. " + primary_elem;
 						
 						this.set_correlation_graph_elements(entry.getKey(), corr_info.get_secondary());
 						
-						graph.on_start();
-						graph.refresh();
-						
-						DrawablePanel<DataStore> gpanel = graph.get_points_panel();
-						gpanel.refresh();
+						DrawablePanel<DataStore> gpanel = cgraph.get_points_panel();
+					
+						String equation = corr_info.get_equation().get_str_rep();
+						title += ": " + equation;
 						
 						// Write secondary element name and corresponding graph to PDF file
-						pdf_doc.write(secondary_elem, gpanel);
+						pdf_doc.init_img(gpanel);
+						cgraph.refresh();
+												
+						// Write secondary element name and corresponding graph to PDF file
+						pdf_doc.write(title, gpanel);
+						
 					}
 				}
 				else {
@@ -297,15 +304,11 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean save_to_filepath(String path) {
-		//ds subclasses override (return read status
-
-		return false;
+		
+		set_save_path(path);
+		
+		return true;
 	}
-	
-//	@Override
-//	public <T extends DataBackend> void set_window(SystemWindow<T> window_parent) {
-//		super.set_window(window_parent);
-//	}
 	
 	public void set_save_path(String path) {
 		this.save_path = path;

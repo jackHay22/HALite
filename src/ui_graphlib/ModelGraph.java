@@ -30,7 +30,7 @@ public class ModelGraph extends BaseGraph<DataStore> {
 	private double bottom_buffer_x;
 	private double bottom_buffer_y;
 
-	private JButton toggle_unknowns;
+	protected JButton toggle_unknowns;
 	
 	public ModelGraph() {
 		super();
