@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.DataExporter;
@@ -20,6 +22,7 @@ import ui_framework.SystemWindow;
 import java.awt.Color;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_graphlib.Point;
 
 public class DataStore extends DataBackend implements Serializable {
@@ -65,6 +68,20 @@ public class DataStore extends DataBackend implements Serializable {
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
 		this.elem_num = 5;
+	}
+	
+	public boolean validate_loaded() {
+		
+		Map<TableKey, Data> map = standards_means_data.get_data();
+		for (Entry<TableKey, Data> entry : map.entrySet()) {
+			ArrayList<Double> d = entry.getValue().get_data();
+			if (d.isEmpty()) {
+				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected.").show_dialog();
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	@Override
@@ -362,7 +379,6 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		
-	
 		// Create point set from coordinates
 		PointSet<DataStore> set = new PointSet<DataStore>(points, color, x_axis, y_axis, title, render);
 		
@@ -399,7 +415,6 @@ public class DataStore extends DataBackend implements Serializable {
 				} else {
 					elem_corr.put(y_elem, null);
 				}
-				
 				
 			}
 			

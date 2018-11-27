@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,7 +59,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chooser.setText(get_file_display("Means", means_override));
 		means_chosen = true;
 	}
-	
+
 	private void can_continue(DataStore backend) {
 		//means set by dc export
 
@@ -68,7 +69,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				means_chosen = backend.add_component_filepath(means_override, "means");	
 			}
 			
-			if (means_chosen) {
+			if (means_chosen && backend.validate_loaded()) {
 				continue_button.setEnabled(true);
 			}
 		}
@@ -83,8 +84,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			 return label + ": ..." + path.substring(path.length() - path_display_length);
 		}
 	}
-
-	
 
 	@Override
 	public void on_scheduled(DataStore backend) {
