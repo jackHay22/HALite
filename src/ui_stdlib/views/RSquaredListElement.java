@@ -21,10 +21,13 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		super();
 		graphical_associations = new ArrayList<RSqrdAssocSet>();
 		
+		//set layout manager
 		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
+		//create a combo box for element values
 		selection_dropdown = new JComboBox<Element>(Element.values());
 		
+		//add an action listener to notify the backend when there is activity
 		selection_dropdown.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded) {
@@ -41,6 +44,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		//purge list on panel
 		graphical_clean();
 		
+		//create new list for graphical assocs
 		graphical_associations = new ArrayList<RSqrdAssocSet>();
 		
 		Element current_elem_self = get_current_selected();
@@ -59,15 +63,20 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 			elem_temp = current_pair.get_elem();
 			r2_temp = current_pair.get_r2();
 			
+			//get relevant information about selected vals from backend
 			secondary_selected = datastore.check_selected_rsqrd_assocs(current_elem_self, elem_temp);
 			secondary_value_selected = datastore.is_pair_value_selected(current_elem_self, elem_temp);
 			
 			temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp, 
 											secondary_selected, secondary_value_selected);
+			//start new set
 			temp_r2_set.set_datastore(datastore);
 			temp_r2_set.on_start();
+			
+			//add as a graphical element
 			graphical_associations.add(temp_r2_set);
 			
+			//get graphical component of assoc set elem
 			this.add(temp_r2_set.get_graphical_element());
 		}
 		
@@ -75,8 +84,9 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	}
 	
 	private void graphical_clean() {
+		//clean graphical elements currently displayed
 		for (int i=0;i<graphical_associations.size();i++) {
-			this.remove(graphical_associations.get(i).get_graphical_element());
+			remove(graphical_associations.get(i).get_graphical_element());
 		}
 	}
 	

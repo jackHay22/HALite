@@ -34,11 +34,13 @@ public class StdsListElement extends SystemPanel<DataStore> {
 	
 	public StdsListElement(String standard, ArrayList<Element> header_elems, ArrayList<String> header_labels) {
 		super();
+		//set layout manager
 		setLayout(new GridBagLayout());
 		
 		this.standard = standard;
 		list = new CalculatedContent();
 
+		//set defaults
 		model_val = 0.0;
 		actual_val = 0.0;
 		this.header_labels = header_labels;
@@ -49,7 +51,10 @@ public class StdsListElement extends SystemPanel<DataStore> {
 
 	@Override
 	public void refresh() {
+		//only make updates if backend has been loaded
 		if (backend_loaded) {
+			
+			//attempt to get information (if it exists) from datastore
 			try {
 				actual_val = datastore.get_current_actual(standard);
 			} catch (Exception e) {
@@ -64,17 +69,21 @@ public class StdsListElement extends SystemPanel<DataStore> {
 		}
 		
 		for (Element disp_e : header_elems) {
+			//get info from backend
 			Double d = datastore.get_header_std_pair(standard, disp_e.toString());
 			String display = "-";
 			
+			//format number 
 			if (d != null) {
 				display = SystemThemes.get_display_number(d);
 			}
 			
+			//create a graphical panel to store element 
 			SingleViewPanel<DataStore> element_panel = new SingleViewPanel<DataStore>(display, SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 			
 			element_panel.toggle_color(datastore.not_used_in_model(standard, disp_e));
 			
+			//set an action listener to notify backend on selection
 			element_panel.get_button().addActionListener(new ActionListener () {
 			    public void actionPerformed(ActionEvent e) {
 					datastore.toggle_sample_elem_pair(standard, disp_e);
@@ -86,9 +95,11 @@ public class StdsListElement extends SystemPanel<DataStore> {
 		}
 		
 		for (String l_string : header_labels) {
+			//get from backend
 			Double d = datastore.get_header_std_pair(standard, l_string);
 			String display = "-";
 
+			//get display
 			if (d != null) {
 				display = SystemThemes.get_display_number(d);
 			}
@@ -96,6 +107,7 @@ public class StdsListElement extends SystemPanel<DataStore> {
 			panels.add(new SingleViewPanel<DataStore>(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));
 		}
 		
+		//create individual standalone panels
 		model = new SingleViewPanel<DataStore>(SystemThemes.get_display_number(model_val), 
 				SystemThemes.HIGHLIGHT, SystemThemes.BACKGROUND);
 		
@@ -107,6 +119,7 @@ public class StdsListElement extends SystemPanel<DataStore> {
 		
 		list.set_panels(panels);
 		
+		//use grid bag constraints to add components
 		constraints.weightx = 0;
 		
 		JLabel standards = new JLabel(standard);
@@ -121,6 +134,7 @@ public class StdsListElement extends SystemPanel<DataStore> {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		add(list, constraints);
 		
+		//reformat
 		revalidate();
 	}
 

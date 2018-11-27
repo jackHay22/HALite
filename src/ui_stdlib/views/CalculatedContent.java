@@ -19,11 +19,16 @@ public class CalculatedContent extends SingleViewBar<DataStore> {
 	}
 	
 	public void set_panels(ArrayList<SingleViewPanel<DataStore>> panels) {
+		//clear current panels
 		clear_views();
+		
+		//add from list of panels
 		for (SingleViewPanel<DataStore> p : panels) {
 			p.setPreferredSize(SystemThemes.get_std_cell_dim());
 			add_single_view(p);
 		}
+		
+		//show updated panels
 		show_views();
 	}
 
