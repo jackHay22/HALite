@@ -681,8 +681,14 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	public Double get_current_WM(String std) {
 		Double result = this.get_WM_data().get(std).get("WM");
-		if (result == null) {
-			return get_current_actual(std);
+		if (result == null || result.isNaN()) {
+			if (this.get_STDlist().contains(std)) {
+				return get_current_actual(std) * this.get_std_response_value(std, this.model_data_element);
+			} else if (this.get_unknown_list().contains(std)) {
+				return get_current_actual(std) * this.get_unknown_response_value(std, this.model_data_element);
+			} else {
+				return 0.0;
+			}
 		}
 		return result;
 	}
@@ -698,23 +704,14 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	public Double get_header_std_pair(String std, String item) {
 		
-        
         switch (item) {
             case "WM":  
-            	return this.get_WM_data().get(std).get(item);
+            	return this.get_current_WM(std);
             case "Std Dev":
-            	return this.get_WM_data().get(std).get(item);
-            case "Actual":
-            	break;
+            	return this.get_current_stdev(std);
             default: 
             	return this.get_WM_data().get(std).get(item);
         }
-		
-		Double result = this.get_WM_data().get(std).get(item);
-		if (result != null) {
-			return result;
-		}
-		return null;
 	}
 	
 	public Double get_current_model(String std) {
@@ -722,14 +719,18 @@ public class DataStore extends DataBackend implements Serializable {
 			return this.get_current_actual(std);
 		}
 		Double result = this.get_WM_data().get(std).get("Model_Value");
-		if (result == null) {
+		if (result == null || result.isNaN()) {
 			return this.get_current_actual(std);
 		}
 		return result;
 	}
 	
 	public Double get_current_stdev(String std) {
-		return this.get_WM_data().get(std).get("Std Dev");
+		Double d = this.get_WM_data().get(std).get("Std Dev");
+		if (d.isNaN() || d == null) {
+			return -1.0;
+		}
+		return d;
 	}
 	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
