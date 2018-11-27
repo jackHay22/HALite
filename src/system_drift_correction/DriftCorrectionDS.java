@@ -17,6 +17,7 @@ import ui_framework.Refreshable;
 import ui_framework.SystemWindow;
 import ui_stdlib.SystemThemes;
 
+@SuppressWarnings("serial")
 public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftCorrectionDS> {
 	private Element element;
 	private int degree;
