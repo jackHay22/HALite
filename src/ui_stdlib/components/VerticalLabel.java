@@ -11,6 +11,8 @@ public class VerticalLabel extends javax.swing.JLabel {
 	
 	public VerticalLabel(String text) {
 		super(text);
+		
+		//when in progress
 		doing_transform = false;
 	}
 	
@@ -18,6 +20,7 @@ public class VerticalLabel extends javax.swing.JLabel {
 	protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         
+        //rotate graphics comonent of jlabel
         g2d.rotate(Math.toRadians(-90));
         g2d.translate(-this.getHeight(), 0);
         doing_transform = true;

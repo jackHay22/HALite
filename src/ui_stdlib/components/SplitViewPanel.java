@@ -22,8 +22,10 @@ public class SplitViewPanel<Backend extends DataBackend> extends SystemPanel<Bac
 		this.field_one = new JButton(label_one);
 		this.field_two = new JButton(label_two);
 		
+		//set layout to vertical two panels
 		this.setLayout(new GridLayout(2,0));
 		
+		//set border of top and bottom elements
 		Border border = BorderFactory.createLineBorder(border_color);
 		this.field_one.setBorder(BorderFactory.createCompoundBorder(border, 
 	            BorderFactory.createEmptyBorder(4, 4, 4, 4))); 
@@ -35,12 +37,17 @@ public class SplitViewPanel<Backend extends DataBackend> extends SystemPanel<Bac
 		
 		this.top_color = top_color;
 		this.bot_color = bot_color;
+		
+		//get default background color
 		default_color = field_one.getBackground();
+		
+		//set buttons to be opaque
 		field_one.setOpaque(true);
 		field_two.setOpaque(true);
 	}
 	
 	public void toggle_color_top(boolean toggle_val) {
+		//graphical changes on toggle
 		if (toggle_val) {
 			field_one.setBackground(top_color);
 		}
@@ -50,6 +57,7 @@ public class SplitViewPanel<Backend extends DataBackend> extends SystemPanel<Bac
 	}
 	
 	public void toggle_color_bot(boolean toggle_val) {
+		//graphical changes on toggle
 		if (toggle_val) {
 			field_two.setBackground(bot_color);
 		}

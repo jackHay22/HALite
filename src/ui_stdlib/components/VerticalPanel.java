@@ -8,11 +8,14 @@ import ui_framework.Refreshable;
 @SuppressWarnings("serial")
 public class VerticalPanel<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> {
 	private JLabel title;
+	
 	public VerticalPanel(String text, Color color) {
+		//set color and text
 		super();
 		this.setBackground(color);
 		
 		this.title = new VerticalLabel(text);
+		//set tool tip on hover
 		this.setToolTipText(text);
 	}
 	
