@@ -174,7 +174,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 	
 	private String get_header() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("sourcefile,note,");
+		sb.append("Sample Name,note,");
 		
 		for (Element elem : Element.values()) {
 			if (cps_info.get(elem) != null) {

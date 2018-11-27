@@ -88,7 +88,8 @@ public class CSVParser {
 		headers.add("Name");
 		headers.add("Time/Date");
 		headers.add("Calibration values");
-		if (!headers.contains(col_title)) {
+		headers.add("TotalBeamCPS");
+		if (!(headers.contains(col_title) || headers.contains(col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","")))) {
 		
 			col_title = col_title.replaceAll("[^A-Za-z]","").replaceAll("\\s+","");
 			chosen = col_title;
