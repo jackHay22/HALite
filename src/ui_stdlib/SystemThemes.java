@@ -15,11 +15,12 @@ import javax.swing.text.html.StyleSheet;
 import system_utils.Element;
 
 public class SystemThemes {
-	public static final Color BACKGROUND = new Color(39, 47, 50);
-	public static final Color MAIN = new Color(157, 189, 198);
-	public static final Color WHITE = new Color(255, 255, 255);
+	public static final Color BACKGROUND = new Color(245, 245, 245); //new Color(39, 47, 50);
+	public static final Color MAIN = new Color(255, 255, 255);//new Color(157, 189, 198);
+	public static final Color WHITE = new Color(0, 255, 0);
 	public static final Color HIGHLIGHT = new Color(255, 61, 46);
-	public static final Color HIGHLIGHT2 = new Color(255, 176, 59);
+	public static final Color LOWLIGHT = new Color(100, 100, 119);
+	public static final Color HIGHLIGHT2 = new Color(20, 20, 20);//= new Color(255, 176, 59);
 	public static final Color HIGHLIGHT3 = new Color(202, 41, 62);
 	public static final Color HOVER = new Color(220, 220, 220, 20);
 	

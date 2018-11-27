@@ -2,11 +2,11 @@ package system_main;
 
 import java.awt.EventQueue;
 
-public class RockAnalysis  {
+public class HALite  {
 	public static void main(String[] args) {
-		new RockAnalysis();
+		new HALite();
 	}
-	public RockAnalysis() {
+	public HALite() {
         EventQueue.invokeLater(new ui_framework.WindowLoader());
 	}
 }

@@ -228,7 +228,7 @@ public class DataStore extends DataBackend implements Serializable {
 					}
 					return false;
 				}
-				
+								
 				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 				
 				// NEED TO REDO THIS SECTION
@@ -369,7 +369,7 @@ public class DataStore extends DataBackend implements Serializable {
 				DataTable standards = get_table(standards_in_use, standards_data);
 				
 				means = standards_means_data.get_data(new TableKey(elem.name())).get_data();
-				names = standards.get_info(new TableKey("Calibrationvalues"));
+				names = standards.get_info(new TableKey("Sample Names"));
 				Data temp_stds = standards.get_data(new TableKey(elem.name()));
 				
 				if (temp_stds == null) {
@@ -383,7 +383,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 			// Get listing of standards and unknowns from means file
 			
-			TableKey source_key = new TableKey("sourcefile");
+			TableKey source_key = new TableKey("Sample Names");
 			source = standards_means_data.get_info(source_key);
 			
 		} else {
@@ -393,7 +393,7 @@ public class DataStore extends DataBackend implements Serializable {
 				DataTable xrf = get_table(xrf_in_use, xrf_data);
 				
 				means = unknown_means_data.get_data(new TableKey(elem.name())).get_data();
-				names = xrf.get_info(new TableKey("Name"));
+				names = xrf.get_info(new TableKey("Sample Names"));
 				Data temp_xrf = xrf.get_data(new TableKey(elem.name()));
 				
 				// If we have no data to calculate coords with, return an empty arraylist
@@ -409,7 +409,7 @@ public class DataStore extends DataBackend implements Serializable {
 			
 			// Get listing of standards and unknowns from means file
 			
-			TableKey source_key = new TableKey("sourcefile");
+			TableKey source_key = new TableKey("Sample Names");
 			source = unknown_means_data.get_info(source_key);
 			
 		}
@@ -496,7 +496,7 @@ public class DataStore extends DataBackend implements Serializable {
 				if (standards != null) {
 
 					standards.set_color(SystemThemes.HIGHLIGHT);
-					unknowns.set_color(SystemThemes.BACKGROUND);
+					unknowns.set_color(SystemThemes.LOWLIGHT);
 					
 					ElementPair<DataStore> pair = new ElementPair<DataStore>(x_elem, y_elem, standards, unknowns);
 					
@@ -632,8 +632,7 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	public Double get_mean_value(String sample, Element elem) {
 		DataTable means = get_table(means_in_use, means_data);
-		
-		int pos = means.get_info(new TableKey("sourcefile")).indexOf(sample);
+		int pos = means.get_info(new TableKey("Sample Names")).indexOf(sample);
 		if (pos >= 0) {
 			return means.get_data(elem).get_data(pos);
 		}
@@ -675,7 +674,7 @@ public class DataStore extends DataBackend implements Serializable {
 	public ArrayList<String> get_STDlist() {
 		DataTable standards = get_table(standards_in_use, standards_data);
 		
-		return standards.get_info(new TableKey("Calibrationvalues"));
+		return standards.get_info(new TableKey("Sample Names"));
 	}
 	
 	public Double get_raw_std_elem(String standard, Element elem) {
@@ -687,7 +686,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		
 		// Integer object so it can be tested for null
-		Integer pos = standards.get_info(new TableKey("Calibrationvalues")).indexOf(standard);
+		Integer pos = standards.get_info(new TableKey("Sample Names")).indexOf(standard);
 		if (pos.equals(-1)) {
 			return null;
 		}
@@ -852,7 +851,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 
 		// Integer object so it can be tested for null
-		Integer pos = xrf.get_info(new TableKey("Name")).indexOf(sample);
+		Integer pos = xrf.get_info(new TableKey("Sample Names")).indexOf(sample);
 		if (pos.equals(-1)) {
 			return null;
 		}
@@ -868,7 +867,7 @@ public class DataStore extends DataBackend implements Serializable {
 	public ArrayList<String> get_unknown_list() {
 		DataTable xrf = get_table(xrf_in_use, xrf_data);
 		
-		return xrf.get_info(new TableKey("Name"));
+		return xrf.get_info(new TableKey("Sample Names"));
 	}
 	
 	public void set_correlation_graph_elements(Element primary, Element secondary) {

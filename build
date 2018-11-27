@@ -8,8 +8,8 @@ MOUNTAIN='\xE2\x9B\xB0'
 JAVA_RUNTIME=`/usr/libexec/java_home -v 1.8`
 DATE=`date +%Y-%m-%d`
 
-APP_NAME="Interface"
-JAR_NAME="Interface.jar"
+APP_NAME="HALite"
+JAR_NAME="HALite.jar"
 
 build_native () {
     printf "${MOUNTAIN}  Building ${CYAN}${APP_NAME}${NC} app package...\n"
@@ -17,9 +17,9 @@ build_native () {
       -native image \
       -nosign \
       -outdir out \
-      -outfile interface \
-      -srcfiles out/Interface.jar \
-      -appclass system_main.RockAnalysis \
+      -outfile halite \
+      -srcfiles out/HALite.jar \
+      -appclass system_main.HALite \
       -name $APP_NAME \
       -title "Geochemical Ablation Interface" \
       -Bruntime=${JAVA_RUNTIME} \
@@ -33,7 +33,7 @@ elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native
     #write metadata
-    python metadata.py "out/bundles/Interface.app/Contents/Info.plist" ${2}
+    python metadata.py "out/bundles/HALite.app/Contents/Info.plist" ${2}
     RELEASE_VERSION_LABEL=${2}_$DATE
     mkdir -p release/${RELEASE_VERSION_LABEL}
     BUILD_NAME="${APP_NAME}_${RELEASE_VERSION_LABEL}"

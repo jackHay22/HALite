@@ -2,7 +2,6 @@ package system_utils.io_tools;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -163,16 +162,25 @@ public class CSVParser {
 		
 		String[] column_names = raw_data.get(0);
 		
+		// If it is the first column we know these are the sample names
+		
+		ArrayList<String> name_data = new ArrayList<String>();
+		
+		for (int j = 1; j < raw_data.size(); j++) {
+			String entry = raw_data.get(j)[0];
+			name_data.add(entry);
+		}
+		
+		table.put_info(new TableKey("Sample Names"), name_data);
+		
 		// Transpose the raw data and add to DataTable
-		for (int i = 0; i < raw_data.get(0).length; i ++) {
+		for (int i = 1; i < raw_data.get(0).length; i++) {
 			
 			// Skip empty columns
 			if (column_names[i].isEmpty()) {
 				continue;
 			}
 					
-			// THE COLUMN NAMES ARE THE ELEM NAMES!!
-			
 			TableKey current_column_name = new TableKey(col_name(column_names[i]));
 			
 			// Check if column contains Doubles
@@ -194,16 +202,6 @@ public class CSVParser {
 				
 				table.put_data(current_column_name, column_data);
 			}
-			else {
-				ArrayList<String> column_data = new ArrayList<String>();
-				
-				for (int j = 1; j < raw_data.size(); j++) {
-					String entry = raw_data.get(j)[i];
-					column_data.add(entry);
-				}
-				
-				table.put_info(current_column_name, column_data);
-			}	
 		}
 		
 		return table;
