@@ -72,8 +72,17 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	public boolean validate_loaded() {
 		
-		Map<TableKey, Data> map = standards_means_data.get_data();
-		for (Entry<TableKey, Data> entry : map.entrySet()) {
+		Map<TableKey, Data> stds_map = standards_means_data.get_data();
+		for (Entry<TableKey, Data> entry : stds_map.entrySet()) {
+			ArrayList<Double> d = entry.getValue().get_data();
+			if (d.isEmpty()) {
+				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected.").show_dialog();
+				return false;
+			}
+		}
+		
+		Map<TableKey, Data> unk_map = unknown_means_data.get_data();
+		for (Entry<TableKey, Data> entry : unk_map.entrySet()) {
 			ArrayList<Double> d = entry.getValue().get_data();
 			if (d.isEmpty()) {
 				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected.").show_dialog();
