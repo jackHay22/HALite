@@ -118,6 +118,9 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			Double x = data_store.get_raw_std_elem(std, element);
 			Double y = this.std_models.get(std);
 			//y = data_store.get_mean_value(std, element)/y;
+			if (y.isNaN() || y == null) {
+				y = x;
+			}
 			if (x != null && y != null) {
 				point_list.add(new Point(x, y));
 				reg_obj.addData(x, y);
