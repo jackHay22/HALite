@@ -7,8 +7,6 @@ import ui_stdlib.SystemThemes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -29,6 +27,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	public SystemWindow(String title, int width, int height) {
 		super(title);
 		
+		//create list of panels to be refreshed when datastore changes backend content
 		refreshable_frames = new ArrayList<Refreshable<Backend>>();
 		panel_references = new ArrayList<SystemPanel<Backend>>();
 		resize_buffer = 20;
@@ -37,12 +36,6 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		addWindowFocusListener(new WindowAdapter() {
-		    public void windowGainedFocus(WindowEvent e) {
-		    	//System.out.println("Gained focus");
-		        //setVisible(true);
-		    }
-		});
 		this.validate();
 	}
 	
@@ -55,6 +48,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	@Override
 	public void refresh() {
 		if (did_load_datastore) {
+			//if backend loaded, refresh all refreshable frames in panel
 			for (int i=0; i < this.refreshable_frames.size(); i++) {
 				this.refreshable_frames.get(i).refresh();
 			}
@@ -63,6 +57,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	
 	public void add_system_panel(SystemPanel<Backend> new_panel) {
 		
+		//add a new system panel to jframe
 		new_panel.set_minimum_dimension(this.subframe_width, this.subframe_height);
 		new_panel.setBackground(SystemThemes.BACKGROUND);
 		panel_references.add(new_panel);
@@ -94,6 +89,8 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 			SystemPanel<Backend> temp;
 			JFrame temp_frame;
 			Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+			
+			//calculate small window sizes
 			int half_width = screen_dim.width/2;
 			int half_height = subframe_height + 100;
 			
@@ -101,14 +98,19 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 			int[] y_vals = {0, 0, half_height, half_height};
 			
 			for (int i=0; i < this.panel_references.size(); i++) {
+				//make new frames and transfer components
 				temp = panel_references.get(i);
 				temp_frame = new JFrame();
 				temp_frame.add(temp);
 				temp_frame.setVisible(true);
 				temp_frame.setMinimumSize(new Dimension(subframe_width + 30, subframe_height + 30));
 				temp_frame.setLocation(x_vals[i], y_vals[i]);
+				
+				//retain ref to new frame
 				split_panels.add(temp_frame);
 			}
+			
+			//set flag
 			windows_split = true;
 		}
 	}
@@ -119,11 +121,14 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	
 	public void regroup_panels() {
 		if (windows_split) {
+			
+			//add panels back to main frame
 			add_panels_to_panes();
 			this.revalidate();
 			JFrame temp;
 			for (int i=0; i< split_panels.size(); i++) {
 				temp = split_panels.get(i);
+				//remove frame
 				temp.setVisible(false);
 				temp.dispose();
 			}
@@ -136,12 +141,14 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		
 		double_panes = new ArrayList<JSplitPane>();
 		
+		//add panels to the split panes
 		for (int i = 0; i < this.panel_references.size(); i+=2) {
 			double_panes.add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
 					this.panel_references.get(i), 
 					this.panel_references.get(i + 1)));
 		}
 		
+		//only two panels to add
 		if (double_panes.size() == 2) {
 			//group sub panes
 			main_split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
@@ -155,17 +162,18 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 
 	@Override
 	public void on_start() {
-		//Add placeholder label and set visible
-		
+		//add placeholder text (no backend loaded yet)
 		placeholder = SystemThemes.get_default_placeholder();
 		add(placeholder);
 		
+		//reformat
 		revalidate();
 		setVisible(true);
 	}
 
 	@Override
 	public void on_scheduled(Backend backend) {
+		//remove default placeholder
 		getContentPane().removeAll();
 		repaint();
 		
@@ -179,11 +187,13 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).on_start();
 		}
+		
 		setVisible(true);
 	}
 
 	@Override
 	public void set_datastore(Backend backend) {
+		//set backend ref for child panels
 		datastore_ref = backend;
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).set_datastore(backend);

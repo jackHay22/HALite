@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;
@@ -21,6 +20,7 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 	
 	public PanelHeader(String title, Color color) {
 		super();
+		//set color and title
 		this.setBackground(color);
 		this.constraint_loc = 0;
 		this.title = new JLabel(title);
@@ -46,6 +46,7 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 	}
 	
 	public void add_header_component(ui_framework.SystemPanel<Backend> c, int weight) {
+		//add a system panel to the header and assign gb constraint with weight
 		constraints.gridx = this.constraint_loc;
 		constraints.weightx = weight;
 		this.add(c, constraints);
@@ -74,6 +75,7 @@ public class PanelHeader<Backend extends DataBackend> extends ui_framework.Syste
 	@Override
 	public void on_start() {
 		setLayout(new GridBagLayout());
+		//get layout manager constraints
 		constraints = SystemThemes.get_grid_constraints();
 	}
 	

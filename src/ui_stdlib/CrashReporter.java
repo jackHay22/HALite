@@ -17,10 +17,10 @@ public class CrashReporter {
 	      return OS;
 	}
 	
-	private static boolean windows() {
-	   return get_os_name().startsWith("Windows");
+//	private static boolean windows() {
+//	   return get_os_name().startsWith("Windows");
+//	}
 	
-	}
 	private static boolean unix() {
 		return get_os_name().startsWith("Mac");
 	}

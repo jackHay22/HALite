@@ -21,15 +21,19 @@ public class ListingSet<E extends ui_framework.ListingPanel<DataStore>> extends 
 	
 	public ListingSet(Class<E> element_class) {
 		super();
+		
+		//store type of class used on list
 		this.element_class = element_class;
 		all_elements = new ArrayList<E>();
 	}
 	
 	public void display_new_element() throws InstantiationException, IllegalAccessException {
 		if (this.backend_loaded) {
+			//create a new instance of the list element type
 			E new_list_element = element_class.newInstance();
 			all_elements.add(new_list_element);
 			
+			//remove element from list
 			ImageButton new_minus_button = new ImageButton("/buttons/minus_button.png", 20);
 			new_minus_button.addActionListener(new ActionListener() {
 			    @Override
@@ -40,6 +44,7 @@ public class ListingSet<E extends ui_framework.ListingPanel<DataStore>> extends 
 			    }
 			});
 			
+			//set constraints and add elements
 			constraints.gridy = current_element_row;
 			constraints.gridx = 0;
 			constraints.weightx = 1.0;
@@ -51,17 +56,20 @@ public class ListingSet<E extends ui_framework.ListingPanel<DataStore>> extends 
 		    constraints.anchor = GridBagConstraints.EAST;
 		    add(new_minus_button, constraints); 
 	        
-		    //TODO
 	        new_list_element.set_datastore(this.storage_ref);
 	        new_list_element.on_start();
 	        this.storage_ref.notify_update();
 
+	        //reformat layout
 	        this.revalidate();
 		}
 	}
 	
 	public void remove_element(E elem) {
+		//remove an element from the list
 		remove(elem);
+		
+		//notify backend of change
 		this.storage_ref.notify_update();
 	}
 	
@@ -97,6 +105,7 @@ public class ListingSet<E extends ui_framework.ListingPanel<DataStore>> extends 
 		constraints.anchor = GridBagConstraints.SOUTH;
 	    add(new_element_button, constraints); 
 	    
+	    //add plus button and add action listener that creates new instance and updates plus/minus button locations
 		new_element_button.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

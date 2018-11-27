@@ -3,7 +3,6 @@ package system_main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,10 +18,8 @@ import system_utils.io_tools.SystemFileDialog;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
-import ui_stdlib.CrashReporter;
 import ui_stdlib.SystemKeybindings;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;
@@ -321,7 +318,7 @@ public class ViewBuilder {
 		    	//save_dialog.on_scheduled(manager, main_app_view, datastore);
 		    	
 		    	if (window.datastore_set()) {
-		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save");
+		    		SaveDialog save_dialog = new SaveDialog("Save", window);
 		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 		    }
@@ -331,10 +328,10 @@ public class ViewBuilder {
 		JMenuItem save_as = new JMenuItem("Save as...");
 		save_as.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//open dialog, set return state to mai
+				//open dialog, set return state to main
 
 		    	if (window.datastore_set()) {
-		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save as");
+		    		SaveDialog save_dialog = new SaveDialog("Save as", window);
 		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 			}
@@ -379,7 +376,7 @@ public class ViewBuilder {
 		    	}
 				
 		    	DataStore backend = new DataStore(window_update);
-		    	OpenDialog<DataStore> open_dialog = new OpenDialog<DataStore>("Open Files", window_update);
+		    	OpenDialog open_dialog = new OpenDialog("Open Files", window_update);
 		    	
 		    	open_dialog.on_scheduled(backend);
 

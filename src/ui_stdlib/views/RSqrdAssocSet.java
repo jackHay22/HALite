@@ -14,25 +14,31 @@ public class RSqrdAssocSet implements Refreshable<DataStore>{
 	
 	public RSqrdAssocSet(Element element1, Element element2, Double val, boolean element_selected, boolean value_selected) {
 		
+		//create a split view panel to store two buttons
 		graphical_view = new SplitViewPanel<DataStore>(element2.toString(),
 											SystemThemes.get_display_number(val),
 											SystemThemes.HIGHLIGHT,
 											SystemThemes.MAIN,
 											SystemThemes.BACKGROUND);
 		
+		//add color to show when toggled on
 		graphical_view.toggle_color_top(element_selected);
 		graphical_view.toggle_color_bot(value_selected);
 
+		//add action listener to top panel to notify backend
 		graphical_view.get_top().addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	//check if selected
 		    	if (!element_selected) {	
 					datastore.set_correlation_graph_elements(element1, element2);
 		    	}
 		    }
 		});
 		
+		//add an action listener to the bottom
 		graphical_view.get_bottom().addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	//check if selected
 		    	if (!value_selected) {	
 					datastore.set_selected_rsqrd_assocs(element1, element2);
 		    	} else {
@@ -53,6 +59,7 @@ public class RSqrdAssocSet implements Refreshable<DataStore>{
 	}
 	
 	public SplitViewPanel<DataStore> get_graphical_element() {
+		//return the split view panel 
 		return graphical_view;
 	}
 

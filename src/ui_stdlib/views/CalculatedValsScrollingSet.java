@@ -21,30 +21,38 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel<DataSto
 
 	@Override
 	public void refresh() {
+		//only make graphical changes if backend has been initialized
 		if (backend_loaded) {
+			//remove graphical views
 			clear_views();
 			
+			//get necessary components from backend
 			ArrayList<String> standards = datastore.get_STDlist();
-			
-			
 			ArrayList<String> header_labels = datastore.get_WM_headers();
 			ArrayList<Element> elems = datastore.get_WM_elems();
 			
 			for (String std : standards) {
+				
+				//create a graphical panel for the element
 				StdsListElement graphical_elem = new StdsListElement(std, elems, header_labels);
 				views.add(graphical_elem);
 				
+				//set the element's backend ref
 				graphical_elem.set_datastore(datastore);
 				graphical_elem.on_start();
 				
 				add(graphical_elem);
+				
+				//show
 				graphical_elem.refresh();
 				graphical_elem.setVisible(true);
 			}
 			
+			//get unknowns from backend
 			ArrayList<String> unknowns = datastore.get_unknown_list();
 			
 			for (String un : unknowns) {
+				//create graphical element
 				StdsListElement graphical_elem = new StdsListElement(un, elems, header_labels);
 				views.add(graphical_elem);
 				
@@ -52,15 +60,19 @@ public class CalculatedValsScrollingSet extends ui_framework.SystemPanel<DataSto
 				graphical_elem.on_start();
 				
 				add(graphical_elem);
+				
+				//show graphical element
 				graphical_elem.refresh();
 				graphical_elem.setVisible(true);
 			}
 
+			//reformat layout on updates
 			revalidate();
 		}
 	}
 
 	private void clear_views() {
+		//remove current views on refresh
 		for (StdsListElement v : views) {
 			remove(v);
 		}

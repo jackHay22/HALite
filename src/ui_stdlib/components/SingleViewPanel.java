@@ -18,8 +18,10 @@ public class SingleViewPanel<Backend extends DataBackend> extends SystemPanel<Ba
 	
 	public SingleViewPanel(String label, Color color, Color border_color) {
 		super();
+		//add button to field
 		field = new JButton(label);
 		
+		//set border of panel
 		this.setLayout(new GridLayout(1,0));
 		Border border = BorderFactory.createLineBorder(border_color);
 		this.field.setBorder(BorderFactory.createCompoundBorder(border, 
@@ -28,11 +30,13 @@ public class SingleViewPanel<Backend extends DataBackend> extends SystemPanel<Ba
 		this.color = color;
 		this.default_color = field.getBackground();
 		
+		//set hover on button to darken
 		SystemThemes.button_hover(field);
 		field.setOpaque(true);
 	}
 	
 	public void toggle_color(boolean toggle) {
+		//toggle action graphical changes
 		if (toggle) {
 			field.setBackground(color);
 		}
