@@ -493,7 +493,7 @@ public class DataStore extends DataBackend implements Serializable {
 				if (standards != null) {
 
 					standards.set_color(SystemThemes.HIGHLIGHT);
-					unknowns.set_color(SystemThemes.BACKGROUND);
+					unknowns.set_color(SystemThemes.LOWLIGHT);
 					
 					ElementPair<DataStore> pair = new ElementPair<DataStore>(x_elem, y_elem, standards, unknowns);
 					
