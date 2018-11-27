@@ -787,6 +787,19 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public Double get_header_std_pair(String std, String item) {
+		
+        
+        switch (item) {
+            case "WM":  
+            	return this.get_WM_data().get(std).get(item);
+            case "Std Dev":
+            	return this.get_WM_data().get(std).get(item);
+            case "Actual":
+            	break;
+            default: 
+            	return this.get_WM_data().get(std).get(item);
+        }
+		
 		Double result = this.get_WM_data().get(std).get(item);
 		if (result != null) {
 			return result;
@@ -795,9 +808,12 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public Double get_current_model(String std) {
+		if (this.get_WM_data().get(std) == null) {
+			return this.get_current_actual(std);
+		}
 		Double result = this.get_WM_data().get(std).get("Model_Value");
 		if (result == null) {
-			return this.get_WM_data().get(std).get("Actual");
+			return this.get_current_actual(std);
 		}
 		return result;
 	}
@@ -814,7 +830,11 @@ public class DataStore extends DataBackend implements Serializable {
 		HashMap<Element, CorrelationInfo> all_corr = elem_corr.get_all_corr();
 		
 		// Listing of all elements
-		ArrayList<Element> elements = new ArrayList<Element>(Arrays.asList(Element.values()));
+		ArrayList<Element> elements = new ArrayList<Element>();
+		
+		for (Element elem_to_add : SystemThemes.use_for_r2) {
+			elements.add(elem_to_add);
+		}
 		
 		// Remove elem we are currently comparing to
 		elements.remove(elem);

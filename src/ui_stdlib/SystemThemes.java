@@ -57,6 +57,16 @@ public class SystemThemes {
 			"footer p {text-align: center; color: rgb(157,189,198); }"
 	};
 	
+	// This is the list of all elements to show in the r2 correlation area
+	public static Element[] use_for_r2 = new Element[] {Element.Si, 
+			Element.Al, Element.Ti, Element.Fe, 
+			Element.Mn, Element.Mg, Element.Ca, Element.Na, 
+			Element.K, Element.P, Element.Ba,Element.Co, Element.Cr, 
+			Element.Cu, Element.Ga, Element.Hf, Element.Nb, Element.Ni, 
+			Element.Rb, Element.Sc, Element.Sr, Element.V, Element.W, 
+			Element.Y, Element.Zn, Element.Zr, Element.La, Element.Ce, 
+			Element.Nd, Element.Sm, Element.Dy};
+	
 	public static GridBagConstraints get_grid_constraints() {
 		GridBagConstraints constraints =  new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
