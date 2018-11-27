@@ -1,16 +1,13 @@
 package system_utils;
 
 import java.util.HashMap;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
-
 import system_formulas.Formulas;
 import ui_framework.Refreshable;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -277,14 +274,6 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 
 	private double getSE(Element elem) {
 		return SEs.get(elem);
-	}
-	
-	private double getSEInverseSum() {
-		double sum = 0;
-		for (double d : this.SEs.values()) {
-			sum += 1/d;
-		}
-		return sum;
 	}
 	
 	private void compute_unknown_WMs() {

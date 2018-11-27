@@ -3,7 +3,6 @@ package system_main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,10 +18,8 @@ import system_utils.io_tools.SystemFileDialog;
 import ui_framework.SystemWindow;
 import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
-import ui_stdlib.CrashReporter;
 import ui_stdlib.SystemKeybindings;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;

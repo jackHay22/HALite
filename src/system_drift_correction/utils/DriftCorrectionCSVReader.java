@@ -40,10 +40,15 @@ public class DriftCorrectionCSVReader {
 			//check for lines with cps, and date and time column locations
 			if (current_split_line[i].endsWith("CPS")) {
 				//parse element from col name
+				try {
 				Element current_element = Element.valueOf(elem_parser.col_name(current_split_line[i]));
-				col_index_elem.put(new Integer(i), current_element);
+					col_index_elem.put(new Integer(i), current_element);
+					data_output.put(current_element, new ElementCPSInfo(current_element));
+				} catch (IllegalArgumentException e) {
+					continue;
+				}
 
-				data_output.put(current_element, new ElementCPSInfo(current_element));
+				
 			} else if (current_split_line[i].toLowerCase().contains("date")) {
 				date = i;
 			} else if (current_split_line[i].toLowerCase().contains("time")) {
