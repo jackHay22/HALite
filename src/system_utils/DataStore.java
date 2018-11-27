@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -138,8 +139,6 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	private void write_graphs(PDFWriter<DataStore> pdf_doc, BaseGraph<DataStore> graph, int export_type) {
 		try {
-			CorrelationGraph cgraph = (CorrelationGraph) graph;
-			cgraph.on_start();
 			
 			Map<Element, ElementCorrelationInfo> all_corrs = this.get_correlation_map();
 			for (Entry<Element, ElementCorrelationInfo> entry : all_corrs.entrySet()) {
@@ -162,32 +161,38 @@ public class DataStore extends DataBackend implements Serializable {
 						
 						this.set_correlation_graph_elements(entry.getKey(), corr_info.get_secondary());
 						
-						DrawablePanel<DataStore> gpanel = cgraph.get_points_panel();
+						DrawablePanel<DataStore> gpanel = graph.get_points_panel();
 					
-						String equation = corr_info.get_equation().get_str_rep();
-						title += ": " + equation;
+						EquationPlot eq = corr_info.get_equation();
+						
+						String equation = "r^2: " + eq.get_r2() + "    ||    " + eq.get_str_rep();
 						
 						// Write secondary element name and corresponding graph to PDF file
 						pdf_doc.init_img(gpanel);
-						cgraph.refresh();
+						graph.refresh();
 												
 						// Write secondary element name and corresponding graph to PDF file
-						pdf_doc.write(title, gpanel);
+						pdf_doc.write(title, equation, gpanel);
 						
 					}
 				}
 				else {
-					pdf_doc.new_page(primary_elem + " Model");
+					pdf_doc.new_page("Calibration Model " + primary_elem + " vs Given");
+					
+					EquationPlot eq = elem_corrs.get_equation();
+					
+					DecimalFormat df = new DecimalFormat("#.#####");
+					
+					String equation = "r^2: " + df.format(eq.get_r2()) + "    ||    " + eq.get_str_rep();
 					
 					this.set_model_data_element(entry.getKey());
 					
 					DrawablePanel<DataStore> gpanel = graph.get_points_panel();
-					gpanel.refresh();
 					
-					graph.on_start();
+					pdf_doc.init_img(gpanel);
 					graph.refresh();
 					
-					pdf_doc.write("", gpanel);
+					pdf_doc.write("", equation, gpanel);
 				}
 			}
 			

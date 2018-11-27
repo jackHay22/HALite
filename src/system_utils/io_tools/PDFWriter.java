@@ -20,9 +20,10 @@ public class PDFWriter<Backend extends DataBackend> {
 	private PDPage current_page;
 	
 	private PDFont font = PDType1Font.TIMES_ROMAN;
+	private PDFont title_font = PDType1Font.TIMES_BOLD;
 	private int font_size = 16;
 	private int title_font_size = 24;
-	private float margin_top = 150;
+	private float margin_top = 110;
 	private float margin_side = 100;
 	
 	private float graphing_offset;
@@ -85,7 +86,7 @@ public class PDFWriter<Backend extends DataBackend> {
 			contentStream1.beginText();
 			
 			float titleWidth = font.getStringWidth(page_title) / 1000 * title_font_size;
-			contentStream1.newLineAtOffset((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - 100);
+			contentStream1.newLineAtOffset((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - 80);
 			
 			contentStream1.setFont(font, title_font_size);
 			contentStream1.showText(page_title);
@@ -109,7 +110,7 @@ public class PDFWriter<Backend extends DataBackend> {
 		else 
 			y_pos -= 25;
 		
-		gpanel.setSize(400, y_pos);
+		gpanel.setSize(400, y_pos - 10);
 		int w = gpanel.getWidth();
 	    int h = gpanel.getHeight();
 	    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -123,7 +124,7 @@ public class PDFWriter<Backend extends DataBackend> {
 		get_buff_img(gpanel);
 	}
 	
-	public void write(String text, DrawablePanel<Backend> gpanel) {
+	public void write(String title, String equation, DrawablePanel<Backend> gpanel) {
 		
 		if (graphs_on_page == graphs_per_page) 
 			new_page(current_page_title);
@@ -135,6 +136,7 @@ public class PDFWriter<Backend extends DataBackend> {
 
 			float pos = graph_position();
 			
+			// Print graph
 			BufferedImage graph_img = get_buff_img(gpanel);
 			PDImageXObject pdImage = JPEGFactory.createFromImage(document, graph_img);
 			contentStream.drawImage(pdImage, margin_side, pos - gpanel.getHeight() - 5);
@@ -142,8 +144,15 @@ public class PDFWriter<Backend extends DataBackend> {
 			contentStream.beginText();
 			contentStream.newLineAtOffset(margin_side, pos);
 			
+			// Print r^2 and equation
 			contentStream.setFont(font, font_size);
-			contentStream.showText(text);
+			contentStream.showText(equation);
+			
+			contentStream.newLineAtOffset(0, 14);
+			
+			// Print graph title
+			contentStream.setFont(title_font, font_size);
+			contentStream.showText(title);
 			contentStream.endText();
 			
 			contentStream.close();
