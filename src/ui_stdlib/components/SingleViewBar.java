@@ -2,7 +2,6 @@ package ui_stdlib.components;
 
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
-
 import ui_framework.DataBackend;
 import ui_framework.SystemPanel;
 
@@ -12,6 +11,8 @@ public abstract class SingleViewBar<Backend extends DataBackend> extends SystemP
 	public SingleViewBar() {
 		super();
 		panels = new ArrayList<SingleViewPanel<Backend>>();
+		
+		//set layout manager
 		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 	}
 	
@@ -20,6 +21,7 @@ public abstract class SingleViewBar<Backend extends DataBackend> extends SystemP
 	}
 	
 	protected void clear_views() {
+		//remove elements
 		for (SingleViewPanel<Backend> p : panels) {
 			remove(p);
 		}
@@ -27,6 +29,7 @@ public abstract class SingleViewBar<Backend extends DataBackend> extends SystemP
 	}
 	
 	protected void show_views() {
+		//show all elements and start panels
 		setVisible(true);
 		for (SingleViewPanel<Backend> p : panels) {
 			p.on_start();

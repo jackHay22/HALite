@@ -21,10 +21,13 @@ public class ImageButton extends JButton {
 	
 	private void create_button(String resource_pos, int width, int height) {
 		try {
+			//read image an set as button image
 			Image button_image = ImageIO.read(getClass().getResourceAsStream(resource_pos))
 										.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);		
 			this.setPreferredSize(new Dimension(width, height));
 			this.setIcon(new ImageIcon(button_image));
+			
+			//get standard empty border
 			Border emptyBorder = BorderFactory.createEmptyBorder();
 			this.setBorder(emptyBorder);
 		} catch (Exception e) {
