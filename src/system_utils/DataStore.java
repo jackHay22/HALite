@@ -308,8 +308,6 @@ public class DataStore extends DataBackend implements Serializable {
 			
 		}
 		
-		
-		
 		ArrayList<Double> coords = new ArrayList<Double>();
 		
 		// Get table values from means and standards and calculate coordinates

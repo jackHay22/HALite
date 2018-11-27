@@ -33,11 +33,8 @@ public class SaveDialog implements ScheduledState<DataStore> {
 	private void update_save_label(String new_label) {
 		save_current_instructions.setText(new_label);
 	}
-
-	@Override
-	public void on_scheduled(DataStore backend) {
-		SystemFileDialog<DataStore> save_file_chooser = new SystemFileDialog<DataStore>(this.main_window, "Save...", "ds");
-
+	
+	public void save(DataStore backend) {
 		if (try_save(backend)) {
 			String save_path = backend.get_path().toString();
     		update_save_label(save_path);
@@ -53,7 +50,12 @@ public class SaveDialog implements ScheduledState<DataStore> {
     			err.show_dialog();
     		}
     	}
-		else if (save_file_chooser.save_on_path(backend) && try_save(backend)) {
+	}
+	
+	public void save_as(DataStore backend) {
+		SystemFileDialog<DataStore> save_file_chooser = new SystemFileDialog<DataStore>(this.main_window, "Save...", "ds");
+
+		if (save_file_chooser.save_on_path(backend) && try_save(backend)) {
 			String save_path = backend.get_path().toString();
     		update_save_label(save_path);
     		
@@ -66,7 +68,10 @@ public class SaveDialog implements ScheduledState<DataStore> {
     			e.printStackTrace();
     		}
 		}
-		
+	}
+
+	@Override
+	public void on_scheduled(DataStore backend) {
 	}
 
 }
