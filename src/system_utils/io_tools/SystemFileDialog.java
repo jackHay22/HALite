@@ -63,9 +63,6 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		last_path = remove_ext(get_path(FileDialog.SAVE));
 		
 		if (last_path != null) {
-			
-			System.out.println("PATH: " + last_path);
-			
 			return databackend.save_to_filepath(last_path);
 		} else {
 			return false;

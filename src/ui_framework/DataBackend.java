@@ -1,7 +1,10 @@
 package ui_framework;
 
-public abstract class DataBackend {
-	protected SystemWindow<DataBackend> window_parent;
+import java.io.Serializable;
+
+public abstract class DataBackend implements Serializable {
+	private static final long serialVersionUID = 6413502423031756914L;
+	transient protected SystemWindow<DataBackend> window_parent;
 	
 	@SuppressWarnings("unchecked")
 	protected <T extends DataBackend> DataBackend(SystemWindow<T> window_parent) {

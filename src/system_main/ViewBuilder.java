@@ -321,7 +321,7 @@ public class ViewBuilder {
 		    	//save_dialog.on_scheduled(manager, main_app_view, datastore);
 		    	
 		    	if (window.datastore_set()) {
-		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save");
+		    		SaveDialog save_dialog = new SaveDialog("Save", window);
 		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 		    }
@@ -331,10 +331,10 @@ public class ViewBuilder {
 		JMenuItem save_as = new JMenuItem("Save as...");
 		save_as.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				//open dialog, set return state to mai
+				//open dialog, set return state to main
 
 		    	if (window.datastore_set()) {
-		    		SaveDialog<DataStore> save_dialog = new SaveDialog<DataStore>("Save as");
+		    		SaveDialog save_dialog = new SaveDialog("Save as", window);
 		    		save_dialog.on_scheduled(window.get_datastore());
 		    	}
 			}
@@ -379,7 +379,7 @@ public class ViewBuilder {
 		    	}
 				
 		    	DataStore backend = new DataStore(window_update);
-		    	OpenDialog<DataStore> open_dialog = new OpenDialog<DataStore>("Open Files", window_update);
+		    	OpenDialog open_dialog = new OpenDialog("Open Files", window_update);
 		    	
 		    	open_dialog.on_scheduled(backend);
 

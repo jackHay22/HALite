@@ -1,26 +1,21 @@
 package ui_stdlib.dialogwindows;
 
-import java.awt.GridLayout;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import system_utils.DataStore;
 import system_utils.io_tools.SystemFileDialog;
-import ui_framework.DataBackend;
 import ui_framework.SystemWindow;
+import ui_framework.ScheduledState;
 
-@SuppressWarnings("serial")
-public class OpenDialog<T extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState<T> {
-	private SystemWindow<T> main_window;
-	private SystemFileDialog<T> file_dialog;
+public class OpenDialog implements ScheduledState<DataStore> {
+	private SystemWindow<DataStore> main_window;
+	private SystemFileDialog<DataStore> file_dialog;
 	
-	public OpenDialog(String title, SystemWindow<T> main_window) {
-		super(title);
-		this.setLayout(new GridLayout(4,0));
-		
-		file_dialog = new SystemFileDialog<T>(this, "Open...", "ds");
+	public OpenDialog(String title, SystemWindow<DataStore> main_window) {
+		this.main_window = main_window;
+		file_dialog = new SystemFileDialog<DataStore>(main_window, "Open...", "ds");
 	}
-
 	
 	private boolean is_datastore_file(String file) {
 		int pos = file.indexOf('.');
@@ -36,7 +31,7 @@ public class OpenDialog<T extends DataBackend> extends SystemDialog implements u
 	}
 
 	@Override
-	public void on_scheduled(T backend) {
+	public void on_scheduled(DataStore backend) {
 		
 		boolean status = file_dialog.init_backend_on_path(backend);
 		
@@ -47,11 +42,11 @@ public class OpenDialog<T extends DataBackend> extends SystemDialog implements u
 				FileInputStream fileInputStream = new FileInputStream(file_path);
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 				
-				T ds = (T) objectInputStream.readObject();
+				DataStore ds = (DataStore) objectInputStream.readObject();
 				objectInputStream.close();
 				
 				ds.set_window(main_window);
-
+				
 				main_window.on_scheduled(ds);
 				
 			} catch (IOException | ClassNotFoundException e) {

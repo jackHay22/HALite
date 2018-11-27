@@ -166,6 +166,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 
 	@Override
 	public void on_scheduled(Backend backend) {
+		
 		getContentPane().removeAll();
 		repaint();
 		
@@ -179,6 +180,7 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		for (int i=0; i < this.refreshable_frames.size(); i++) {
 			this.refreshable_frames.get(i).on_start();
 		}
+		
 		setVisible(true);
 	}
 
