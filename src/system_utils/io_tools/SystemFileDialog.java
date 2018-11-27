@@ -82,6 +82,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	
 	private String get_path(int mode) {
 		system_file_dialog.setMode(mode);
+		system_file_dialog.setFile("Untitled.ds");
 		system_file_dialog.setVisible(true);
 		
 		File[] path = system_file_dialog.getFiles();
