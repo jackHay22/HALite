@@ -1,6 +1,7 @@
 package ui_framework;
 
 import java.io.Serializable;
+import ui_stdlib.CrashReporter;
 
 public abstract class DataBackend implements Serializable {
 	private static final long serialVersionUID = 6413502423031756914L;
@@ -12,7 +13,13 @@ public abstract class DataBackend implements Serializable {
 	}
 	
 	public void notify_update() {
-		window_parent.refresh();
+		try {
+			window_parent.refresh();
+		} catch (Exception e) {
+			//prompt user to save stack to log file on an unexpected system error
+			CrashReporter.report_crash(window_parent, e);
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")
