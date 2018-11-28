@@ -94,7 +94,9 @@ public class DataExporter {
 					
 						EquationPlot eq = corr_info.get_equation();
 						
-						String equation = "r^2: " + eq.get_r2() + "    ||    " + eq.get_str_rep();
+						DecimalFormat df = new DecimalFormat("#.#####");
+						
+						String equation = SystemThemes.superscript("r2: ") + df.format(eq.get_r2()) + "    ||    " + eq.get_str_rep();
 						
 						// Write secondary element name and corresponding graph to PDF file
 						pdf_doc.init_img(gpanel);
@@ -112,7 +114,7 @@ public class DataExporter {
 					
 					DecimalFormat df = new DecimalFormat("#.#####");
 					
-					String equation = "r^2: " + df.format(eq.get_r2()) + "    ||    " + eq.get_str_rep();
+					String equation = SystemThemes.superscript("r2: ") + df.format(eq.get_r2()) + "    ||    " + eq.get_str_rep();
 					
 					ds.set_model_data_element(entry.getKey());
 					
