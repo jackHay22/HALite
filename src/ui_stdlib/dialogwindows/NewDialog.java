@@ -88,7 +88,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	public void on_scheduled(DataStore backend) {
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
-		//continue_button.setBackground(SystemThemes.MAIN);
 		continue_button.setOpaque(true);
 		
 		constraints.gridx = 0;
@@ -109,9 +108,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		
 		
 		JButton xrf_chooser = new JButton("XRF");
-		//Causes windows graphical bug
-			//xrf_chooser.setBackground(SystemThemes.BACKGROUND);
-			//xrf_chooser.setOpaque(true);
 		add(xrf_chooser, constraints);
 		added_buttons.add(xrf_chooser);
 		
@@ -121,13 +117,9 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		constraints.gridx = 1;
 		add(xrf_table_selection, constraints);
 		xrf_table_selection.setEnabled(false);
-		//xrf_table_selection.setBackground(SystemThemes.MAIN);
 		xrf_table_selection.setOpaque(true);
 		
 		JButton stds_chooser = new JButton("Standards");
-		//Causes windows graphical bug
-			//stds_chooser.setBackground(SystemThemes.BACKGROUND);
-			//stds_chooser.setOpaque(true);
 		
 		constraints.gridy = 1;
 		constraints.gridx = 0;
@@ -140,21 +132,13 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		constraints.gridx = 1;
 		add(stds_table_selection, constraints);
 		stds_table_selection.setEnabled(false);
-		//stds_table_selection.setBackground(SystemThemes.MAIN);
 		stds_table_selection.setOpaque(true);
-		
-		
-		//Causes windows graphical bug
-			//means_chooser.setBackground(SystemThemes.BACKGROUND);
-			//means_chooser.setOpaque(true);
-		
 		
 		added_buttons.add(means_chooser);
 		
 		JComboBox<String> means_table_selection = new JComboBox<String>();
 		means_table_selection.setBorder(BorderFactory.createTitledBorder("Select Means Table"));
 		means_table_selection.setEnabled(false);
-		//means_table_selection.setBackground(SystemThemes.MAIN);
 		means_table_selection.setOpaque(true);
 		
 		if (means_override == null) {
