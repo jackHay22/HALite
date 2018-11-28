@@ -224,9 +224,7 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean save_to_filepath(String path) {
-		
 		set_save_path(path);
-		
 		return true;
 	}
 	
@@ -256,12 +254,6 @@ public class DataStore extends DataBackend implements Serializable {
 			File parent_dir = new File(parent_path);
 			return parent_dir.exists();
 		}
-	}
-	
-	public boolean load_from_save(File path) {
-		//TODO
-		//try to load from save file, return true if successful
-		return false;
 	}
 	
 	private void internal_refresh() {

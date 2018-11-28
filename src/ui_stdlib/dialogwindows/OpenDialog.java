@@ -50,7 +50,9 @@ public class OpenDialog implements ScheduledState<DataStore> {
 				main_window.on_scheduled(ds);
 				
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+				new ErrorDialog<DataStore>("Loading Error", "Unable to load selected file. Please check that the "
+											   + "selected file is a valid .ds file "
+											   + "or that you have selected the right file.").show_dialog();
 			}
 		}
 	}
