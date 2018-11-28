@@ -9,11 +9,12 @@ import javax.swing.JOptionPane;
 
 public class CrashReporter {
 	private static String OS = null;
-	private static final String SAVE_DIR = "/rock_analysis";
+	private static final String SAVE_DIR = "/HALite";
+	private static final String WINDOWS_SAVE_DIR = "\\HALite";
 	private static final String APP_SUPPORT = System.getProperty("user.home") + "/Library/Application Support";
 	
-	//TODO
-	private static final String WINDOWS_APP_DATA = "";
+	//This is the file path for windows crash reporting
+	private static final String WINDOWS_APP_DATA = System.getProperty("user.home") + "\\AppData\\Local\\";
 	
 	private static String get_os_name() {
 	   if(OS == null) { OS = System.getProperty("os.name"); }
@@ -60,7 +61,7 @@ public class CrashReporter {
 		if (unix()) {
 			return APP_SUPPORT + SAVE_DIR;
 		} else if (windows()) {
-			return WINDOWS_APP_DATA + SAVE_DIR;
+			return WINDOWS_APP_DATA + WINDOWS_SAVE_DIR;
 		} else {
 			//by default
 			return System.getProperty("user.home");
