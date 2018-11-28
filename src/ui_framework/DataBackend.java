@@ -18,6 +18,9 @@ public abstract class DataBackend implements Serializable {
 		} catch (Exception e) {
 			//prompt user to save stack to log file on an unexpected system error
 			CrashReporter.report_crash(window_parent, e);
+			
+			//system exit
+			System.exit(1);
 		}
 		
 	}
