@@ -9,11 +9,15 @@ import javax.swing.JOptionPane;
 
 public class CrashReporter {
 	private static String OS = null;
+	
+	// These are the final directories that the crash info will be saved inside
 	private static final String SAVE_DIR = "/HALite";
 	private static final String WINDOWS_SAVE_DIR = "\\HALite";
+	
+	// OSX app support
 	private static final String APP_SUPPORT = System.getProperty("user.home") + "/Library/Application Support";
 	
-	//This is the file path for windows crash reporting
+	// This is the file path for windows crash reporting
 	private static final String WINDOWS_APP_DATA = System.getProperty("user.home") + "\\AppData\\Local\\";
 	
 	private static String get_os_name() {
