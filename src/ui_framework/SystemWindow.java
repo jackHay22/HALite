@@ -25,6 +25,12 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 	private Backend datastore_ref;
 
 	public SystemWindow(String title, int width, int height) {
+		//by default, don't kill application
+		//alternative parameter: JFrame.EXIT_ON_CLOSE
+		this(title, width, height, JFrame.DISPOSE_ON_CLOSE);
+	}
+	
+	public SystemWindow(String title, int width, int height, int close_behavior) {
 		super(title);
 		
 		//create list of panels to be refreshed when datastore changes backend content
@@ -35,7 +41,9 @@ public class SystemWindow<Backend extends DataBackend> extends JFrame implements
 		split_panels = new ArrayList<JFrame>();
 		
 		this.setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//set close to EXIT_ON_CLOSE or DISPOSE_ON_CLOSE
+		this.setDefaultCloseOperation(close_behavior);
 		this.validate();
 	}
 	
