@@ -32,6 +32,9 @@ public class ViewBuilder {
 	public static final String TEST_MEANS = "/test_data/means.csv";
 	public static final String TEST_STANDARDS = "/test_data/standards.csv";
 	public static int OPEN_VIEWS = 0;
+	
+	private static int CLOSE_APP = JFrame.EXIT_ON_CLOSE;
+	private static int CLOSE_WINDOW = JFrame.DISPOSE_ON_CLOSE;
 
 
 	private static void set_close_window_status(JMenuItem close_window) {
@@ -86,9 +89,16 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DataStore> get_app_view() {
+		int close_behavior;
+		if (OPEN_VIEWS >= 1) {
+			close_behavior = CLOSE_WINDOW;
+		} else {
+			close_behavior = CLOSE_APP;
+		}
+		
     	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("HALite Analysis",
 														ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
-														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT, close_behavior);
 
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
@@ -107,9 +117,16 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
+		int close_behavior;
+		if (OPEN_VIEWS >= 1) {
+			close_behavior = CLOSE_WINDOW;
+		} else {
+			close_behavior = CLOSE_APP;
+		}
+		
 		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("HALite Drift Correction",
 															ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
-															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
+															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT, close_behavior);
 
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);

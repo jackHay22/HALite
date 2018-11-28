@@ -12,14 +12,17 @@ public class CrashReporter {
 	private static final String SAVE_DIR = "/rock_analysis";
 	private static final String APP_SUPPORT = System.getProperty("user.home") + "/Library/Application Support";
 	
+	//TODO
+	private static final String WINDOWS_APP_DATA = "";
+	
 	private static String get_os_name() {
 	   if(OS == null) { OS = System.getProperty("os.name"); }
 	      return OS;
 	}
 	
-//	private static boolean windows() {
-//	   return get_os_name().startsWith("Windows");
-//	}
+	private static boolean windows() {
+	   return get_os_name().startsWith("Windows");
+	}
 	
 	private static boolean unix() {
 		return get_os_name().startsWith("Mac");
@@ -58,16 +61,27 @@ public class CrashReporter {
 		}
 	}
 	
-	private static File mk_file(String application_support_file) {
+	private static String get_os_path() {
+		if (unix()) {
+			return APP_SUPPORT + SAVE_DIR;
+		} else if (windows()) {
+			return WINDOWS_APP_DATA + SAVE_DIR;
+		} else {
+			//by default
+			return System.getProperty("user.home");
+		}
+	}
+	
+	private static File mk_file(String os_path, String application_support_file) {
 		//make application support directory
-		new File(APP_SUPPORT + SAVE_DIR).mkdirs();
+		new File(os_path).mkdirs();
 		
 		//create file in AS
-		return new File(APP_SUPPORT + SAVE_DIR + "/" + application_support_file);
+		return new File(os_path + "/" + application_support_file);
 	}
 	
 	private static void write_trace(String file_name, Exception ex) throws FileNotFoundException {
-		try (PrintWriter out = new PrintWriter(mk_file(file_name))) {
+		try (PrintWriter out = new PrintWriter(mk_file(get_os_path(), file_name))) {
 		    ex.printStackTrace(out);
 		}
 	}

@@ -23,6 +23,8 @@ CrashReporter.report_crash(window, exception);
 ```
 This will prompt the user to save a timestamped log file to Application Support with the exception stack trace.
 
+- Note: This is currently used in ```DataBackend.notify_update()```. This will prompt the user to save a log file in case the system crashes in an unexpected location.  DataBackend acts as the source of all change propagation throughout the system. 
+
 ## Dependencies
 - Apache Commons Math3 3.6.1 (license included: ```docs/APACHE_COMMONS_LICENCE.txt```)
 - PdfBox 2.0.12
