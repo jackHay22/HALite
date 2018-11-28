@@ -49,12 +49,7 @@ public class CrashReporter {
 		
 		if(action == 0){
 			try {
-				if (unix()) {
-					write_trace(get_log_filename() , e);
-				} else {
-					//TODO windows:
-				}
-				
+				write_trace(get_log_filename() , e);
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
