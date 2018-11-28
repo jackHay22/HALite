@@ -14,7 +14,6 @@ public abstract class DataBackend implements Serializable {
 	
 	public void notify_update() {
 		try {
-			int x = 1 / 0;
 			window_parent.refresh();
 		} catch (Exception e) {
 			//prompt user to save stack to log file on an unexpected system error
