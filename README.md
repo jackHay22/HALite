@@ -33,7 +33,7 @@ This will prompt the user to save a timestamped log file to Application Support 
 img:buttons/minus_button.png
 ```
 - Replace the url to the right of the colon with the appropriate image location
-- When the doc is loaded in the help menu, the image tag is dynamically created as it needs to convert this file location to a java resource.
+- When the doc is loaded in the help menu, the image tag is dynamically created as it needs to convert this jar resource path into a full image path.
 
 ## Dependencies
 - Apache Commons Math3 3.6.1 (license included: ```docs/APACHE_COMMONS_LICENCE.txt```)
