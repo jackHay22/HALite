@@ -68,8 +68,21 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				means_chosen = backend.add_component_filepath(means_override, "means");	
 			}
 			
+			// 
+			if (!means_chosen) {
+				means_chooser.setOpaque(false);
+				means_chooser.setEnabled(true);
+				return;
+			}
+			
 			if (means_chosen && backend.validate_loaded()) {
 				continue_button.setEnabled(true);
+			}
+			else {
+				
+				// Disable continue button
+				continue_button.setEnabled(false);
+				continue_button.setOpaque(true);
 			}
 		}
 	}
@@ -89,6 +102,9 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		continue_button = new JButton("Continue");
 		continue_button.setEnabled(false);
 		continue_button.setOpaque(true);
+		
+		means_chooser.setEnabled(false);
+		means_chooser.setOpaque(true);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -186,6 +202,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		means_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
+		    	backend.reset_unknowns();
+		    	
 		    	means_chosen = file_chooser.add_component_path(backend, "means");
 		    	String file = backend.means_path;
 		    	
@@ -217,6 +235,8 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		stds_chooser.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
+		    	backend.reset_standards();
+		    	
 		    	standards_chosen = file_chooser.add_component_path(backend, "standards");
 		    	String file = backend.standards_path;
 		    	
@@ -238,6 +258,10 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setEnabled(true);
 		    		stds_table_selection.setBackground(SystemThemes.MAIN);
 		    		stds_table_selection.setOpaque(false);
+		    	}
+		    	
+		    	if (means_chosen && xrf_chosen && standards_chosen) {
+		    		backend.add_component_filepath(backend.means_path, "means");
 		    	}
 		    	
 		    	can_continue(backend);
