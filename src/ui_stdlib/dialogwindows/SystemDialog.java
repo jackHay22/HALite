@@ -2,18 +2,32 @@ package ui_stdlib.dialogwindows;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
+
+import system_main.ViewBuilder;
 
 @SuppressWarnings("serial")
 public abstract class SystemDialog extends JFrame {
 
 	protected SystemDialog(String title) {
 		super(title);
+		super.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ViewBuilder.update_dialog_status(false);
+            }
+        });
 	}
 	
 	protected void close_dialog() {
 		this.setVisible(false);
 		this.dispose();
+		
+		//notify view builder that window closed
+		ViewBuilder.update_dialog_status(false);
 	}
 	
 	protected void show_dialog() {
