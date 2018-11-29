@@ -671,15 +671,25 @@ public class DataStore extends DataBackend implements Serializable {
 		return this.correlations.get(this.model_data_element).get_WM_panel_data();
 	}
 	
+	// This return the Weighted Mean value if available, or a reverse calculated value as a place holder if not, and
+	// if that cannot be calculated then 0.0 is returned
 	public Double get_current_WM(String std) {
 		Double result = this.get_WM_data().get(std).get("WM");
 		if (result == null || result.isNaN()) {
-			if (this.get_STDlist().contains(std)) {
-				return get_current_actual(std) * this.get_std_response_value(std, this.model_data_element);
-			} else if (this.get_unknown_list().contains(std)) {
-				return get_current_actual(std) * this.get_unknown_response_value(std, this.model_data_element);
-			} else {
+			if (this.get_current_actual(std) == null || this.get_current_actual(std).isNaN()) {
 				return 0.0;
+			} else {
+				if (this.get_STDlist().contains(std)) {
+					if (this.get_std_response_value(std, this.model_data_element) == null) {
+						return 0.0;
+					} else {
+						return get_current_actual(std) * this.get_std_response_value(std, this.model_data_element);
+					}
+				} else if (this.get_unknown_list().contains(std) && this.get_unknown_response_value(std, this.model_data_element) != null) {
+					return get_current_actual(std) * this.get_unknown_response_value(std, this.model_data_element);
+				} else {
+					return 0.0;
+				}
 			}
 		}
 		return result;
