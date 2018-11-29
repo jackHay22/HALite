@@ -70,7 +70,18 @@ public class DataStore extends DataBackend implements Serializable {
 		this.elem_num = 5;
 	}
 	
+	public void reset_standards() {
+		this.standards_means_data = new DataTable("Standards_means");
+	}
+	
+	public void reset_unknowns() {
+		this.unknown_means_data = new DataTable("Unknown_means");
+	}
+	
 	public boolean validate_loaded() {
+		
+		if (this.standards_means_data.get_data().isEmpty() || this.unknown_means_data.get_data().isEmpty())
+			return false;
 		
 		Map<TableKey, Data> stds_map = standards_means_data.get_data();
 		for (Entry<TableKey, Data> entry : stds_map.entrySet()) {
