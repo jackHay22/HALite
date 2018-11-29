@@ -3,6 +3,7 @@ package system_utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.IndexOutOfBoundsException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
@@ -144,7 +145,8 @@ public class DataStore extends DataBackend implements Serializable {
 				xrf_data = parser.parse_data(reader);
 				xrf_in_use = xrf_data.get(0).name();
 				xrf_path = path;
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IndexOutOfBoundsException e) {
+				new ErrorDialog<DataStore>("Invalid File", "Unable to parse selected file. Please check that this is a valid file.").show_dialog();
 				return false;
 			}
 			return true;
@@ -183,7 +185,8 @@ public class DataStore extends DataBackend implements Serializable {
 				
 				means_in_use = means_data.get(0).name();
 				means_path = path;
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IndexOutOfBoundsException e) {
+				new ErrorDialog<DataStore>("Invalid File", "Unable to parse selected file. Please check that this is a valid file.").show_dialog();
 				return false;
 			}
 			return true;
@@ -193,7 +196,8 @@ public class DataStore extends DataBackend implements Serializable {
 				standards_data = parser.parse_data(reader);
 				standards_in_use = standards_data.get(0).name();
 				standards_path = path;
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IndexOutOfBoundsException e) {
+				new ErrorDialog<DataStore>("Invalid File", "Unable to parse selected file. Please check that this is a valid file.").show_dialog();
 				return false;
 			}
 			return true;
