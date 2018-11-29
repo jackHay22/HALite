@@ -212,8 +212,11 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		g.setColor(SystemThemes.MAIN);
 		if (p.in_use()) {
 			g.setColor(c);
+			g.fillOval((int)draw_x, (int)draw_y, 5,5);
+		} else {
+			g.setColor(c);
+			g.drawOval((int)draw_x, (int)draw_y, 5,5);
 		}
-		g.fillOval((int)draw_x, (int)draw_y, 5,5);
 		g.setColor(graph_color);
 	}
 	

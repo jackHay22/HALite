@@ -35,8 +35,22 @@ public class ViewBuilder {
 	
 	private static int CLOSE_APP = JFrame.EXIT_ON_CLOSE;
 	private static int CLOSE_WINDOW = JFrame.DISPOSE_ON_CLOSE;
+	
+	//don't access directly, use static method
+	private static boolean DIALOG_OPENED = false;
+	private static final Object DIALOG_STATE_MUTEX = new Object();
 
 
+	public static void update_dialog_status(boolean dialog_state) {
+		synchronized (DIALOG_STATE_MUTEX) {
+			DIALOG_OPENED = dialog_state;
+		}	
+	}
+	
+	public static synchronized boolean get_dialog_status() {
+		return DIALOG_OPENED;
+	}
+	
 	private static void set_close_window_status(JMenuItem close_window) {
 		close_window.setEnabled(OPEN_VIEWS > 1);
 	}
@@ -154,14 +168,17 @@ public class ViewBuilder {
 		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				
-	    		SystemWindow<DataStore> new_window = get_app_view();
-	    		new_window.on_start();
-	    		
-	    		NewDialog file_selector = new NewDialog("Select Files", new_window);
-	    		
-	    		DataStore new_ds = new DataStore(new_window);
-	    		file_selector.on_scheduled(new_ds);
+				if (!get_dialog_status()) {
+					SystemWindow<DataStore> new_window = get_app_view();
+		    		new_window.on_start();
+		    		
+		    		NewDialog file_selector = new NewDialog("Select Files", new_window);
+		    		
+		    		DataStore new_ds = new DataStore(new_window);
+		    		
+		    		update_dialog_status(true);
+		    		file_selector.on_scheduled(new_ds);
+				}
 		    }
 		});
 		
@@ -170,17 +187,17 @@ public class ViewBuilder {
 		
 		open_new_dc.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-
 				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
-
+				
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
 				} else {
 					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
 				}
+				
 		    }
 		});
 		
@@ -202,25 +219,24 @@ public class ViewBuilder {
 		//open_new.setAccelerator(SystemKeybindings.NEW);
 		export_analysis.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				
-				SystemWindow<DataStore> new_analysis_window = get_app_view();
-				
-				DriftCorrectionDS ds = window.get_datastore();
-				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
-				
-				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
-					//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
-				} else {
+					SystemWindow<DataStore> new_analysis_window = get_app_view();
 					
-					//TODO: set with means file selected
-					NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
-		    		
-		    		DataStore new_ds = new DataStore(new_analysis_window);
-		    		file_selector.on_scheduled(new_ds);
-		    		
-		    		window.setVisible(false);
-		    		window.dispose();
-				}
+					DriftCorrectionDS ds = window.get_datastore();
+					SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
+					
+					if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
+						//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+					} else {
+						
+						//TODO: set with means file selected
+						NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
+			    		
+			    		DataStore new_ds = new DataStore(new_analysis_window);
+			    		file_selector.on_scheduled(new_ds);
+			    		
+			    		window.setVisible(false);
+			    		window.dispose();
+					}
 		    }
 		});
 		
@@ -366,17 +382,22 @@ public class ViewBuilder {
 //				} catch (Exception ex) {
 //					CrashReporter.report_crash(window, ex);
 //				}
-
-		    	if (window.datastore_set()) {
-		    		window_update = get_app_view();
-		    	} else {
-		    		window_update = window;
-		    	}
-	    		
-	    		NewDialog file_selector = new NewDialog("Select Files", window_update);
-	    		
-	    		DataStore new_ds = new DataStore(window_update);
-	    		file_selector.on_scheduled(new_ds);
+				if (!get_dialog_status()) {
+					
+					if (window.datastore_set()) {
+			    		window_update = get_app_view();
+			    	} else {
+			    		window_update = window;
+			    	}
+		    		
+		    		NewDialog file_selector = new NewDialog("Select Files", window_update);
+		    		
+		    		DataStore new_ds = new DataStore(window_update);
+		    		
+		    		update_dialog_status(true);
+		    		
+		    		file_selector.on_scheduled(new_ds);
+				}
 		    }
 		});
 
@@ -384,19 +405,19 @@ public class ViewBuilder {
 		open_saved.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
-				SystemWindow<DataStore> window_update;
-				
-				if (window.datastore_set()) {
-		    		window_update = get_app_view();
-		    	} else {
-		    		window_update = window;
-		    	}
-				
-		    	DataStore backend = new DataStore(window_update);
-		    	OpenDialog open_dialog = new OpenDialog("Open Files", window_update);
-		    	
-		    	open_dialog.on_scheduled(backend);
-
+					SystemWindow<DataStore> window_update;
+					
+					
+					if (window.datastore_set()) {
+			    		window_update = get_app_view();
+			    	} else {
+			    		window_update = window;
+			    	}
+					
+			    	DataStore backend = new DataStore(window_update);
+			    	OpenDialog open_dialog = new OpenDialog("Open Files", window_update);
+			    	
+			    	open_dialog.on_scheduled(backend);
 		    }
 		});
 
@@ -422,14 +443,16 @@ public class ViewBuilder {
 		open_test_data.setAccelerator(SystemKeybindings.EX_DATA);
 		open_test_data.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				SystemWindow<DataStore> update_window;
-				//create a new window if the current window already has datastore set
-		    	if (window.datastore_set()) {
-		    		update_window = get_app_view();
-		    	} else {
-		    		update_window = window;
-		    	}
-				open_example_data(update_window);
+				if (!get_dialog_status()) {
+					SystemWindow<DataStore> update_window;
+					//create a new window if the current window already has datastore set
+			    	if (window.datastore_set()) {
+			    		update_window = get_app_view();
+			    	} else {
+			    		update_window = window;
+			    	}
+					open_example_data(update_window);
+				}
 		    }
 		});
 
