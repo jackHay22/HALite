@@ -23,7 +23,17 @@ CrashReporter.report_crash(window, exception);
 ```
 This will prompt the user to save a timestamped log file to Application Support with the exception stack trace.
 
-- Note: This is currently used in ```DataBackend.notify_update()```. This will prompt the user to save a log file in case the system crashes in an unexpected location.  DataBackend acts as the source of all change propagation throughout the system. 
+- Note: This is currently used in ```DataBackend.notify_update()```. This will prompt the user to save a log file in case the system crashes in an unexpected location.  DataBackend acts as the source of all change propagation throughout the system.
+
+## Help Menu Content
+- To add content to the internal help menu, edit the html files in ```resources/docs/```
+- CSS markup rules can be found in ```SystemThemes.HELP_MARKUP_RULES```
+- To add an image to an HTML document, add the following to the file (it must be on its own line)
+```
+img:buttons/minus_button.png
+```
+- Replace the url to the right of the colon with the appropriate image location
+- When the doc is loaded in the help menu, the image tag is dynamically created as it needs to convert this file location to a java resource.
 
 ## Dependencies
 - Apache Commons Math3 3.6.1 (license included: ```docs/APACHE_COMMONS_LICENCE.txt```)
