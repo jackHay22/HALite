@@ -26,7 +26,17 @@ public class HelpWindow extends javax.swing.JTextPane {
 	}
 	
 	private String make_img_div(String resource_img_tag) {
-		return "<img src=\"" + this.getClass().getClassLoader().getResource(resource_img_tag.split(":")[1].trim()).toString() + "\" />";
+		String[] resource_definition = resource_img_tag.split(":");
+		String size = "";
+		
+		//optionally resize
+		if (resource_definition.length > 3) {
+			size = "width=" + resource_definition[2] + 
+					" height=" + resource_definition[3];
+		}
+		
+		return "<img src=\"" + this.getClass().getClassLoader().getResource(resource_definition[1].trim()).toString() + 
+				"\"" + size + " />";
 	}
 	
 	public void show() {

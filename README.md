@@ -32,6 +32,10 @@ This will prompt the user to save a timestamped log file to Application Support 
 ```
 img:buttons/minus_button.png
 ```
+- Optionally, include colon-separated resize values for the width and the height. ex:
+```
+img:buttons/minus_button.png:140:80
+```
 - Replace the url to the right of the colon with the appropriate image location
 - When the doc is loaded in the help menu, the image tag is dynamically created as it needs to convert this jar resource path into a full image path.
 
