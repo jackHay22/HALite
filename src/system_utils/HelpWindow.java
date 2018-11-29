@@ -25,6 +25,10 @@ public class HelpWindow extends javax.swing.JTextPane {
 		SystemThemes.set_help_markup_rules(style_sheet);
 	}
 	
+	private String make_img_div(String resource_img_tag) {
+		return "<img src=\"" + this.getClass().getClassLoader().getResource(resource_img_tag.split(":")[1].trim()).toString() + "\" />";
+	}
+	
 	public void show() {
 	    try {
 	        StringBuilder sb = new StringBuilder();
@@ -32,6 +36,13 @@ public class HelpWindow extends javax.swing.JTextPane {
 
 	        while (line != null) {
 	            sb.append(line);
+	            
+	            //image loading
+//	            if (line.contains("img")) {
+//	            	line = make_img_div(line);
+//	            	System.out.println(line);
+//	            }
+	            
 	            sb.append("\n");
 	            line = resource_reader.readLine();
 	        }
