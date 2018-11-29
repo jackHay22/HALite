@@ -35,14 +35,14 @@ public class HelpWindow extends javax.swing.JTextPane {
 	        String line = resource_reader.readLine();
 
 	        while (line != null) {
-	            sb.append(line);
-	            
+	                      
 	            //image loading
-//	            if (line.contains("img")) {
-//	            	line = make_img_div(line);
-//	            	System.out.println(line);
-//	            }
+	            if (line.contains("img")) {
+	            	line = make_img_div(line);
+	            }
 	            
+	            sb.append(line);
+
 	            sb.append("\n");
 	            line = resource_reader.readLine();
 	        }
