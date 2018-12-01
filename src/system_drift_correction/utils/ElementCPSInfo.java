@@ -14,21 +14,34 @@ import ui_graphlib.Point;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 
+// This class holds the information from all samples from one element
+// for the drift correction
 public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	
+	// These hold the element name corresponding to the data
 	private Element element;
+	// all the raw data point sets from the input file
 	private HashMap<String, PointSet<DriftCorrectionDS>> all_point_sets;
+	// and the points after the drift correction has been applied 
 	private HashMap<String, PointSet<DriftCorrectionDS>> corrected_point_sets;
 
-	
+	// These are the drift correction points and all associated data
 	private PointSet<DriftCorrectionDS> drift_points;
+	// This object holds the drift point data corresponding to this element
 	private ElementDriftInfo drift_info;
 	
+	// This gives each object access to its parent datastore
 	private DriftCorrectionDS datastore;
 
+	// This boolean allows us to know if all the data has been read into the 
+	// structure
 	public boolean creation_complete = false;
+	
+	// This boolean allows us to tell datastore if the object has data
+	// to export
 	public boolean has_corrected_points = false;
 	
+	// Initialize the object
 	public ElementCPSInfo(Element elem) {
 		this.element = elem;
 		this.all_point_sets = new HashMap<String, PointSet<DriftCorrectionDS>>();
@@ -36,6 +49,8 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		this.drift_points = new PointSet<DriftCorrectionDS>(new ArrayList<Point>(), SystemThemes.HIGHLIGHT, "time", element.toString(), "Drift data fit", true);
 	}
 	
+	// This method allows the databackend and csv reader to set (sample_name, point)
+	// pairs in the private hashmap
 	public void set_pair(String name, Point pt) {
 		if (name.contains("DRIFT") ) {
 			drift_points.add_point(pt);
@@ -50,15 +65,23 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 			}
 		}
 	}
-
+	
+	// This method is called to apply the drift correction function 
+	// to the points in all_point_sets
 	private void correct_info() {
 		for (Map.Entry<String, PointSet<DriftCorrectionDS>> set : this.all_point_sets.entrySet()) {
-			this.corrected_point_sets.put(set.getKey(), set.getValue());
+			
+			// We create a new pointsets to avoid altering the original data for
+			// correction with different equation later
+			PointSet<DriftCorrectionDS> pts = new PointSet<DriftCorrectionDS>(set.getValue().get_points(), SystemThemes.MAIN, "time", element.toString(), "sample", false);
+			this.corrected_point_sets.put(set.getKey(), pts);
 		}
 		this.has_corrected_points = true;
 		drift_info.correct_map(this.corrected_point_sets);
 	}
 	
+	// This method is used by the databackend to access a map containing all
+	// the means of the sample points of this element
 	public HashMap<String, Double> get_means() {
 		HashMap<String, Double> means = new HashMap<String, Double>();
 		for (Map.Entry<String, PointSet<DriftCorrectionDS>> set : this.corrected_point_sets.entrySet()) {
@@ -68,16 +91,19 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		return means;
 	}
 	
+	// Returns the element of this object
 	public Element get_element() {
 		return this.element;
 	}
 	
+	// Gives the mean of the data sample points for the sample 's' for this element
 	public Double get_mean(String s) {
 		ArrayList<Double> y_vals = this.corrected_point_sets.get(s).get_y_vals();
 		
 		return Formulas.mean_of_array(y_vals);
 	}
 	
+	// Returns an array of the points of a given sample sorted by time value
 	public ArrayList<Point> get_sorted_points(String s) {
 		ArrayList<Point> points = this.corrected_point_sets.get(s).get_points();
 		ArrayList<Point> sorted_points = new ArrayList<Point>();
@@ -98,15 +124,18 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 				}
 			}
 		}
-		
 		return sorted_points;
-		
 	}
 	
+	
+	
+	// Gives access to the drift info object for this element
 	public ElementDriftInfo get_drift_info() {
 		return this.drift_info;
 	}
 	
+	// Returns an array of only the time values corresponding to 
+	// a given sample, sorted.
 	public ArrayList<Double> get_sorted_times(String sample) {
 		ArrayList<Double> sorted_points = new ArrayList<Double>();
 		
@@ -134,6 +163,8 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		
 	}
 	
+	// Returns a hashmap containing the mean, std dev, and % std err for 
+	// a given sample, for this element.
 	public HashMap<String, Double> get_stats(String s) {
 		HashMap<String, Double> all_data = new HashMap<String, Double>();
 		ArrayList<Double> y_vals = this.corrected_point_sets.get(s).get_y_vals();
@@ -159,8 +190,8 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 	}
 	
 	@Override
+	// In this refresh call, we attempt to correct out current info if possible
 	public void refresh() {
-		// TODO Auto-generated method stub
 		if (drift_points != null && this.drift_points.get_points().size() != 0) {
 			if (!creation_complete) {
 				this.drift_info = new ElementDriftInfo(drift_points, this.element);
@@ -189,7 +220,5 @@ public class ElementCPSInfo implements Refreshable<DriftCorrectionDS> {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 	
 }

@@ -59,6 +59,7 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		return sets;
 	}
 	
+	// Sets this.equation to be a curve fit to the drift points for this element
 	private void create_fit() {
 		// uses the apache library to fit a polynomial equation to the set of points
 		PolynomialCurveFitter reg_object = PolynomialCurveFitter.create(this.degree_for_fit);
@@ -110,6 +111,7 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		return ssreg/sstot;
 	}
 	
+	// This divides the data points in point_set by f(x) 
 	public void apply_correction(PointSet<DriftCorrectionDS> point_set) {
 		
 		ArrayList<Point> points = point_set.get_points();
@@ -126,8 +128,13 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	private Point apply_correction_point(Point point) {
 		Double x = point.get_x();
 		Double y = point.get_y();
-		
+		System.out.println(this.element.toString() + "\n");
+		System.out.println(point);
+		System.out.print("Divisor: ");
+		System.out.println(this.equation.get_y(x));
 		Point pt = new Point(x, y/this.equation.get_y(x));
+		System.out.println(pt);
+		System.out.println("");
 		return pt;
 	}
 	
@@ -137,8 +144,9 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 			if (set == null) {
 				continue;
 			}
-			
+			System.out.println("Sample: " + s);
 			this.apply_correction(set);
+			System.out.println("END");
 		}
 	}
 	

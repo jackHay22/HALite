@@ -1,7 +1,6 @@
 package ui_graphlib;
 
 import java.awt.GridBagConstraints;
-
 import system_utils.EquationPlot;
 import ui_framework.DataBackend;
 import ui_framework.Refreshable;

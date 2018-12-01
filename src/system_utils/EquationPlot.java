@@ -34,7 +34,7 @@ public class EquationPlot implements Serializable {
 	public double get_y(double x) {
 		// This outputs the y value for the provided x value
 		double y = 0;
-		for (int i = degree; i>= 0; i--) {
+		for (int i = degree; i >= 0; i--) {
 
 			y += Math.pow(x, i)*coefficients.get(i);
 		}
