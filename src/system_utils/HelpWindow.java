@@ -67,8 +67,8 @@ public class HelpWindow extends javax.swing.JTextPane {
 				e.printStackTrace();
 			}
 	    }
-	    
 	    setText(content);
+	    setCaretPosition(0);
 	    setVisible(true);
 	}
 }
