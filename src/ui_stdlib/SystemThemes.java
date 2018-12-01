@@ -54,7 +54,14 @@ public class SystemThemes {
 			"h2 {color: rgb(157,189,198); border-bottom: 2px solid rgb(157,189,198); }",
 			"h3 { border-bottom: 1px solid rgb(157,189,198); }",
 			".section { margin-left: 5px;}",
-			".list { margin-left: 10px; margin-bottom: 10px; line-height: 20px; }",
+			"code { font-family: \"SFMono-Regular\",Consolas,\"Liberation Mono\",Menlo,Courier,monospace;\n" + 
+			"    background-color: #EBEBEB;\n" + 
+			"    border-radius: 3px;\n" + 
+			"    font-size: 80%;\n" + 
+			"    padding: 0.3em 0.5em;\n" + 
+			"    margin: 0;\n" + 
+			"}",
+			".list { margin-left: 10px; margin-bottom: 10px; line-height: 1.4; }",
 			"footer p {text-align: center; color: rgb(157,189,198); }"
 	};
 	
