@@ -574,7 +574,6 @@ public class ViewBuilder {
 
 		JMenu open_submenu = new JMenu("Open...");
 
-		open_submenu.add(open_new);
 		open_submenu.add(open_saved);
 		open_submenu.add(open_test_data);
 
@@ -585,6 +584,8 @@ public class ViewBuilder {
 		export_submenu.add(export_model_data);
 		export_submenu.add(export_detailed_data);
 
+		file.add(open_new);
+		file.addSeparator();
 		file.add(open_submenu);
 		file.addSeparator();
 		file.add(drift_correction);
