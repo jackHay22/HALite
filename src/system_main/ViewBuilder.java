@@ -511,7 +511,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -528,7 +528,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -546,7 +546,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -563,7 +563,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
 		    		}
 		    	}
 		    	else {

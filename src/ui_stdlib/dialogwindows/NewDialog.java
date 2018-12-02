@@ -61,7 +61,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 
 	private void can_continue(DataStore backend) {
 		//means set by dc export
-
 		if (xrf_chosen && standards_chosen) {
 			
 			if (means_override != null) {
@@ -79,7 +78,6 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 				continue_button.setEnabled(true);
 			}
 			else {
-				
 				// Disable continue button
 				continue_button.setEnabled(false);
 				continue_button.setOpaque(true);
@@ -260,7 +258,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setOpaque(false);
 		    	}
 		    	
-		    	if (means_chosen && xrf_chosen && standards_chosen) {
+		    	if (means_chosen && xrf_chosen && standards_chosen && means_override == null) {
 		    		backend.add_component_filepath(backend.means_path, "means");
 		    	}
 		    	
