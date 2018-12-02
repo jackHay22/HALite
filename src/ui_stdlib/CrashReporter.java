@@ -43,6 +43,7 @@ public class CrashReporter {
 		
 		Object[] options = {"Save Log", "Ignore"};
 		
+		//joption pane prompts user to ignore or save log to native "app support" dir
 		int action = JOptionPane.showOptionDialog(frame,
 			    e.getMessage(),
 			    "Error",
@@ -54,6 +55,7 @@ public class CrashReporter {
 		
 		if(action == 0){
 			try {
+				//attempt to write trace as stream
 				write_trace(get_log_filename() , e);
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();

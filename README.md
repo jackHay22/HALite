@@ -12,6 +12,9 @@ HALite is a geochemical analysis tool created by the Hamilton College Geoscience
 - Optionally, specify release version with ```./build --release 0.0.0``` (replace with desired release version)
 - Optionally, rebuild the app icns file with a new image. Use ```./build --icon path/to/icon.png```
 
+### Releases
+- Note: The macOS native package build is large because it contains the jre. The cross-platform build (at present) is just the jar and should be considered the lightweight cross-platform distribution of the application.
+
 ## Setup
 To setup the project, configure the following:
 - Add ```commons-math3-3.6.1.jar``` to a new folder called ```lib/```. This may also need to be added as an external library in eclipse.

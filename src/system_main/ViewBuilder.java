@@ -57,10 +57,13 @@ public class ViewBuilder {
 	}
 	
 	private static void open_help_window(String title, String html_file) {
+		//create a new window and populate it with html doc
 		JFrame help_frame = new JFrame(title);
 		help_frame.setMinimumSize(new Dimension(600,400));
 		HelpWindow help_pane = new HelpWindow(html_file);
 		help_pane.show();
+		
+		//set scrollable
 		help_frame.add(SystemThemes.get_scrollable_panel(help_pane));
 		help_frame.setVisible(true);
 		
@@ -70,6 +73,9 @@ public class ViewBuilder {
 		JMenu help = new JMenu("Help");
 		
 		JMenu docs_submenu = new JMenu("Guides...");
+		
+		
+		//ADD HELP MENU GUIDES
 		
 		JMenuItem help_menu_general = new JMenuItem("User Guide");
 		help_menu_general.addActionListener(new ActionListener() {
@@ -107,6 +113,8 @@ public class ViewBuilder {
 			}
 		});
 		
+		//Add guide action listeners to submenu
+		
 		help.add(docs_submenu);
 		docs_submenu.add(help_menu_general);
 		docs_submenu.add(help_menu_format);
@@ -142,6 +150,7 @@ public class ViewBuilder {
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
+    	//add main view panels
     	main_window.add_system_panel(new R2SettingsPanel());
     	main_window.add_system_panel(new CorrelationGraph());
     	main_window.add_system_panel(new CalculatedValuesPanel());
@@ -156,6 +165,8 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
+		
+		//define window closing behavior based on view count
 		int close_behavior;
 		if (OPEN_VIEWS >= 1) {
 			close_behavior = CLOSE_WINDOW;
@@ -163,10 +174,12 @@ public class ViewBuilder {
 			close_behavior = CLOSE_APP;
 		}
 		
+		//create window
 		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("HALite Drift Correction",
 															ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT, close_behavior);
 
+		//set min size
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
@@ -190,9 +203,12 @@ public class ViewBuilder {
 	private static JMenuBar get_dc_menu_items(SystemWindow<DriftCorrectionDS> window) {
 		
 		JMenuItem open_new = new JMenuItem("New Analysis...");
+		
+		//add keybinding
 		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+				//if a new dialog is not currently open, open a new dialog
 				if (!get_dialog_status()) {
 					SystemWindow<DataStore> new_window = get_app_view();
 		    		new_window.on_start();
@@ -201,6 +217,7 @@ public class ViewBuilder {
 		    		
 		    		DataStore new_ds = new DataStore(new_window);
 		    		
+		    		//new dialog is open, schedule file selector
 		    		update_dialog_status(true);
 		    		file_selector.on_scheduled(new_ds);
 				}
@@ -216,11 +233,12 @@ public class ViewBuilder {
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
 				
+				//attempt to load backend on file
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 				
 		    }
@@ -234,6 +252,7 @@ public class ViewBuilder {
 				DriftCorrectionDS ds = window.get_datastore();
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
+				//attempt export on file path
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
 					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 				}
@@ -244,11 +263,13 @@ public class ViewBuilder {
 		//open_new.setAccelerator(SystemKeybindings.NEW);
 		export_analysis.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+					//get an analysis app view
 					SystemWindow<DataStore> new_analysis_window = get_app_view();
 					
 					DriftCorrectionDS ds = window.get_datastore();
 					SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 					
+					//try export
 					if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
 						new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 					} else {
@@ -458,7 +479,7 @@ public class ViewBuilder {
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 		    }
 		});
