@@ -67,7 +67,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 		
 		this.graph.set_y_label("Normalized CPS");
 		
-		this.graph.set_x_label("Time (out of tree days)");	
+		this.graph.set_x_label("Time (out of three days)");	
 	}
 	
 	private void clear_labels() {

@@ -23,6 +23,7 @@ public class EquationPlot implements Serializable {
 		this.degree = degree;
 	}
 	
+	// Takes the inverse of the equation, but only if it is linear
 	public double get_linear_x(double y) {
 		if (degree == 1) {
 			return (y - coefficients.get(0)) / coefficients.get(1);
@@ -31,8 +32,8 @@ public class EquationPlot implements Serializable {
 		}
 	}
 	
+	// This outputs the y value for the provided x value
 	public double get_y(double x) {
-		// This outputs the y value for the provided x value
 		double y = 0;
 		for (int i = degree; i >= 0; i--) {
 

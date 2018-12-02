@@ -17,12 +17,19 @@ import ui_stdlib.SystemThemes;
 
 public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 	
+	// This is the element in question
 	private Element element;
+	// Holds the equation fit to the drift points
 	private EquationPlot equation;
+	// This holds the drift points from the raw data
 	private PointSet<DriftCorrectionDS> points_to_plot;
+	// Our databackend, giving us access to important information (such as the degree)
 	private DriftCorrectionDS datastore;
+	// The degree of the requested fit equation
 	private Integer degree_for_fit;
 	
+	// We set things up by normalizing the drift info, and creating the points_to_plot
+	// pointset with that data
 	public ElementDriftInfo(PointSet<DriftCorrectionDS> points_data, Element element) {
 		
 		this.element = element;
@@ -45,14 +52,18 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		
 	}
 	
+	// Used to give databacked access to pertinent information regarding the drift
+	// and allow the equation to be displayed
 	public EquationPlot get_equation() {
 		return this.equation;
 	}
 	
+	// Returns the element
 	public Element get_element() {
 		return element;
 	}
 	
+	// Gives the point set that gets plotted on the graph
 	public ArrayList<PointSet<DriftCorrectionDS>> get_point_sets() {
 		ArrayList<PointSet<DriftCorrectionDS>> sets = new ArrayList<PointSet<DriftCorrectionDS>>();
 		sets.add(this.points_to_plot);
@@ -82,6 +93,7 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		this.equation = new EquationPlot(r_2, this.degree_for_fit, coefficients);
 	}
 
+	// Returns the r^2 value of the fit equation
 	private Double get_r_square(double[] coefficients, PointSet<DriftCorrectionDS> points_data) {
 
 		// This gets the x and y values in sep lists
@@ -125,34 +137,30 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		
 	}
 	
+	// Applies the correction equation to a single point
 	private Point apply_correction_point(Point point) {
 		Double x = point.get_x();
 		Double y = point.get_y();
-		System.out.println(this.element.toString() + "\n");
-		System.out.println(point);
-		System.out.print("Divisor: ");
-		System.out.println(this.equation.get_y(x));
 		Point pt = new Point(x, y/this.equation.get_y(x));
-		System.out.println(pt);
-		System.out.println("");
 		return pt;
 	}
 	
+	// Corrects all of the samples for a given element
 	public void correct_map(HashMap<String, PointSet<DriftCorrectionDS>> sample_map) {
 		for (String s : this.datastore.get_sample_list()) {
 			PointSet<DriftCorrectionDS> set = sample_map.get(s);
 			if (set == null) {
 				continue;
 			}
-			System.out.println("Sample: " + s);
 			this.apply_correction(set);
-			System.out.println("END");
 		}
 	}
 	
 	@Override
+	// In this refresh, we recreate our fit equation using the degree from
+	// our databackend, and the points from the graph. This allows us to 
+	// exclude points which were toggled via clicking on the graph. 
 	public void refresh() {
-		// TODO Auto-generated method stub
 		this.degree_for_fit = datastore.get_degree();
 		
 		points_to_plot.refresh();
@@ -177,7 +185,4 @@ public class ElementDriftInfo implements Refreshable<DriftCorrectionDS> {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
 }
