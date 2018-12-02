@@ -29,6 +29,33 @@ build_native () {
 
 if [ $# -eq 0 ]; then
   build_native
+elif [ "$1" == "--icon" ]; then
+  if [ "$#" -eq 2 ]; then
+    if file "$2" |grep -qE 'image|bitmap'; then
+      printf "${MOUNTAIN}  Building ${CYAN}${APP_NAME}${NC} iconset...\n"
+      TARGET=icon.iconset
+      mkdir $TARGET
+      sips -z 16 16   $2 --out $TARGET/icon_16x16.png
+      sips -z 32 32   $2 --out $TARGET/icon_16x16@2x.png
+      sips -z 32 32   $2 --out $TARGET/icon_32x32.png
+      sips -z 64 64   $2 --out $TARGET/icon_32x32@2x.png
+      sips -z 128 128 $2 --out $TARGET/icon_128x128.png
+      sips -z 256 256 $2 --out $TARGET/icon_128x128@2x.png
+      sips -z 256 256 $2 --out $TARGET/icon_256x256.png
+      sips -z 512 512 $2 --out $TARGET/icon_256x256@2x.png
+      sips -z 512 512 $2 --out $TARGET/icon_512x512.png
+      cp $2 $TARGET/icon_512x512@2x.png
+      iconutil -c icns $TARGET
+      rm -R $TARGET
+      mv icon.icns resources/app/
+      #app build
+      build_native
+    else
+      printf "${MOUNTAIN}  ${YELLOW}Error:${NC} the specified path ${CYAN}${2}${NC} is not a bitmap \n"
+    fi
+  else
+    printf "${MOUNTAIN}  ${YELLOW}Error:${NC} specify an image path when using ${CYAN}--icon${NC} \n"
+  fi
 elif [ "$1" == "--release" ]; then
   if [ "$#" -eq 2 ]; then
     build_native

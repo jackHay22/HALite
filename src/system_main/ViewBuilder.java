@@ -68,7 +68,9 @@ public class ViewBuilder {
 	private static JMenu get_help_menu() {
 		JMenu help = new JMenu("Help");
 		
-		JMenuItem help_menu_general = new JMenuItem("User Guide...");
+		JMenu docs_submenu = new JMenu("Guides...");
+		
+		JMenuItem help_menu_general = new JMenuItem("User Guide");
 		help_menu_general.addActionListener(new ActionListener() {
 
 			@Override
@@ -77,7 +79,7 @@ public class ViewBuilder {
 			}
 		});
 		
-		JMenuItem help_menu_format = new JMenuItem("Format Guide...");
+		JMenuItem help_menu_format = new JMenuItem("Format Guide");
 		help_menu_format.addActionListener(new ActionListener() {
 
 			@Override
@@ -86,8 +88,30 @@ public class ViewBuilder {
 			}
 		});
 		
-		help.add(help_menu_general);
-		help.add(help_menu_format);
+		JMenuItem help_menu_drift = new JMenuItem("Drift Output");
+		help_menu_drift.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				open_help_window("Drift Correction Output Guide","/docs/drift_output.html");
+			}
+		});
+		
+		JMenuItem help_menu_analysis = new JMenuItem("Analysis Output");
+		help_menu_analysis.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				open_help_window("Analysis Output Guide","/docs/analysis_output.html");
+			}
+		});
+		
+		help.add(docs_submenu);
+		docs_submenu.add(help_menu_general);
+		docs_submenu.add(help_menu_format);
+		docs_submenu.add(help_menu_drift);
+		docs_submenu.add(help_menu_analysis);
+		
 		return help;
 	}
 	
