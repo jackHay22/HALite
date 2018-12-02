@@ -1,22 +1,31 @@
 package ui_stdlib.dialogwindows;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import ui_framework.DataBackend;
+import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class ErrorDialog<Backend extends DataBackend> extends SystemDialog implements ui_framework.ScheduledState<Backend> {
 	private String message;
 	private JLabel error_message;
+	private JButton dismiss;
+	private GridBagConstraints constraints;
 	
 	public ErrorDialog(String title, String message) {
 		super(title);
-		this.setLayout(new GridLayout(4,0));
+		this.setLayout(new GridBagLayout());
 		this.message = message;
+		constraints = SystemThemes.get_grid_constraints();
 
 		StringBuffer formatted_message = new StringBuffer();
 		formatted_message.append("<html>");
@@ -24,6 +33,8 @@ public class ErrorDialog<Backend extends DataBackend> extends SystemDialog imple
 		formatted_message.append("</html>");
 		
 		error_message = new JLabel(formatted_message.toString(), JLabel.CENTER);
+		
+		dismiss = new JButton("Dismiss");
 
 		Border margin = new EmptyBorder(10,20,10,20);
 		error_message.setBorder(margin);
@@ -32,8 +43,28 @@ public class ErrorDialog<Backend extends DataBackend> extends SystemDialog imple
 	@Override
 	public void show_dialog() {
 		
-		this.add(error_message);
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weighty = 0.7;
 		
+		this.add(error_message, constraints);
+		
+		constraints.gridwidth = 2;
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.weighty = 0.3;
+		
+		this.add(dismiss, constraints);
+		
+		dismiss.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	dismiss.setText("Dismiss");
+		    	
+		    	close_dialog();
+		    }
+		});
 		
 		this.setMinimumSize(new Dimension(ui_stdlib.SystemThemes.DIALOG_WINDOW_WIDTH, 
 										  250));
