@@ -10,6 +10,7 @@ HALite is a geochemical analysis tool created by the Hamilton College Geoscience
   - Export Destination: ```rock_analysis_interface/out/HALite.jar```
 - From the command line execute ```./build```
 - Optionally, specify release version with ```./build --release 0.0.0``` (replace with desired release version)
+- Optionally, rebuild the app icns file with a new image. Use ```./build --icon path/to/icon.png```
 
 ## Setup
 To setup the project, configure the following:
