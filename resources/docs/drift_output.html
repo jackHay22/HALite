@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <h1> User Guide </h1>
-    <h2>Main Analysis Window</h2>
-    <h3>Getting Started</h3>
+  <h1> Drift Correction Output Guide </h1>
+    <h2>CSV Format Guidelines</h2>
+    <h3>How your output should appear</h3>
       <div class="list">
-        <p>- To open a new project, go to <code> File > Open... > New... </code></p>
-        <p>- To open an existing project, go to <code> File > Open... > Saved...</code></p>
+        <p>Means </p>
+        img:docs/images/example_drift.png:638:825
+        <p>Full Statistical Report </p>
+        img:docs/images/example_drift_full_report.png:638:825
       </div>
-    <h3>Exporting Your Project</h3>
+    <h3>The output: Explained</h3>
       <div class="list">
-        <p>- With a project open, you have the option of exporting in a few different ways,
-          go to <code> File > Export... >  </code> and select your exporting method.
-         </p>
-
-      </div>
-    <h3>System Crashes</h3>
-      <div class="list">
-        <p>- In the event that the system crashes, you may be prompted to save a crash report file. </p>
-        img:docs/images/critical_error.png:200:179
-        <p>- For macOS users, selecting <code>Save Log </code> will write a crash report to <code> UserHome/Library/Application Support/HALite</code>. The text file saved to this
-        directory will note the time and date when it was recorded (ex: <code> crashreport_2018.12.01_13.53.58.txt</code>)</p>
-        <p>- For Windows users, this crash report will be written to <code>UserHome\AppData\Local\HALite</code></p>
-        <p>- Saving this crash report file will help the project developers locate and reproduce bugs in the system.</p>
+        <h3>Means </h3>
+        <p>The means sheet will correctly formatted to be read into the software as a "means" sheet. 
+        It will contain the means of the collected data points for each sample for each element. </p>
+        <h3>Full Statistical Report </h3>
+        <p>This report shows the time value for each collected data point, and the data itself after drift correction for each element.
+         It also displays the mean of those data points, the standard deviation of the corrected data and the percent standard error of the mean. </p>
       </div>
 
-    <h2>Drift Correction Window</h2>
   <footer> <p> © 2018 Ben Parfitt, Jack Hay, and Oliver Keh </p></footer>
 </body>
 </html>
