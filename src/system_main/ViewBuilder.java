@@ -20,6 +20,7 @@ import ui_graphlib.CorrelationGraph;
 import ui_graphlib.ModelGraph;
 import ui_stdlib.SystemKeybindings;
 import ui_stdlib.SystemThemes;
+import ui_stdlib.dialogwindows.ErrorDialog;
 import ui_stdlib.dialogwindows.NewDialog;
 import ui_stdlib.dialogwindows.OpenDialog;
 import ui_stdlib.dialogwindows.SaveDialog;
@@ -219,7 +220,7 @@ public class ViewBuilder {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 				
 		    }
@@ -457,7 +458,7 @@ public class ViewBuilder {
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
 				} else {
-					//new ErrorDialog<DriftCorrectionDS>("Error (Error msg placeholder)", "Bad Drift Correction File").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 		    }
 		});
