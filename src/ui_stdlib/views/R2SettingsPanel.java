@@ -74,7 +74,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		constraints.ipady = SystemThemes.HEADER_PADDING;
 		
 		//add header label
-		PanelHeader<DataStore> header = new PanelHeader<DataStore>("R^2 Entries to display: ", SystemThemes.MAIN);
+		PanelHeader<DataStore> header = new PanelHeader<DataStore>(SystemThemes.superscript("R2 Entries to display: "), SystemThemes.MAIN);
 
 		//add dropdown for rsqrd entries to display
 		header.add(get_rsqrd_dropdown(10));
