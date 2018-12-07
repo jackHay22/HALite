@@ -48,7 +48,7 @@ public class SystemThemes {
 	public static final int CSV_FULL_REPORT = 3;
 	public static final int CSV_DRIFT_CORRECTION = 4;
 	
-	public static boolean TRUNCATE_STDS_VALS = false;
+	public static volatile boolean TRUNCATE_STDS_VALS = false;
 	
 	private static final String[] HELP_MARKUP_RULES = {
 			"body { margin-left: 5px; }",
