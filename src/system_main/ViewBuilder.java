@@ -3,6 +3,8 @@ package system_main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -616,6 +618,7 @@ public class ViewBuilder {
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		JCheckBoxMenuItem truncate_stds_vals = new JCheckBoxMenuItem("Truncate model values");
 		
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -628,6 +631,14 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DataStore> temp = window;
 		    	temp.regroup_panels();
+		    }
+		});
+		
+		truncate_stds_vals.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	SystemThemes.TRUNCATE_STDS_VALS = ! SystemThemes.TRUNCATE_STDS_VALS;
+		    	window.get_datastore().calculated_vals_updated = true;
+		    	window.refresh();
 		    }
 		});
 
@@ -649,6 +660,8 @@ public class ViewBuilder {
 		window_menu.add(separate_subpanels);
 		window_menu.add(regroup_subpanels);
 		window_menu.addSeparator();
+		window_menu.add(truncate_stds_vals);
+		window_menu.addSeparator();
 		window_menu.add(close_window);
 		
 		//disable splitting if backend not loaded, otherwise toggle between options
@@ -659,6 +672,7 @@ public class ViewBuilder {
 			    boolean is_split = window.windows_split();	    
 			    separate_subpanels.setEnabled(ds_loaded & !is_split);
 			    regroup_subpanels.setEnabled(ds_loaded & is_split);
+			    truncate_stds_vals.setEnabled(ds_loaded);
 			    
 			    set_close_window_status(close_window);
 			}
