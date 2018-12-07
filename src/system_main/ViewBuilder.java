@@ -276,7 +276,6 @@ public class ViewBuilder {
 						new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 					} else {
 						
-						//TODO: set with means file selected
 						NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
 			    		
 			    		DataStore new_ds = new DataStore(new_analysis_window);
@@ -285,24 +284,6 @@ public class ViewBuilder {
 			    		window.setVisible(false);
 			    		window.dispose();
 					}
-		    }
-		});
-		
-
-		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
-		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
-		
-		separate_subpanels.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-				SystemWindow<DriftCorrectionDS> temp = window;
-		    	temp.split_panels();
-		    }
-		});
-
-		regroup_subpanels.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		    	SystemWindow<DriftCorrectionDS> temp = window;
-		    	temp.regroup_panels();
 		    }
 		});
 
@@ -350,29 +331,8 @@ public class ViewBuilder {
 		bar.add(file);
 		
 		JMenu window_menu = new JMenu("Window");
-		window_menu.add(separate_subpanels);
-		window_menu.add(regroup_subpanels);
-		window_menu.addSeparator();
 		window_menu.add(close_window);
 		bar.add(window_menu);
-		
-		
-		//disable splitting if backend not loaded, otherwise toggle between options
-		window_menu.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(MenuEvent e) {
-			    boolean ds_loaded = window.datastore_set();
-			    boolean is_split = window.windows_split();	    
-			    separate_subpanels.setEnabled(ds_loaded & !is_split);
-			    regroup_subpanels.setEnabled(ds_loaded & is_split);
-			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {}
-		});
 		
 		bar.add(get_help_menu());
 		
