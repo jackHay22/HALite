@@ -275,7 +275,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
-	private ArrayList<Double> calculate_coords(Element elem, Boolean stand_points) {
+	private HashMap<String, Double> calculate_coords(Element elem, Boolean stand_points) {
 				
 		ArrayList<Double> means;
 
@@ -338,7 +338,7 @@ public class DataStore extends DataBackend implements Serializable {
 			
 		}
 		
-		ArrayList<Double> coords = new ArrayList<Double>();
+		HashMap<String, Double> coords = new HashMap<String, Double>();
 		
 		// Get table values from means and standards and calculate coordinates
 		for (int i = 0; i < means.size(); i++) {
@@ -355,13 +355,13 @@ public class DataStore extends DataBackend implements Serializable {
 			if (pos < 0 || data_in_use.size() == 0) {
 				continue;
 			}
-			if (data_in_use.get(pos) == null) {
+			if (data_in_use.get(pos) == null || data_in_use.get(pos).isNaN()) {
 				continue;
 			}
 			else {
 				double elem_standard = data_in_use.get(pos);
 				if (elem_standard != 0) {
-					coords.add(elem_cps / elem_standard);
+					coords.put(source_id, elem_cps / elem_standard);
 				}
 			}
 		}
@@ -378,18 +378,17 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		ArrayList<Point> points = new ArrayList<Point>();
 		
-		ArrayList<Double> x_coords = calculate_coords(x_elem, standards);
-		ArrayList<Double> y_coords = calculate_coords(y_elem, standards);
+		HashMap<String, Double> x_coords = calculate_coords(x_elem, standards);
+		HashMap<String, Double> y_coords = calculate_coords(y_elem, standards);
 		
 		if (x_coords == null || y_coords == null) {
 			return null;
 		}
 		
 		// Combine coordinates into points ArrayList
-		for (int i = 0; i < x_coords.size(); i++) {
-			if (i < x_coords.size() && i < y_coords.size()) {
-				Point point = new Point(x_coords.get(i), y_coords.get(i));
-				
+		for (String sample : x_coords.keySet()) {
+			if (y_coords.get(sample) != null && x_coords.get(sample) != null) {
+				Point point = new Point(x_coords.get(sample), y_coords.get(sample));
 				points.add(point);
 			}
 		}
@@ -772,7 +771,6 @@ public class DataStore extends DataBackend implements Serializable {
 				continue;
 			}
 			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
-			
 			pairs.add(curr_pair);
 		}
 		
