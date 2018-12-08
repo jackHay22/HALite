@@ -41,6 +41,7 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		
 		for (int i = 0; i < points.size(); i++) {
 			Point point = points.get(i);
+			
 			if (point.in_use()) {
 				double x = point.get_x();
 				double y = point.get_y();
