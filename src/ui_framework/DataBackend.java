@@ -7,6 +7,8 @@ public abstract class DataBackend implements Serializable {
 	private static final long serialVersionUID = 6413502423031756914L;
 	transient protected SystemWindow<DataBackend> window_parent;
 	
+	public Boolean calculated_vals_updated = false;
+	
 	@SuppressWarnings("unchecked")
 	protected <T extends DataBackend> DataBackend(SystemWindow<T> window_parent) {
 		this.window_parent = (SystemWindow<DataBackend>) window_parent;

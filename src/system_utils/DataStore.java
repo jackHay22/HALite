@@ -286,8 +286,7 @@ public class DataStore extends DataBackend implements Serializable {
 		ArrayList<String> source;
 		
 		ArrayList<Double> data_in_use;
-		// If it contains the element EXACTLY
-		// FIX ME
+
 		// This needs to parse to see if the strings are contained
 		if (stand_points) {
 
@@ -363,7 +362,9 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 			else {
 				double elem_standard = data_in_use.get(pos);
-				coords.add(elem_cps / elem_standard);
+				if (elem_standard != 0) {
+					coords.add(elem_cps / elem_standard);
+				}
 			}
 		}
 		

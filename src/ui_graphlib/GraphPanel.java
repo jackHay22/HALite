@@ -261,6 +261,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
 			data_store.notify_update();
+			this.data_store.calculated_vals_updated = true;
 		}
 
 	}
