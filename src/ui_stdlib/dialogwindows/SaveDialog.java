@@ -1,8 +1,11 @@
 package ui_stdlib.dialogwindows;
 
 import java.awt.Font;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+
 import javax.swing.JLabel;
 
 import system_utils.DataStore;
@@ -60,6 +63,16 @@ public class SaveDialog implements ScheduledState<DataStore> {
     		update_save_label(save_path);
     		
     		try {
+
+				File clear_file = new File(save_path + ".ds");
+				
+    			if(clear_file.exists() && !clear_file.isDirectory()) {
+        			PrintWriter writer = new PrintWriter(clear_file);
+        			writer.print("");
+        			writer.close();
+    			}
+    			
+    			
     			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
     			objectOut.writeObject(backend);

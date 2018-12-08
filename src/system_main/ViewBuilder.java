@@ -3,6 +3,8 @@ package system_main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -57,10 +59,13 @@ public class ViewBuilder {
 	}
 	
 	private static void open_help_window(String title, String html_file) {
+		//create a new window and populate it with html doc
 		JFrame help_frame = new JFrame(title);
 		help_frame.setMinimumSize(new Dimension(600,400));
 		HelpWindow help_pane = new HelpWindow(html_file);
 		help_pane.show();
+		
+		//set scrollable
 		help_frame.add(SystemThemes.get_scrollable_panel(help_pane));
 		help_frame.setVisible(true);
 		
@@ -70,6 +75,9 @@ public class ViewBuilder {
 		JMenu help = new JMenu("Help");
 		
 		JMenu docs_submenu = new JMenu("Guides...");
+		
+		
+		//ADD HELP MENU GUIDES
 		
 		JMenuItem help_menu_general = new JMenuItem("User Guide");
 		help_menu_general.addActionListener(new ActionListener() {
@@ -107,6 +115,8 @@ public class ViewBuilder {
 			}
 		});
 		
+		//Add guide action listeners to submenu
+		
 		help.add(docs_submenu);
 		docs_submenu.add(help_menu_general);
 		docs_submenu.add(help_menu_format);
@@ -142,6 +152,7 @@ public class ViewBuilder {
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
+    	//add main view panels
     	main_window.add_system_panel(new R2SettingsPanel());
     	main_window.add_system_panel(new CorrelationGraph());
     	main_window.add_system_panel(new CalculatedValuesPanel());
@@ -156,6 +167,8 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DriftCorrectionDS> get_drift_correction_view() {
+		
+		//define window closing behavior based on view count
 		int close_behavior;
 		if (OPEN_VIEWS >= 1) {
 			close_behavior = CLOSE_WINDOW;
@@ -163,10 +176,12 @@ public class ViewBuilder {
 			close_behavior = CLOSE_APP;
 		}
 		
+		//create window
 		SystemWindow<DriftCorrectionDS> main_window = new SystemWindow<DriftCorrectionDS>("HALite Drift Correction",
 															ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 															ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT, close_behavior);
 
+		//set min size
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
@@ -190,9 +205,12 @@ public class ViewBuilder {
 	private static JMenuBar get_dc_menu_items(SystemWindow<DriftCorrectionDS> window) {
 		
 		JMenuItem open_new = new JMenuItem("New Analysis...");
+		
+		//add keybinding
 		open_new.setAccelerator(SystemKeybindings.NEW);
 		open_new.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+				//if a new dialog is not currently open, open a new dialog
 				if (!get_dialog_status()) {
 					SystemWindow<DataStore> new_window = get_app_view();
 		    		new_window.on_start();
@@ -201,6 +219,7 @@ public class ViewBuilder {
 		    		
 		    		DataStore new_ds = new DataStore(new_window);
 		    		
+		    		//new dialog is open, schedule file selector
 		    		update_dialog_status(true);
 		    		file_selector.on_scheduled(new_ds);
 				}
@@ -216,6 +235,7 @@ public class ViewBuilder {
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
 				
+				//attempt to load backend on file
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
@@ -234,8 +254,9 @@ public class ViewBuilder {
 				DriftCorrectionDS ds = window.get_datastore();
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
+				//attempt export on file path
 				if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
-					//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+					new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 				}
 		    }
 		});
@@ -244,16 +265,17 @@ public class ViewBuilder {
 		//open_new.setAccelerator(SystemKeybindings.NEW);
 		export_analysis.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
+					//get an analysis app view
 					SystemWindow<DataStore> new_analysis_window = get_app_view();
 					
 					DriftCorrectionDS ds = window.get_datastore();
 					SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 					
+					//try export
 					if (!dialog.export_on_path(ds,SystemThemes.CSV_DRIFT_CORRECTION)) {
-						//new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
+						new ErrorDialog<DriftCorrectionDS>("Error","Failed to export").show_dialog();
 					} else {
 						
-						//TODO: set with means file selected
 						NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
 			    		
 			    		DataStore new_ds = new DataStore(new_analysis_window);
@@ -262,24 +284,6 @@ public class ViewBuilder {
 			    		window.setVisible(false);
 			    		window.dispose();
 					}
-		    }
-		});
-		
-
-		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
-		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
-		
-		separate_subpanels.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-				SystemWindow<DriftCorrectionDS> temp = window;
-		    	temp.split_panels();
-		    }
-		});
-
-		regroup_subpanels.addActionListener(new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
-		    	SystemWindow<DriftCorrectionDS> temp = window;
-		    	temp.regroup_panels();
 		    }
 		});
 
@@ -327,29 +331,8 @@ public class ViewBuilder {
 		bar.add(file);
 		
 		JMenu window_menu = new JMenu("Window");
-		window_menu.add(separate_subpanels);
-		window_menu.add(regroup_subpanels);
-		window_menu.addSeparator();
 		window_menu.add(close_window);
 		bar.add(window_menu);
-		
-		
-		//disable splitting if backend not loaded, otherwise toggle between options
-		window_menu.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(MenuEvent e) {
-			    boolean ds_loaded = window.datastore_set();
-			    boolean is_split = window.windows_split();	    
-			    separate_subpanels.setEnabled(ds_loaded & !is_split);
-			    regroup_subpanels.setEnabled(ds_loaded & is_split);
-			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {}
-		});
 		
 		bar.add(get_help_menu());
 		
@@ -490,7 +473,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -507,7 +490,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -525,7 +508,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -542,7 +525,7 @@ public class ViewBuilder {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
 		    		
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
-		    			//new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
 		    		}
 		    	}
 		    	else {
@@ -553,7 +536,6 @@ public class ViewBuilder {
 
 		JMenu open_submenu = new JMenu("Open...");
 
-		open_submenu.add(open_new);
 		open_submenu.add(open_saved);
 		open_submenu.add(open_test_data);
 
@@ -564,6 +546,8 @@ public class ViewBuilder {
 		export_submenu.add(export_model_data);
 		export_submenu.add(export_detailed_data);
 
+		file.add(open_new);
+		file.addSeparator();
 		file.add(open_submenu);
 		file.addSeparator();
 		file.add(drift_correction);
@@ -594,6 +578,7 @@ public class ViewBuilder {
 
 		JMenuItem separate_subpanels = new JMenuItem("Split Windows");
 		JMenuItem regroup_subpanels = new JMenuItem("Regroup Windows");
+		JCheckBoxMenuItem truncate_stds_vals = new JCheckBoxMenuItem("Truncate model values");
 		
 		separate_subpanels.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -606,6 +591,14 @@ public class ViewBuilder {
 		    public void actionPerformed(ActionEvent e) {
 		    	SystemWindow<DataStore> temp = window;
 		    	temp.regroup_panels();
+		    }
+		});
+		
+		truncate_stds_vals.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	SystemThemes.TRUNCATE_STDS_VALS = ! SystemThemes.TRUNCATE_STDS_VALS;
+		    	window.get_datastore().calculated_vals_updated = true;
+		    	window.refresh();
 		    }
 		});
 
@@ -627,6 +620,8 @@ public class ViewBuilder {
 		window_menu.add(separate_subpanels);
 		window_menu.add(regroup_subpanels);
 		window_menu.addSeparator();
+		window_menu.add(truncate_stds_vals);
+		window_menu.addSeparator();
 		window_menu.add(close_window);
 		
 		//disable splitting if backend not loaded, otherwise toggle between options
@@ -637,6 +632,7 @@ public class ViewBuilder {
 			    boolean is_split = window.windows_split();	    
 			    separate_subpanels.setEnabled(ds_loaded & !is_split);
 			    regroup_subpanels.setEnabled(ds_loaded & is_split);
+			    truncate_stds_vals.setEnabled(ds_loaded);
 			    
 			    set_close_window_status(close_window);
 			}

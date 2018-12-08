@@ -68,14 +68,19 @@ public class StdsListElement extends SystemPanel<DataStore> {
 			}
 		}
 		
+		String mask = "#.000";
+		if (SystemThemes.TRUNCATE_STDS_VALS) {
+			mask = "#";
+		}
+		
 		for (Element disp_e : header_elems) {
 			//get info from backend
 			Double d = datastore.get_header_std_pair(standard, disp_e.toString());
 			String display = "-";
-			
+				
 			//format number 
 			if (d != null) {
-				display = SystemThemes.get_display_number(d);
+				display = SystemThemes.get_display_number(d, mask);
 			}
 			
 			//create a graphical panel to store element 
@@ -101,7 +106,7 @@ public class StdsListElement extends SystemPanel<DataStore> {
 
 			//get display
 			if (d != null) {
-				display = SystemThemes.get_display_number(d);
+				display = SystemThemes.get_display_number(d, mask);
 			}
 
 			panels.add(new SingleViewPanel<DataStore>(display, SystemThemes.MAIN, SystemThemes.BACKGROUND));

@@ -164,8 +164,6 @@ public class DataStore extends DataBackend implements Serializable {
 								
 				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 				
-				// NEED TO REDO THIS SECTION
-				
 				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
 				
 				ArrayList<String> means_table = parser.get_table_names(reader);
