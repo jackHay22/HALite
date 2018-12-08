@@ -43,9 +43,12 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 			Point point = points.get(i);
 			
 			if (point.in_use()) {
-				double x = point.get_x();
-				double y = point.get_y();
-				reg_obj.addData(x, y);
+				Double x = point.get_x();
+				Double y = point.get_y();
+				if ((x != null && y != null) && !(x.isNaN() || y.isNaN())){
+					reg_obj.addData(x, y);
+				} else {
+				}
 			}
 		}
 		// Get relevant info from the regression object

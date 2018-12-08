@@ -16,4 +16,8 @@ public class Pair {
 	public Double get_r2() {
 		return this.r2;
 	}
+	
+	public String toString() {
+		return element.toString() + ", " + r2;
+	}
 }
