@@ -121,6 +121,8 @@ public class PointSet<Backend extends DataBackend> implements Refreshable<Backen
 		return points;
 	}
 	
+	// Returns an array of only the x values of these points to be
+	// used for calculations
 	public ArrayList<Double> get_x_vals() {
 		ArrayList<Double> x_vals = new ArrayList<Double>();
 		for (Point point : points) {
@@ -128,7 +130,9 @@ public class PointSet<Backend extends DataBackend> implements Refreshable<Backen
 		}
 		return x_vals;
 	}
-	
+
+	// Returns an array of only the y values of these points to be
+	// used for calculations
 	public ArrayList<Double> get_y_vals() {
 		ArrayList<Double> y_vals = new ArrayList<Double>();
 		for (Point point : points) {

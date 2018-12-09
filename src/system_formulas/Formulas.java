@@ -8,6 +8,7 @@ public class Formulas {
 		
 	}
 	
+	// Normalizes all points in a list by dividing by the provided value
 	public static ArrayList<Double> normalize(ArrayList<Double> vals, Double norm) {
 		for (int i = 0; i < vals.size(); i++) {
 			Double d = vals.get(i)/norm;
@@ -17,6 +18,7 @@ public class Formulas {
 		return vals;
 	}
 	
+	// Takes the mean of an array
 	public static Double mean_of_array(ArrayList<Double> points) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		
@@ -27,6 +29,7 @@ public class Formulas {
 		return mean;
 	}
 	
+	// Used in several statistical calculations
 	public static Double sum_mean_diff_squared(ArrayList<Double> points) {
 		
 		Double mean = mean_of_array(points);
@@ -39,6 +42,7 @@ public class Formulas {
 		
 	}
 	
+	// Used in several statistical calculations
 	public static Double sum_mean_diff_squared(ArrayList<Double> points, Double mean) {
 		
 		Double squares_sum = 0.0;
@@ -47,7 +51,6 @@ public class Formulas {
 		}
 		
 		return squares_sum;
-		
 	}
 	
 	private static Double sum_product_diff_squared(ArrayList<Double> x_list, ArrayList<Double> y_list) {
@@ -69,6 +72,7 @@ public class Formulas {
 		
 	}
 	
+	// Brings the above equations together
 	public static Double standard_error(ArrayList<Double> x_list, ArrayList<Double> y_list) {
 
 		Double x_sum_squares = sum_mean_diff_squared(x_list);

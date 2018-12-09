@@ -54,6 +54,7 @@ public class EquationPlot implements Serializable {
 		return degree;
 	}
 	
+	// Provides a string representation of the equation
 	public String get_str_rep() {
 
         DecimalFormat df = new DecimalFormat("#.####");

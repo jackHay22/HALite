@@ -520,7 +520,7 @@ public class DataStore extends DataBackend implements Serializable {
 				
 				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 				
-				// NEED TO REDO THIS SECTION
+				// This is just for the "example" data
 				
 				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
 				
@@ -560,6 +560,8 @@ public class DataStore extends DataBackend implements Serializable {
 		return false;
 	}
 		
+	
+	// Returns the response data for the correlation graphs and model calculations
 	public Double get_std_response_value(String sample, Element elem) {
 		
 		Double top = get_mean_value(sample, elem);		
@@ -572,6 +574,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return top/bottom;
 	}
 	
+	// Returns the response data for the correlation graphs and model calculations
 	public Double get_unknown_response_value(String sample, Element elem) {
 		
 		Double top = get_mean_value(sample, elem);
@@ -584,6 +587,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return top/bottom;
 	}
 	
+	// Returns the raw data from the means file for a given sample and element
 	public Double get_mean_value(String sample, Element elem) {
 		DataTable means = get_table(means_in_use, means_data);
 		int pos = means.get_info(new TableKey("Sample Names")).indexOf(sample);
@@ -610,6 +614,8 @@ public class DataStore extends DataBackend implements Serializable {
 		return x_correlations.get_corr(y);
 	}
 	
+	// Allows the UI to access the information currently relevant to 
+	// the top left panel of the interface
 	public CorrelationInfo get_correlation_info() {
 		
 		if (this.primary != null && this.secondary != null) {
@@ -632,6 +638,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return standards.get_info(new TableKey("Sample Names"));
 	}
 	
+	// Returns raw data from the 'standards' file which was fed in
 	public Double get_raw_std_elem(String standard, Element elem) {
 		DataTable standards = get_table(standards_in_use, standards_data);
 		
@@ -908,6 +915,7 @@ public class DataStore extends DataBackend implements Serializable {
 		super.notify_update();
 	}
 	
+	// Provides the output systems with methods for getting information as strings
 	private String get_STD_computed_string() {
 		StringBuilder sb = new StringBuilder();
 		for (String std : this.get_STDlist()) {

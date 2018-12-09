@@ -27,6 +27,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 		graph.set_title("Drift Correction Graph");
 	}
 
+	// Turns the equation into a set of points which are close enough together to appear as a line
 	private PointSet<DriftCorrectionDS> get_equation_points() {
 		
 		ArrayList<Point> points_for_line = new ArrayList<Point>();
@@ -44,6 +45,8 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 	@Override
 	public void refresh() {
 		this.info_to_plot = this.data_store.get_plot_info();
+		// If the information needed to plot the data is available
+		// we plot the points for the element selected on the interface.
 		if (this.info_to_plot != null) {
 			this.points_to_plot = info_to_plot.get_point_sets();
 			this.eqn = info_to_plot.get_equation();
@@ -54,6 +57,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 			this.graph.refresh();
 			this.revalidate();
 		} else {
+			// Otherwise we clear the graph and set the labels
 			this.points_to_plot.clear();
 			this.graph.set_point_sets(this.points_to_plot);
 			this.clear_labels();
@@ -62,6 +66,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 		}
 	}
 	
+	// Sets the labels to the relevant element info
 	private void set_labels() {
 		this.graph.set_r2_eqn_label(this.info_to_plot.get_element().toString());
 		
@@ -70,6 +75,7 @@ public class DriftCorrectionGraph extends BaseGraph<DriftCorrectionDS> {
 		this.graph.set_x_label("Time (out of three days)");	
 	}
 	
+	// Puts data on labels to indicate there is no data
 	private void clear_labels() {
 		this.graph.set_r2_eqn_label("No Data Found");
 		

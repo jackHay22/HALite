@@ -81,6 +81,8 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return times;
 	}
 	
+	// Creates the full report of all drift corrected samples, and the
+	// stats available about those points
 	public String get_full_report() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.get_header());
@@ -150,6 +152,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		
 	}
 	
+	// Returns a string containing the means for a given sample for all elems
 	public String get_means() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("#Means, , \n");
@@ -172,6 +175,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return sb.toString();
 	}
 	
+	// Creates the header row for the entire spreadsheet
 	private String get_header() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Sample Name,note,");
@@ -214,6 +218,7 @@ public class DriftCorrectionDS extends DataBackend implements Refreshable<DriftC
 		return degree;
 	}
 	
+	// Returns relevant drift correcting info for use in graphs
 	public ElementDriftInfo get_plot_info() {
 		if (this.cps_info != null) {
 			ElementCPSInfo elem_info = this.cps_info.get(this.get_element());
