@@ -118,6 +118,7 @@ public class SystemThemes {
 	}
 	
 	public static JLabel get_default_placeholder() {
+		//default label when window first opens
 		JLabel placeholder = new JLabel("Open a new or saved project");
 		placeholder.setHorizontalAlignment(JLabel.CENTER);
 		placeholder.setVerticalAlignment(JLabel.CENTER);
@@ -126,6 +127,7 @@ public class SystemThemes {
 	}
 	
 	public static JScrollPane get_scrollable_panel(Component panel) {
+		//turn component into vertically scrollable JScrollPane component
 		JScrollPane pane = new JScrollPane(panel, 
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

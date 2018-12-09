@@ -13,12 +13,14 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	private String ext_type;
 	
 	public SystemFileDialog(SystemDialog dialog_parent, String title, String ext_type) {
+		//init with dialog
 		system_file_dialog = new FileDialog(dialog_parent, title);
 		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
 		this.ext_type = "." + ext_type;
 	}
 	
 	public SystemFileDialog(SystemWindow<Backend> window_parent, String title, String ext_type) {
+		//init with window
 		system_file_dialog = new FileDialog(window_parent, title);
 		system_file_dialog.setFilenameFilter(new SystemFileFilter(ext_type));
 		this.ext_type = "." + ext_type;
@@ -40,6 +42,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 	}
 	
 	public String remove_ext(String in) {
+		//strip extension if exists
 		if (in != null && in.endsWith(ext_type)) {
 			return in.replace(ext_type, "");
 		} else {
@@ -52,6 +55,7 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		last_path = get_path(FileDialog.LOAD);
 		
 		if (last_path != null) {
+			//try to init backend on last path, return status
 			return databackend.add_component_filepath(last_path, label);
 		} else {
 			return false;
@@ -84,11 +88,13 @@ public class SystemFileDialog<Backend extends DataBackend> {
 		system_file_dialog.setMode(mode);
 		system_file_dialog.setVisible(true);
 		
+		//attempt to get file array from system file dialog
 		File[] path = system_file_dialog.getFiles();
 		
 		if (path.length == 0) {
 			return null;
 		}
+		//return first (there should only be one if opened in single mode)
 		return path[0].getAbsolutePath();
 	}
 }

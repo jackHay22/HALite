@@ -5,10 +5,11 @@ import javax.swing.UIManager;
 public class WindowLoader implements Runnable {
 	@Override
 	public void run() {
-		
 		try{
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName());
+			//attempt to set native look and feel
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			if (System.getProperty("os.name").startsWith("Mac")) {
+				//move menu bar to native mac bar
 				System.setProperty("com.apple.mrj.application.apple.menu.about.name", "WikiTeX");
 				System.setProperty("apple.laf.useScreenMenuBar", "true");
 			}	

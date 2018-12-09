@@ -79,7 +79,6 @@ public class ErrorDialog<Backend extends DataBackend> extends SystemDialog imple
 	
 	@Override
 	public void on_scheduled(Backend backend) {
-		//TODO
 		show_dialog();
 	}
 

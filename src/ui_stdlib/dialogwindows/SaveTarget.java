@@ -16,10 +16,7 @@ public class SaveTarget {
 	}
 	
 	public boolean write_to_target() {
-		if (target_assigned) {
-			
-			
-			
+		if (target_assigned) {	
 			return true;
 		} else {
 			return false;

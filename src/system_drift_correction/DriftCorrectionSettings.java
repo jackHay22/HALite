@@ -43,16 +43,20 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		
 		constraints = SystemThemes.get_grid_constraints();
 		
+		//element selection dropdown
 		element_selection = new JComboBox<Element>(Element.values());
 		
+		//degree selection dropdown
 		degree_selection = new JComboBox<Integer>();
 		current_elem_index = 0;
 		total_elems = SystemThemes.TOTAL_ELEMENTS;
 		
+		//buttons for bottom of panel to move between elements
 		next_element = new JButton("Next Element");
 		prev_element = new JButton("Previous Element");
 		prev_element.setEnabled(false);
 		
+		//various graphical labels
 		panel_header = new PanelHeader<DriftCorrectionDS>("Drift Correction", SystemThemes.MAIN);
 		element_label = new PanelHeader<DriftCorrectionDS>("Current Element: ", SystemThemes.MAIN, SystemThemes.INSET);
 		degree_label = new PanelHeader<DriftCorrectionDS>("Degree: ", SystemThemes.MAIN, SystemThemes.INSET);
@@ -63,22 +67,25 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		rsqrd_label = new PanelHeader<DriftCorrectionDS>("---", SystemThemes.MAIN);
 		rsqrd_label.set_font_size(SystemThemes.LARGE_TEXT_FONT_SIZE);
 		
-		
+		//action listener for element dropdown
 		element_selection.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				current_elem_index = element_selection.getSelectedIndex();
 				update_button_state();
 				if (backend_loaded) {
 					datastore.set_element((Element)element_selection.getSelectedItem());
+					//kick off refresh
 					datastore.notify_update();
 				}
 		    }
 		});
 		
+		//action listener for degree selection
 		degree_selection.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				if (backend_loaded) {
 					datastore.set_degree((int)degree_selection.getSelectedItem());
+					//kick off refresh
 					datastore.notify_update();
 				}
 		    }
@@ -88,6 +95,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	@Override
 	public void refresh() {
 		if (backend_loaded) {
+			//refresh labels and datastore element
 			eqn_label.set_text(datastore.get_eqn());
 			rsqrd_label.set_text(datastore.get_rsqrd());
 			datastore.set_element((Element)element_selection.getSelectedItem());
@@ -99,6 +107,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 			current_elem_index++;
 			element_selection.setSelectedIndex(current_elem_index);
 		}
+		//check if reached end
 		update_button_state();
 	}
 	
@@ -106,6 +115,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		//update datastore
 		datastore.notify_update();
 		
+		//check if buttons need to be disabled
 		if (current_elem_index == total_elems - 1) {
 			next_element.setEnabled(false);
 		} else {
@@ -119,11 +129,12 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	}
 	
 	private void get_prev_element() {
+		//move backward
 		if (current_elem_index - 1 >= 0) {
 			current_elem_index--;
 			element_selection.setSelectedIndex(current_elem_index);
 		}
-		
+		//check status
 		update_button_state();
 	}
 
@@ -141,6 +152,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 	@Override
 	public void on_start() {
 
+		//add elements using gbc layout
 		constraints.gridwidth = 2;
 		constraints.gridy = 0;
 		constraints.gridx = 0;
@@ -169,6 +181,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		for (int i = 0; i < max_degree; i++) {
 			degree_selection.addItem((Integer) i + 1);
 		}
+		//set default degree
 		degree_selection.setSelectedIndex(default_degree);
 			
 		
@@ -209,7 +222,7 @@ public class DriftCorrectionSettings extends ui_framework.SystemPanel<DriftCorre
 		    }
 		});
 		
-		
+		//action listener on next button
 		next_element.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 				get_next_element();
