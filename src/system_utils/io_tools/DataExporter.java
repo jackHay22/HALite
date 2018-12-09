@@ -81,13 +81,16 @@ public class DataExporter {
 				// Create at least one new page for every primary element
 				String primary_elem = entry.getKey().name();
 				
+				// Trigger appropriate format for exporting graphs
 				if (export_type == SystemThemes.PDF_RESPONSE_GRAPHS) {
 					pdf_doc.new_page(primary_elem + " Responses");
 					
 					for (CorrelationInfo corr_info : selected_elems) {
 						
+						// Format graph title
 						String title = corr_info.get_secondary().name() + " vs. " + primary_elem;
 						
+						// Assign new primary and secondary elements to DataStore
 						ds.set_correlation_graph_elements(entry.getKey(), corr_info.get_secondary());
 						
 						DrawablePanel<DataStore> gpanel = graph.get_points_panel();

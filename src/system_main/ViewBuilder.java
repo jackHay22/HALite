@@ -45,6 +45,7 @@ public class ViewBuilder {
 
 
 	public static void update_dialog_status(boolean dialog_state) {
+		//keeps track of dialog status to avoid multiple dialogs opening at once
 		synchronized (DIALOG_STATE_MUTEX) {
 			DIALOG_OPENED = dialog_state;
 		}	
@@ -55,6 +56,7 @@ public class ViewBuilder {
 	}
 	
 	private static void set_close_window_status(JMenuItem close_window) {
+		//determine close behavior based on number of open windows
 		close_window.setEnabled(OPEN_VIEWS > 1);
 	}
 	
@@ -138,6 +140,8 @@ public class ViewBuilder {
 	}
 
 	private static SystemWindow<DataStore> get_app_view() {
+		
+		//determine current close behavior
 		int close_behavior;
 		if (OPEN_VIEWS >= 1) {
 			close_behavior = CLOSE_WINDOW;
@@ -145,6 +149,7 @@ public class ViewBuilder {
 			close_behavior = CLOSE_APP;
 		}
 		
+		//set window size
     	SystemWindow<DataStore> main_window = new SystemWindow<DataStore>("HALite Analysis",
 														ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
 														ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT, close_behavior);
@@ -185,6 +190,7 @@ public class ViewBuilder {
     	main_window.set_minimum_size(ui_stdlib.SystemThemes.MAIN_WINDOW_WIDTH,
     								 ui_stdlib.SystemThemes.MAIN_WINDOW_HEIGHT);
 
+    	//add dc panels
     	main_window.add_system_panel(new DriftCorrectionSettings());
     	main_window.add_system_panel(new DriftCorrectionGraph());
 
@@ -197,6 +203,7 @@ public class ViewBuilder {
 	}
 
 	public static SystemWindow<DataStore> create_new_default_window() {
+		//default is analysis window (without loaded components)
 		return get_app_view();
 	}
 
@@ -240,6 +247,7 @@ public class ViewBuilder {
 					//new Backend was able to init on new file
 					drift_window.on_scheduled(dc_backend);
 				} else {
+					//show error dialog
 					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 				
@@ -250,7 +258,7 @@ public class ViewBuilder {
 		//export.setAccelerator(SystemKeyBindings.);
 		export.addActionListener(new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-
+				//create file dialog to export through
 				DriftCorrectionDS ds = window.get_datastore();
 				SystemFileDialog<DriftCorrectionDS> dialog = new SystemFileDialog<DriftCorrectionDS>(window, "Export to file...", "csv");
 				
@@ -278,9 +286,11 @@ public class ViewBuilder {
 						
 						NewDialog file_selector = new NewDialog("Select Files", new_analysis_window, dialog.last_path());
 			    		
+						//schedule file dialog with new backend
 			    		DataStore new_ds = new DataStore(new_analysis_window);
 			    		file_selector.on_scheduled(new_ds);
 			    		
+			    		//remove old drift correction window
 			    		window.setVisible(false);
 			    		window.dispose();
 					}
@@ -292,6 +302,7 @@ public class ViewBuilder {
 		close_window.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 
+		    	//determine close bahavior for futue windows
 		    	if (OPEN_VIEWS > 1) {
 	    			OPEN_VIEWS--;
 		    		window.setVisible(false);
@@ -311,6 +322,7 @@ public class ViewBuilder {
 		file.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
+				//determine action behavior when menu selected
 			    boolean can_export = window.get_datastore().can_export();
 			    export.setEnabled(can_export);
 			    export_analysis.setEnabled(can_export);
@@ -384,15 +396,11 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 		    	//open dialog, set return state to main
 				SystemWindow<DataStore> window_update;
-				
-//				try {
-//					int x = 1 / 0;
-//				} catch (Exception ex) {
-//					CrashReporter.report_crash(window, ex);
-//				}
+
 				if (!get_dialog_status()) {
 					
 					if (window.datastore_set()) {
+						//create new window
 			    		window_update = get_app_view();
 			    	} else {
 			    		window_update = window;
@@ -404,6 +412,7 @@ public class ViewBuilder {
 		    		
 		    		update_dialog_status(true);
 		    		
+		    		//schedule file dialog
 		    		file_selector.on_scheduled(new_ds);
 				}
 		    }
@@ -415,8 +424,8 @@ public class ViewBuilder {
 		    	//open dialog, set return state to main
 					SystemWindow<DataStore> window_update;
 					
-					
 					if (window.datastore_set()) {
+						//ds already set, create new window
 			    		window_update = get_app_view();
 			    	} else {
 			    		window_update = window;
@@ -425,6 +434,7 @@ public class ViewBuilder {
 			    	DataStore backend = new DataStore(window_update);
 			    	OpenDialog open_dialog = new OpenDialog("Open Files", window_update);
 			    	
+			    	//start open dialog
 			    	open_dialog.on_scheduled(backend);
 		    }
 		});
@@ -434,6 +444,7 @@ public class ViewBuilder {
 		drift_correction.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 
+		    	//create new dc window
 				SystemWindow<DriftCorrectionDS> drift_window = get_drift_correction_view();
 				DriftCorrectionDS dc_backend = new DriftCorrectionDS(drift_window);
 				SystemFileDialog<DriftCorrectionDS> open_dialog = new SystemFileDialog<DriftCorrectionDS>(drift_window, "Drift Correction", "csv");
@@ -441,6 +452,7 @@ public class ViewBuilder {
 				if (open_dialog.init_backend_on_path(dc_backend)) {
 					drift_window.on_scheduled(dc_backend);
 				} else {
+					//show dialog if init fails
 					new ErrorDialog<DriftCorrectionDS>("Import Error", "Bad Drift Correction File").show_dialog();
 				}
 		    }
@@ -459,6 +471,7 @@ public class ViewBuilder {
 			    	} else {
 			    		update_window = window;
 			    	}
+			    	//open example data in window (or new window)
 					open_example_data(update_window);
 				}
 		    }
@@ -472,12 +485,10 @@ public class ViewBuilder {
 				if (window.datastore_set()) {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
+		    		//try to export on user-selected path
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_RESPONSE_GRAPHS)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export response graphs").show_dialog();
 		    		}
-		    	}
-		    	else {
-					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -489,12 +500,10 @@ public class ViewBuilder {
 				if (window.datastore_set()) {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "pdf");
 		    		
+		    		//try to export on path
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.PDF_CALIBRATION_GRAPHS)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export calibration pdf").show_dialog();
 		    		}
-		    	}
-		    	else {
-					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -507,12 +516,10 @@ public class ViewBuilder {
 				if (window.datastore_set()) {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export Model Data", "csv");
 		    		
+		    		//try to export on path
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_MODEL_DATA)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export model data").show_dialog();
 		    		}
-		    	}
-		    	else {
-					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
 		    	}
 			}
 		});
@@ -524,16 +531,15 @@ public class ViewBuilder {
 		    	if (window.datastore_set()) {
 		    		SystemFileDialog<DataStore> save_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
 		    		
+		    		//try to export on path
 		    		if (!save_dialog.export_on_path(window.get_datastore(),SystemThemes.CSV_FULL_REPORT)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export full model report").show_dialog();
 		    		}
 		    	}
-		    	else {
-					//new ErrorDialog<DataStore>("Export Error", "Empty project: Cannot export an empty project. Please open an existing project or create a new project.").show_dialog();
-		    	}
 			}
 		});
 
+		//build menu collections
 		JMenu open_submenu = new JMenu("Open...");
 
 		open_submenu.add(open_saved);
@@ -560,6 +566,7 @@ public class ViewBuilder {
 		file.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
+				//on menu selected, determine if components enabled
 				boolean can_proceed = window.datastore_set();
 				export_submenu.setEnabled(can_proceed);
 				save_as.setEnabled(can_proceed);
@@ -596,7 +603,10 @@ public class ViewBuilder {
 		
 		truncate_stds_vals.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	//set flag to truncate values in calc val panel
 		    	SystemThemes.TRUNCATE_STDS_VALS = ! SystemThemes.TRUNCATE_STDS_VALS;
+		    	
+		    	//set update flag
 		    	window.get_datastore().calculated_vals_updated = true;
 		    	window.refresh();
 		    }
@@ -628,6 +638,7 @@ public class ViewBuilder {
 		window_menu.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
+				//on menu selected, determine if components enabled
 			    boolean ds_loaded = window.datastore_set();
 			    boolean is_split = window.windows_split();	    
 			    separate_subpanels.setEnabled(ds_loaded & !is_split);

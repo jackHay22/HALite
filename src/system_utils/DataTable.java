@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class DataTable implements Serializable {
 	private static final long serialVersionUID = 2;
+	
+	// DataTable holds both doubles and strings, needed to have one data structure to support this
 	private HashMap<TableKey, Data> data;
 	private HashMap<TableKey, ArrayList<String>> string_data;
 	private String table_name;

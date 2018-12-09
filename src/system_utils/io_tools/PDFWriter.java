@@ -40,6 +40,7 @@ public class PDFWriter<Backend extends DataBackend> {
 		
 	}
 	
+	// Format the title page for exporting graphs
 	private void set_title_page(String title) {
 		PDPage title_page = new PDPage();
 		document.addPage(title_page);
@@ -68,11 +69,15 @@ public class PDFWriter<Backend extends DataBackend> {
 		graphing_offset = (page_height - (this.margin_top)) / graphs_per_page;
 	}
 	
+	// Determine the next position of a graph on the page, leaving appropriate room in between
 	private float graph_position() {
 		return current_page.getMediaBox().getHeight() - (margin_top + (graphing_offset * graphs_on_page));
 	}
 	
+	// Format every new page with primary element displayed at the top of the page
 	public void new_page(String text) {
+		
+		// Create a new page and add it to the document
 		PDPage page = new PDPage();
 		document.addPage(page);
 		
@@ -104,12 +109,14 @@ public class PDFWriter<Backend extends DataBackend> {
 	
 	private BufferedImage get_buff_img(DrawablePanel<Backend> gpanel) {
 		
+		// Defines margin between graphs
 		int y_pos = (int) Math.ceil(graphing_offset);
 		if (graphs_per_page == 1)
 			y_pos -= 100;
 		else 
 			y_pos -= 25;
 		
+		// Set size of buffered image and paint graph onto it
 		gpanel.setSize(400, y_pos - 10);
 		int w = gpanel.getWidth();
 	    int h = gpanel.getHeight();

@@ -71,19 +71,23 @@ public class DataStore extends DataBackend implements Serializable {
 		this.elem_num = 5;
 	}
 	
+	// Reset standards data triggered from NewDialog
 	public void reset_standards() {
 		this.standards_means_data = new DataTable("Standards_means");
 	}
 	
+	// Reset unknowns data triggered from NewDialog
 	public void reset_unknowns() {
 		this.unknown_means_data = new DataTable("Unknown_means");
 	}
 	
 	public boolean validate_loaded() {
 		
+		// Doesn't continue if means and standards are completely empty
 		if (this.standards_means_data.get_data().isEmpty() || this.unknown_means_data.get_data().isEmpty())
 			return false;
 		
+		// Iterate through standards data and check if Data objects are empty
 		Map<TableKey, Data> stds_map = standards_means_data.get_data();
 		for (Entry<TableKey, Data> entry : stds_map.entrySet()) {
 			ArrayList<Double> d = entry.getValue().get_data();
@@ -93,6 +97,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		
+		// Iterate through unknowns data and check if Data objects are empty
 		Map<TableKey, Data> unk_map = unknown_means_data.get_data();
 		for (Entry<TableKey, Data> entry : unk_map.entrySet()) {
 			ArrayList<Double> d = entry.getValue().get_data();
@@ -107,6 +112,8 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean on_export(String file_path, int export_type) {
+		
+		// Instantiate exporting class 
 		DataExporter exporter = new DataExporter(this);
 		
 		// Export data as CSV 
@@ -131,10 +138,13 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean add_component_filepath(String path, String label) {
+		
+		// Parser will all direct I/O operations triggered from DataStore
 		CSVParser parser = new CSVParser();
 		BufferedReader reader;
 		
 		try {
+			// Try to open the file at path, otherwise fail
 			reader = new BufferedReader(new FileReader(path));
 		} catch (FileNotFoundException e1) {
 			return false;
@@ -142,6 +152,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		if (label.equals("xrf")) {
 			try {
+				// Parse the file and set to DataStore private variables
 				xrf_data = parser.parse_data(reader);
 				xrf_in_use = xrf_data.get(0).name();
 				xrf_path = path;
@@ -162,6 +173,7 @@ public class DataStore extends DataBackend implements Serializable {
 					return false;
 				}
 								
+				// Specific parser for means files because of specialized needs
 				MeansCSVParser means_parser = new MeansCSVParser(this.get_STDlist(), this.get_unknown_list());
 				
 				HashMap<String, DataTable> tables = new HashMap<String, DataTable>();
@@ -173,9 +185,11 @@ public class DataStore extends DataBackend implements Serializable {
 					return false;
 				}
 				
+				// Assign tables to private variables
 				this.standards_means_data = tables.get("standards");
 				this.unknown_means_data = tables.get("unknowns");
 				
+				// Trigger data analysis phase
 				create_element_correlations();
 				
 				reader = new BufferedReader(new FileReader(path));
@@ -191,6 +205,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		else if (label.equals("standards")) {
 			try {
+				// Parse the file and set to DataStore private variables
 				standards_data = parser.parse_data(reader);
 				standards_in_use = standards_data.get(0).name();
 				standards_path = path;
@@ -202,6 +217,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		
 		try {
+			// Close the reader before ending
 			reader.close();
 		}
 		catch (IOException e) {
@@ -211,6 +227,8 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<DataTable> all_tables(String label) {
+		
+		// Return the desired tables of data
 		if (label.equals("xrf"))
 			return xrf_data;
 		else if (label.equals("means"))
@@ -221,12 +239,14 @@ public class DataStore extends DataBackend implements Serializable {
 		return null;
 	}
 	
+	// Assign what tables will be used for analysis from NewDialog
 	public void set_tables_in_use(String xrf, String standards, String means) {
 		xrf_in_use = xrf;
 		standards_in_use = standards;
 		means_in_use = means;
 	}
 	
+	// Search for desired table in table listings
 	private DataTable get_table(String name, ArrayList<DataTable> table_list) {
 		for (DataTable dt : table_list) {
 			if (dt.name().equals(name))
@@ -241,6 +261,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return true;
 	}
 	
+	// Assign save path for use with SaveDialog
 	public void set_save_path(String path) {
 		this.save_path = path;
 	}
@@ -257,13 +278,17 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	@Override
 	public boolean check_valid_target() {
+		
+		// Create new file object to check if the file at the save path exists
 		File save_file = new File(this.save_path);
 		String parent_path = save_file.getParent();
 		
+		// Check if the parent path exists
 		if (parent_path == null) {
 			return false;
 		}
 		else {
+			// Return the path of the parent file 
 			File parent_dir = new File(parent_path);
 			return parent_dir.exists();
 		}
@@ -271,6 +296,7 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	private void internal_refresh() {
 		for (ElementCorrelationInfo elem_corr: correlations.values()) {
+			// Trigger refresh across the entire correlation set
 			elem_corr.refresh();
 		}
 	}
@@ -370,17 +396,22 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	private PointSet<DataStore> create_pointset(Element y_elem, Element x_elem, Boolean standards) {
+		
+		// Create basic parameters for PointSet creation
 		String x_axis = x_elem.name();
 		String y_axis = y_elem.name();
 		String title = x_axis + " vs. " + y_axis;
 		Color color = new Color(1, 1, 1);
 		boolean render = true;
 		
+		// Point objects will be stored in an ArrayList
 		ArrayList<Point> points = new ArrayList<Point>();
 		
+		// Calculate coordinates and store in a hashmap according to source id
 		HashMap<String, Double> x_coords = calculate_coords(x_elem, standards);
 		HashMap<String, Double> y_coords = calculate_coords(y_elem, standards);
 		
+		// if either of the hashmaps have not been initialized, exit
 		if (x_coords == null || y_coords == null) {
 			return null;
 		}
@@ -441,6 +472,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	// Return correlation according to specific element from DataStore 
 	public ElementCorrelationInfo get_correlations(Element elem) {
 		return this.correlations.get(elem);
 	}
@@ -448,7 +480,8 @@ public class DataStore extends DataBackend implements Serializable {
 	public HashMap<Element, ElementCorrelationInfo> get_correlation_map() {
 		return this.correlations;
 	}
-
+	
+	// Used for loading example data
 	public boolean import_test_data(String xrf, String stds, String means) {
 		
 		TestSuiteReader testreader = new TestSuiteReader();
@@ -560,6 +593,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return null;
 	}
 	
+	// Assign new element to graph in model panel and notify other panels
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
 		calculated_vals_updated = true;
@@ -620,12 +654,14 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	// Set number of elements to display
 	public void set_elem_num(Integer num) {
 		this.elem_num = num;
 		
 		notify_update();
 	}
 	
+	// Get number of elements to display
 	public int get_elem_num() {
 		return this.elem_num;
 	}
@@ -644,6 +680,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return headers;
 	}
 	
+	// Triggered on CSV output
 	public String get_detailed_report() {
 		HashMap<Element, ElementReport> reports = new HashMap<Element, ElementReport>(); 
 		for (Element elem : Element.values()) {
