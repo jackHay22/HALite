@@ -43,6 +43,7 @@ public class ErrorDialog<Backend extends DataBackend> extends SystemDialog imple
 	@Override
 	public void show_dialog() {
 		
+		// Format positioning of text on the ErrorDialog
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -50,6 +51,7 @@ public class ErrorDialog<Backend extends DataBackend> extends SystemDialog imple
 		
 		this.add(error_message, constraints);
 		
+		// Format positioning of 'Dismiss' button
 		constraints.gridwidth = 2;
 		constraints.gridy = 3;
 		constraints.gridx = 0;

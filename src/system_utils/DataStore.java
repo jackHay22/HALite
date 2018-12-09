@@ -261,6 +261,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return true;
 	}
 	
+	// Assign save path for use with SaveDialog
 	public void set_save_path(String path) {
 		this.save_path = path;
 	}
@@ -395,17 +396,22 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	private PointSet<DataStore> create_pointset(Element y_elem, Element x_elem, Boolean standards) {
+		
+		// Create basic parameters for PointSet creation
 		String x_axis = x_elem.name();
 		String y_axis = y_elem.name();
 		String title = x_axis + " vs. " + y_axis;
 		Color color = new Color(1, 1, 1);
 		boolean render = true;
 		
+		// Point objects will be stored in an ArrayList
 		ArrayList<Point> points = new ArrayList<Point>();
 		
+		// Calculate coordinates and store in a hashmap according to source id
 		HashMap<String, Double> x_coords = calculate_coords(x_elem, standards);
 		HashMap<String, Double> y_coords = calculate_coords(y_elem, standards);
 		
+		// if either of the hashmaps have not been initialized, exit
 		if (x_coords == null || y_coords == null) {
 			return null;
 		}
@@ -466,6 +472,7 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	// Return correlation according to specific element from DataStore 
 	public ElementCorrelationInfo get_correlations(Element elem) {
 		return this.correlations.get(elem);
 	}
@@ -473,7 +480,8 @@ public class DataStore extends DataBackend implements Serializable {
 	public HashMap<Element, ElementCorrelationInfo> get_correlation_map() {
 		return this.correlations;
 	}
-
+	
+	// Used for loading example data
 	public boolean import_test_data(String xrf, String stds, String means) {
 		
 		TestSuiteReader testreader = new TestSuiteReader();
@@ -585,6 +593,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return null;
 	}
 	
+	// Assign new element to graph in model panel and notify other panels
 	public void set_model_data_element(Element elem) {
 		this.model_data_element = elem;
 		calculated_vals_updated = true;
@@ -645,12 +654,14 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	// Set number of elements to display
 	public void set_elem_num(Integer num) {
 		this.elem_num = num;
 		
 		notify_update();
 	}
 	
+	// Get number of elements to display
 	public int get_elem_num() {
 		return this.elem_num;
 	}
@@ -669,6 +680,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return headers;
 	}
 	
+	// Triggered on CSV output
 	public String get_detailed_report() {
 		HashMap<Element, ElementReport> reports = new HashMap<Element, ElementReport>(); 
 		for (Element elem : Element.values()) {

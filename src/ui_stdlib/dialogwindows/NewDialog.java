@@ -60,20 +60,23 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 	}
 
 	private void can_continue(DataStore backend) {
-		//means set by dc export
+		
+		// Can only continue if both xrf and standards files have been chosen (means requires xrf and standards)
 		if (xrf_chosen && standards_chosen) {
 			
+			// If coming from DriftCorrection, use the means file generated from there
 			if (means_override != null) {
 				means_chosen = backend.add_component_filepath(means_override, "means");	
 			}
 			
-			// 
+			// If the means file hasnt been chosen yet, enable the means chooser button
 			if (!means_chosen) {
 				means_chooser.setOpaque(false);
 				means_chooser.setEnabled(true);
 				return;
 			}
 			
+			// If the means has been chosen, verify that a valid DataStore object can be loaded
 			if (means_chosen && backend.validate_loaded()) {
 				continue_button.setEnabled(true);
 			}
@@ -85,6 +88,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		}
 	}
 	
+	// Shorten path displayed on NewDialog buttons
 	private String get_file_display(String label, String path) {
 		if (path.length() == 0) {
 			return label;
@@ -258,6 +262,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 		    		stds_table_selection.setOpaque(false);
 		    	}
 		    	
+		    	// If not coming from Drift Correction, refresh the means file loading every time stds is chosen
 		    	if (means_chosen && xrf_chosen && standards_chosen && means_override == null) {
 		    		backend.add_component_filepath(backend.means_path, "means");
 		    	}

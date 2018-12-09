@@ -23,6 +23,7 @@ public class OpenDialog implements ScheduledState<DataStore> {
 			return false;
 		}
 		
+		// Verify that the selected file is a DataStore file with '.ds' extension
 		String extension = file.substring(pos + 1);
 		if (extension.equals("ds")) {
 			return true;
@@ -39,12 +40,16 @@ public class OpenDialog implements ScheduledState<DataStore> {
 		
 		if (status && is_datastore_file(file_path)) {
 			try {
+				
+				// Create object from path
 				FileInputStream fileInputStream = new FileInputStream(file_path);
 				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 				
+				// Cast the objectInputStream as a DataStore object that will be used in the system
 				DataStore ds = (DataStore) objectInputStream.readObject();
 				objectInputStream.close();
 				
+				// Assign applications' window to the DataStore object
 				ds.set_window(main_window);
 				
 				main_window.on_scheduled(ds);

@@ -192,15 +192,19 @@ public class CSVParser {
 					
 					Double entry;
 					
+					// If an entry is null in the raw CSV row, it replaces it will null
 					if (raw_data.get(j)[i].equals("")) {
 						entry = null;
 					}
 					else {
+						// Otherwise, parses the double from string
 						entry = Double.parseDouble(raw_data.get(j)[i]);
 					}
+					// Adds the entry to the appropriate column
 					column_data.add(entry);
 				}
 				
+				// Adds every column to the transposed data
 				table.put_data(current_column_name, column_data);
 			}
 		}
