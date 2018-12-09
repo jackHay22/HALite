@@ -15,6 +15,8 @@ import ui_stdlib.SystemThemes;
 public class DrawablePanel<Backend extends DataBackend> extends JPanel implements MouseListener, Refreshable<Backend>{
 	private DrawableManager manager;
 	
+	// This is an interactive panel to plot points on. We set a prefered size initially
+	// but this is adjusted to fit the space available.
 	public DrawablePanel(DrawableManager manager, int width, int height) {
 		super();
 		this.manager = manager;
@@ -23,6 +25,7 @@ public class DrawablePanel<Backend extends DataBackend> extends JPanel implement
 		setPreferredSize(new Dimension(width, height));
 	}
 	
+	// Tells the panel how to paint new components
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -47,6 +50,7 @@ public class DrawablePanel<Backend extends DataBackend> extends JPanel implement
 		
 	}
 	
+	// Tells the graph panel what size the points must fit inside
 	public Dimension get_drawable_size() {
 		return this.getSize();
 	}

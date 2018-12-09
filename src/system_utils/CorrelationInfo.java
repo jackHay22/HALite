@@ -21,8 +21,6 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private HashMap<String, Double> unknown_corr_results = new HashMap<String, Double>();
 	
 	public CorrelationInfo(ElementPair<DataStore> elements) {
-		// Create the EquationPlot object of degree 1 with fit and r2 value to match
-		
 		this.data_to_plot = elements;
 		this.secondary_element = elements.get_second();
 		
@@ -31,14 +29,18 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 	
 	private void init() {
 		PointSet<DataStore> points_to_fit = data_to_plot.get_standards();
+		// Create the EquationPlot object of degree 1 with fit and r2 value to match
 		this.equation = compute_fit(points_to_fit);
 		this.use_in_wm = false;
 	}
 	
+	// Computes the best fit model for the standard model
 	private EquationPlot compute_fit(PointSet<DataStore> point_set) {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> points = point_set.get_points();
 		
+		// This loops over the relevant points adding them to the regression
+		// object which will be used to create the model involved
 		for (int i = 0; i < points.size(); i++) {
 			Point point = points.get(i);
 			if (point.in_use()) {
@@ -78,6 +80,8 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		return equation.get_r2();
 	}
 	
+	// This will return the relevant information about the 
+	// points to be plotted to the correlation graph
 	public HashMap<String, PointSet<DataStore>> get_data() {
 		HashMap<String, PointSet<DataStore>> data = new HashMap<String, PointSet<DataStore>>();
 		
@@ -90,17 +94,21 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		return data;
 	}
 	
+	// Applies the correlation equation to the data to be used later
 	private void STD_corrs() {
 		STD_corr_results.clear();
 		for (String std : data_store.get_STDlist()) {
+			// Gets the response value from datastore
 			Double data = data_store.get_std_response_value(std, this.get_secondary());
 			if (data != null) {
+				// Puts the value through the equation
 				Double res = equation.get_y(data);
 				STD_corr_results.put(std, res);
 			}
 		}
 	}
 	
+	// Same as above but for unknown samples
 	private void unknown_corrs() {
 		unknown_corr_results.clear();
 		for (String sample : data_store.get_unknown_list() ) {
@@ -112,6 +120,7 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		}
 	}
 	
+	// Returns all values for the unknown correlation values in an arraylist
 	public ArrayList<Double> get_unknown_corrs() {
 		ArrayList<Double> values = new ArrayList<Double>();
 		for (Double val : unknown_corr_results.values()) {
@@ -120,6 +129,8 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		return values;
 	}
 	
+	// Returns the standard correlation results to be used in the computation
+	// of the SEs for the WM values later
 	public ArrayList<DoublePair> get_corr_results_for_SE() {
 		ArrayList<DoublePair> values = new ArrayList<DoublePair>();
 		

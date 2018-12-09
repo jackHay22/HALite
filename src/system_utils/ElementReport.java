@@ -14,13 +14,14 @@ public class ElementReport {
 	
 	public ElementReport(Element elem, ArrayList<CorrelationInfo> selected_elems, HashMap<String, ArrayList<Element>> avoid, HashMap<String, HashMap<String, Double>> element_data) {
 		this.elem = elem;
-		this.length = 3; // One col for each of Model, Actual, and the header row 
+		this.length = 3; // One col for each of Model, Actual, and the header names 
 		this.elements_used = new ArrayList<Element>();
 		this.pairs_to_avoid = avoid;
 		this.all_data = element_data;
 		begin(selected_elems);
 	}
 	
+	// Creates a list of  used in the model, and the length of the header
 	private void begin(ArrayList<CorrelationInfo> selected_elems) {
 		for (CorrelationInfo elem : selected_elems) {
 			elements_used.add(elem.get_secondary());
@@ -30,6 +31,7 @@ public class ElementReport {
 		}
 	}
 	
+	// This creates the header row for this element's model report
 	public String get_header_row() {
 		Integer row_length = 0;
 		StringBuilder sb = new StringBuilder();
@@ -62,6 +64,7 @@ public class ElementReport {
 		return sb.toString();
 	}
 	
+	// This creates the row for a given sample's model
 	public String get_row(String s) {
 		Integer row_length = 0;
 		StringBuilder sb = new StringBuilder();
@@ -69,12 +72,19 @@ public class ElementReport {
 		sb.append(s);
 		row_length++;
 		sb.append(',');
+		
+		// These are the pairs to not use in the model
 		ArrayList<Element> avoid = this.pairs_to_avoid.get(s);
+		
+		// Strings together a row of model data, printing N/A if there is
+		// no data available in the hashmap. 
 		for (Element elem : elements_used) {
 			Double d = data.get(elem.toString());
 			if (d == null) {
 				sb.append("N/A");
 			} else {
+				// If the data was excluded from the model it is indicated
+				// with "*" on either side of the value
 				if (!(avoid == null || avoid.indexOf(elem) == -1)) {
 					sb.append("*");
 					sb.append(d);
@@ -86,6 +96,7 @@ public class ElementReport {
 			sb.append(',');
 			row_length++;
 		}
+		// Adds the stats and model data to the row for a sample
 		if (row_length > 1) {
 			sb.append(data.get("Std Dev"));
 			sb.append(',');
@@ -103,6 +114,8 @@ public class ElementReport {
 		sb.append(",");
 		row_length += 2;
 		
+		// This fills out the row to ensure that the csv printed will have a
+		// clean and ordered look
 		while (row_length < this.length) {
 			sb.append(',');
 			row_length++;

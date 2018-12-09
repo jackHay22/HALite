@@ -19,35 +19,46 @@ import ui_stdlib.components.VerticalPanel;
 
 @SuppressWarnings("serial")
 public class GraphPanel<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> implements DrawableManager, MouseListener {
-	//extends SystemPanel 
+	// extends SystemPanel 
 	
-	private ArrayList<PointSet<Backend>> point_sets;
+	// These are the panels visible on the graph interface
 	private DrawablePanel<Backend> points_panel;
 	private PanelHeader<Backend> header_panel;
 	private PanelHeader<Backend> r_sqrd_panel;
 	private VerticalPanel<Backend> y_label;
 	private PanelHeader<Backend> x_label;
 	
+	// The settings for the panels are held here
 	private GridBagConstraints constraints;
+	
 	private Backend data_store;
+
+	// THere are the pointsets to be painted on the drawable_panel
+	private ArrayList<PointSet<Backend>> point_sets;
 	
-	
+	// These attributes hold the dimensions to be used to create the 
+	// plot of the data
 	private int draw_width;
 	private int draw_height;
+	
+	// These are used to scale the data down to fit in the graph
 	private double x_ratio;
 	private double y_ratio;
 	
+	// These are the lowest and highest x and y values from the pointsets
 	private Double min_x = 0.0;
 	private Double max_x = 0.0;
-	
 	private Double min_y = 0.0;
 	private Double max_y = 0.0;
 
+	// These buffers ensure that the points won't be drawn on the edges of the
+	// available panel
 	private double bottom_buffer_x;
 	private double top_buffer_x;
 	private double bottom_buffer_y;
 	private double top_buffer_y;
 	
+	// The endpoints of a linear equation
 	private Point left_point;
 	private Point right_point;
 	private boolean do_place_line;
@@ -117,6 +128,8 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		return draw_height;
 	}
 	
+	// These points are used to determine the end points of lines 
+	// to be plotted on the graph
 	public Point get_left_bottom() {
 		Point p = new Point(min_x, min_y);
 		return p;
@@ -127,6 +140,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		return p;
 	}
 	
+	// Sets the end points of a line ot plot
 	public void set_endpoints(Point start, Point end) {
 		left_point = start;
 		right_point = end;
@@ -143,7 +157,8 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	}
 	
 	private void set_ratio() {
-
+		// We begin by determining the minimum and maximum values 
+		// for each point set.
 		for (int i = 0; i < point_sets.size(); i++) {
 			
 			ArrayList<Point> points = point_sets.get(i).get_points();
@@ -171,14 +186,14 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 			}
 		}
 		
-		
-
 		// These are used to create a buffer around the points placed on the graphs
 		bottom_buffer_x = bottom_buffer(min_x, max_x);
 		top_buffer_x = top_buffer(min_x, max_x);
 		bottom_buffer_y = bottom_buffer(min_y, max_y);
 		top_buffer_y = top_buffer(min_y, max_y);
 		
+		// These are calculated by dividing the size of the entire graph
+		// by the minimum and maximum values for that dimension
 		x_ratio = draw_width/(top_buffer_x - bottom_buffer_x);
 		y_ratio = draw_height/(top_buffer_y - bottom_buffer_y);
 		
@@ -197,7 +212,10 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		g.drawLine((int)this.left_point.get_x(), (int)this.left_point.get_y(), (int)this.right_point.get_x(), (int)this.right_point.get_y());
 	}
 	
+	// Places all points onto the panel
 	private void place_point(Point p, Graphics2D g, Color c) {
+		
+		// Calculates the value where these points should be plotted on the graph
 		double point_x = p.get_x();
 		double draw_x = (point_x - bottom_buffer_x)*x_ratio;
 		
@@ -206,20 +224,21 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 
 		p.set_draw_values((int)draw_x, (int)draw_y);
 		
-		//TODO: draw x and draw y aren't numbers
 		// Place the actual point with coords (draw_x, draw_y)
 		Color graph_color = g.getColor();
-		g.setColor(SystemThemes.MAIN);
+		g.setColor(c);
+		
+		// If the point is being used in calculations (toggled "on")
+		// then it is filled in 
 		if (p.in_use()) {
-			g.setColor(c);
 			g.fillOval((int)draw_x, (int)draw_y, 5,5);
 		} else {
-			g.setColor(c);
 			g.drawOval((int)draw_x, (int)draw_y, 5,5);
 		}
 		g.setColor(graph_color);
 	}
 	
+	// Plots all point sets which have been toggled "on" onto this.panel
 	private void plot_points(Graphics2D g) {
 		for (int i = 0; i < point_sets.size(); i++) {
 			if (point_sets.get(i).do_render()) {
@@ -233,7 +252,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	}
 	
 	
-	
+	// This sets up the labels within the graph
 	private void set_labels(Graphics2D g) {
 		
 		DecimalFormat df = new DecimalFormat("#.####");
@@ -251,21 +270,29 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		g.drawLine(0, draw_height*1/buffer_div, draw_width/60, draw_height*1/buffer_div);
 	}
 	
+	// This method finds the closest point to a mouse click and toggles
+	// the point if it is within a certain range
 	private void point_selected(MouseEvent e) {
+		
+		// Position of the mouse click
 		int x = e.getX();
 		int y = e.getY();
 		Point closest = find_closest_point(x,y);
 		double distance_to_point = distance(closest.get_draw_x(), closest.get_draw_y(), x, y);
-		// If the mouse click was within 4% of the screen diagonal from the point
 		
+		// If the mouse click was within 6% of the screen diagonal from the point
 		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
-			data_store.notify_update();
+			// For some reason the values don't toggle on a mouse click
 			this.data_store.calculated_vals_updated = true;
+			this.refresh();
+			data_store.notify_update();
 		}
 
 	}
 	
+	// This locates the point closest to a given x,y pair in terms of the
+	// window position
 	private Point find_closest_point(int x, int y) {
 		
 		// This is only initialized to silence warnings
@@ -292,13 +319,14 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		return closest;
 	}
 	
+	// Computes the 2-D distance between two points
 	private double distance(int x_1, int y_1, int x_2, int y_2) {
-
 		return Math.sqrt(Math.pow((x_1 - x_2), 2) + Math.pow((y_1 - y_2), 2));
 	}
 	
 	@Override
 	public void refresh() {
+		// Gets the size of a panel after a refresh occurs
 		Dimension d = this.points_panel.get_drawable_size();
 		this.draw_height = d.height;
 		this.draw_width = d.width;

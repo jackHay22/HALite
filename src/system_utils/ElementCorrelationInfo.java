@@ -14,9 +14,14 @@ import java.util.ArrayList;
 public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private static final long serialVersionUID = 4;
 	private Element element;
+	// Holds the correlation info for all elements related to this element
 	private HashMap<Element, CorrelationInfo> all_correlations;
+	// Holds all elements to be used within the model
 	private ArrayList<CorrelationInfo> selected_elements;
+	
 	private DataStore data_store;
+	
+	// These hold the relevant statistical and model data for this element
 	private HashMap<Element, Double> SEs;
 	private HashMap<String, Double> std_WMs;
 	private HashMap<String, Double> std_models;
@@ -24,8 +29,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	private HashMap<String, Double> unknown_WMs;
 	private HashMap<String, Double> unknown_models;
 	private HashMap<String, Double> unknown_std_dev;
+	
+	// This holds info about the pairs selected by the client to not use in
+	// the model
 	private HashMap<String, ArrayList<Element>> pairs_to_avoid;
+	
+	// This is the equation used for the final model.
 	private EquationPlot Equation;
+	
+	// These are the points for the model graph for this element in the form
+	// of (actual, model) pairs
 	private PointSet<DataStore> model_points;
 	
 	public ElementCorrelationInfo(Element element, HashMap<Element, CorrelationInfo> all_correlations) {
@@ -42,17 +55,23 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
 	}
 	
+	// Tells the system whether or not to use a pair in the model
 	public boolean not_in_model(String s, Element e) {
 		ArrayList<Element> elems = this.pairs_to_avoid.get(s);
 		return ((elems != null) && elems.indexOf(e) != -1);
 	}
 	
+	// Creates the "full model report" for this element
 	public ElementReport create_report() {
 		return new ElementReport(element, selected_elements, pairs_to_avoid, this.get_WM_panel_data());
 	}
 	
+	// Tells the model to toggle the "use" status of this pair 
+	// from the bottom left panel of the application
 	public void toggle_pair_for_model(String s, Element e) {
 		ArrayList<Element> elems = pairs_to_avoid.get(s);
+		// If there is already a list for this sample
+		// simply toggle the pair
 		if (elems != null) {
 			int i = elems.indexOf(e);
 			if (i == -1) {
@@ -61,6 +80,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			} else {
 				elems.remove(i);
 			}
+		// If no list exists, create is and add the offending element
 		} else {
 			elems = new ArrayList<Element>();
 			elems.add(0, e);
@@ -68,6 +88,8 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 	}
 	
+	// Place the value for the standards in a hashmap to be easily
+	// parsed on the front end
 	public HashMap<String, Double> get_standard_computed() {
 		
 		HashMap<String, Double> std_map = new HashMap<String, Double>();
@@ -87,6 +109,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return std_map;
 	}
 	
+	// Does the same as the above for the unknown values
 	public HashMap<String, Double> get_unknown_computed() {
 		
 		HashMap<String, Double> unknown_map = new HashMap<String, Double>();
@@ -107,14 +130,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return unknown_map;
 	}
 	
+	// Computes the best fit equation for the model points
 	public void compute_graph_model() {
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
+		// Adds all of the points to be used into the model
 		for (String std : data_store.get_STDlist()) {
 			Double x = data_store.get_raw_std_elem(std, element);
 			Double y = this.std_models.get(std);
-			//y = data_store.get_mean_value(std, element)/y;
+			
 			if (y.isNaN() || y == null) {
 				y = x;
 			}
@@ -142,12 +167,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return model_points;
 	}
 	
+	// Returns the pointsets for the model graph to use
 	public HashMap<String, PointSet<DataStore>> get_pointsets() {
 		HashMap<String, PointSet<DataStore>> pts = new HashMap<String, PointSet<DataStore>>();
 		pts.put("standard", model_points);
 		return pts;
 	}
 	
+	// These public "get" methods, in general, 
+	// are returning information to be used either 
+	// during output or in the UI
 	public double get_WM(String std) {
 		return std_WMs.get(std);
 	}
@@ -175,7 +204,14 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	public ArrayList<CorrelationInfo> get_selected() {
 		return this.selected_elements;
 	}
+
+	public boolean is_selected(Element secondary) {
+		CorrelationInfo corr = this.all_correlations.get(secondary);
+		return corr.in_use();
+	}
 	
+	// These set methods are used by datastore to pass along changes
+	// requested by the UI
 	public void add_selected(Element secondary) {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
 		corr.toggle();
@@ -186,11 +222,6 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		CorrelationInfo corr = this.all_correlations.get(secondary);
 		corr.toggle();
 		this.selected_elements.remove(corr);
-	}
-	
-	public boolean is_selected(Element secondary) {
-		CorrelationInfo corr = this.all_correlations.get(secondary);
-		return corr.in_use();
 	}
 	
 	public ArrayList<Element> get_selected_names() {
@@ -209,6 +240,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return this.all_correlations.get(elem).get_unknown_corr(sample);
 	}
 	
+	// This map is used to return all data necessary to be displayed within the interface 
 	public HashMap<String, HashMap<String, Double>> get_WM_panel_data() {
 		// Returns a hashmap, mapping each standard to the corresponding data for the row,
 		// which is also in the form of a hashmap, which maps the column to the data
@@ -264,11 +296,15 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			x_list.add(d.get_x());
 			y_list.add(d.get_y());
 		}
+		// Uses the Formulas lib in this project
 		Double SE = Formulas.standard_error(x_list, y_list);
 		return SE;
 	}
 	
+	// Clears the hashmap and recomputes the SEs for the given model
 	private void computeSEs() {
+		// The map must be cleared since some elements may have been 
+		// removed from the model before this call to refresh
 		SEs.clear();
 		for (CorrelationInfo info : selected_elements) {
 			SEs.put(info.get_secondary(), computeSE(info.get_corr_results_for_SE()));
@@ -279,7 +315,9 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return SEs.get(elem);
 	}
 	
+	// Computes the weighted means of the unknown samples
 	private void compute_unknown_WMs() {
+		// Cleared in case model elements have been changed 
 		unknown_WMs.clear();
 		for (String sample : data_store.get_unknown_list()) {
 			Double calculated = compute_unknown_WM(sample);
@@ -289,10 +327,11 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 	}
 	
-	private void computeWMs() {
+	// Computes the wms for the standard samples
+	private void compute_std_WMs() {
 		std_WMs.clear();
 		for (String std : data_store.get_STDlist()) {
-			Double calculation = computeWM(std);
+			Double calculation = compute_std_WM(std);
 			if (calculation != null) {
 				std_WMs.put(std, calculation);
 			}
@@ -325,7 +364,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	}
 	
 	// This applies the model to the standards to be displayed in the bottom left panel 
-	private Double computeWM(String std) {
+	private Double compute_std_WM(String std) {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
 		Double std_error_sum = 0.0;
@@ -333,43 +372,46 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		if (elems_to_avoid == null) {
 			elems_to_avoid = new ArrayList<Element>();
 		}
-		// Read this over for correctness
+		// This loops the the elements selected for the model
 		for (CorrelationInfo elem_info : this.selected_elements) {
+			// Checks that the element has not been marked to avoid in the model
 			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
 				Double response = elem_info.get_corr_result(std);
+				// Gets the response value
 				if (response != null) {
 					std_dev.addValue(response);
+					// Weights the elements based on their standard error 
 					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
 					std_error_sum += 1/this.getSE(elem_info.get_secondary());
 				}
 			}
 		}
+		// Saves the std dev to use later
 		Double stdev = std_dev.getStandardDeviation();
 		this.standards_std_devs.put(std, stdev);
 		return (dividend/std_error_sum);	
 		
 	}
 	
+	// Applies the model creates to one unknown sample
 	private Double compute_unknown_model(String sample) {
-		
 		Double sample_CPS = data_store.get_mean_value(sample, this.element);
 		if (sample_CPS != null) {
-			// Same as the previous comment			
 			return (sample_CPS)/(this.unknown_WMs.get(sample));
 		}
 		return null;
 	}
 	
+	// Applies the model to all unknown values for this element
 	private void compute_unknown_models() {
 		this.unknown_models.clear();
 		for (String s : data_store.get_unknown_list()) {
 			Double d = compute_unknown_model(s);
 			this.unknown_models.put(s, d);
 		}
-		
-		
 	}
 	
+	// Applies the model to a single standard value
 	private Double compute_std_model(String std) {
 		Double elementCPS = data_store.get_mean_value(std, this.element);
 		if (elementCPS != null) {
@@ -378,6 +420,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return null;
 	}
 	
+	// Applies the model to all unknown samples
 	private void compute_std_models() {
 		this.std_models.clear();
 		for (String std: data_store.get_STDlist()) {
@@ -394,9 +437,10 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 				corr.refresh();
 			}
 		}
+		// Computes the model only if there are elements selected
 		if (this.selected_elements.size() != 0) {
 			computeSEs();
-			computeWMs();
+			compute_std_WMs();
 			compute_std_models();
 			compute_graph_model();
 			compute_unknown_WMs();
@@ -406,25 +450,22 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 	}
 
+	// This is called only if there are no elements chosen for a given model
 	private PointSet<DataStore> std_vs_std() {
-		SimpleRegression reg_obj = new SimpleRegression(true);
+		// We simply create a false model where all actual values are
+		// plotted against themselves
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
 		for (String std : data_store.get_STDlist()) {
 			if (data_store.get_raw_std_elem(std, element) != null) {
 				double x = data_store.get_raw_std_elem(std, element);
-				double y = data_store.get_raw_std_elem(std, element);
-				point_list.add(new Point(x, y));
-				reg_obj.addData(x, y);
+				point_list.add(new Point(x, x));
 			}
 		}
 		
 		model_points = new PointSet<DataStore>(point_list, SystemThemes.HIGHLIGHT, "Actual", "Actual", element.toString() + " No elem pairs", true);
-		double x_0 = reg_obj.getIntercept();
-		double x_1 = reg_obj.getSlope();
-		double r_2 = reg_obj.getRSquare();
 		
-		this.Equation = new EquationPlot(r_2, 1, x_0, x_1);
+		this.Equation = new EquationPlot(1, 1, 0, 1);
 		return model_points;
 	}
 	
@@ -450,7 +491,5 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		// TODO Auto-generated method stub
 		
 	}
-	
-	// More to come
 	
 }

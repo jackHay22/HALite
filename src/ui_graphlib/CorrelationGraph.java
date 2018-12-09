@@ -10,8 +10,10 @@ import ui_stdlib.SystemThemes;
 
 @SuppressWarnings("serial")
 public class CorrelationGraph extends ModelGraph {
-	//extends SystemPanel 
+	//extends ModelGraph 
 	
+	// Holds the CorrelationInfo object which contains the 
+	// data to be displayed on the graph.
 	private CorrelationInfo data_to_plot;
 	
 	public CorrelationGraph() {
@@ -22,6 +24,7 @@ public class CorrelationGraph extends ModelGraph {
 	public void refresh() {
 		// Once data store has these we can proceed
 		this.data_to_plot = data_store.get_correlation_info();
+		// These are the hash keys of the pointsets to plot in the graph
 		ArrayList<String> keys = new ArrayList<String>();
 		keys.add("standard");
 		keys.add("unknown");
@@ -33,10 +36,14 @@ public class CorrelationGraph extends ModelGraph {
 		super.set_datastore(datastore);
 	}
 
+	// Retrieves the data to be plotted from datastore, and 
+	// sets the associated fields within the graph and panels
 	private void refresh_data(ArrayList<String> keys) {
 		if (data_to_plot != null) {
 			this.data_sets = data_to_plot.get_data();
 			this.eqn = data_to_plot.get_equation();
+			// Tells us to look for pointsets with the hash keys from this
+			// array list
 			this.add_point_sets(keys);
 			this.graph.refresh();
 			set_labels();
@@ -46,6 +53,7 @@ public class CorrelationGraph extends ModelGraph {
 		}
 	}
 	
+	// Sets the labels on the graph panel
 	private void set_labels() {
 		String s = data_to_plot.get_primary().name();
 		this.graph.set_y_label(s);

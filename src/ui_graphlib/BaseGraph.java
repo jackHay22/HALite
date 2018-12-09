@@ -8,7 +8,6 @@ import ui_framework.Refreshable;
 @SuppressWarnings("serial")
 public class BaseGraph<Backend extends DataBackend> extends ui_framework.SystemPanel<Backend> {
 
-	
 	protected Backend data_store;
 	protected GraphPanel<Backend> graph;
 	protected GridBagConstraints constraints;
