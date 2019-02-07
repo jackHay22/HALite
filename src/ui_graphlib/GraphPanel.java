@@ -28,6 +28,8 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 	private VerticalPanel<Backend> y_label;
 	private PanelHeader<Backend> x_label;
 	
+	public boolean was_toggled = false;
+	
 	// The settings for the panels are held here
 	private GridBagConstraints constraints;
 	
@@ -284,8 +286,7 @@ public class GraphPanel<Backend extends DataBackend> extends ui_framework.System
 		if (distance_to_point < distance(draw_width, draw_height, 0, 0)*0.06) {
 			closest.toggle();
 			// For some reason the values don't toggle on a mouse click
-			this.data_store.calculated_vals_updated = true;
-			this.refresh();
+			//this.was_toggled = true;
 			data_store.notify_update();
 		}
 

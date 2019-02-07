@@ -17,6 +17,10 @@ public class Pair {
 		return this.r2;
 	}
 	
+	public void set_r2(Double d) {
+		this.r2 = d;
+	}
+	
 	public String toString() {
 		return element.toString() + ", " + r2;
 	}

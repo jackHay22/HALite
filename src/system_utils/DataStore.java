@@ -793,47 +793,11 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
-		ArrayList<Pair> pairs = new ArrayList<Pair>();
-		int elem_num = this.elem_num;
-		
-		ElementCorrelationInfo elem_corr = this.correlations.get(elem);
-		HashMap<Element, CorrelationInfo> all_corr = elem_corr.get_all_corr();
-		
-		// Listing of all elements
-		ArrayList<Element> elements = new ArrayList<Element>();
-		
-		for (Element elem_to_add : SystemThemes.use_for_r2) {
-			elements.add(elem_to_add);
-		}
-		
-		// Remove elem we are currently comparing to
-		elements.remove(elem);
-		
-		for (int i = 0; i < elements.size(); i++) {
-			CorrelationInfo corr = all_corr.get(elements.get(i));
-			if (corr == null) {
-				continue;
-			}
-			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
-			pairs.add(curr_pair);
-		}
-		
-		Collections.sort(pairs, new PairComparison());
-		
-		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
-		
-		// Remove all except elements with n highest r2 value
-		int j;
-		if (pairs.size() - elem_num > 0) {
-			j = pairs.size() - elem_num;
-		} else {
-			j = 0;
-		}
-		for (; j < pairs.size(); j++) {
-			n_pairs.add(0, pairs.get(j));
-		}
-		
-		return n_pairs;
+		return this.correlations.get(elem).get_top_n_r2_pairs(this.elem_num);
+	}
+	
+	public void swap_out_elem_in_r2(Element primary, Element to_hide, Element to_show) {
+		this.correlations.get(primary).swap_displayed_pairs(to_hide, to_show);
 	}
 	
 	public Double get_raw_unknown_elem(String sample, Element elem) {

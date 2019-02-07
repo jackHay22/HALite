@@ -10,6 +10,8 @@ import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializable {
 	private static final long serialVersionUID = 4;
@@ -41,6 +43,9 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	// of (actual, model) pairs
 	private PointSet<DataStore> model_points;
 	
+	// This is the order of the pairs displayed on the top left panel for the given primary element
+	private ArrayList<Pair> pairs_in_assoc_set;
+	
 	public ElementCorrelationInfo(Element element, HashMap<Element, CorrelationInfo> all_correlations) {
 		this.element = element;
 		this.all_correlations = all_correlations;
@@ -53,6 +58,72 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		this.standards_std_devs = new HashMap<String, Double>();
 		this.unknown_std_dev = new HashMap<String, Double>();
 		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
+		this.pairs_in_assoc_set = new ArrayList<Pair>();
+		create_new_r2_pairs();
+	}
+	
+	private void create_new_r2_pairs() {
+		ArrayList<Pair> pairs = new ArrayList<Pair>();
+		
+		// Listing of all elements
+		ArrayList<Element> elements = new ArrayList<Element>(Arrays.asList(Element.values()));
+		
+		// Remove element we are currently inside
+		elements.remove(this.element);
+		
+		for (int i = 0; i < elements.size(); i++) {
+			CorrelationInfo corr = all_correlations.get(elements.get(i));
+			if (corr == null) {
+				continue;
+			}
+			Pair curr_pair = new Pair(elements.get(i), corr.get_r2());
+			pairs.add(curr_pair);
+		}
+		
+		Collections.sort(pairs, new PairComparison());
+		
+		this.pairs_in_assoc_set = pairs;
+		
+	}
+	
+	private void update_r2_pairs() {
+		for (Pair p: this.pairs_in_assoc_set) {
+			p.set_r2(this.get_corr(p.get_elem()).get_r2());
+		}
+	}
+	
+	public void swap_displayed_pairs(Element currently_visable, Element to_show) {
+		if (to_show.equals(currently_visable)) {
+			return;
+		}
+		int first_pos = -1;
+		int to_swap = -1;
+		for (int i = 0; ; i++ ) {
+			if (first_pos == -1 && (this.pairs_in_assoc_set.get(i).get_elem().equals(currently_visable))) {
+				first_pos = i;
+			} else if (to_swap == -1 && this.pairs_in_assoc_set.get(i).get_elem().equals(to_show)) {
+				to_swap = i;
+			} else if (first_pos != to_swap) {
+				break;
+			}
+		}
+		Collections.swap(this.pairs_in_assoc_set, first_pos, to_swap);
+		return;
+	}
+	
+	public ArrayList<Pair> get_top_n_r2_pairs(Integer n) {
+		// Remove all except elements with n highest r2 value
+		ArrayList<Pair> n_pairs = new ArrayList<Pair>();
+		int j;
+		if (pairs_in_assoc_set.size() - n > 0) {
+			j = pairs_in_assoc_set.size() - n;
+		} else {
+			j = 0;
+		}
+		for (; j < pairs_in_assoc_set.size(); j++) {
+			n_pairs.add(0, pairs_in_assoc_set.get(j));
+		}
+		return pairs_in_assoc_set;
 	}
 	
 	// Tells the system whether or not to use a pair in the model
@@ -437,6 +508,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 				corr.refresh();
 			}
 		}
+		this.update_r2_pairs();
 		// Computes the model only if there are elements selected
 		if (this.selected_elements.size() != 0) {
 			computeSEs();

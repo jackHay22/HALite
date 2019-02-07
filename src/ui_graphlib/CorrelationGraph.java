@@ -16,6 +16,7 @@ public class CorrelationGraph extends ModelGraph {
 	// data to be displayed on the graph.
 	private CorrelationInfo data_to_plot;
 	
+	
 	public CorrelationGraph() {
 		super();
 	}
@@ -48,8 +49,13 @@ public class CorrelationGraph extends ModelGraph {
 			this.graph.refresh();
 			set_labels();
 			super.set_vals();
+			if (this.graph.was_toggled) {
+				this.data_store.calculated_vals_updated = true;
+				this.graph.was_toggled = false;
+			}
 			this.graph.refresh();
 			this.revalidate();
+
 		}
 	}
 	
