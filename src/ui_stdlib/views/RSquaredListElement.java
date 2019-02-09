@@ -16,6 +16,8 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private DataStore datastore;
 	private boolean backend_loaded = false;
 	private ArrayList<RSqrdAssocSet> graphical_associations;
+	private JComboBox<Element> more_elements_dropdown;
+	private Element current_secondary_selected = null;
 	
 	public RSquaredListElement() {
 		super();
@@ -33,6 +35,22 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		        if (backend_loaded) {
 		        	//element selection updated
 		        	datastore.notify_update();
+		        }
+		    }
+		});
+		
+		//create a dropdown for swapping elements
+		//TODO: use AnnotatedElement to display value
+		more_elements_dropdown = new JComboBox<Element>(Element.values());
+		more_elements_dropdown.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        if (backend_loaded && current_secondary_selected != null) {
+		        	//element selection updated
+		        	//datastore.notify_update();
+		        	
+		        	datastore.swap_out_elem_in_r2(get_current_selected(), 
+		        								  current_secondary_selected, 
+		        								  (Element) more_elements_dropdown.getSelectedItem());
 		        }
 		    }
 		});
@@ -65,6 +83,11 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 			
 			//get relevant information about selected vals from backend
 			secondary_selected = datastore.check_selected_rsqrd_assocs(current_elem_self, elem_temp);
+			if (secondary_selected) {
+				//keep track for swap
+				current_secondary_selected = elem_temp;
+			}
+			
 			secondary_value_selected = datastore.is_pair_value_selected(current_elem_self, elem_temp);
 			
 			temp_r2_set = new RSqrdAssocSet(current_elem_self, elem_temp, r2_temp, 
@@ -80,6 +103,8 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 			this.add(temp_r2_set.get_graphical_element());
 		}
 		
+		add(more_elements_dropdown);
+		
 		this.revalidate();
 	}
 	
@@ -88,6 +113,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		for (int i=0;i<graphical_associations.size();i++) {
 			remove(graphical_associations.get(i).get_graphical_element());
 		}
+		remove(more_elements_dropdown);
 	}
 	
 	private Element get_current_selected() {
@@ -109,6 +135,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		this.add(selection_dropdown);
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
+		more_elements_dropdown.setVisible(true);
 	}
 
 	@Override

@@ -123,7 +123,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		for (; j < pairs_in_assoc_set.size(); j++) {
 			n_pairs.add(0, pairs_in_assoc_set.get(j));
 		}
-		return pairs_in_assoc_set;
+		return n_pairs;
 	}
 	
 	// Tells the system whether or not to use a pair in the model
