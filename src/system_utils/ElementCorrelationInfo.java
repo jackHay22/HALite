@@ -98,13 +98,11 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 		int first_pos = -1;
 		int to_swap = -1;
-		for (int i = 0; ; i++ ) {
+		for (int i = 0; i < Element.values().length; i++ ) {
 			if (first_pos == -1 && (this.pairs_in_assoc_set.get(i).get_elem().equals(currently_visable))) {
 				first_pos = i;
 			} else if (to_swap == -1 && this.pairs_in_assoc_set.get(i).get_elem().equals(to_show)) {
 				to_swap = i;
-			} else if (first_pos != to_swap) {
-				break;
 			}
 		}
 		Collections.swap(this.pairs_in_assoc_set, first_pos, to_swap);
