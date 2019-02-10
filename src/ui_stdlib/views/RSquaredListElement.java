@@ -21,6 +21,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private JComboBox<Element> more_elements_dropdown;
 	private Element current_secondary_selected = null;
 	private ComponentSplitView swap_split_view;
+	private boolean can_swap = false;
 	
 	public RSquaredListElement() {
 		super();
@@ -43,6 +44,8 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		});
 		
 		JButton do_swap = new JButton("Swap");
+		//TODO disable when no secondary is selected
+		//do_swap.setEnabled(false);
 		do_swap.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded && current_secondary_selected != null) {

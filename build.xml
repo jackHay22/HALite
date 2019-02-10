@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project rock_analysis_interface">
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="${dir.buildfile}/.."/>
+    <property name="dir.jarfile" value="${dir.buildfile}/out"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/HALite.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="system_main.HALite"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="SplashScreen-Image" value="app/splash_screen.png"/>
+            </manifest>
+            <fileset dir="${dir.buildfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/commons-math3-3.6.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/pdfbox-app-2.0.12.jar"/>
+        </jar>
+    </target>
+</project>

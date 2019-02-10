@@ -1,10 +1,12 @@
 package ui_framework;
 
+import java.awt.SplashScreen;
 import javax.swing.UIManager;
 
 public class WindowLoader implements Runnable {
 	@Override
 	public void run() {
+		SplashScreen.getSplashScreen();
 		try{
 			//attempt to set native look and feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

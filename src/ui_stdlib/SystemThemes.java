@@ -32,8 +32,8 @@ public class SystemThemes {
 	public static final int DIALOG_WINDOW_WIDTH = 500;
 	public static final int DIALOG_WINDOW_HEIGHT = 350;
 	
-	public static final int MAIN_WINDOW_WIDTH = 1200;
-	public static final int MAIN_WINDOW_HEIGHT = 750;
+	public static final int MAIN_WINDOW_WIDTH = 1400;
+	public static final int MAIN_WINDOW_HEIGHT = 800;
 	
 	public static final int SCROLL_PANE_SPEED = 8;
 	
