@@ -4,6 +4,7 @@
     <property name="dir.workspace" value="${dir.buildfile}/.."/>
     <property name="dir.jarfile" value="${dir.buildfile}/out"/>
     <target name="create_run_jar">
+        <!-- <jvmarg value="-Xdock:icon=app/icon.png"/> -->
         <jar destfile="${dir.jarfile}/HALite.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="system_main.HALite"/>

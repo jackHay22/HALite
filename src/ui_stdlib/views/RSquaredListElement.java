@@ -18,10 +18,9 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private DataStore datastore;
 	private boolean backend_loaded = false;
 	private ArrayList<RSqrdAssocSet> graphical_associations;
-	private JComboBox<Element> more_elements_dropdown;
+	private JComboBox<Pair> more_elements_dropdown;
 	private Element current_secondary_selected = null;
 	private ComponentSplitView swap_split_view;
-	private boolean can_swap = false;
 	
 	public RSquaredListElement() {
 		super();
@@ -44,27 +43,28 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		});
 		
 		JButton do_swap = new JButton("Swap");
-		//TODO disable when no secondary is selected
-		//do_swap.setEnabled(false);
+
 		do_swap.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		        if (backend_loaded && current_secondary_selected != null) {
-		        	//element selection updated
-		        	//(Element) more_elements_dropdown.getSelectedItem());
-		        	//TODO set dropdown to prev
+
 		        	datastore.swap_out_elem_in_r2(get_current_selected(), 
 		        								  current_secondary_selected, 
-		        								  (Element) more_elements_dropdown.getSelectedItem());
-		        	more_elements_dropdown.setSelectedItem(current_secondary_selected);
+		        								  ((Pair) more_elements_dropdown.getSelectedItem()).get_elem());
+		        	
+		        	//look through pair list and determine pair to set selected
+		        	for (int i=0; i<more_elements_dropdown.getItemCount(); i++) {
+		        		if (current_secondary_selected == more_elements_dropdown.getItemAt(i).get_elem()) {
+		        			more_elements_dropdown.setSelectedIndex(i);
+		        			break;
+		        		}
+		        	}
 		        	//TODO: temporary
 		        	datastore.notify_update();
 		        }
 		    }
 		});
-		
-		//create a dropdown for swapping elements
-		//TODO: use AnnotatedElement to display value
-		more_elements_dropdown = new JComboBox<Element>(Element.values());
+		more_elements_dropdown = new JComboBox<Pair>();
 		
 		swap_split_view = new ComponentSplitView(more_elements_dropdown, do_swap);
 	}
@@ -137,6 +137,11 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	public void set_datastore(DataStore datastore) {
 		this.datastore = datastore;
 		this.backend_loaded = true;
+		ArrayList<Pair> elem_pairs = datastore.get_all_rsqrd_assoc(get_current_selected());
+
+		for (int i=0; i < elem_pairs.size(); i++) {
+			more_elements_dropdown.addItem(elem_pairs.get(i));
+		}
 	}
 
 	@Override
@@ -144,7 +149,8 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	}
 	
 	@Override
-	public void on_start() {
+	public void on_start() {	
+		
 		this.add(selection_dropdown);
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
