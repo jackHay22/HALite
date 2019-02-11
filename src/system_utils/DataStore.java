@@ -801,8 +801,10 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void swap_out_elem_in_r2(Element primary, Element to_hide, Element to_show) {
-		this.secondary = to_show;
-		this.correlations.get(primary).swap_displayed_pairs(to_hide, to_show);
+		if (this.primary == primary) {
+			this.secondary = to_show;
+			this.correlations.get(primary).swap_displayed_pairs(to_hide, to_show);
+		}
 	}
 	
 	public Double get_raw_unknown_elem(String sample, Element elem) {
