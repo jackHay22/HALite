@@ -792,6 +792,10 @@ public class DataStore extends DataBackend implements Serializable {
 		return d;
 	}
 	
+	public ArrayList<Pair> get_all_rsqrd_assoc(Element elem) {
+		return this.correlations.get(elem).get_top_n_r2_pairs(Element.values().length - 1);
+	}
+	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
 		return this.correlations.get(elem).get_top_n_r2_pairs(this.elem_num);
 	}
