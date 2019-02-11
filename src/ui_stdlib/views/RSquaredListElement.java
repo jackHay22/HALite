@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
@@ -38,6 +39,21 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		        if (backend_loaded) {
 		        	//element selection updated
 		        	datastore.notify_update();
+		        	
+		        	//clear current swap list
+		        	ArrayList<Pair> elem_pairs = datastore.get_all_rsqrd_assoc(get_current_selected());
+		        	
+		        	Pair[] temp = new Pair[elem_pairs.size()];
+		        	
+		        	for (int i=0; i<elem_pairs.size(); i++) {
+		        		temp[i] = elem_pairs.get(i);
+		        	}
+		        	
+		        	//prevents Combobox from disappearing when purged
+		        	DefaultComboBoxModel<Pair> model = new DefaultComboBoxModel<Pair>(temp);
+		        	more_elements_dropdown.setModel(model);
+
+		    		revalidate();
 		        }
 		    }
 		});
