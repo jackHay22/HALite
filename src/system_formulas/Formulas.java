@@ -2,6 +2,7 @@ package system_formulas;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Formulas {
 	public static void weighted_mean() {
@@ -27,6 +28,51 @@ public class Formulas {
 		}
 		Double mean = stats.getMean();
 		return mean;
+	}
+	
+	public static Double meadian_of_array(ArrayList<Double> points) {
+		ArrayList<Double> sorted_array = merge_sort(points);
+		int middle = sorted_array.size()/2;
+		if (sorted_array.size() % 2 == 0) {
+			return (sorted_array.get(middle) + sorted_array.get(middle - 1))/2;
+		} else {
+			return sorted_array.get(middle);
+		}
+	}
+	
+	private static ArrayList<Double> merge_sort(List<Double> points){
+		if (points.size() == 1 || points.size() == 0) {
+			return new ArrayList<Double>(points);
+		}
+		
+		List<Double> first_half = points.subList(0, points.size()/2);
+		List<Double> second_half = points.subList(points.size()/2, points.size());
+		
+		first_half = Formulas.merge_sort(first_half);
+		second_half = Formulas.merge_sort(second_half);
+		
+		int pos_in_first = 0;
+		int pos_in_second = 0;
+		
+		ArrayList<Double> merged = new ArrayList<Double>();
+		for (int i = 0; i < points.size(); i++) {
+			if (pos_in_first >= first_half.size()) {
+				merged.add(second_half.get(pos_in_second));
+				pos_in_second++;
+			} else if (pos_in_second >= second_half.size()) {
+				merged.add(first_half.get(pos_in_first));
+				pos_in_first++;
+			}
+			else if (first_half.get(pos_in_first) < second_half.get(pos_in_second)) {
+				merged.add(first_half.get(pos_in_first));
+				pos_in_first++;
+			} else {
+				merged.add(second_half.get(pos_in_second));
+				pos_in_second++;
+			}
+		}
+		
+		return merged;
 	}
 	
 	// Used in several statistical calculations

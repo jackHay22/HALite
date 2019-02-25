@@ -472,6 +472,10 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	public void remove_outliers_for_element() {
+		this.correlations.get(this.model_data_element).remove_outliers();
+	}
+	
 	// Return correlation according to specific element from DataStore 
 	public ElementCorrelationInfo get_correlations(Element elem) {
 		return this.correlations.get(elem);

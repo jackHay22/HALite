@@ -23,6 +23,9 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	
 	private DataStore data_store;
 	
+	// This tells us whether we should be removing outliers from the model in the bottom left automatically
+	private boolean rem_outliers = false;
+	
 	// These hold the relevant statistical and model data for this element
 	private HashMap<Element, Double> SEs;
 	private HashMap<String, Double> std_WMs;
@@ -149,7 +152,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			} else {
 				elems.remove(i);
 			}
-		// If no list exists, create is and add the offending element
+		// If no list exists, create it and add the offending element
 		} else {
 			elems = new ArrayList<Element>();
 			elems.add(0, e);
@@ -389,12 +392,14 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		// Cleared in case model elements have been changed 
 		unknown_WMs.clear();
 		for (String sample : data_store.get_unknown_list()) {
-			Double calculated = compute_unknown_WM(sample);
+			Double calculated = compute_unknown_WM(sample, rem_outliers);
 			if (calculated != null) {
 				unknown_WMs.put(sample, calculated);
 			}
 		}
 	}
+	
+	
 	
 	// Computes the wms for the standard samples
 	private void compute_std_WMs() {
@@ -409,7 +414,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	
 	
 	// This applies the model created using the standards to the unknown data
-	private Double compute_unknown_WM(String sample) {
+	private Double compute_unknown_WM(String sample, boolean outliers) {
 		double dividend = 0;
 		DescriptiveStatistics std_dev = new DescriptiveStatistics();
 		Double std_error_sum = 0.0;
@@ -417,10 +422,14 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		if (elems_to_avoid == null) {
 			elems_to_avoid = new ArrayList<Element>();
 		}
+		ArrayList<Pair> all_responses = new ArrayList<Pair>();
+		ArrayList<Double> all_resp_vals = new ArrayList<Double>();
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
 				Double response = elem_info.get_unknown_corr(sample);
 				if (response != null) {
+					all_responses.add(new Pair(elem_info.get_secondary(), response));
+					all_resp_vals.add(response);
 					std_dev.addValue(response);
 					dividend += (response * 1/this.getSE(elem_info.get_secondary()));
 					std_error_sum += 1/this.getSE(elem_info.get_secondary());
@@ -429,7 +438,29 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 		Double stdev = std_dev.getStandardDeviation();
 		this.unknown_std_dev.put(sample, stdev);
+		if (outliers) {
+			return remove_2std_outliers(sample, elems_to_avoid, stdev, outliers, all_responses, all_resp_vals);
+		}
 		return (dividend)/std_error_sum;
+	}
+	
+	private Double remove_2std_outliers(String sample, ArrayList<Element> elems_to_avoid, Double std_dev, boolean outliers, ArrayList<Pair> all_responses, ArrayList<Double> all_resp_vals) {
+		
+		Double median = Formulas.meadian_of_array(all_resp_vals);
+		Double upper = median + 2*std_dev;
+		Double lower = median - 2*std_dev;
+		outliers = false;
+		for(Pair d: all_responses) {
+			if (d.get_r2() < lower || d.get_r2() > upper) {
+				if (elems_to_avoid.indexOf(d.get_elem()) == -1) {
+					toggle_pair_for_model(sample, d.get_elem());
+					outliers = true;
+					break;
+				}
+			}
+		}
+		
+		return compute_unknown_WM(sample, outliers);
 	}
 	
 	// This applies the model to the standards to be displayed in the bottom left panel 
@@ -496,6 +527,13 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			Double d = compute_std_model(std);
 			this.std_models.put(std, d);
 		}
+	}
+	
+	public void remove_outliers() {
+		this.rem_outliers = true;
+		this.compute_unknown_WMs();
+		this.compute_unknown_models();
+		this.rem_outliers = false;
 	}
 	
 	@Override
