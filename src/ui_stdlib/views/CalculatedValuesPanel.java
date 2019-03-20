@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -107,12 +109,28 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel<DataStore> {
 		//format panel orientation through GB constraints
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.ipady = SystemThemes.HEADER_PADDING;
-		constraints.gridwidth = 3;
+		constraints.gridwidth = 2;
+		constraints.gridx = 0;
+		constraints.weightx = 1;
 		PanelHeader<DataStore> panel_header = new PanelHeader<DataStore>("Calculated Values: ", SystemThemes.MAIN);
+		JButton remove_outliers = new JButton("Remove Outliers for Element");
+		
+		remove_outliers.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	datastore.remove_outliers_for_element();
+		    }
+		});
+		
 		panel_header.on_start();
 		
 		//add header label
 		add(panel_header, constraints);
+		
+		constraints.gridwidth = 1;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.weightx = 0;
+		add(remove_outliers, constraints);
 		
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
@@ -125,6 +143,7 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel<DataStore> {
 		constraints.gridy = 1;
 		constraints.gridx = 1;
 		constraints.weightx = 1;
+		constraints.gridwidth = 2;
 		add(header, constraints);
 		
 		//set subpanels of header crossbar
@@ -132,11 +151,13 @@ public class CalculatedValuesPanel extends ui_framework.SystemPanel<DataStore> {
 		header.on_start();
 		
 		constraints.gridx = 2;
-		constraints.weightx = 0;
+		constraints.weightx = 0.1;
+		constraints.gridwidth = 1;
 		
 		//add label to far right to align header with scrollable section
+		//TODO fix this formatting issue
 		JLabel format_placeholder = new JLabel("");
-		format_placeholder.setMinimumSize(new Dimension(8, 10));
+		format_placeholder.setMinimumSize(new Dimension(30, 10));
 		add(format_placeholder, constraints);
 
 		constraints.gridwidth = 3;
