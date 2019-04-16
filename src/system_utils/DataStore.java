@@ -473,6 +473,7 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void remove_outliers_for_element() {
+		this.calculated_vals_updated = true;
 		this.correlations.get(this.model_data_element).remove_outliers();
 	}
 	

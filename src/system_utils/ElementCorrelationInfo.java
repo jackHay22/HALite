@@ -438,7 +438,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		}
 		Double stdev = std_dev.getStandardDeviation();
 		this.unknown_std_dev.put(sample, stdev);
-		if (outliers) {
+		if (outliers && !all_resp_vals.isEmpty()) {
 			return remove_2std_outliers(sample, elems_to_avoid, stdev, outliers, all_responses, all_resp_vals);
 		}
 		return (dividend)/std_error_sum;
@@ -530,10 +530,13 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	}
 	
 	public void remove_outliers() {
-		this.rem_outliers = true;
-		this.compute_unknown_WMs();
-		this.compute_unknown_models();
-		this.rem_outliers = false;
+		if (!this.selected_elements.isEmpty()) {
+			this.rem_outliers = true;
+			this.compute_unknown_WMs();
+			this.compute_unknown_models();
+			this.rem_outliers = false;
+			this.data_store.notify_update();
+		}
 	}
 	
 	@Override
