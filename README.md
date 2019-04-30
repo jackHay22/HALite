@@ -1,6 +1,6 @@
 # HALite geochemical analysis interface
 
-## NOTE: this is a deprecated version of HALite, not the active development branch.
+## NOTE: this is a (stable) unsupported version of HALite, not the active development branch.
 
 ## About
 HALite is a geochemical analysis tool created by the Hamilton College Geoscience department, the Hamilton Analytical Laboratory, and the Hamilton College Computer Science department.
