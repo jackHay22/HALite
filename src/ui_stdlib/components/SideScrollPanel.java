@@ -17,7 +17,7 @@ public class SideScrollPanel extends ui_framework.SystemPanel<DataStore> {
 		horiz_scrollable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		horiz_scrollable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		
-		horiz_scrollable.setPreferredSize(new Dimension(100, 70));
+		horiz_scrollable.setPreferredSize(new Dimension(width, height));
 		
 		//graphical
 		horiz_scrollable.setBackground(SystemThemes.MAIN);

@@ -196,7 +196,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		
 		constraints.gridx = 1;
 		constraints.weightx = 1;
-		add(scrollable_pair_panel.get_horiz_scrollable(this.getWidth(), this.getHeight()), constraints);
+		add(scrollable_pair_panel.get_horiz_scrollable(100,70), constraints);
 		
 		constraints.gridx = 2;
 		constraints.weightx = 0;
