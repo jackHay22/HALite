@@ -1,5 +1,7 @@
 package ui_stdlib.views;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -9,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
+import ui_stdlib.SystemThemes;
 import ui_stdlib.components.ComponentSplitView;
+import ui_stdlib.components.SideScrollPanel;
 import system_utils.Element;
 import system_utils.Pair;
 
@@ -23,12 +27,18 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private Element current_secondary_selected = null;
 	private ComponentSplitView swap_split_view;
 	
+	private GridBagConstraints constraints;
+	
+	private SideScrollPanel scrollable_pair_panel;
+	
 	public RSquaredListElement() {
 		super();
 		graphical_associations = new ArrayList<RSqrdAssocSet>();
 		
+		scrollable_pair_panel = new SideScrollPanel();
+		
 		//set layout manager
-		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		this.setLayout(new GridBagLayout());
 
 		//create a combo box for element values
 		selection_dropdown = new JComboBox<Element>(Element.values());
@@ -129,10 +139,12 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 			graphical_associations.add(temp_r2_set);
 			
 			//get graphical component of assoc set elem
-			this.add(temp_r2_set.get_graphical_element());
+			scrollable_pair_panel.add(temp_r2_set.get_graphical_element());
 		}
 		
-		add(swap_split_view);
+		constraints.gridx = 2;
+		constraints.weightx = 0;
+		add(swap_split_view, constraints);
 		
 		this.revalidate();
 	}
@@ -140,7 +152,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	private void graphical_clean() {
 		//clean graphical elements currently displayed
 		for (int i=0;i<graphical_associations.size();i++) {
-			remove(graphical_associations.get(i).get_graphical_element());
+			scrollable_pair_panel.remove(graphical_associations.get(i).get_graphical_element());
 		}
 		remove(swap_split_view);
 	}
@@ -166,11 +178,28 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	
 	@Override
 	public void on_start() {	
+		constraints = SystemThemes.get_grid_constraints();
+		constraints.anchor = GridBagConstraints.NORTH;
 		
-		this.add(selection_dropdown);
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridy = 0;
+		constraints.gridx = 0;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 0;
+		
+		this.add(selection_dropdown, constraints);
+		
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
 		more_elements_dropdown.setVisible(true);
+		
+		constraints.gridx = 1;
+		constraints.weightx = 1;
+		add(scrollable_pair_panel.get_horiz_scrollable(this.getWidth(), this.getHeight()), constraints);
+		
+		constraints.gridx = 2;
+		constraints.weightx = 0;
 	}
 
 	@Override

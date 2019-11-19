@@ -17,13 +17,14 @@ import ui_stdlib.components.PanelHeader;
 public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	private ListingSet<RSquaredListElement> r_sqrd_list;
 	private DataStore data_store;
-	private int display_rsqrd_assocs = 9; //-1 
+	private int display_rsqrd_assocs = 8; //-1 
 	private JScrollPane pane;
 	
 	public R2SettingsPanel() {
 		super();
 		
 		//create a new listing set on the RSQRD element type (this is a scrollable list of elements with add/sub buttons
+		
 		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
 	}
 	
@@ -77,7 +78,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		PanelHeader<DataStore> header = new PanelHeader<DataStore>(SystemThemes.superscript("R2 Entries to display: "), SystemThemes.MAIN);
 
 		//add dropdown for rsqrd entries to display
-		header.add(get_rsqrd_dropdown(10));
+		header.add(get_rsqrd_dropdown(SystemThemes.RSQRD_ASSOCS));
 		this.add(header, constraints);
 		header.on_start();
 		
