@@ -54,6 +54,10 @@ public class EquationPlot implements Serializable {
 		return degree;
 	}
 	
+	public double get_coeff(int i) {
+		return this.coefficients.get(i);
+	}
+	
 	// Provides a string representation of the equation
 	public String get_str_rep() {
 
