@@ -1,6 +1,8 @@
 package system_utils;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import system_formulas.Formulas;
@@ -8,6 +10,7 @@ import ui_framework.Refreshable;
 import ui_graphlib.Point;
 import ui_graphlib.PointSet;
 import ui_stdlib.SystemThemes;
+import system_graph_search.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +66,19 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		this.pairs_to_avoid = new HashMap<String, ArrayList<Element>>();
 		this.pairs_in_assoc_set = new ArrayList<Pair>();
 		create_new_r2_pairs();
+	}
+	
+	public void set_selected_elements(ArrayList<Element> elems) {
+		ArrayList<Element> to_rem = new ArrayList<>();
+		for (CorrelationInfo c : this.selected_elements) {
+			to_rem.add(c.get_secondary());
+		}
+		for (Element e : to_rem) {
+			this.remove_selected(e);
+		}
+		for (Element elem : elems) {
+			this.add_selected(elem);
+		}
 	}
 	
 	private void create_new_r2_pairs() {
@@ -212,7 +228,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 			Double x = data_store.get_raw_std_elem(std, element);
 			Double y = this.std_models.get(std);
 			
-			if (y.isNaN() || y == null) {
+			if (y == null || y.isNaN()) {
 				y = x;
 			}
 			if (x != null && y != null) {
@@ -286,8 +302,10 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	// requested by the UI
 	public void add_selected(Element secondary) {
 		CorrelationInfo corr = this.all_correlations.get(secondary);
-		corr.toggle();
-		this.selected_elements.add(corr);
+		if (corr != null) {
+			corr.toggle();
+			this.selected_elements.add(corr);	
+		}
 	}
 	
 	public void remove_selected(Element secondary) {

@@ -1,19 +1,23 @@
 package system_utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.IndexOutOfBoundsException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import system_graph_search.*;
 import system_utils.io_tools.CSVParser;
 import system_utils.io_tools.DataExporter;
 import system_utils.io_tools.MeansCSVParser;
@@ -472,6 +476,109 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
+	
+	
+	
+	
+	private double eqValue(EquationPlot e) {
+		return (e.get_r2() - 0.01 * Math.abs(e.get_coeff(1) - 1));
+	}
+	
+	public HashMap<Element, UndirectedGraph> make_graphs() {
+		Double minWeight = 0.8;
+		HashMap<Element, UndirectedGraph> graphs = new HashMap<>();
+		
+		// For each ElementCorrelationInfo in this.correlations we need to look at every other ElementCorrelationInfo
+		// to make one initial graph with all elements and the edges between each node and the r2 values
+		UndirectedGraph graph = new UndirectedGraph();
+		ElementCorrelationInfo[] temp_corrs = this.correlations.values().toArray(new ElementCorrelationInfo[0]);
+		
+		for (int i = 0; i < temp_corrs.length; i++) {
+			ElementCorrelationInfo ocorr = temp_corrs[i];
+			WeightedVertex vertex = new WeightedVertex(ocorr.get_element().toString());
+			graph.addVertex(vertex);
+		}
+		
+		for (int i = 0; i < temp_corrs.length; i++) {
+			ElementCorrelationInfo ocorr = temp_corrs[i];
+			WeightedVertex wvo = graph.getVertex(ocorr.get_element().toString());
+			for (int j = i+1; j < temp_corrs.length; j++) {
+				ElementCorrelationInfo icorr = temp_corrs[j];
+				if (ocorr.get_all_corr().get(icorr.get_element()) != null) {
+					WeightedVertex wvi = graph.getVertex(icorr.get_element().toString());
+					graph.addEdge(wvo, wvi);
+					graph.getEdge(wvo, wvi).addProperty("weight", ocorr.get_all_corr().get(icorr.get_element()).get_r2());
+				}
+			
+			}
+		}
+				
+		// Then, for each element we make a copy of the graph, set all node weights to be the r2 value for that 
+		// node and the target element, remove the target element from the graph, and add to the graphs map
+		for (int i = 0; i < temp_corrs.length; i++) {
+			ElementCorrelationInfo ocorr = temp_corrs[i];
+
+			UndirectedGraph elGraph = graph.copy();
+			elGraph.removeVertex(elGraph.getVertex(ocorr.get_element().toString()));
+			for (WeightedVertex wv: elGraph.getVertices()) {
+				if (ocorr.get_corr(Element.valueOf(wv.getName())) != null) {
+					wv.addProperty("weight", ocorr.get_corr(Element.valueOf(wv.getName())).get_r2());
+				}
+			}
+			elGraph.removeWeightedEdges("weight", minWeight);
+			elGraph.removeWeightedVertices("weight", minWeight);
+			
+			if (elGraph.getVertices().size() == 0) {
+				continue;
+			}
+			
+			Set<Set<WeightedVertex>> subgraphs = CliqueAlgorithm.kPlexPLS(elGraph, 8);
+			
+			Set<WeightedVertex> best = new HashSet<>();
+			double best_score = 0.0;
+			
+			for (Set<WeightedVertex> sg: subgraphs) {
+				
+				ArrayList<Element> elems = new ArrayList<>();
+				for (WeightedVertex v: sg) {
+					elems.add(Element.valueOf(v.getName()));
+				}
+				ocorr.set_selected_elements(elems);
+				ocorr.refresh();
+				double cand = eqValue(ocorr.get_equation());
+				
+//				System.out.println(SystemThemes.get_display_number(best_score, "#.00000") + " " + SystemThemes.get_display_number(cand, "#.00000") + " " + ocorr.get_selected().size());
+				if (cand > best_score && sg.size() > 0) {
+					best = sg;
+					best_score = cand;
+				}
+			}
+			ArrayList<Element> elems = new ArrayList<>();
+//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(100 * best_score, "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
+			for (WeightedVertex v: best) {
+				elems.add(Element.valueOf(v.getName()));
+				System.out.print(v.getName() + " ");
+			}
+//			System.out.println();
+			ocorr.set_selected_elements(elems);
+			ocorr.refresh();
+//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(ocorr.get_equation().get_r2(), "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
+
+			graphs.put(ocorr.get_element(), elGraph);
+
+		}
+		
+		
+		// We could also run the algo right here, and set the selected_elements for each ElemenetCorrelationInfo,
+		// allowing us to call the "export" method right away to get our results
+		
+		return graphs;
+	}
+	
+	
+	
+	
+	
 	public void remove_outliers_for_element() {
 		this.calculated_vals_updated = true;
 		this.correlations.get(this.model_data_element).remove_outliers();
@@ -499,7 +606,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		reader = testreader.get_resources_input(means);
 		boolean means_loaded = example_add_component_filepath(reader, means, "means");
-		
+		make_graphs();
 		return xrf_loaded && standards_loaded && means_loaded;
 	}
 	

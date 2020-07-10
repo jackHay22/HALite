@@ -1,8 +1,8 @@
 package system_graph_search;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.lang.Math;
-import system_utils.*;
 
 
 public class CliqueAlgorithm {
@@ -114,7 +114,7 @@ public class CliqueAlgorithm {
 
         // Include below
         //  && swaps < swapLimit
-        while (allCliques.size() < (n*n*2 ) && iterations < 500) {
+        while (allCliques.size() < (n*n ) && iterations < 3000) {
             iterations += 1;
             boolean u = true;
             boolean p = true;
@@ -259,6 +259,14 @@ public class CliqueAlgorithm {
 //                System.out.println(k);
             }
             lastCount = graphCount;
+            if (k < 0) {
+            	for (Entry<String, Integer> e : appearances.entrySet()) {
+            		System.out.print("{" + e.getKey() + ": " + e.getValue() + "}, ");
+            	}
+            	System.out.println();
+            } else if (k < 7 && k > 1) {
+            	System.out.println("k " + Integer.toString(k));
+            }
 
         }
 
@@ -267,9 +275,21 @@ public class CliqueAlgorithm {
 
     public static Double getCurrentSGValue(UndirectedGraph graph, Set<WeightedVertex> subgraph) {
     	
+    	Double total = 0.0;
     	
-    	
-    	return 0.0;
+    	for (WeightedVertex wv: subgraph) {
+    		if (wv != null && wv.getProperty("weight") != null) {
+    			total += (Double)(wv.getProperty("weight"));
+    		}
+    	}
+//    	for (WeightedVertex wv: subgraph) {
+//    		for (WeightedVertex wvi: subgraph) {
+//    			if (graph.getEdge(wv, wvi) != null && graph.getEdge(wv, wvi).getProperty("weight") != null) {
+//            		total += (Double)(graph.getEdge(wv, wvi).getProperty("weight"));
+//    			}
+//        	}
+//    	}
+    	return total/Math.log(subgraph.size());
     }
     
     /*

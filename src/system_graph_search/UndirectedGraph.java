@@ -1,6 +1,7 @@
 package system_graph_search;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author fschmidt
@@ -69,12 +70,12 @@ public class UndirectedGraph {
         return null;
     }
 
-    public void removeWeightedEdges(String key, double maxWeight) {
+    public void removeWeightedEdges(String key, double minWeight) {
         Iterator<WeightedEdge> edgeIter = edges.iterator();
         while (edgeIter.hasNext()) {
             WeightedEdge e = edgeIter.next();
             Double weight = (Double) e.getProperty(key);
-            if (Double.isNaN(weight) || Math.abs(weight) > maxWeight || Math.abs(weight) < -maxWeight) {
+            if (Double.isNaN(weight) || Math.abs(weight) < minWeight ) {
                 e.remove();
                 edgeIter.remove();
             }
@@ -174,6 +175,20 @@ public class UndirectedGraph {
         return null;
     }
 
+    public void removeWeightedVertices(String key, Double minValue) {
+    	ArrayList<WeightedVertex> wvs = new ArrayList<>();
+    	for (Entry<String, WeightedVertex> e : vertices.entrySet()) {
+
+            Double weight = (Double) e.getValue().getProperty(key);
+    		if (weight == null || Double.isNaN(weight) || weight < minValue) {
+    			wvs.add(e.getValue());
+    		}
+    	}
+    	for (WeightedVertex wv : wvs) {
+    		this.removeVertex(wv);
+    	}
+    }
+    
     public void removeVertex(WeightedVertex vertex) {
         edges.removeIf(e -> e.getVertex1().equals(vertex) || e.getVertex2().equals(vertex));
         vertices.remove(vertex.getName());
