@@ -11,12 +11,6 @@ public class CliqueAlgorithm {
         Set<Set<WeightedVertex>> allCliques = new HashSet<>();
         Set<WeightedVertex> graphsVertices = new HashSet<>(graph.getVertices());
 
-//        List<String> sglist = Arrays.asList("Ash","AlcalinityOfAsh","Proanthocyanins","ColorIntensity","OD280","Proline");
-//        Set<WeightedVertex> sg = new HashSet<>();
-//        for (String node : sglist) {
-//            System.out.println(graph.getVertex(node));
-//            sg.add(graph.getVertex(node));
-//        }
 //        Integer k = 0;
 //        while (!isKPlex(sg, k)) {
 //            k += 1;
@@ -114,7 +108,7 @@ public class CliqueAlgorithm {
 
         // Include below
         //  && swaps < swapLimit
-        while (allCliques.size() < (n*n ) && iterations < 3000) {
+        while (allCliques.size() < (n*n*2) && iterations < 3000) {
             iterations += 1;
             boolean u = true;
             boolean p = true;
@@ -259,14 +253,6 @@ public class CliqueAlgorithm {
 //                System.out.println(k);
             }
             lastCount = graphCount;
-            if (k < 0) {
-            	for (Entry<String, Integer> e : appearances.entrySet()) {
-            		System.out.print("{" + e.getKey() + ": " + e.getValue() + "}, ");
-            	}
-            	System.out.println();
-            } else if (k < 7 && k > 1) {
-            	System.out.println("k " + Integer.toString(k));
-            }
 
         }
 

@@ -143,6 +143,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		return n_pairs;
 	}
 	
+	public Double get_top_percent_threshold(Double percent) {
+		if (this.pairs_in_assoc_set.size() == 0) {
+			return 0.0;
+		}
+		
+		int pos = (int)(pairs_in_assoc_set.size() * percent);
+		
+		return this.pairs_in_assoc_set.get(pos).get_r2();
+	}
+	
 	// Tells the system whether or not to use a pair in the model
 	public boolean not_in_model(String s, Element e) {
 		ArrayList<Element> elems = this.pairs_to_avoid.get(s);

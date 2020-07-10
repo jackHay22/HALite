@@ -117,6 +117,7 @@ public class NewDialog extends SystemDialog implements ui_framework.ScheduledSta
 			public void actionPerformed(ActionEvent e) {
 				remove(continue_button);
 				main_window.on_scheduled(backend);
+				backend.make_graphs();
 				close_dialog();
 			}
         }); 

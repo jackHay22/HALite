@@ -485,7 +485,10 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public HashMap<Element, UndirectedGraph> make_graphs() {
-		Double minWeight = 0.8;
+		HashMap<Element, Double> minWeights = new HashMap<>();
+		Double percentThreshold = 0.8;
+		
+		
 		HashMap<Element, UndirectedGraph> graphs = new HashMap<>();
 		
 		// For each ElementCorrelationInfo in this.correlations we need to look at every other ElementCorrelationInfo
@@ -497,7 +500,16 @@ public class DataStore extends DataBackend implements Serializable {
 			ElementCorrelationInfo ocorr = temp_corrs[i];
 			WeightedVertex vertex = new WeightedVertex(ocorr.get_element().toString());
 			graph.addVertex(vertex);
+			minWeights.put(ocorr.get_element(), ocorr.get_top_percent_threshold(percentThreshold));
 		}
+		Double minEdgeWeight = 0.0;
+		for (Double d : minWeights.values()) {
+			if (!Double.isNaN(d)) {
+				minEdgeWeight += d;
+			}
+		}
+		
+		minEdgeWeight = minEdgeWeight / minWeights.size();
 		
 		for (int i = 0; i < temp_corrs.length; i++) {
 			ElementCorrelationInfo ocorr = temp_corrs[i];
@@ -525,8 +537,8 @@ public class DataStore extends DataBackend implements Serializable {
 					wv.addProperty("weight", ocorr.get_corr(Element.valueOf(wv.getName())).get_r2());
 				}
 			}
-			elGraph.removeWeightedEdges("weight", minWeight);
-			elGraph.removeWeightedVertices("weight", minWeight);
+			elGraph.removeWeightedEdges("weight", minEdgeWeight);
+			elGraph.removeWeightedVertices("weight", minWeights.get(ocorr.get_element()));
 			
 			if (elGraph.getVertices().size() == 0) {
 				continue;
@@ -555,20 +567,27 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 			ArrayList<Element> elems = new ArrayList<>();
 //			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(100 * best_score, "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
+			Integer k = 0;
+	        while (!system_graph_search.CliqueAlgorithm.isKPlex(best, k)) {
+	            k += 1;
+	        }
+	        System.out.print(ocorr.get_element().toString() + " Subgraph kplex k:" + Integer.toString(k));
 			for (WeightedVertex v: best) {
 				elems.add(Element.valueOf(v.getName()));
-				System.out.print(v.getName() + " ");
+				System.out.print(" " + v.getName());
 			}
+			System.out.println();
 //			System.out.println();
 			ocorr.set_selected_elements(elems);
 			ocorr.refresh();
 //			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(ocorr.get_equation().get_r2(), "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
-
+			
 			graphs.put(ocorr.get_element(), elGraph);
 
 		}
 		
-		
+		System.out.println(minWeights);
+		System.out.println(minEdgeWeight);
 		// We could also run the algo right here, and set the selected_elements for each ElemenetCorrelationInfo,
 		// allowing us to call the "export" method right away to get our results
 		
