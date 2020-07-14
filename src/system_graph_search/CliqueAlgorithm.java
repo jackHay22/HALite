@@ -103,12 +103,12 @@ public class CliqueAlgorithm {
         int graphCount;
         int sgSize = subgraph.size();
 
-        int swaps = 0;
-        int swapLimit = (int) (1000 * (Math.log(n)/ Math.log(10)));
+//        int swaps = 0;
+//        int swapLimit = (int) (1000 * (Math.log(n)/ Math.log(10)));
 
         // Include below
         //  && swaps < swapLimit
-        while (allCliques.size() < (n*n*2) && iterations < 3000) {
+        while (allCliques.size() < (n*n*.5) && iterations < 100) {
             iterations += 1;
             boolean u = true;
             boolean p = true;
@@ -131,7 +131,7 @@ public class CliqueAlgorithm {
                 }
                 Set<WeightedVertex> sg = new HashSet<>(subgraph);
                 allCliques.add(sg);
-                swaps++;
+//                swaps++;
                 for (WeightedVertex wv : subgraph) {
                     appearances.put(wv.getName(), appearances.get(wv.getName()) + 1);
                 }
@@ -164,7 +164,7 @@ public class CliqueAlgorithm {
                 }
                 Set<WeightedVertex> sg = new HashSet<>(subgraph);
                 allCliques.add(sg);
-                swaps++;
+//                swaps++;
                 for (WeightedVertex wv : subgraph) {
                     appearances.put(wv.getName(), appearances.get(wv.getName()) + 1);
                 }
@@ -229,7 +229,7 @@ public class CliqueAlgorithm {
                 }
                 Set<WeightedVertex> sg = new HashSet<>(subgraph);
                 allCliques.add(sg);
-                swaps++;
+//                swaps++;
                 for (WeightedVertex wv : subgraph) {
                     appearances.put(wv.getName(), appearances.get(wv.getName()) + 1);
                 }

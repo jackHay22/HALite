@@ -476,12 +476,127 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 	}
 	
-	
+	private HashMap<Element, ArrayList<Element>> default_solns() {
+		ArrayList<Element> list;
+		HashMap<Element, ArrayList<Element>> solutions = new HashMap<Element, ArrayList<Element>>();
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Zr,Element.Hf,Element.Al,Element.Sr,Element.Ga,Element.Mn,Element.Fe));
+		solutions.put(Element.Dy, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Ti, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Si, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Al, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Fe, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Mn, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Mg, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Ca, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Na, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.K, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.P, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.As, list);
+		list = new ArrayList<>(Arrays.asList(Element.Sr,Element.Nd,Element.Ce,Element.La,Element.Sm,Element.Al,Element.Si,Element.Fe));
+		solutions.put(Element.Ba, list);
+		list = new ArrayList<>(Arrays.asList(Element.Al,Element.Fe,Element.Si,Element.Ba,Element.Rb,Element.K));
+		solutions.put(Element.Bi, list);
+		list = new ArrayList<>(Arrays.asList(Element.Sr,Element.La,Element.Nd,Element.Sm,Element.Ba,Element.Al,Element.Si,Element.Fe));
+		solutions.put(Element.Ce, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.V,Element.Ni,Element.Fe));
+		solutions.put(Element.Cr, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.W,Element.Ga,Element.Fe,Element.Rb,Element.Na));
+		solutions.put(Element.Cs, list);
+		list = new ArrayList<>(Arrays.asList(Element.V,Element.W,Element.Mg,Element.Fe,Element.Si,Element.Al));
+		solutions.put(Element.Cu, list);
+		list = new ArrayList<>(Arrays.asList(Element.Dy,Element.Y,Element.Zr,Element.Sm,Element.Al,Element.Si,Element.Hf,Element.Ga));
+		solutions.put(Element.Er, list);
+		list = new ArrayList<>(Arrays.asList(Element.Nd,Element.Ce,Element.La,Element.Sm,Element.Sr,Element.Ba,Element.Al,Element.Y,Element.Dy));
+		solutions.put(Element.Eu, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Ag, list);
+		list = new ArrayList<>(Arrays.asList(Element.Mg,Element.Ca));
+		solutions.put(Element.Cd, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Se, list);
+		list = new ArrayList<>(Arrays.asList());
+		solutions.put(Element.Ge, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Al,Element.Fe,Element.W,Element.Mn));
+		solutions.put(Element.Co, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Fe,Element.Ti,Element.Al,Element.Rb,Element.Y,Element.Mn));
+		solutions.put(Element.Ga, list);
+		list = new ArrayList<>(Arrays.asList(Element.Nd,Element.Y,Element.Zr,Element.Sr,Element.Sm,Element.Hf,Element.La,Element.Al));
+		solutions.put(Element.Gd, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Zr,Element.Nd,Element.Sm,Element.Dy,Element.Al));
+		solutions.put(Element.Hf, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Dy,Element.Sm,Element.Zr,Element.Hf,Element.Nd,Element.Al,Element.Ti));
+		solutions.put(Element.Ho, list);
+		list = new ArrayList<>(Arrays.asList(Element.Ce,Element.Nd,Element.Sm,Element.Ba,Element.Sr));
+		solutions.put(Element.La, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Dy,Element.Al,Element.Sm,Element.Zr,Element.Hf));
+		solutions.put(Element.Lu, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.La,Element.Ba,Element.Fe,Element.Ce));
+		solutions.put(Element.Mo, list);
+		list = new ArrayList<>(Arrays.asList(Element.Zr,Element.Hf,Element.La,Element.Na,Element.Nd,Element.Sm,Element.Y,Element.Al,Element.Fe,Element.Si));
+		solutions.put(Element.Nb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Ce,Element.La,Element.Sm,Element.Sr,Element.Ba,Element.Zr,Element.Al));
+		solutions.put(Element.Nd, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si));
+		solutions.put(Element.Ni, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Sm,Element.Ba,Element.Al,Element.Ce,Element.La,Element.Ti));
+		solutions.put(Element.Pb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Nd,Element.Ce,Element.La,Element.Sm,Element.Sr,Element.Ba,Element.Si,Element.Fe));
+		solutions.put(Element.Pr, list);
+		list = new ArrayList<>(Arrays.asList(Element.K,Element.Pb,Element.Ga,Element.Ba,Element.Fe,Element.Si,Element.Ce,Element.Nd));
+		solutions.put(Element.Rb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Sr,Element.Al,Element.Fe,Element.Y,Element.W,Element.Pb));
+		solutions.put(Element.Sb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Y,Element.Ga,Element.Al,Element.Zr));
+		solutions.put(Element.Sc, list);
+		list = new ArrayList<>(Arrays.asList(Element.Ce,Element.Nd,Element.La,Element.Ba,Element.Zr,Element.Y));
+		solutions.put(Element.Sm, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Zr,Element.La,Element.Nd,Element.Ce,Element.Ba,Element.Sm,Element.Fe,Element.Si));
+		solutions.put(Element.Sn, list);
+		list = new ArrayList<>(Arrays.asList(Element.Ba,Element.La,Element.Ce,Element.Al,Element.Nd,Element.Sm,Element.Si,Element.Fe));
+		solutions.put(Element.Sr, list);
+		list = new ArrayList<>(Arrays.asList(Element.La,Element.Ce,Element.Si,Element.Nd,Element.Fe,Element.Ba,Element.Zr,Element.Al,Element.Sm,Element.Sr));
+		solutions.put(Element.Ta, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Zr,Element.Al,Element.Ba,Element.Nd,Element.Sm,Element.Dy,Element.Sr,Element.Hf));
+		solutions.put(Element.Tb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.La,Element.Hf,Element.Nd,Element.Zr,Element.Sm,Element.Al,Element.Ce));
+		solutions.put(Element.Th, list);
+		list = new ArrayList<>(Arrays.asList(Element.P,Element.Si,Element.Y,Element.W,Element.Fe,Element.Rb));
+		solutions.put(Element.Tl, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Dy,Element.Zr,Element.Sr,Element.Hf,Element.Sm,Element.Nd,Element.Al));
+		solutions.put(Element.Tm, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Fe,Element.Rb,Element.Ce,Element.Nb,Element.Ti,Element.Al));
+		solutions.put(Element.U, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Ga,Element.Fe,Element.Ti,Element.Mg));
+		solutions.put(Element.V, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Al));
+		solutions.put(Element.W, list);
+		list = new ArrayList<>(Arrays.asList(Element.Zr,Element.Hf,Element.Al,Element.Sr,Element.Dy,Element.Sm,Element.Ti,Element.Nd));
+		solutions.put(Element.Y, list);
+		list = new ArrayList<>(Arrays.asList(Element.Y,Element.Zr,Element.Hf,Element.Al,Element.Dy,Element.Ti,Element.Fe,Element.Sm,Element.Sr,Element.Nd));
+		solutions.put(Element.Yb, list);
+		list = new ArrayList<>(Arrays.asList(Element.Si,Element.Mn,Element.Al,Element.Ga,Element.Sr,Element.Ce,Element.Fe,Element.Nd,Element.Na));
+		solutions.put(Element.Zn, list);
+		list = new ArrayList<>(Arrays.asList(Element.Hf,Element.Y,Element.Dy,Element.Al,Element.Sm,Element.Ga,Element.Fe,Element.Mn,Element.Nb));
+		solutions.put(Element.Zr, list);
+		
+		return solutions;
+	}
 	
 	
 	
 	private double eqValue(EquationPlot e) {
-		return (e.get_r2() - 0.01 * Math.abs(e.get_coeff(1) - 1));
+		return (e.get_r2() - 0.005 * Math.abs(e.get_coeff(1) - 1));
 	}
 	
 	public HashMap<Element, UndirectedGraph> make_graphs() {
@@ -490,6 +605,10 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		
 		HashMap<Element, UndirectedGraph> graphs = new HashMap<>();
+		
+		HashMap<Element, ArrayList<Element>> solns = default_solns();
+//		
+//		return graphs;
 		
 		// For each ElementCorrelationInfo in this.correlations we need to look at every other ElementCorrelationInfo
 		// to make one initial graph with all elements and the edges between each node and the r2 values
@@ -544,42 +663,62 @@ public class DataStore extends DataBackend implements Serializable {
 				continue;
 			}
 			
-			Set<Set<WeightedVertex>> subgraphs = CliqueAlgorithm.kPlexPLS(elGraph, 8);
+			long start = System.nanoTime();
+			
+			Set<Set<WeightedVertex>> subgraphs = new HashSet<>();
+//			Set<Set<WeightedVertex>> subgraphs = CliqueAlgorithm.kPlexPLS(elGraph, 8);
+//			Set<Set<WeightedVertex>> subgraphs = CliqueAlgorithm.bronKerboschPivoting(elGraph);
+			
+			long kPlexRuntime = System.nanoTime() - start;
+			start = System.nanoTime();
 			
 			Set<WeightedVertex> best = new HashSet<>();
 			double best_score = 0.0;
 			
-			for (Set<WeightedVertex> sg: subgraphs) {
-				
-				ArrayList<Element> elems = new ArrayList<>();
-				for (WeightedVertex v: sg) {
-					elems.add(Element.valueOf(v.getName()));
-				}
-				ocorr.set_selected_elements(elems);
-				ocorr.refresh();
-				double cand = eqValue(ocorr.get_equation());
-				
-//				System.out.println(SystemThemes.get_display_number(best_score, "#.00000") + " " + SystemThemes.get_display_number(cand, "#.00000") + " " + ocorr.get_selected().size());
-				if (cand > best_score && sg.size() > 0) {
-					best = sg;
-					best_score = cand;
-				}
+			for (Element e : solns.get(ocorr.get_element())) {
+				best.add(graph.getVertex(e.toString()));
 			}
+			
+//			for (Set<WeightedVertex> sg: subgraphs) {
+//				
+//				ArrayList<Element> elems = new ArrayList<>();
+//				for (WeightedVertex v: sg) {
+//					elems.add(Element.valueOf(v.getName()));
+//				}
+//				ocorr.set_selected_elements(elems);
+//				ocorr.refresh();
+//				double cand = eqValue(ocorr.get_equation()) * Math.pow(sg.size(), 1.5);
+//				
+////				System.out.println(SystemThemes.get_display_number(best_score, "#.00000") + " " + SystemThemes.get_display_number(cand, "#.00000") + " " + ocorr.get_selected().size());
+//				if (cand > best_score && sg.size() > 0) {
+//					best = sg;
+//					best_score = cand;
+//				}
+//			}
+			long choiceTime = System.nanoTime() - start;
+			
 			ArrayList<Element> elems = new ArrayList<>();
 //			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(100 * best_score, "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
 			Integer k = 0;
 	        while (!system_graph_search.CliqueAlgorithm.isKPlex(best, k)) {
 	            k += 1;
 	        }
-	        System.out.print(ocorr.get_element().toString() + " Subgraph kplex k:" + Integer.toString(k));
+	        String res = "";
+	        res += ocorr.get_element().toString() + ", ";
 			for (WeightedVertex v: best) {
 				elems.add(Element.valueOf(v.getName()));
-				System.out.print(" " + v.getName());
+				res += " " + v.getName();
 			}
-			System.out.println();
-//			System.out.println();
+
 			ocorr.set_selected_elements(elems);
 			ocorr.refresh();
+			
+			res += ", " + Double.toString(ocorr.get_equation().get_r2()) + ", " + Double.toString(ocorr.get_equation().get_coeff(1)); 
+			res += ", " + Integer.toString(best.size()) + ", " + String.valueOf(kPlexRuntime/1000000) + ", " + String.valueOf(choiceTime/1000000);
+			res += ", " + Integer.toString(k);
+			res += ", " + Integer.toString(subgraphs.size());
+			System.out.println(res);
+//			System.out.println();
 //			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(ocorr.get_equation().get_r2(), "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
 			
 			graphs.put(ocorr.get_element(), elGraph);
