@@ -108,7 +108,7 @@ public class CliqueAlgorithm {
 
         // Include below
         //  && swaps < swapLimit
-        while (allCliques.size() < (n*n*.5) && iterations < 100) {
+        while (allCliques.size() < (n*n*0.5) && iterations < 100) {
             iterations += 1;
             boolean u = true;
             boolean p = true;
