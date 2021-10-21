@@ -144,7 +144,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		
 		constraints.gridx = 2;
 		constraints.weightx = 0;
-		add(swap_split_view, constraints);
+		add(more_elements_dropdown, constraints);
 		
 		this.revalidate();
 	}
@@ -154,7 +154,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		for (int i=0;i<graphical_associations.size();i++) {
 			scrollable_pair_panel.remove(graphical_associations.get(i).get_graphical_element());
 		}
-		remove(swap_split_view);
+		remove(more_elements_dropdown);
 	}
 	
 	private Element get_current_selected() {
@@ -192,7 +192,7 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		
 		this.setVisible(true);
 		selection_dropdown.setVisible(true);
-		more_elements_dropdown.setVisible(true);
+		more_elements_dropdown.setVisible(false);
 		
 		constraints.gridx = 1;
 		constraints.weightx = 1;

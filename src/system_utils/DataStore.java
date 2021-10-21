@@ -1,12 +1,13 @@
 package system_utils;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;  // Import the IOException class to handle errors
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.IndexOutOfBoundsException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class DataStore extends DataBackend implements Serializable {
 		for (Entry<TableKey, Data> entry : stds_map.entrySet()) {
 			ArrayList<Double> d = entry.getValue().get_data();
 			if (d.isEmpty()) {
-				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected.").show_dialog();
+				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected. Error in standards/means relationship.").show_dialog();
 				return false;
 			}
 		}
@@ -104,9 +105,10 @@ public class DataStore extends DataBackend implements Serializable {
 		// Iterate through unknowns data and check if Data objects are empty
 		Map<TableKey, Data> unk_map = unknown_means_data.get_data();
 		for (Entry<TableKey, Data> entry : unk_map.entrySet()) {
+			System.out.println(entry.getValue().get_data().toString());
 			ArrayList<Double> d = entry.getValue().get_data();
 			if (d.isEmpty()) {
-				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected.").show_dialog();
+				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected. Error in XRF/means relationship.").show_dialog();
 				return false;
 			}
 		}
@@ -643,88 +645,115 @@ public class DataStore extends DataBackend implements Serializable {
 			
 			}
 		}
-				
-		// Then, for each element we make a copy of the graph, set all node weights to be the r2 value for that 
-		// node and the target element, remove the target element from the graph, and add to the graphs map
-		for (int i = 0; i < temp_corrs.length; i++) {
-			ElementCorrelationInfo ocorr = temp_corrs[i];
-
-			UndirectedGraph elGraph = graph.copy();
-			elGraph.removeVertex(elGraph.getVertex(ocorr.get_element().toString()));
-			for (WeightedVertex wv: elGraph.getVertices()) {
-				if (ocorr.get_corr(Element.valueOf(wv.getName())) != null) {
-					wv.addProperty("weight", ocorr.get_corr(Element.valueOf(wv.getName())).get_r2());
-				}
-			}
-			elGraph.removeWeightedEdges("weight", minEdgeWeight);
-			elGraph.removeWeightedVertices("weight", minWeights.get(ocorr.get_element()));
-			
-			if (elGraph.getVertices().size() == 0) {
-				continue;
-			}
-			
-			long start = System.nanoTime();
-			
-			Set<Set<WeightedVertex>> subgraphs = new HashSet<>();
-//			subgraphs = CliqueAlgorithm.kPlexPLS(elGraph, 8);
-			subgraphs = CliqueAlgorithm.bronKerboschPivoting(elGraph);
-			
-			long kPlexRuntime = System.nanoTime() - start;
-			start = System.nanoTime();
-			
-			Set<WeightedVertex> best = new HashSet<>();
-			double best_score = 0.0;
-			
-//			for (Element e : solns.get(ocorr.get_element())) {
-//				best.add(graph.getVertex(e.toString()));
-//			}
-			
-			for (Set<WeightedVertex> sg: subgraphs) {
-				
-				ArrayList<Element> elems = new ArrayList<>();
-				for (WeightedVertex v: sg) {
-					elems.add(Element.valueOf(v.getName()));
-				}
-				ocorr.set_selected_elements(elems);
-				ocorr.refresh();
-				double cand = eqValue(ocorr.get_equation()) * Math.pow(1.5, sg.size());
-				
-//				System.out.println(SystemThemes.get_display_number(best_score, "#.00000") + " " + SystemThemes.get_display_number(cand, "#.00000") + " " + ocorr.get_selected().size());
-				if (cand > best_score && sg.size() > 0) {
-					best = sg;
-					best_score = cand;
-				}
-			}
-			long choiceTime = System.nanoTime() - start;
-			
-			ArrayList<Element> elems = new ArrayList<>();
-//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(100 * best_score, "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
-			Integer k = 0;
-	        while (!system_graph_search.CliqueAlgorithm.isKPlex(best, k)) {
-	            k += 1;
-	        }
-	        String res = "";
-	        res += ocorr.get_element().toString() + ", ";
-			for (WeightedVertex v: best) {
-				elems.add(Element.valueOf(v.getName()));
-				res += " " + v.getName();
-			}
-
-			ocorr.set_selected_elements(elems);
-			ocorr.refresh();
-			
-			res += ", " + Double.toString(ocorr.get_equation().get_r2()) + ", " + Double.toString(ocorr.get_equation().get_coeff(1)); 
-			res += ", " + Integer.toString(best.size()) + ", " + String.valueOf(kPlexRuntime/1000000) + ", " + String.valueOf(choiceTime/1000000);
-			res += ", " + Integer.toString(k);
-			res += ", " + Integer.toString(subgraphs.size());
-			System.out.println(res);
-//			System.out.println();
-//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(ocorr.get_equation().get_r2(), "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
-			
-			graphs.put(ocorr.get_element(), elGraph);
-
-		}
 		
+		try {
+		      FileWriter myWriter = new FileWriter("halite_trials.csv");		      
+				
+			for (int seed = 1; seed < 31; seed += 33) {
+				for (int it = 100; it <= 500; it += 500) {
+					for (int expon = 2; expon <= 2; expon++) {
+						for (double coeff = 0.5; coeff <= 4; coeff = coeff * 2) {
+							if (!((coeff == 0.5 && it == 100) || (coeff == 4.0 && it == 500)) )
+							{
+								continue;
+							}
+							// Then, for each element we make a copy of the graph, set all node weights to be the r2 value for that 
+							// node and the target element, remove the target element from the graph, and add to the graphs map
+							for (int i = 0; i < temp_corrs.length; i++) {
+								ElementCorrelationInfo ocorr = temp_corrs[i];
+					
+								UndirectedGraph elGraph = graph.copy();
+								elGraph.removeVertex(elGraph.getVertex(ocorr.get_element().toString()));
+								for (WeightedVertex wv: elGraph.getVertices()) {
+									if (ocorr.get_corr(Element.valueOf(wv.getName())) != null) {
+										wv.addProperty("weight", ocorr.get_corr(Element.valueOf(wv.getName())).get_r2());
+									}
+								}
+								elGraph.removeWeightedEdges("weight", minEdgeWeight);
+								elGraph.removeWeightedVertices("weight", minWeights.get(ocorr.get_element()));
+								
+								if (elGraph.getVertices().size() == 0) {
+									continue;
+								}
+								
+								long start = System.nanoTime();
+								Set<Set<WeightedVertex>> subgraphs = new HashSet<>();
+								subgraphs = CliqueAlgorithm.kPlexPLS(elGraph, seed, it, coeff, expon);
+//								subgraphs = CliqueAlgorithm.bronKerboschPivoting(elGraph);
+								
+								long kPlexRuntime = System.nanoTime() - start;
+								start = System.nanoTime();
+								
+								Set<WeightedVertex> best = new HashSet<>();
+								double best_score = 0.0;
+								
+					//			for (Element e : solns.get(ocorr.get_element())) {
+					//				best.add(graph.getVertex(e.toString()));
+					//			}
+								
+								for (Set<WeightedVertex> sg: subgraphs) {
+									
+									ArrayList<Element> elems = new ArrayList<>();
+									for (WeightedVertex v: sg) {
+										elems.add(Element.valueOf(v.getName()));
+									}
+									ocorr.set_selected_elements(elems);
+									ocorr.refresh();
+									double cand = eqValue(ocorr.get_equation()) * Math.pow(1.5, sg.size());
+									
+					//				System.out.println(SystemThemes.get_display_number(best_score, "#.00000") + " " + SystemThemes.get_display_number(cand, "#.00000") + " " + ocorr.get_selected().size());
+									if (cand > best_score && sg.size() > 0) {
+										best = sg;
+										best_score = cand;
+									}
+								}
+								long choiceTime = System.nanoTime() - start;
+								
+								ArrayList<Element> elems = new ArrayList<>();
+					//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(100 * best_score, "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
+								Integer k = 0;
+						        while (!system_graph_search.CliqueAlgorithm.isKPlex(best, k)) {
+						            k += 1;
+						        }
+						        String res = Double.toString(coeff) + Integer.toString(it) + Integer.toString(expon) + ",";
+						        res += ocorr.get_element().toString() + ", ";
+								for (WeightedVertex v: best) {
+									elems.add(Element.valueOf(v.getName()));
+									res += " " + v.getName();
+								}
+					
+								ocorr.set_selected_elements(elems);
+								ocorr.refresh();
+								
+								res += ", " + Double.toString(ocorr.get_equation().get_r2()) + ", " + Double.toString(ocorr.get_equation().get_coeff(1)); 
+								res += ", " + Integer.toString(best.size()) + ", " + String.valueOf(kPlexRuntime/1000000) + ", " + String.valueOf(choiceTime/1000000);
+								res += ", " + Integer.toString(k);
+								res += ", " + Integer.toString(subgraphs.size());
+								System.out.println(res);
+								if (ocorr.get_element() == Element.Co) {
+									
+									System.out.println(elGraph.toString());									
+								}
+								
+
+								myWriter.write(res);
+								myWriter.write("\n");
+					//			System.out.println();
+					//			System.out.print(ocorr.get_element().toString() + " " + SystemThemes.get_display_number(ocorr.get_equation().get_r2(), "#.00000") + " " + Double.toString(best.size()) + " " + Integer.toString(subgraphs.size()) + " ");
+								
+								graphs.put(ocorr.get_element(), elGraph);
+	
+							}
+						}
+					}
+				}
+			}
+
+		      myWriter.close();
+	    } catch (IOException e) {
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	    }
 		System.out.println(minWeights);
 		System.out.println(minEdgeWeight);
 		// We could also run the algo right here, and set the selected_elements for each ElemenetCorrelationInfo,
@@ -764,7 +793,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		reader = testreader.get_resources_input(means);
 		boolean means_loaded = example_add_component_filepath(reader, means, "means");
-		make_graphs();
+//		make_graphs();
 		return xrf_loaded && standards_loaded && means_loaded;
 	}
 	
@@ -1067,7 +1096,9 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
-		return this.correlations.get(elem).get_top_n_r2_pairs(this.elem_num);
+		// This is a temporary fix to satisfy part of rick's request
+		//		return this.correlations.get(elem).get_top_n_r2_pairs(this.elem_num);
+		return this.correlations.get(elem).get_top_n_r2_pairs(Element.values().length - 1);
 	}
 	
 	public void swap_out_elem_in_r2(Element primary, Element to_hide, Element to_show) {

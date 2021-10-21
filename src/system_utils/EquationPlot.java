@@ -12,6 +12,7 @@ public class EquationPlot implements Serializable {
 	private int degree;
 	private ArrayList<Double> coefficients;
 	private double r2;
+	private Double rmse;
 
 	public EquationPlot(double r2, int degree, double... coefficients) {
 		// Enter the coefficients from x_0 ... x_n
@@ -21,6 +22,7 @@ public class EquationPlot implements Serializable {
 		}
 		this.r2 = r2;
 		this.degree = degree;
+		this.set_rmse(null);
 	}
 	
 	// Takes the inverse of the equation, but only if it is linear
@@ -68,6 +70,14 @@ public class EquationPlot implements Serializable {
 			s = s + "+ x" + SystemThemes.superscript(Integer.toString(i)) + "*" + df.format(coefficients.get(i));
 		}
 		return s;
+	}
+
+	public Double get_rmse() {
+		return rmse;
+	}
+
+	public void set_rmse(Double rmse) {
+		this.rmse = rmse;
 	}
 	
 }

@@ -47,7 +47,7 @@ public class WeightedVertex extends WeightedGraphElement {
 
     @Override
     public String toString() {
-        return  this.name + ", ";
+        return  this.name + ": " + this.getProperty("weight") + ", ";
     }
 
 //    @Override

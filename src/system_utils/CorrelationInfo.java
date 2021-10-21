@@ -58,7 +58,42 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		double x_1 = reg_obj.getSlope();
 		double r_2 = reg_obj.getRSquare();
 		
-		return new EquationPlot(r_2, 1, x_0, x_1);
+		EquationPlot new_eqn = new EquationPlot(r_2, 1, x_0, x_1);
+		new_eqn.set_rmse( Math.sqrt(reg_obj.getMeanSquareError()));
+		
+		return new_eqn;
+	}
+	
+	public void remove_n_outliers(int n) {
+		if (n <= 0) {
+			return;
+		}
+		ArrayList<Point> points = data_to_plot.get_standards().get_points();
+		int highest_index = -1;
+		double highest_value = -10.0;
+		for (int i = 0; i < points.size(); i++) {
+			Point point = points.get(i);
+			
+			if (point.in_use()) {
+				double pred_value = this.equation.get_y(point.get_x());
+				double diff = Math.abs(pred_value - point.get_y());
+				if (highest_value < diff && diff > this.equation.get_rmse()*2.5) {
+					highest_index = i;
+					highest_value = diff;
+				}
+			}
+		}
+		if (highest_index >= 0) {
+			points.get(highest_index).toggle();
+		}
+		// Recompute fits 
+		PointSet<DataStore> points_to_fit = data_to_plot.get_standards();
+		// Create the EquationPlot object of degree 1 with fit and r2 value to match
+		this.equation = compute_fit(points_to_fit);
+		
+		
+		// Make resursive call
+		this.remove_n_outliers(n-1);
 	}
 	
 	public void toggle() {

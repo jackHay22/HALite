@@ -7,7 +7,7 @@ import java.lang.Math;
 
 public class CliqueAlgorithm {
 
-    public static Set<Set<WeightedVertex>> kPlexPLS(UndirectedGraph graph, int seed) {
+    public static Set<Set<WeightedVertex>> kPlexPLS(UndirectedGraph graph, int seed, int iterations, double coeff, int base) {
         Set<Set<WeightedVertex>> allCliques = new HashSet<>();
         Set<WeightedVertex> graphsVertices = new HashSet<>(graph.getVertices());
 
@@ -17,7 +17,7 @@ public class CliqueAlgorithm {
 //        }
 //        System.out.println("Subgraph kplex k:" + Integer.toString(k));
 
-        runKplexPLS(graph, graphsVertices, allCliques, seed);
+        runKplexPLS(graph, graphsVertices, allCliques, seed, iterations, coeff, base);
 
         return allCliques;
     }
@@ -75,7 +75,7 @@ public class CliqueAlgorithm {
         }
     }
 
-    public static void runKplexPLS(UndirectedGraph fullGraph, Set<WeightedVertex> graph, Set<Set<WeightedVertex>> allCliques, int seed) {
+    public static void runKplexPLS(UndirectedGraph fullGraph, Set<WeightedVertex> graph, Set<Set<WeightedVertex>> allCliques, int seed, int max_iterations, double coeff, int expon) {
 
         // We're going to use this a couple of times
         Random rand = new Random();
@@ -102,13 +102,9 @@ public class CliqueAlgorithm {
         int lastCount = 0;
         int graphCount;
         int sgSize = subgraph.size();
-
-//        int swaps = 0;
-//        int swapLimit = (int) (1000 * (Math.log(n)/ Math.log(10)));
-
-        // Include below
-        //  && swaps < swapLimit
-        while (allCliques.size() < (n*n*0.5) && iterations < 100) {
+        double maxSolns = coeff * Math.pow(n, expon);
+        
+        while (allCliques.size() < maxSolns && iterations < max_iterations) {
             iterations += 1;
             boolean u = true;
             boolean p = true;
