@@ -49,6 +49,7 @@ public class SystemThemes {
 	public static final int CSV_DRIFT_CORRECTION = 4;
 	
 	public static final int RSQRD_ASSOCS = 20;
+	public static final int SENS_OUTLIERS_SIZE = 4;
 	
 	public static volatile boolean TRUNCATE_STDS_VALS = false;
 	

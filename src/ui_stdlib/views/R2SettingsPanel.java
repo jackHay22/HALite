@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
@@ -21,8 +23,6 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	
 	public R2SettingsPanel() {
 		super();
-		
-		//create a new listing set on the RSQRD element type (this is a scrollable list of elements with add/sub buttons
 		
 		r_sqrd_list = new RSquaredListElement();
 	}
@@ -43,7 +43,17 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 	}
 	
-	public JComboBox<String> get_rsqrd_dropdown(int size) {
+	private JButton get_auto_sel_button() {
+		JButton auto_sel_elems_button = new JButton("Auto-select Elements for Model");
+		auto_sel_elems_button.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	data_store.try_in_order_for_primary();
+		    }
+		});
+		return auto_sel_elems_button;
+	}
+	
+	private JComboBox<String> get_sens_outliers_dropdown(int size) {
 		//create a dropdown for rsqrd vals to display
 		
 		ArrayList<String> string_list = new ArrayList<String>();
@@ -52,16 +62,16 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		}
 		
 		//add backend action listener
-		JComboBox<String> rsqrd_total = new JComboBox<>(string_list.toArray(new String[0]));
-		rsqrd_total.addActionListener(new ActionListener () {
+		JComboBox<String> remove_outliers = new JComboBox<>(string_list.toArray(new String[0]));
+		remove_outliers.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	data_store.set_elem_num(Integer.valueOf((String)rsqrd_total.getSelectedItem()));
+		    	data_store.remove_n_outliers(Integer.valueOf((String)remove_outliers.getSelectedItem()));
 		    }
 		});
 		
-		//set default index (corresponds to value)
-		rsqrd_total.setSelectedIndex(display_rsqrd_assocs);
-		return rsqrd_total;
+		//set default index
+		remove_outliers.setSelectedIndex(0);
+		return remove_outliers;
 	}
 	
 	@Override
@@ -74,11 +84,12 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		constraints.ipady = SystemThemes.HEADER_PADDING;
 		
 		//add header label
-		PanelHeader<DataStore> header = new PanelHeader<DataStore>(SystemThemes.superscript("R2 Entries to display: "), SystemThemes.MAIN);
+		PanelHeader<DataStore> header = new PanelHeader<DataStore>("Remove Sensitivity Outliers", SystemThemes.MAIN);
 
 		//add dropdown for rsqrd entries to display
-		header.add(get_rsqrd_dropdown(SystemThemes.RSQRD_ASSOCS));
+		header.add(get_sens_outliers_dropdown(SystemThemes.SENS_OUTLIERS_SIZE));
 		this.add(header, constraints);
+		this.add(get_auto_sel_button(), constraints);
 		header.on_start();
 		
 		constraints.ipady = 0;
