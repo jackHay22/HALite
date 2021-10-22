@@ -18,8 +18,9 @@ import ui_stdlib.components.PanelHeader;
 public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	private RSquaredListElement r_sqrd_list;
 	private DataStore data_store;
-	private int display_rsqrd_assocs = 8; //-1 
 	private JScrollPane pane;
+	
+	private int sense_outliers_sel = 1;
 	
 	public R2SettingsPanel() {
 		super();
@@ -65,13 +66,23 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		JComboBox<String> remove_outliers = new JComboBox<>(string_list.toArray(new String[0]));
 		remove_outliers.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	data_store.remove_n_outliers(Integer.valueOf((String)remove_outliers.getSelectedItem()));
+		    	sense_outliers_sel = Integer.valueOf((String)remove_outliers.getSelectedItem());
 		    }
 		});
 		
 		//set default index
 		remove_outliers.setSelectedIndex(0);
 		return remove_outliers;
+	}
+	
+	private JButton get_sens_outliers_button() {
+		JButton sense_outliers_button = new JButton("Remove Outliers");
+		sense_outliers_button.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	data_store.remove_n_outliers(sense_outliers_sel);
+		    }
+		});
+		return sense_outliers_button;
 	}
 	
 	@Override
@@ -84,14 +95,16 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		constraints.ipady = SystemThemes.HEADER_PADDING;
 		
 		//add header label
-		PanelHeader<DataStore> header = new PanelHeader<DataStore>("Remove Sensitivity Outliers", SystemThemes.MAIN);
+		PanelHeader<DataStore> header = new PanelHeader<DataStore>("Sensitivity Outliers", SystemThemes.MAIN);
 
-		//add dropdown for rsqrd entries to display
+		//add dropdown for outliers count
 		header.add(get_sens_outliers_dropdown(SystemThemes.SENS_OUTLIERS_SIZE));
+		header.add(get_sens_outliers_button());
+		header.add(get_auto_sel_button());
 		this.add(header, constraints);
-		this.add(get_auto_sel_button(), constraints);
+
 		header.on_start();
-		
+
 		constraints.ipady = 0;
 		constraints.gridy = 1;
 		constraints.weighty = 1;
