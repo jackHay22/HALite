@@ -35,6 +35,8 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 		super();
 		graphical_associations = new ArrayList<RSqrdAssocSet>();
 		
+		constraints = SystemThemes.get_grid_constraints();
+		
 		scrollable_pair_panel = new SideScrollPanel();
 		
 		//set layout manager
@@ -178,7 +180,6 @@ public class RSquaredListElement extends ui_framework.ListingPanel<DataStore> {
 	
 	@Override
 	public void on_start() {	
-		constraints = SystemThemes.get_grid_constraints();
 		constraints.anchor = GridBagConstraints.NORTH;
 		
 		constraints.anchor = GridBagConstraints.WEST;

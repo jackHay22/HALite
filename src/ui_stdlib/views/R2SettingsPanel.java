@@ -10,12 +10,11 @@ import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
 import ui_stdlib.SystemThemes;
-import ui_stdlib.components.ListingSet;
 import ui_stdlib.components.PanelHeader;
 
 @SuppressWarnings("serial")
 public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
-	private ListingSet<RSquaredListElement> r_sqrd_list;
+	private RSquaredListElement r_sqrd_list;
 	private DataStore data_store;
 	private int display_rsqrd_assocs = 8; //-1 
 	private JScrollPane pane;
@@ -25,7 +24,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		
 		//create a new listing set on the RSQRD element type (this is a scrollable list of elements with add/sub buttons
 		
-		r_sqrd_list = new ListingSet<RSquaredListElement>(RSquaredListElement.class);
+		r_sqrd_list = new RSquaredListElement();
 	}
 	
 	@Override
