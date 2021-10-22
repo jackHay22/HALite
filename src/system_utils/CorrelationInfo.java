@@ -85,12 +85,13 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		}
 		if (highest_index >= 0) {
 			points.get(highest_index).toggle();
+			System.out.print("Remove: ");
+			System.out.println(this.secondary_element);
 		}
 		// Recompute fits 
 		PointSet<DataStore> points_to_fit = data_to_plot.get_standards();
 		// Create the EquationPlot object of degree 1 with fit and r2 value to match
 		this.equation = compute_fit(points_to_fit);
-		
 		
 		// Make resursive call
 		this.remove_n_outliers(n-1);

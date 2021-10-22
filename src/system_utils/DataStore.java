@@ -45,6 +45,7 @@ public class DataStore extends DataBackend implements Serializable {
 	private Element secondary;
 	
 	private Element model_data_element = Element.Hf;
+	private Element r2_list_element = Element.Dy;
 	
 	private ArrayList<DataTable> xrf_data;
 	private ArrayList<DataTable> standards_data;
@@ -105,7 +106,7 @@ public class DataStore extends DataBackend implements Serializable {
 		// Iterate through unknowns data and check if Data objects are empty
 		Map<TableKey, Data> unk_map = unknown_means_data.get_data();
 		for (Entry<TableKey, Data> entry : unk_map.entrySet()) {
-			System.out.println(entry.getValue().get_data().toString());
+//			System.out.println(entry.getValue().get_data().toString());
 			ArrayList<Double> d = entry.getValue().get_data();
 			if (d.isEmpty()) {
 				new ErrorDialog<DataStore>("File Import Error", "Unable to load selected files. Please check that the correct files were selected. Error in XRF/means relationship.").show_dialog();
@@ -234,8 +235,9 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void remove_n_outliers(int n) {
-		if (this.primary != null)
-			this.correlations.get(this.primary).remove_n_outliers(n);
+		if (this.r2_list_element != null)
+			this.correlations.get(this.r2_list_element).remove_n_outliers(n);
+		this.notify_update();
 	}
 	
 	public ArrayList<DataTable> all_tables(String label) {
@@ -608,7 +610,9 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void try_in_order_for_primary() {
-		try_in_order_for_element(this.primary);
+		try_in_order_for_element(this.r2_list_element);
+		this.notify_update();
+		this.set_model_data_element(this.r2_list_element);
 	}
 	
 	private void try_in_order_for_element(Element el) {
@@ -623,7 +627,7 @@ public class DataStore extends DataBackend implements Serializable {
 		ArrayList<Double> values = new ArrayList<Double>();
 		
 		for (Entry<Element, CorrelationInfo> inner_corr: corr.get_all_corr().entrySet()) {
-			if (inner_corr.getKey() == el) {
+			if (inner_corr.getKey() == el || inner_corr.getValue() == null) {
 				continue;
 			}
 			
@@ -654,7 +658,7 @@ public class DataStore extends DataBackend implements Serializable {
 			corr.refresh();
 			double cand = corr.get_equation().get_r2();
 			
-			if (cand >= last_r2) {
+			if (cand > last_r2) {
 				elems = new_elems;
 				last_r2 = cand;
 			}
@@ -1164,6 +1168,7 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public ArrayList<Pair> get_rsqrd_assoc_list(Element elem) {
+		this.r2_list_element = elem;
 		// This is a temporary fix to satisfy part of rick's request
 		//		return this.correlations.get(elem).get_top_n_r2_pairs(this.elem_num);
 		return this.correlations.get(elem).get_top_n_r2_pairs(Element.values().length - 1);
