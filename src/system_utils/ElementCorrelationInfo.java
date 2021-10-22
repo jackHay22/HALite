@@ -68,6 +68,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		create_new_r2_pairs();
 	}
 	
+	public void remove_n_outliers(int n) {
+		for (CorrelationInfo c : all_correlations.values()) {
+			if (c != null) {
+
+				c.remove_n_outliers(n);
+				
+			}
+		}
+	}
+	
 	public void set_selected_elements(ArrayList<Element> elems) {
 		ArrayList<Element> to_rem = new ArrayList<>();
 		for (CorrelationInfo c : this.selected_elements) {

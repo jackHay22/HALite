@@ -113,6 +113,7 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		
+		
 		return true;
 	}
 	
@@ -230,6 +231,10 @@ public class DataStore extends DataBackend implements Serializable {
 		}
 		
 		return false;
+	}
+	
+	public void remove_n_outliers(int n) {
+		this.correlations.get(this.primary).remove_n_outliers(n);
 	}
 	
 	public ArrayList<DataTable> all_tables(String label) {
@@ -436,6 +441,7 @@ public class DataStore extends DataBackend implements Serializable {
 		return set;
 	}
 	
+	
 	private void create_element_correlations() {
 		
 		// Listing of all elements
@@ -472,7 +478,6 @@ public class DataStore extends DataBackend implements Serializable {
 			// Create new element correlation info object
 			ElementCorrelationInfo elem_info = new ElementCorrelationInfo(x_elem, elem_corr);
 			elem_info.set_datastore(this);
-			
 			// Save correlations to object
 			this.correlations.put(x_elem, elem_info);
 		}
@@ -599,6 +604,68 @@ public class DataStore extends DataBackend implements Serializable {
 	
 	private double eqValue(EquationPlot e) {
 		return (e.get_r2() - 0.005 * Math.abs(e.get_coeff(1) - 1));
+	}
+	
+	public void try_in_order_for_primary() {
+		try_in_order_for_element(this.primary);
+	}
+	
+	private void try_in_order_for_element(Element el) {
+		ElementCorrelationInfo corr = this.correlations.get(el);
+		
+		if (corr == null) {
+			System.out.println("NULL");
+			return;
+		}
+
+		ArrayList<Element> elems_in_order = new ArrayList<Element>();
+		ArrayList<Double> values = new ArrayList<Double>();
+		
+		for (Entry<Element, CorrelationInfo> inner_corr: corr.get_all_corr().entrySet()) {
+			if (inner_corr.getKey() == el) {
+				continue;
+			}
+			
+			boolean found = false;
+			for (int i = 0; i < values.size(); i++) {
+				if (inner_corr.getValue().get_r2() > values.get(i)) {
+					values.add(i, inner_corr.getValue().get_r2());
+					elems_in_order.add(i, inner_corr.getKey());
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				values.add(inner_corr.getValue().get_r2());
+				elems_in_order.add(inner_corr.getKey());
+			}
+			
+		}
+		
+		Double last_r2 = -1.0;
+		ArrayList<Element> elems = new ArrayList<>();
+		for (Element e : elems_in_order) {
+			
+			ArrayList<Element> new_elems = (ArrayList<Element>) elems.clone();
+			new_elems.add(e);
+			
+			corr.set_selected_elements(new_elems);
+			corr.refresh();
+			double cand = corr.get_equation().get_r2();
+			
+			if (cand >= last_r2) {
+				elems = new_elems;
+				last_r2 = cand;
+			}
+		}
+		
+		for (Element e : elems) {
+			System.out.print(e);
+			System.out.print(", ");
+		}
+		
+		corr.set_selected_elements(elems);
+		corr.refresh();
 	}
 	
 	public HashMap<Element, UndirectedGraph> make_graphs() {
