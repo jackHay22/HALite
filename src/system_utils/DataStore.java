@@ -234,7 +234,8 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void remove_n_outliers(int n) {
-		this.correlations.get(this.primary).remove_n_outliers(n);
+		if (this.primary != null)
+			this.correlations.get(this.primary).remove_n_outliers(n);
 	}
 	
 	public ArrayList<DataTable> all_tables(String label) {
