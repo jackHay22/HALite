@@ -3,12 +3,10 @@ package system_utils;
 import java.io.BufferedReader;
 import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;  // Import the IOException class to handle errors
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.IndexOutOfBoundsException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +73,10 @@ public class DataStore extends DataBackend implements Serializable {
 		this.correlations = new HashMap<Element, ElementCorrelationInfo>();
 		
 		this.elem_num = 5;
+	}
+	
+	public void elim_highest_sensitivity() {
+		//TODO @ben
 	}
 	
 	// Reset standards data triggered from NewDialog

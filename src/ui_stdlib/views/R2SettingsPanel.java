@@ -44,8 +44,18 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 	}
 	
+	private JButton get_elim_highest_sensitivity() {
+		JButton auto_sel_elems_button = new JButton("Elim. Highest Sensitivity");
+		auto_sel_elems_button.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	data_store.elim_highest_sensitivity();
+		    }
+		});
+		return auto_sel_elems_button;
+	}
+	
 	private JButton get_auto_sel_button() {
-		JButton auto_sel_elems_button = new JButton("Auto-select Elements for Model");
+		JButton auto_sel_elems_button = new JButton("Auto-select Elements");
 		auto_sel_elems_button.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	data_store.try_in_order_for_primary();
@@ -101,6 +111,7 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		header.add(get_sens_outliers_dropdown(SystemThemes.SENS_OUTLIERS_SIZE));
 		header.add(get_sens_outliers_button());
 		header.add(get_auto_sel_button());
+		header.add(get_elim_highest_sensitivity());
 		this.add(header, constraints);
 
 		header.on_start();
