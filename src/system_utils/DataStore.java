@@ -76,7 +76,15 @@ public class DataStore extends DataBackend implements Serializable {
 	}
 	
 	public void elim_highest_sensitivity() {
-		//TODO @ben
+
+		if (primary == null || secondary == null) {
+			return;
+		}
+		
+		CorrelationInfo corr = correlations.get(primary).get_corr(secondary);
+		
+		corr.toggle_highest();
+		notify_update();
 	}
 	
 	// Reset standards data triggered from NewDialog

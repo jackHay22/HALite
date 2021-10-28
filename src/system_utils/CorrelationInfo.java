@@ -97,6 +97,17 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		this.remove_n_outliers(n-1);
 	}
 	
+	public void toggle_highest() {
+		ArrayList<Point> points = data_to_plot.get_standards().get_points();
+		Point highest = new Point(-1.0, -1.0);
+		for (int i = 0; i < points.size(); i++) {
+			if (points.get(i).get_x() > highest.get_x()) {
+				highest = points.get(i);
+			}
+		}
+		highest.toggle();
+	}
+	
 	public void toggle() {
 		this.use_in_wm = !this.use_in_wm;
 	}
