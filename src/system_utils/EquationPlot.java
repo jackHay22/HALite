@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import ui_stdlib.SystemThemes;
 
 public class EquationPlot implements Serializable {
-	private static final long serialVersionUID = 7;
+	private static final long serialVersionUID = 1;
 	private int degree;
 	private ArrayList<Double> coefficients;
 	private double r2;

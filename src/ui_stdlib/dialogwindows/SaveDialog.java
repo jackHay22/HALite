@@ -41,10 +41,10 @@ public class SaveDialog implements ScheduledState<DataStore> {
     		update_save_label(save_path);
     		
     		try {
-    			String datastore_save = ((DataStore) backend).toString();
+//    			String datastore_save = ((DataStore) backend).toString();
     			FileOutputStream file_write = new FileOutputStream(save_path + ".ds");
     			ObjectOutputStream objectOut = new ObjectOutputStream(file_write);
-    			objectOut.writeObject(datastore_save);
+    			objectOut.writeObject(backend);
     			objectOut.close();
     		} catch (Exception e) {
     			ErrorDialog<DataStore> err = new ErrorDialog<DataStore>("Save Error", "Unable to save project.");

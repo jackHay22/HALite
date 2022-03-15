@@ -1,8 +1,12 @@
 package system_utils;
 
 import ui_stdlib.SystemThemes;
+import java.io.Serializable;
 
-public class Pair {
+public class Pair implements Serializable {
+	
+	private static final long serialVersionUID = 1;
+	
 	private Element element;
 	private double r2;
 	private String truncate_mask = "#.000";

@@ -2,9 +2,11 @@ package system_utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class ElementReport {
+public class ElementReport implements Serializable {
 	
+	private static final long serialVersionUID = 1;
 	private Element elem;
 	private Integer length;
 	private ArrayList<Element> elements_used;

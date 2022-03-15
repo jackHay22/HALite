@@ -240,11 +240,13 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	
 	// Computes the best fit equation for the model points
 	public void compute_graph_model() {
+		
 		SimpleRegression reg_obj = new SimpleRegression(true);
 		ArrayList<Point> point_list = new ArrayList<Point>();
 		
 		// Adds all of the points to be used into the model
 		for (String std : data_store.get_STDlist()) {
+			
 			Double x = data_store.get_raw_std_elem(std, element);
 			Double y = this.std_models.get(std);
 			
@@ -264,6 +266,8 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		double r_2 = reg_obj.getRSquare();
 		
 		this.Equation = new EquationPlot(r_2, 1, x_0, x_1);
+		
+		
 		
 	}
 	
@@ -403,11 +407,19 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		ArrayList<Double> y_list = new ArrayList<Double>();
 		
 		for (DoublePair d : elem_values) {
+			Double x = d.get_x();
+			Double y = d.get_y();
+			if ((Double.isInfinite(x) || Double.isInfinite(y)) || (Double.isNaN(x) || Double.isNaN(y))) {
+				continue;
+			}
 			x_list.add(d.get_x());
 			y_list.add(d.get_y());
+			
 		}
 		// Uses the Formulas lib in this project
 		Double SE = Formulas.standard_error(x_list, y_list);
+
+		
 		return SE;
 	}
 	
@@ -510,11 +522,14 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		if (elems_to_avoid == null) {
 			elems_to_avoid = new ArrayList<Element>();
 		}
+		
 		// This loops the the elements selected for the model
 		for (CorrelationInfo elem_info : this.selected_elements) {
+			
 			// Checks that the element has not been marked to avoid in the model
 			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
 				Double response = elem_info.get_corr_result(std);
+				
 				// Gets the response value
 				if (response != null) {
 					std_dev.addValue(response);
@@ -527,6 +542,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		// Saves the std dev to use later
 		Double stdev = std_dev.getStandardDeviation();
 		this.standards_std_devs.put(std, stdev);
+		
 		return (dividend/std_error_sum);	
 		
 	}

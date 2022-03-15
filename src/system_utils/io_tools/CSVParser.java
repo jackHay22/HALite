@@ -173,7 +173,6 @@ public class CSVParser {
 		}
 		
 		table.put_info(new TableKey("Sample Names"), name_data);
-		
 		// Transpose the raw data and add to DataTable
 		for (int i = 1; i < raw_data.get(0).length; i++) {
 			
@@ -185,28 +184,31 @@ public class CSVParser {
 			TableKey current_column_name = new TableKey(col_name(column_names[i]));
 			
 			// Check if column contains Doubles
-			if (isNumeric(raw_data.get(1)[i])) {
+			
+			if (isNumeric(raw_data.get(1)[i]) || (raw_data.get(1)[i].equals("") && !raw_data.get(0)[i].equals(""))) {
+
 				ArrayList<Double> column_data = new ArrayList<Double>();
 				
 				for (int j = 1; j < raw_data.size(); j++) {
 					
 					Double entry;
 					
-					// If an entry is null in the raw CSV row, it replaces it will null
-					if (raw_data.get(j)[i].equals("")) {
+					// If an entry is null in the raw CSV row, it replaces it with null
+					if (raw_data.get(j).length <= i) {
 						entry = null;
-					}
-					else {
+					} else if (raw_data.get(j)[i].equals("")) {
+						entry = null;
+					} else {
 						// Otherwise, parses the double from string
 						entry = Double.parseDouble(raw_data.get(j)[i]);
 					}
 					// Adds the entry to the appropriate column
 					column_data.add(entry);
 				}
-				
 				// Adds every column to the transposed data
 				table.put_data(current_column_name, column_data);
 			}
+
 		}
 		
 		return table;

@@ -1,6 +1,9 @@
 package system_utils;
+import java.io.Serializable;
 
-public class DoublePair {
+public class DoublePair implements Serializable {
+	
+	private static final long serialVersionUID = 1;
 
 	private Double x;
 	private Double y;
