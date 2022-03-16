@@ -1327,4 +1327,16 @@ public class DataStore extends DataBackend implements Serializable {
 		set_save_path(path);
 		return true;
 	}
+	
+	@Override
+	public boolean import_element_choices(String file_path) {
+		//TODO import the element choices from path
+		return true;
+	}
+	
+	@Override
+	public boolean export_element_choices(String file_path) {
+		//TODO export the element choices to path
+		return true;
+	}
 }

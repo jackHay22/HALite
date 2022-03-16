@@ -62,4 +62,12 @@ public abstract class DataBackend implements Serializable {
 	public boolean on_export(String file_path, int export_type) {
 		return false;
 	}
+	
+	public boolean import_element_choices(String file_path) {
+		return false;
+	}
+	
+	public boolean export_element_choices(String file_path) {
+		return false;
+	}
 }

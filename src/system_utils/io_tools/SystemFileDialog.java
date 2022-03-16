@@ -83,8 +83,9 @@ public class SystemFileDialog<Backend extends DataBackend> {
 			return false;
 		}
 	}
+
 	
-	private String get_path(int mode) {
+	public String get_path(int mode) {
 		system_file_dialog.setMode(mode);
 		system_file_dialog.setVisible(true);
 		

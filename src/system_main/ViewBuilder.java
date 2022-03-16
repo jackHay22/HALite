@@ -1,6 +1,7 @@
 package system_main;
 
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -338,6 +339,7 @@ public class ViewBuilder {
 		file.add(open_new);
 		file.add(open_new_dc);
 		file.addSeparator();
+		file.addSeparator();
 		file.add(export);
 		file.add(export_analysis);
 		bar.add(file);
@@ -551,6 +553,43 @@ public class ViewBuilder {
 		export_submenu.add(export_calibration_graphs);
 		export_submenu.add(export_model_data);
 		export_submenu.add(export_detailed_data);
+		
+		JMenu element_choices = new JMenu("Element choices...");
+		
+		JMenuItem element_choices_import = new JMenuItem("Import");
+		element_choices_import.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//open dialog
+		    	if (window.datastore_set()) {
+		    		SystemFileDialog<DataStore> import_dialog = new SystemFileDialog<DataStore>(window, "Import", "csv");
+		    		
+		    		String abs_path = import_dialog.get_path(FileDialog.LOAD);
+		    		
+		    		if ((abs_path != null) && !window.get_datastore().import_element_choices(abs_path)) {
+		    			new ErrorDialog<DataStore>("Import Error", "Unable to import element choices").show_dialog();
+		    		}
+		    	}
+			}
+		});
+		
+		JMenuItem element_choices_export = new JMenuItem("Export");
+		element_choices_export.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//open dialog
+		    	if (window.datastore_set()) {
+		    		SystemFileDialog<DataStore> export_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
+		    		
+		    		String abs_path = export_dialog.get_path(FileDialog.SAVE);
+		    		
+		    		if ((abs_path != null) && !window.get_datastore().export_element_choices(abs_path)) {
+		    			new ErrorDialog<DataStore>("Export Error", "Unable to export element choices").show_dialog();
+		    		}
+		    	}
+			}
+		});
+		
+		element_choices.add(element_choices_import);
+		element_choices.add(element_choices_export);
 
 		file.add(open_new);
 		file.addSeparator();
@@ -559,6 +598,8 @@ public class ViewBuilder {
 		file.add(drift_correction);
 		file.addSeparator();
 		file.add(export_submenu);
+		file.addSeparator();
+		file.add(element_choices);
 		file.addSeparator();
 		file.add(save_as);
 		file.add(save);
@@ -569,6 +610,7 @@ public class ViewBuilder {
 				//on menu selected, determine if components enabled
 				boolean can_proceed = window.datastore_set();
 				export_submenu.setEnabled(can_proceed);
+				element_choices.setEnabled(can_proceed);
 				save_as.setEnabled(can_proceed);
 				save.setEnabled(can_proceed);
 			}
