@@ -6,8 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import system_utils.DataStore;
 import ui_framework.Refreshable;
@@ -44,8 +48,8 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 	public void add_refreshable(Refreshable<DataStore> refreshable_window) {
 	}
 	
-	private JButton get_elim_highest_sensitivity() {
-		JButton auto_sel_elems_button = new JButton("Elim. Highest Sensitivity");
+	private JMenuItem get_elim_highest_sensitivity() {
+		JMenuItem auto_sel_elems_button = new JMenuItem("Elim. Highest Sensitivity");
 		auto_sel_elems_button.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	data_store.elim_highest_sensitivity();
@@ -54,14 +58,27 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		return auto_sel_elems_button;
 	}
 	
-	private JButton get_auto_sel_button() {
-		JButton auto_sel_elems_button = new JButton("Auto-select Elements");
-		auto_sel_elems_button.addActionListener(new ActionListener () {
+	private JMenu get_auto_sel_submenu() {
+		JMenu auto_sel_submenu = new JMenu("Auto-select Elements...");
+		
+		JMenuItem all = new JMenuItem("All");
+		all.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	data_store.try_in_order_for_primary();
 		    }
 		});
-		return auto_sel_elems_button;
+		auto_sel_submenu.add(all);
+		
+		JMenuItem subset = new JMenuItem("Subset");
+		all.addActionListener(new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	//TODO using subset of elements
+		    	data_store.try_in_order_for_primary();
+		    }
+		});
+		auto_sel_submenu.add(subset);
+		
+		return auto_sel_submenu;
 	}
 	
 	private JComboBox<String> get_sens_outliers_dropdown(int size) {
@@ -85,8 +102,8 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		return remove_outliers;
 	}
 	
-	private JButton get_sens_outliers_button() {
-		JButton sense_outliers_button = new JButton("Remove Outliers");
+	private JMenuItem get_sens_outliers_button() {
+		JMenuItem sense_outliers_button = new JMenuItem("Remove Outliers");
 		sense_outliers_button.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	data_store.remove_n_outliers(sense_outliers_sel);
@@ -109,9 +126,20 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 
 		//add dropdown for outliers count
 		header.add(get_sens_outliers_dropdown(SystemThemes.SENS_OUTLIERS_SIZE));
-		header.add(get_sens_outliers_button());
-		header.add(get_auto_sel_button());
-		header.add(get_elim_highest_sensitivity());
+		
+		header.add(Box.createHorizontalStrut(50));
+		
+		JMenuBar actions_bar = new JMenuBar();
+		
+		//create the actions menu
+		JMenu actions_dropdown = new JMenu("Actions");
+		actions_bar.add(actions_dropdown);
+		
+		actions_dropdown.add(get_sens_outliers_button());
+		actions_dropdown.add(get_auto_sel_submenu());
+		actions_dropdown.add(get_elim_highest_sensitivity());
+		
+		header.add(actions_bar);
 		this.add(header, constraints);
 
 		header.on_start();
