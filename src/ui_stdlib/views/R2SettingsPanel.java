@@ -72,7 +72,6 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		JMenuItem subset = new JMenuItem("Subset");
 		subset.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	//TODO using subset of elements
 		    	data_store.try_in_order_for_primary(true);
 		    }
 		});

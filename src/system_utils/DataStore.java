@@ -1,6 +1,7 @@
 package system_utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;  // Import the IOException class to handle errors
 import java.io.ObjectOutputStream;
@@ -692,11 +693,6 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		
-//		for (Element e : elems) {
-//			System.out.print(e);
-//			System.out.print(", ");
-//		}
-		
 		corr.set_selected_elements(elems);
 		corr.refresh();
 	}
@@ -1346,12 +1342,69 @@ public class DataStore extends DataBackend implements Serializable {
 	@Override
 	public boolean import_element_choices(String file_path) {
 		//TODO import the element choices from path
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(file_path))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		        // process the line.
+		    	line = line.replaceAll("[\\n ]", "");
+		    	String[] elem_and_elems = line.split(":");
+		    	Element main_elem = Element.valueOf(elem_and_elems[0]);
+		    	ElementCorrelationInfo eci = correlations.get(main_elem);
+		    	for (String s : elem_and_elems[1].split(",")) {
+		    		eci.add_selected(Element.valueOf(s));
+		    	}
+		    }
+		} catch (Exception e) {
+			return false;
+		}
+		notify_update();
 		return true;
 	}
 	
 	@Override
 	public boolean export_element_choices(String file_path) {
 		//TODO export the element choices to path
+		// HashMap<Element, ElementCorrelationInfo> correlations
+		String model_string = "";
+		for (Element e : correlations.keySet()) {
+			ElementCorrelationInfo eci = correlations.get(e);
+			if (eci.get_selected_names().size() == 0) {
+				continue;
+			}
+			model_string = model_string + e.toString() + ":";
+			
+			for (Element inner_e : eci.get_selected_names()) {
+				model_string = model_string + inner_e.toString() + ",";
+			}
+			model_string = model_string.substring(0, model_string.length() - 1);
+			model_string = model_string + "\n";
+		}
+		
+		
+		BufferedWriter out = null;
+
+		try {
+		    FileWriter fstream = new FileWriter(file_path, false); //true tells to append data.
+		    out = new BufferedWriter(fstream);
+		    out.write(model_string);
+		}
+
+		catch (IOException e) {
+		    System.err.println("Error: " + e.getMessage());
+		    return false;
+		}
+
+		finally {
+		    if(out != null) {
+		        try {
+					out.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					return false;
+				}
+		    }
+		}
 		return true;
 	}
 }
