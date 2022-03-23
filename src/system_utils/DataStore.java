@@ -622,13 +622,19 @@ public class DataStore extends DataBackend implements Serializable {
 		return (e.get_r2() - 0.005 * Math.abs(e.get_coeff(1) - 1));
 	}
 	
-	public void try_in_order_for_primary() {
-		try_in_order_for_element(this.r2_list_element);
+	public void try_in_order_for_primary(boolean use_subset) {
+		try_in_order_for_element(this.r2_list_element, use_subset);
 		this.notify_update();
 		this.set_model_data_element(this.r2_list_element);
 	}
 	
-	private void try_in_order_for_element(Element el) {
+	private void try_in_order_for_element(Element el, boolean use_subset) {
+		
+		HashSet<Element> subset = new HashSet<Element>();
+		if (use_subset) {
+			subset = new HashSet<Element>(Arrays.asList(Element.Si, Element.Ti, Element.Al, Element.Fe, Element.Mn, Element.Mg, Element.Ca, Element.Na, Element.K, Element.P, Element.Ni, Element.Cr, Element.Sc, Element.V, Element.Cu, Element.Zn, Element.Ba, Element.Rb, Element.Sr, Element.Y, Element.Zr, Element.Nb, Element.La, Element.Ce, Element.Nd, Element.Th, Element.Pb));
+		}
+		
 		ElementCorrelationInfo corr = this.correlations.get(el);
 		
 		if (corr == null) {
@@ -638,6 +644,8 @@ public class DataStore extends DataBackend implements Serializable {
 
 		ArrayList<Element> elems_in_order = new ArrayList<Element>();
 		ArrayList<Double> values = new ArrayList<Double>();
+		
+		
 		
 		for (Entry<Element, CorrelationInfo> inner_corr: corr.get_all_corr().entrySet()) {
 			if (inner_corr.getKey() == el || inner_corr.getValue() == null) {
@@ -662,7 +670,14 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		Double last_r2 = -1.0;
 		ArrayList<Element> elems = new ArrayList<>();
+		
+		
+		
 		for (Element e : elems_in_order) {
+			if (use_subset && !subset.contains(e)) {
+				continue;
+			}
+
 			
 			ArrayList<Element> new_elems = (ArrayList<Element>) elems.clone();
 			new_elems.add(e);
@@ -677,10 +692,10 @@ public class DataStore extends DataBackend implements Serializable {
 			}
 		}
 		
-		for (Element e : elems) {
-			System.out.print(e);
-			System.out.print(", ");
-		}
+//		for (Element e : elems) {
+//			System.out.print(e);
+//			System.out.print(", ");
+//		}
 		
 		corr.set_selected_elements(elems);
 		corr.refresh();

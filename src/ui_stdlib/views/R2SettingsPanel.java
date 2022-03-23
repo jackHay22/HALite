@@ -64,16 +64,16 @@ public class R2SettingsPanel extends ui_framework.SystemPanel<DataStore>{
 		JMenuItem all = new JMenuItem("All");
 		all.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	data_store.try_in_order_for_primary();
+		    	data_store.try_in_order_for_primary(false);
 		    }
 		});
 		auto_sel_submenu.add(all);
 		
 		JMenuItem subset = new JMenuItem("Subset");
-		all.addActionListener(new ActionListener () {
+		subset.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	//TODO using subset of elements
-		    	data_store.try_in_order_for_primary();
+		    	data_store.try_in_order_for_primary(true);
 		    }
 		});
 		auto_sel_submenu.add(subset);
