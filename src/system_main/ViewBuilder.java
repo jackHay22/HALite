@@ -303,7 +303,7 @@ public class ViewBuilder {
 		close_window.addActionListener(new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 
-		    	//determine close bahavior for futue windows
+		    	//determine close behavior for future windows
 		    	if (OPEN_VIEWS > 1) {
 	    			OPEN_VIEWS--;
 		    		window.setVisible(false);
@@ -561,7 +561,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog
 		    	if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> import_dialog = new SystemFileDialog<DataStore>(window, "Import", "csv");
+		    		SystemFileDialog<DataStore> import_dialog = new SystemFileDialog<DataStore>(window, "Import", "HALiteELEMS");
 		    		
 		    		String abs_path = import_dialog.get_path(FileDialog.LOAD);
 		    		
@@ -577,7 +577,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog
 		    	if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> export_dialog = new SystemFileDialog<DataStore>(window, "Export", "csv");
+		    		SystemFileDialog<DataStore> export_dialog = new SystemFileDialog<DataStore>(window, "Export", "HALiteELEMS");
 		    		
 		    		String abs_path = export_dialog.get_path(FileDialog.SAVE);
 		    		
