@@ -561,7 +561,7 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog
 		    	if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> import_dialog = new SystemFileDialog<DataStore>(window, "Import", "HALiteELEMS");
+		    		SystemFileDialog<DataStore> import_dialog = new SystemFileDialog<DataStore>(window, "Import", "hle");
 		    		
 		    		String abs_path = import_dialog.get_path(FileDialog.LOAD);
 		    		
@@ -577,13 +577,13 @@ public class ViewBuilder {
 			public void actionPerformed(ActionEvent e) {
 				//open dialog
 		    	if (window.datastore_set()) {
-		    		SystemFileDialog<DataStore> export_dialog = new SystemFileDialog<DataStore>(window, "Export", "HALiteELEMS");
+		    		SystemFileDialog<DataStore> export_dialog = new SystemFileDialog<DataStore>(window, "Export", "hle");
 		    		
 		    		String abs_path = export_dialog.get_path(FileDialog.SAVE);
 		    		
 		    		//enforce the extension
-		    		if (!abs_path.endsWith(".HALiteELEMS")) {
-		    			abs_path += ".HALiteELEMS";
+		    		if (!abs_path.endsWith(".hle")) {
+		    			abs_path += ".hle";
 		    		}
 		    		
 		    		if ((abs_path != null) && !window.get_datastore().export_element_choices(abs_path)) {
