@@ -581,6 +581,11 @@ public class ViewBuilder {
 		    		
 		    		String abs_path = export_dialog.get_path(FileDialog.SAVE);
 		    		
+		    		//enforce the extension
+		    		if (!abs_path.endsWith(".HALiteELEMS")) {
+		    			abs_path += ".HALiteELEMS";
+		    		}
+		    		
 		    		if ((abs_path != null) && !window.get_datastore().export_element_choices(abs_path)) {
 		    			new ErrorDialog<DataStore>("Export Error", "Unable to export element choices").show_dialog();
 		    		}
