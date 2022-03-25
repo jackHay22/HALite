@@ -13,7 +13,7 @@ JAR_NAME="HALite.jar"
 
 build_native () {
     printf "${MOUNTAIN}  Building ${CYAN}${APP_NAME}${NC} app package...\n"
-    javapackager -deploy \
+    /Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/bin/javapackager -deploy \
       -native image \
       -nosign \
       -outdir out \
