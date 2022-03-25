@@ -1351,6 +1351,7 @@ public class DataStore extends DataBackend implements Serializable {
 		    	String[] elem_and_elems = line.split(":");
 		    	Element main_elem = Element.valueOf(elem_and_elems[0]);
 		    	ElementCorrelationInfo eci = correlations.get(main_elem);
+		    	eci.clear_selection();
 		    	for (String s : elem_and_elems[1].split(",")) {
 		    		eci.add_selected(Element.valueOf(s));
 		    	}

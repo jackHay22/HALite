@@ -318,8 +318,14 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 	}
 
 	public boolean is_selected(Element secondary) {
-		CorrelationInfo corr = this.all_correlations.get(secondary);
-		return corr.in_use();
+		if (this.all_correlations.containsKey(secondary)) {
+			CorrelationInfo corr = this.all_correlations.get(secondary);
+			if (corr == null) {
+				return false;
+			}
+			return corr.in_use();
+		}
+		return false;
 	}
 	
 	// These set methods are used by datastore to pass along changes
@@ -336,6 +342,16 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		CorrelationInfo corr = this.all_correlations.get(secondary);
 		corr.toggle();
 		this.selected_elements.remove(corr);
+	}
+	
+	public void clear_selection() {
+		for (Element e : Element.values()) {
+			if (is_selected(e)) {
+
+				remove_selected(e);
+
+			}
+		}
 	}
 	
 	public ArrayList<Element> get_selected_names() {
