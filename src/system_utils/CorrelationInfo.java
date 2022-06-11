@@ -33,7 +33,7 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 		this.equation = compute_fit(points_to_fit);
 		this.use_in_wm = false;
 	}
-	
+		
 	// Computes the best fit model for the standard model
 	private EquationPlot compute_fit(PointSet<DataStore> point_set) {
 		SimpleRegression reg_obj = new SimpleRegression(true);
@@ -105,7 +105,8 @@ public class CorrelationInfo implements Refreshable<DataStore>, Serializable {
 				highest = points.get(i);
 			}
 		}
-		highest.toggle();
+		if (highest.in_use())
+			highest.toggle();
 	}
 	
 	public void toggle() {

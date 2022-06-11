@@ -493,7 +493,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 		for (CorrelationInfo elem_info : this.selected_elements) {
 			if (elems_to_avoid.indexOf(elem_info.get_secondary()) == -1) {
 				Double response = elem_info.get_unknown_corr(sample);
-				if (response != null) {
+				if (response != null && response >= 0.0 && Double.isFinite(response)) {
 					all_responses.add(new Pair(elem_info.get_secondary(), response));
 					all_resp_vals.add(response);
 					std_dev.addValue(response);
@@ -547,7 +547,7 @@ public class ElementCorrelationInfo implements Refreshable<DataStore>, Serializa
 				Double response = elem_info.get_corr_result(std);
 				
 				// Gets the response value
-				if (response != null) {
+				if (response != null && response >= 0 && Double.isFinite(response)) {
 					std_dev.addValue(response);
 					// Weights the elements based on their standard error 
 					dividend += (response * 1/this.getSE(elem_info.get_secondary()));

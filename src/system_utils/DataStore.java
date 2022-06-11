@@ -85,9 +85,15 @@ public class DataStore extends DataBackend implements Serializable {
 			return;
 		}
 		
-		CorrelationInfo corr = correlations.get(primary).get_corr(secondary);
+		ElementCorrelationInfo elem_corr = correlations.get(primary);
 		
-		corr.toggle_highest();
+		for (CorrelationInfo corr : elem_corr.get_all_corr().values()) {
+			if (corr == null) {
+				System.out.println(corr);
+				continue;
+			}
+			corr.toggle_highest();	
+		}
 		notify_update();
 	}
 	
@@ -409,11 +415,13 @@ public class DataStore extends DataBackend implements Serializable {
 			if (pos < 0 || data_in_use.size() == 0) {
 				continue;
 			}
-			if (data_in_use.get(pos) == null || data_in_use.get(pos).isNaN()) {
+			if (data_in_use.get(pos) == null || data_in_use.get(pos).isNaN() || data_in_use.get(pos) <= 0.0) {
 				continue;
 			}
 			else {
 				double elem_standard = data_in_use.get(pos);
+				if (elem_standard < 0.000001)
+					System.out.println(Double.toString(elem_standard));
 				if (elem_standard != 0) {
 					coords.put(source_id, elem_cps / elem_standard);
 				}
@@ -633,7 +641,7 @@ public class DataStore extends DataBackend implements Serializable {
 		
 		HashSet<Element> subset = new HashSet<Element>();
 		if (use_subset) {
-			subset = new HashSet<Element>(Arrays.asList(Element.Si, Element.Ti, Element.Al, Element.Fe, Element.Mn, Element.Mg, Element.Ca, Element.Na, Element.K, Element.P, Element.Ni, Element.Cr, Element.Sc, Element.V, Element.Cu, Element.Zn, Element.Ba, Element.Rb, Element.Sr, Element.Y, Element.Zr, Element.Nb, Element.La, Element.Ce, Element.Nd, Element.Th, Element.Pb));
+			subset = new HashSet<Element>(Arrays.asList(Element.Si, Element.Ti, Element.Al, Element.Fe, Element.Mn, Element.Mg, Element.Ca, Element.Na, Element.K, Element.P, Element.Ni, Element.Cr, Element.Sc, Element.V, Element.Cu, Element.Zn, Element.Ba, Element.Rb, Element.Sr, Element.Y, Element.Zr, Element.Nb, Element.La, Element.Ce, Element.Nd, Element.Th, Element.Pb, Element.Dy, Element.W, Element.Sm));
 		}
 		
 		ElementCorrelationInfo corr = this.correlations.get(el);
